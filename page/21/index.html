@@ -1,0 +1,158 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">鼠标事件</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-02-15 15:42:31</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>鼠标事件都继承自 MouseEvent 接口，有以下事件：</p>
+<p>click、dblclick、mousedown、mouseup、</p>
+<p>mousemove：当鼠标在一个节点内部移动时触发。当鼠标持续移动时，该事件会连续触发。为了避免性能问题，建议对该事件的监听函数做一些限定，比如限定一段时间内只能运行一次</p>
+<p>mouseenter：鼠标进入一个节点时触发，进入子节点不会触发这个事件</p>
+<p>mouseleave：鼠标离开一个节点时触发，离开父节点不会触发这个事件</p>
+<p>mouseover：鼠标进入一个节点时触发，进入子节点会再一次触发这个事件</p>
+<p>mouseout：鼠标离开一个节点时触发，离开父节点也会触发这个事件</p>
+<p>contextmenu：按下鼠标右键时（上下文菜单出现前）触发，或者按下“上下文菜单键”时触发</p>
+<p>wheel：滚动鼠标的滚轮时触发，该事件继承的是 WheelEvent 接口</p>
+<p>拖拉事件和滚动事件</p>
+<p>click 事件指的是，用户在同一个位置先完成 mousedown 动作，再完成 mouseup 动作。因此，触发顺序是，mousedown、mouseup、然后是 click</p>
+<p>dblclick 则是在 mousedown、mouseup、click 之后触发</p>
+<p>mouseover 与 mouseenter 事件，都是鼠标进入一个节点时触发。两者的区别是，mouseenter 事件只触发一次，而只要鼠标在节点内部移动，mouseover 事件会在子节点上触发多次。🤔 那大家是不是应该用 mouseenter 和 mouseleave 而不是 mouseover 和 mouseout。或者说 mouseover、mouseout 用于事件代理或者事件委托。</p>
+<h2 id="MouseEvent-接口"><a href="#MouseEvent-接口" class="headerlink" title="MouseEvent 接口"></a>MouseEvent 接口</h2><p>浏览器原生提供一个 MouseEvent 构造函数，用于新建一个 MouseEvent 实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> MouseEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 配置项除了 Event 接口的实例配置属性，还有以下属性：</p>
+<p>screenX / screenY：鼠标相对于屏幕左上角的水平位置 / 垂直位置，默认值为 0</p>
+<p>clientX / clientY：鼠标相对于浏览器窗口左上角的水平位置 / 垂直位置，默认值为 0</p>
+<p>offsetX / offsetY：鼠标位置与目标节点左侧的 padding 边缘的水平距离 / 上方的 padding 边缘的垂直距离</p>
+<p>pageX / pageY：鼠标位置与稳定左侧边缘 / 上侧边缘的距离</p>
+<p>ctrlKey / shiftKey / altKey / metaKey：是否同时按下 ctrl / shift / alt / meta 键，默认为 false</p>
+<p>button：表示按下了哪一个鼠标按键，默认为 0，表示按下主键（通常是鼠标左键）或者当前事件没有定义这个属性；1 表示按下辅助键（通常是鼠标中键），2 表示按下次要键（通常是鼠标的右键）</p>
+<p>buttons：表示按下了鼠标的哪些键，是一个三个比特为的二进制，默认 0 没有按下任何键，1 二进制 001 表示按下主键，2 010 表示按下次要键，4 二进制 100 表示啊你啊辅助键。3 011 表示同时按下左右键。</p>
+<p>relatedTarget：节点对象，表示事件的相关节点，默认为 null。mouseenter 和 mouseover 表示鼠标刚刚离开的那个元素节点；mouseout 和 mouseleave 事件时，表示鼠标正在进入的那个元素节点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">simulateClick</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> evt = <span class="keyword">new</span> MouseEvent(<span class="string">'click'</span>, &#123;</span><br><span class="line">    <span class="string">'bubbles'</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">'cancelable'</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">var</span> cb = <span class="built_in">document</span>.getElementById(<span class="string">'checkbox'</span>)</span><br><span class="line">  cb.dispatchEvent(evt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MouseEvent-movementX、MouseEvent-movementY"><a href="#MouseEvent-movementX、MouseEvent-movementY" class="headerlink" title="MouseEvent.movementX、MouseEvent.movementY"></a>MouseEvent.movementX、MouseEvent.movementY</h3><p>MouseEvent.movementX 返回当前位置与上一个 mousemove 事件之间的水平距离。数值上，等于下面的公式：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">currentEvent.movementX = currentEvent.screenX - previousEvent.screenX</span><br></pre></td></tr></table></figure>
+<h3 id="MouseEvent-offsetX、MouseEvent-offsetY"><a href="#MouseEvent-offsetX、MouseEvent-offsetY" class="headerlink" title="MouseEvent.offsetX、MouseEvent.offsetY"></a>MouseEvent.offsetX、MouseEvent.offsetY</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* HTML 代码如下</span></span><br><span class="line"><span class="comment">  &lt;style&gt;</span></span><br><span class="line"><span class="comment">    p &#123;</span></span><br><span class="line"><span class="comment">      width: 100px;</span></span><br><span class="line"><span class="comment">      height: 100px;</span></span><br><span class="line"><span class="comment">      padding: 100px;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &lt;/style&gt;</span></span><br><span class="line"><span class="comment">  &lt;p&gt;Hello&lt;/p&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.querySelector(<span class="string">'p'</span>);</span><br><span class="line">p.addEventListener(</span><br><span class="line">  <span class="string">'click'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.offsetX); </span><br><span class="line">    <span class="built_in">console</span>.log(e.offsetY);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="literal">false</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>在 p 的中心点击，返回 150 150。因此中心位置距离左侧和上方的 padding 边缘，等于 padding 的宽度 100 加上元素内容的一半 50。</p>
+<h3 id="MouseEvent-relatedTarget"><a href="#MouseEvent-relatedTarget" class="headerlink" title="MouseEvent.relatedTarget"></a>MouseEvent.relatedTarget</h3><p>返回鼠标事件的相关节点，对于那些没有相关节点的事件，返回 null</p>
+<p>target vs relatedTarget</p>
+<table>
+<thead>
+<tr>
+<th>事件名称</th>
+<th>target 属性</th>
+<th>relatedTarget 属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focusin</td>
+<td>接受焦点的节点</td>
+<td>丧失焦点的节点</td>
+</tr>
+<tr>
+<td>focusout</td>
+<td>丧失焦点的节点</td>
+<td>接受焦点的节点</td>
+</tr>
+<tr>
+<td>mouseenter</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>mouseleave</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+<tr>
+<td>mouseout</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+<tr>
+<td>mouseover</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>dragenter</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>dragexit</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+</tbody>
+</table>
+<p>额，target 显然更符合大家的思路….</p>
+<h3 id="MouseEvent-getModifierState"><a href="#MouseEvent-getModifierState" class="headerlink" title="MouseEvent.getModifierState()"></a>MouseEvent.getModifierState()</h3><p>返回是否按下特定的功能键，参数是表示功能键的字符串</p>
+<h2 id="WheelEvent-接口"><a href="#WheelEvent-接口" class="headerlink" title="WheelEvent 接口"></a>WheelEvent 接口</h2><p>WheelEvent 接口继承了 MouseEvent 实例，代表鼠标滚轮事件的实例对象。目前，鼠标滚轮相关的事件只有一个 wheel 事件，用户滚动鼠标的滚轮，就生成这个事件的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> WheelEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 配置项：</p>
+<p>deltaX / deltaY / deltaZ：表示滚轮的水平 / 垂直 / z 轴滚动量</p>
+<p>deltaMode：表示相关滚动事件的单位，适用于上面三个属性。0 表示滚动单位为像素，1 表示单位为行，2 表示单位为页，默认为 0</p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/20/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/22/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

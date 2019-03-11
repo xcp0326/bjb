@@ -1,0 +1,100 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Object 对象 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Object 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-26 23:48:43</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>JavaScript 的所有其他对象都是继承自 Object 对象的，即所有对象都是 Object 的实例。</p>
+<p>Object 对象的原生方法分成两类：Object 本身的方法与 Object 的实例方法。</p>
+<p><strong>Object 对象本身的方法</strong> 就是定义在 Object 对象上的方法，又称为静态方法。</p>
+<p><strong>Object 的实例方法</strong> 就是定义在 Object.prototype 上的方法，又称为实例方法。</p>
+<h2 id="Object-函数"><a href="#Object-函数" class="headerlink" title="Object 函数"></a>Object 函数</h2><p>Object 本身也是一个函数，可以当作工具方法使用，将任意值转为对象。如果参数为空（或者 undefined 和 null），Object() 返回一个空对象。</p>
+<p>如果参数是一个原始类型的值，Object 方法将其转换为对应的包装对象的实例</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>(<span class="number">1</span>)</span><br><span class="line">obj <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">obj <span class="keyword">instanceof</span> <span class="built_in">Number</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>如果参数是一个对象，直接返回这个对象</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value === <span class="built_in">Object</span>(value)</span><br><span class="line">&#125;</span><br><span class="line">isObject([]) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h2 id="Object-构造函数"><a href="#Object-构造函数" class="headerlink" title="Object 构造函数"></a>Object 构造函数</h2><p>Object 不仅可以当作工具函数使用，还可以当作构造函数使用。</p>
+<p>传入参数的用法和 Object 函数式一样的，如果是对象则直接返回对象，如果是原始类型则返回该类型的包装对象。</p>
+<p>不够虽然用法相同，但是 Object(value) 与 new Object(value) 两者的语义是不同的，Object(value) 表示将 value 转换为对象，new Object(value) 则是表示新生成一个对象，它的值是 value。</p>
+<h2 id="Object-的静态方法"><a href="#Object-的静态方法" class="headerlink" title="Object 的静态方法"></a>Object 的静态方法</h2><h3 id="Object-keys-、Object-getOwnPropertyNames"><a href="#Object-keys-、Object-getOwnPropertyNames" class="headerlink" title="Object.keys()、Object.getOwnPropertyNames()"></a>Object.keys()、Object.getOwnPropertyNames()</h3><p>Object.keys 和 Object.getOwnerPropertyNames 方法都是用来遍历对象的属性的。</p>
+<p>Object.keys 方法遍历某个对象自身的可枚举的属性名，返回属性名的数组</p>
+<p>Object.getOwnerPropertyNames 方法则是遍历某个对象自身的属性名，包括不可枚举的属性名，返回这些属性名的数组。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.keys([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">// [ '0', '1' ]</span></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyNames([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">// [ '0', '1', 'length' ]</span></span><br></pre></td></tr></table></figure>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><h4 id="对象属性模型相关方法"><a href="#对象属性模型相关方法" class="headerlink" title="对象属性模型相关方法"></a>对象属性模型相关方法</h4><p>Object.getOwnPropertyDescriptor()：获取某个属性的描述对象</p>
+<p>Object.defineProperty()：通过描述对象，定义某个属性</p>
+<p>Object.defineProperties()：通过描述对象，定义多个属性</p>
+<h4 id="控制对象状态的方法"><a href="#控制对象状态的方法" class="headerlink" title="控制对象状态的方法"></a>控制对象状态的方法</h4><p>Object.preventExtensions()： 防止对象扩展</p>
+<p>Object.isExtensible()：判断对象是否可以扩展</p>
+<p>Object.seal()：禁止对对象进行配置</p>
+<p>Object.isSealed()：判断一个对象是否可配置</p>
+<p>Object.freeze()：冻结一个对像</p>
+<p>Object.isFrozen()：判断一个对象是否被冻结</p>
+<h4 id="原型链想法方法"><a href="#原型链想法方法" class="headerlink" title="原型链想法方法"></a>原型链想法方法</h4><p>Object.create()：传入参数指定原型对象和属性，返回一个新对象</p>
+<p>object.getPrototypeOf()：获取对象的 Prototype 对象</p>
+<h2 id="Object-的实例方法"><a href="#Object-的实例方法" class="headerlink" title="Object 的实例方法"></a>Object 的实例方法</h2><h3 id="Object-prototype-valueOf"><a href="#Object-prototype-valueOf" class="headerlink" title="Object.prototype.valueOf()"></a>Object.prototype.valueOf()</h3><p>返回当前对象对应的值，默认情况下返回对象本身。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">obj.valueOf() === obj <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>valueOf 的主要用途是 JavaScript 自动类型转换时候会调用这个方法。</p>
+<h3 id="Object-prototype-toString"><a href="#Object-prototype-toString" class="headerlink" title="Object.prototype.toString()"></a>Object.prototype.toString()</h3><p>一般情况下，都是返回当前对象的字符串形式  “[object Object]”。数组、字符串、函数、Date 对象都有自己的 toString 方法，覆盖了 Object.prototype.toString() 方法，它们并不回返回 “[object Object]”</p>
+<p>toString 方法会返回对象的类型字符串，可以用来判断一个值的类型。值有自带的 toString 方法，所以这里通过 call 调用 Object.prototype.toString 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">2</span>) <span class="comment">// "[object Number]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="string">''</span>) <span class="comment">// "[object String]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">true</span>) <span class="comment">// "[object Boolean]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">undefined</span>) <span class="comment">// "[object Undefined]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">null</span>) <span class="comment">// "[object Null]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="built_in">Math</span>) <span class="comment">// "[object Math]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(&#123;&#125;) <span class="comment">// "[object Object]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call([]) <span class="comment">// "[object Array]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="regexp">/[a-z]/</span>) <span class="comment">// "[object RegExp]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()) <span class="comment">// "[object Date]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="built_in">Date</span>) <span class="comment">// "[object Function]"</span></span><br></pre></td></tr></table></figure>
+<h3 id="Object-prototype-toLocaleString"><a href="#Object-prototype-toLocaleString" class="headerlink" title="Object.prototype.toLocaleString()"></a>Object.prototype.toLocaleString()</h3><p>返回当前对象对应的本地字符串形式。数组，数值，日期的实例对象重写了 toLocaleString 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">date.toString()</span><br><span class="line"><span class="comment">// 'Mon Nov 26 2018 23:45:27 GMT+0800 (China Standard Time)'</span></span><br><span class="line">date.toLocaleString()</span><br><span class="line"><span class="comment">// '11/26/2018, 11:45:27 PM'</span></span><br></pre></td></tr></table></figure>
+<p>Object.prototype.hasOwnProperty() 判断某个属性是否为当前对象自身的属性</p>
+<p>Object.prototype.isPrototypeOf() 判断当前对象是否为另一个对象的原型</p>
+<p>Object.prototype.propertyIsEnumerable() 判断某个属性是否可枚举</p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

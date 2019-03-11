@@ -1,0 +1,86 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">Promise 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-03-07 17:03:50</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>Promise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy）🤔️，充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像写同步操作的流程，而不必一层层嵌套回调函数。</p>
+<p>Promise 的设计思想是，所有异步任务都返回一个 Promise 实例。Promise 实例有一个 then 方法，用来指定下一步的回调函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 传统写法</span></span><br><span class="line">step1(<span class="function"><span class="keyword">function</span> (<span class="params">value1</span>) </span>&#123;</span><br><span class="line">  step2(value1, <span class="function"><span class="keyword">function</span>(<span class="params">value2</span>) </span>&#123;</span><br><span class="line">    step3(value2, <span class="function"><span class="keyword">function</span>(<span class="params">value3</span>) </span>&#123;</span><br><span class="line">      step4(value3, <span class="function"><span class="keyword">function</span>(<span class="params">value4</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Promise 的写法</span></span><br><span class="line">(<span class="keyword">new</span> <span class="built_in">Promise</span>(step1))</span><br><span class="line">  .then(step2)</span><br><span class="line">  .then(step3)</span><br><span class="line">  .then(step4);</span><br></pre></td></tr></table></figure>
+<h3 id="Promise-对象的状态"><a href="#Promise-对象的状态" class="headerlink" title="Promise 对象的状态"></a>Promise 对象的状态</h3><ul>
+<li>pending 异步操作进行中</li>
+<li>fulfilled 异步操作成功，Promise 实例传回一个值（如果有）</li>
+<li>rejected 异步操作失败，Promise 实例抛出一个错误</li>
+</ul>
+<p>其中 fulfilled 和 rejected 合在一起称为 resolved（表示已定型）</p>
+<p>Promise 实例的状态变化只可能发生一次，从 pending 到 fulfilled 或者 pending 到 rejected。</p>
+<h3 id="Promise-构造函数"><a href="#Promise-构造函数" class="headerlink" title="Promise 构造函数"></a>Promise 构造函数</h3><p>Promise 构造函数接受一个函数作为参数，该函数的两个参数分别是 resolve 和 reject。它们是两个函数，由 JavaScript 引擎提供，不需要自己实现。</p>
+<p>在异步操作成功时调用  resolve 函数，它会将 Promise 实例的状态从 pending 变为 fulfilled，并将异步操作的结果作为参数传递出去。<br>在异步操作失败时调用 reject 函数，它会将 Promise 实例的状态从 pending 变为 rejected，并将异步操作报出的错误，作为参数传递出去。</p>
+<h3 id="实例：图片预加载"><a href="#实例：图片预加载" class="headerlink" title="实例：图片预加载"></a>实例：图片预加载</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> preloadImage = <span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> image = <span class="keyword">new</span> Image()</span><br><span class="line">    image.onload = resolve</span><br><span class="line">    image.onerror = reject</span><br><span class="line">    image.src = path</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">preloadImage(<span class="string">'http://xxx.com/x.jpg'</span>)</span><br><span class="line">	.then(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;<span class="built_in">document</span>.body.append(e.target)&#125;)</span><br><span class="line">	.then(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;<span class="built_in">console</span>.log(<span class="string">'加载成功'</span>)&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>Promise 的优点在于，让回调函数变成了规范的链式写法，程序流程可以看得很清楚。它有一整套接口，可以实现许多强大的功能，比如同时执行多个异步操作，等到它们的状态都改变以后，再执行一个回调函数；再比如，为多个回调函数中抛出的错误，统一指定处理方法等等。</p>
+<p>Promise 还有一个传统写法没有的好处：它的状态一旦改变，无论何时查询，都能得到这个状态。这意味着，无论何时为 Promise 实例添加回调函数，该函数都能正确执行。所以，你不用担心是否错过了某个事件或信号。如果是传统写法，通过监听事件来执行回调函数，一旦错过了事件，再添加回调函数是不会执行的。</p>
+<h3 id="微任务"><a href="#微任务" class="headerlink" title="微任务"></a>微任务</h3><p>Promise 的回调函数不是正常的异步任务，而是微任务（microtask）。它们的区别在于，正常任务追加到下一轮事件循环，微任务追加到本轮事件循环。这意味着，微任务的执行时间一定早于正常任务。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">  resolve(<span class="number">2</span>);</span><br><span class="line">&#125;).then(<span class="built_in">console</span>.log);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo;上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/5/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Boolean 对象 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Boolean 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-29 10:53:42</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>Boolean 对象是 JavaScript 的三个包装对象之一。作为构造函数，它主要用于生成布尔值的包装对象实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> b <span class="comment">// "object"</span></span><br><span class="line">b.valueOf() <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>)) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'true'</span>);</span><br><span class="line">&#125; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>).valueOf()) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'true'</span>);</span><br><span class="line">&#125; <span class="comment">// 无输出</span></span><br></pre></td></tr></table></figure>
+<h2 id="Boolean-函数的类型转换作用"><a href="#Boolean-函数的类型转换作用" class="headerlink" title="Boolean 函数的类型转换作用"></a>Boolean 函数的类型转换作用</h2><p>Boolean 对象除了可以作为构造函数，还能单独使用，将任意值转为布尔值。这是 Boolean 就是一个单纯的工具方法，将它的参数转为布尔值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Boolean</span>(<span class="literal">undefined</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="literal">null</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="number">0</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="string">''</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="literal">false</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="literal">NaN</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="number">1</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="string">'false'</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>([]) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(&#123;&#125;) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="regexp">/foo/</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>使用双重否运算也可以将任意值转为对应布尔值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">!!<span class="string">''</span> <span class="comment">// false</span></span><br><span class="line">!!<span class="literal">null</span> <span class="comment">// false</span></span><br><span class="line">!!<span class="literal">undefined</span> <span class="comment">// false</span></span><br><span class="line">!!<span class="number">0</span> <span class="comment">// false</span></span><br><span class="line">!!<span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line">!!<span class="literal">false</span> <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">!!<span class="number">1</span> <span class="comment">// true</span></span><br><span class="line">!!<span class="string">'false'</span> <span class="comment">// true</span></span><br><span class="line">!![] <span class="comment">// true</span></span><br><span class="line">!!&#123;&#125; <span class="comment">// true</span></span><br><span class="line">!!<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125; <span class="comment">// true</span></span><br><span class="line">!!<span class="regexp">/foo/</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>注意是不使用构造函数调用 Boolean 的差异</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="literal">false</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="string">''</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="string">''</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="literal">null</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">null</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="number">0</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="number">0</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="literal">NaN</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">NaN</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Boolean</span>(<span class="literal">undefined</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// 无输出</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">undefined</span>)) &#123;<span class="built_in">console</span>.log(<span class="string">'true'</span>)&#125; <span class="comment">// "true"</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

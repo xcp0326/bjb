@@ -1,0 +1,82 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Fabric 使用 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Fabric 使用</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-01-03 14:48:03</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fabric/">Fabric</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动部署/">自动部署</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>pip install fabric</p>
+<h3 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h3><ul>
+<li><p>新建fabfile.py<br>touch fabfile.py</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(name=<span class="string">'world'</span>)</span>:</span></span><br><span class="line">    print(<span class="string">'Hello %s'</span> % name)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行fab</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fab hello:dsphoebe</span><br><span class="line">out: Hello dsphoebe</span><br><span class="line"></span><br><span class="line">     Done.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>完全python语法</li>
+<li>省了<code>if __name__ == &quot;__main__&quot;</code></li>
+<li>local测试本地</li>
+<li>settings修改env变量</li>
+<li>失败的处理</li>
+<li>其他api：prefix，run，sudo等</li>
+</ul>
+<h3 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h3><ul>
+<li><a href="http://fabric-chs.readthedocs.io/zh_CN/chs/tutorial.html" target="_blank" rel="noopener">概览 &amp; 教程</a></li>
+<li><a href="https://github.com/dsphoebe/flask-fabric" target="_blank" rel="noopener">项目代码</a></li>
+</ul>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

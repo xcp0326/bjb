@@ -1,0 +1,94 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>null、undefined 和布尔值 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">null、undefined 和布尔值</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-16 14:28:22</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/boolean/">boolean</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/undefined/">undefined</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/布尔值/">布尔值</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="null-与-undefined"><a href="#null-与-undefined" class="headerlink" title="null 与 undefined"></a>null 与 undefined</h2><p>null 和 undefined 都是没有得意思。if 语句中判断都是 false；而且相等运算 == 返回 true。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="literal">null</span>) <span class="built_in">console</span>.log(<span class="string">'null is false'</span>) <span class="comment">// null is false</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="literal">undefined</span>) <span class="built_in">console</span>.log(<span class="string">'undefined is false'</span>) <span class="comment">// undefined is false</span></span><br><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>95 年 JavaScript 诞生时，null 设计为和 Java 里面的一样，null 可以自动转为 0</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">null</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">null</span> <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<p>但是 JavaScript 的设计者 Brendan Eich 觉得这么做还不够。</p>
+<p>首先，第一版 JavaScript 里面，null 就像 Java 一样，被当成一个对象，Brendan Eich 觉得表示“无”的值最好不是对象</p>
+<p>其次，那时的 JavaScript 不包括错误处理机制，Brendan Eich 觉得，如果 null 自动转为 0，很不容易发现错误</p>
+<p>因此 Brendan Eich 又设计了一个 undefined。区别是这样的：null 表示一个空的对象，转为数值时为 0；undefined 表示没有定义的原始值，转为数值时为 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">undefined</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">undefined</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结一下就是：</strong></p>
+<p>null 表示空值。调用函数时，某个参数未设置任何值，这是就可以传入 null，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入 null，表示未发生错误。</p>
+<p>undefined 表示未定义</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> i;</span><br><span class="line">i <span class="comment">// 此时 i 为undefined，因为只声明了没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line">f() <span class="comment">// 此时函数返回 undefined，因为 x 没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = &#123;&#125;</span><br><span class="line">o.p <span class="comment">// 返回 undefined，因为 p 是 o 没有赋值的属性</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">f() <span class="comment">// 函数如果没有返回值，默认返回 undefined</span></span><br></pre></td></tr></table></figure>
+<h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>下列运算符会返回布尔值：</p>
+<ul>
+<li>逻辑非运算符：<code>!</code></li>
+<li>相等运算符：<code>==</code>、<code>===</code>、<code>!=</code>、<code>!==</code></li>
+<li>比较运算符：<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></li>
+</ul>
+<p>如果 JavaScript 预期某个位置应该是布尔值，就会将该位置上的现有值转换为布尔值。转换规则是除了下面 6 个值被转为 false，其他都视为 true。</p>
+<ul>
+<li>undefined</li>
+<li>null</li>
+<li>false</li>
+<li>空字符串 ‘’ 或者 “”</li>
+<li>NaN</li>
+<li>0</li>
+</ul>
+<p>空数组和空对象都是 true</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ([]) <span class="built_in">console</span>.log(<span class="string">'ahahaha1'</span>) <span class="comment">// 这里打印出来 ahahaha1</span></span><br><span class="line"><span class="keyword">if</span> (&#123;&#125;) <span class="built_in">console</span>.log(<span class="string">'ahahaha2'</span>) <span class="comment">// 这里打印出来 ahahaha2</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

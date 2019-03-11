@@ -1,0 +1,126 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>理解函数式编程 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">理解函数式编程</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-03-07 12:45:38</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h3 id="面向对象的历史"><a href="#面向对象的历史" class="headerlink" title="面向对象的历史"></a>面向对象的历史</h3><p>1950 年 MIT 实验室 谈论 objects 和 oriented 等技术名词。ALGOL 语言。</p>
+<p>1960 年 Simula，类、对象、继承、动态绑定</p>
+<p>1970 受 Simula 启发 Smalltalk 出现，Lisp 又受到 Smalltalk 影响，也接纳面向对象思想，出现了 Flavors （mixin）、CommonLoops（多继承）、又导致了 Common Lisp 对象系统出现。可以看出来<strong>面向对象和函数式不是对立的</strong></p>
+<p>1981 年 Adele Goldberg 撰文将 Smalltalk 和面向对象编程推广给更多的人<br>1986 年 第一届 面向对象编程峰会，后来 C++、Object-C 出现</p>
+<p>1990 年 面向对象广泛接纳，甚至成为主流编程思想，尤其是用户编程领域。事件驱动编程在它的带领下也变得流行（Nodejs 就是事件驱动语言）<br>一些原本不支持面向对象的语言也引入面向对象（BASIC、Pascal），并引发了一些问题<br>一些从一开始就支持面向对象、也支持以前过程式编程的语言被发明出来，如 Python 和 Ruby<br>最重要的商业化面向对象语言是 Sun 公司开发的 Java 语言，以及微软开发的 C# 和 VB.NET</p>
+<p>从这些历史可以看出面向对象是一种思潮，并没有明确定义。比较公认的面向对象语言是 Smalltalk、C#、VB.NET。</p>
+<h3 id="面向对象语言的分类"><a href="#面向对象语言的分类" class="headerlink" title="面向对象语言的分类"></a>面向对象语言的分类</h3><ul>
+<li>纯面向对象语言：一切都是对象、包括数字、字符串也是对象，Python、Ruby、Scala、Smalltalk</li>
+<li>完全支持面向对象，也支持过程式，Java、C++、C#</li>
+<li>本来不支持，后来加上的，PHP、Perl</li>
+<li>看起来像面向对象，但没有完全使用面向对象的：JavaScript（基于原型模拟面向对象）、Lua</li>
+<li>其他</li>
+</ul>
+<p>设计模式是指对于某个广泛出现的问题提出适用性广、可复用的解决方法。</p>
+<p>面向对象缺点：复用性和模块化并不一定能达到预期目标、过份强调模型，忽略了计算和算法。</p>
+<h3 id="对象间的交互也就是消息传递"><a href="#对象间的交互也就是消息传递" class="headerlink" title="对象间的交互也就是消息传递"></a>对象间的交互也就是消息传递</h3><p>比如 person.cut(‘jj’) 是指：</p>
+<ul>
+<li>给 person 对象发送一个 cut 消息</li>
+<li>person 对象会响应这个消息</li>
+</ul>
+<p>然后我们用 smalltalk 翻译一下：</p>
+<figure class="highlight smalltalk"><table><tr><td class="code"><pre><span class="line">person cut: <span class="string">'jj'</span></span><br><span class="line">person cut: <span class="string">'jj'</span>; cut: <span class="string">'hands'</span></span><br></pre></td></tr></table></figure>
+<p>可以看出来第一句意思为 person 切 jj，第二句意思为 person 切 jj，剁 hands。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">person.cut(<span class="string">'jj'</span>)</span><br><span class="line">person.cut(<span class="string">'hands'</span>)</span><br></pre></td></tr></table></figure>
+<p>在 JavaScript 里 person.cut 是指 person 拥有了 cut。在 smalltalk 里是 person 说了一句 cut ‘jj’，说了两句话 cut jj、cut hands。你跟我说了一句话，然后我回复给你一句话。</p>
+<p>面向对象的核心就是对象与对象之间的交互（消息传递），如下图：</p>
+<p><img src="/images/smalltalk.png" alt></p>
+<p>总结为：</p>
+<ol>
+<li>对象维护自己的状态和生命周期</li>
+<li>每个对象独立</li>
+<li>对象和对象之间通过消息传递来工作</li>
+</ol>
+<p>那 React Element 为什么会有自己的生命周期呢，因为它要维护自己的状态，如果你要对一个 Element 做一个什么操作，你应该通过参数给它传一个消息给它，这个参数其实就是这个 Element 的状态。</p>
+<p>Smalltalk 的名称由来，写代码就是和这些对象说话。</p>
+<h3 id="函数也能存储状态"><a href="#函数也能存储状态" class="headerlink" title="函数也能存储状态"></a>函数也能存储状态</h3><figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> money <span class="number">100</span>)</span><br><span class="line">(<span class="name">define</span> (<span class="name">take</span> n)</span><br><span class="line">  (<span class="name">set!</span> money (<span class="name">-money</span> n))</span><br><span class="line">  money)</span><br></pre></td></tr></table></figure>
+<p>set 是给 money 第二次赋值，define 是第一次赋值</p>
+<p>将 money 的操作定义一个局部变量</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> taker</span><br><span class="line">  (<span class="name">let</span> (<span class="name">money</span> <span class="number">100</span>)</span><br><span class="line">       (<span class="name">lambda</span> (<span class="name">n</span>) </span><br><span class="line">               (<span class="name">set!</span> money (<span class="name">-money</span> n)) </span><br><span class="line">               money)))</span><br><span class="line"></span><br><span class="line">(taker 25) // 结果为 75</span><br><span class="line">(taker 25) // 结果为 50</span><br></pre></td></tr></table></figure>
+<p>翻译成 JavaScript </p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> taker = <span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> money = <span class="number">100</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">n</span> =&gt;</span> &#123;</span><br><span class="line">    money = money - n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>函数也是可以存储状态的，只要它可以赋值完全不用对象，也就是利用闭包存储状态。</p>
+<blockquote>
+<p><a href="https://www.zhihu.com/question/20565716" target="_blank" rel="noopener">对象是穷人的闭包，闭包是穷人的对象</a></p>
+<p>JavaScript 这样的语言，它是很容易实现闭包的，于是它就用用闭包来实现的封装，而像 c# 这样的语言，它是很难用函数的，于是它就用对象来封装。</p>
+</blockquote>
+<h3 id="函数实现消息传递类似的形式"><a href="#函数实现消息传递类似的形式" class="headerlink" title="函数实现消息传递类似的形式"></a>函数实现消息传递类似的形式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> makeAccount = <span class="function">(<span class="params">money</span>) =&gt;</span>  &#123;</span><br><span class="line">  <span class="keyword">let</span> take = <span class="function">(<span class="params">n</span>) =&gt;</span> &#123;</span><br><span class="line">    money = money - n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> save = <span class="function">(<span class="params">n</span>) =&gt;</span> &#123;</span><br><span class="line">    money = money + n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> dispatch = <span class="function">(<span class="params">m</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">    	m === <span class="string">'take'</span> ? take :</span><br><span class="line">      m === <span class="string">'save'</span> ? save :</span><br><span class="line">      <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'不支持'</span>)</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dispatch</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> account = makeAccount(<span class="number">100</span>)</span><br><span class="line">account(<span class="string">'take'</span>)(<span class="number">25</span>) <span class="comment">// 75</span></span><br><span class="line">account(<span class="string">'take'</span>)(<span class="number">25</span>) <span class="comment">// 50</span></span><br></pre></td></tr></table></figure>
+<p>翻译成 lisp 调用</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">((<span class="name">account</span> 'take) <span class="number">25</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>函数式编程的面向对象编程是怎么样的 🤔️</p>
+</blockquote>
+<p>不使用赋值就是函数式，比如 Lisp 的代入式求值</p>
+<p><a href="https://codesandbox.io/s/6w88xjx7vw" target="_blank" rel="noopener">实现一个函数式分页 Demo</a> 一个数组生成一个新的数组，很像一个概念，那就是迭代… 之前 justjavac 分享过一个 PPT：“函数式编程就是垃圾”。因为第一个数组生成第二个数组，第一个数组就是垃圾了，再第二个数组生成第三个数组，第二个数组就不再用了就是垃圾了。这些数组都是存在内存里面的。</p>
+<h3 id="赋值的本质"><a href="#赋值的本质" class="headerlink" title="赋值的本质"></a>赋值的本质</h3><p>如果没有赋值，money 就只是一个符号是一个值的名字。如果有了赋值，money 是一个容器，它保存了不同的值，它本身是一个可变的状态。</p>
+<p>会带来的问题，如果代码里面出现了很多赋值，那么这种程序设计是命令式 / 指令式程序设计。</p>
+<p>命令式程序会遇到 「并发」（在 nodejs 里面就会出现并发）「克隆」就会特别麻烦。</p>
+<h3 id="函数式编程的特点"><a href="#函数式编程的特点" class="headerlink" title="函数式编程的特点"></a>函数式编程的特点</h3><ol>
+<li>数学 （公理化和可证明）</li>
+<li>更加强调程序可执行的结果而非过程</li>
+<li>函数式一等公民（函数可以作为参数的高阶函数）</li>
+<li>纯函数，拒绝副作用，不赋值，要是需要赋值，就留一个允许副作用的函数里面去处理，就是那个不是 1% 的函数编程</li>
+<li>不可变数据，因为不能赋值，每次都是新的值</li>
+<li>数据即代码，代码即数据</li>
+<li>引用透明</li>
+</ol>
+<p>函数式编程允许 1% 不是函数式编程，面向对象允许 1% 不是面向对象编程。</p>
+<h3 id="如何把上面取款程序改成函数式写法-❓"><a href="#如何把上面取款程序改成函数式写法-❓" class="headerlink" title="如何把上面取款程序改成函数式写法 ❓"></a>如何把上面取款程序改成函数式写法 ❓</h3>
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

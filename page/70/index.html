@@ -1,0 +1,464 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">其他运算符及运算符顺序</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-23 00:49:42</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="void-运算符"><a href="#void-运算符" class="headerlink" title="void 运算符"></a>void 运算符</h2><p>void 运算符的作用是执行一个表达式，然后不返回任何值，或者说返回 undefined。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="number">0</span> <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">void</span>(<span class="number">0</span>) <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<p>上面 void  运算符的两种写法都正确。建议采用后一种形式，即总是使用圆括号。因为 void 运算符的优先级很高，如果不使用括号，容易找出错误的结果。比如 void 4 + 7 实际上等同于 void(4) + 7。只是 void 所有值都是返回 undefined。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">3</span></span><br><span class="line"><span class="keyword">void</span>(x = <span class="number">5</span>) <span class="comment">// undefined</span></span><br><span class="line">x <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<p>这个运算符的主要用途是浏览器的书签工具（bookmarklet），以及在超级连接中插入代码防止网页跳转。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="string">'Hello World'</span>)</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://example.com"</span> <span class="attr">onclick</span>=<span class="string">"f(); return false;"</span>&gt;</span>click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>点击链接后，会先执行 onclick 代码，由于 onclick 返回 false，所以浏览器不会跳转到 example.com。</p>
+<p>void 运算符可以代替上面的写法</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript: void(f())"</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>下面更实际的例子，用户点击链接提交表单，但是不产生页面跳转</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript: void(document.form.submit())"</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="逗号运算符"><a href="#逗号运算符" class="headerlink" title="逗号运算符"></a>逗号运算符</h2><p>逗号运算符用于两个表达式求值，并返回后一个表达式的值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'a'</span>,<span class="string">'b'</span> <span class="comment">// "b"</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">0</span></span><br><span class="line"><span class="keyword">var</span> y = (x++, <span class="number">10</span>)</span><br><span class="line">x <span class="comment">// 1</span></span><br><span class="line">y <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+<p>逗号运算符的一个用途是，在返回一个值之前，进行一些辅助操作。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> value = (<span class="built_in">console</span>.log(<span class="string">'Hi!'</span>), <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// Hi!</span></span><br><span class="line">value <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><p>JavaScript 各种运算符的优先级别（Operator Precedence）是不一样的。优先级高的运算符先执行，优先级低的运算符后执行。</p>
+<p>根据语言规格，这五个运算符的优先级从高到低依次为：小于等于 &lt;= 、严格等于 ===、或 ||、三元 ?:、等号 = 。</p>
+<p>优先级从高到低：</p>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>运算类型</th>
+<th>关联性</th>
+<th>运算符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td>圆括号</td>
+<td>n/a</td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td>成员访问</td>
+<td>左结合</td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td></td>
+<td>需要计算的成员访问</td>
+<td></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td></td>
+<td>new(带参数列表)</td>
+<td>n/a</td>
+<td>new…(…)</td>
+</tr>
+<tr>
+<td></td>
+<td>函数调用</td>
+<td>左结合</td>
+<td>(…)</td>
+</tr>
+<tr>
+<td>18</td>
+<td>new(无参数列表)</td>
+<td>右结合</td>
+<td>new…</td>
+</tr>
+<tr>
+<td>17</td>
+<td>后置递增</td>
+<td>n/a</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>后置递减</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>逻辑非</td>
+<td>右结合</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>按位非</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>一元加法</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>一元减法</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>前置递增</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>前置递减</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>typeof</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>void</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>delete</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>await</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>幂</td>
+<td>右结合</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>乘法</td>
+<td>左结合</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>除法</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>取模</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>加法</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>减法</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>按位左移</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>按位右移</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>无符号右移</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>小于</td>
+<td>左结合</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>小于等于</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>大于</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>大于等于</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>in</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>instanceof</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>等号</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>非等号</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>全等号</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>非全等号</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>按位与</td>
+<td>左结合</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>按位异或</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>按位或</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>逻辑与</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>逻辑或</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>三元条件运算符</td>
+<td>右结合</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>赋值</td>
+<td>右结合</td>
+<td>=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>+=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>-=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td><code>*=</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>/=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>%=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;&lt;=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>&gt;&gt;=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>&gt;&gt;&gt;=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>&amp;=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>^=</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>\</td>
+<td>=</td>
+</tr>
+<tr>
+<td>2</td>
+<td>yield</td>
+<td>右结合</td>
+<td>yield</td>
+</tr>
+<tr>
+<td></td>
+<td><code>yield*</code></td>
+<td></td>
+<td><code>yield*</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>展开运算符</td>
+<td>n/a</td>
+<td>…</td>
+</tr>
+<tr>
+<td>0</td>
+<td>逗号</td>
+<td>左结合</td>
+<td>,</td>
+</tr>
+</tbody>
+</table>
+<h2 id="圆括号的作用"><a href="#圆括号的作用" class="headerlink" title="圆括号的作用"></a>圆括号的作用</h2><p>圆括号可以用来提高运算的优先级，因为它的优先级是最高的。</p>
+<p>圆括号不是运算符，而是一种语法结构。它一共有两种用法：一种是把表达式放在圆括号之中，提升运算符的优先级；另一种是跟在函数后面，用来调用函数。</p>
+<p>因为圆括号不是运算符，所以不能求值，只改变运算的优先级。</p>
+<p>圆括号中只能放表达式，如果将语句放在圆括号内，就会报错</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">var</span> a = <span class="number">1</span>)</span><br><span class="line"><span class="comment">// SyntaxError: Unexpected token var</span></span><br></pre></td></tr></table></figure>
+<h2 id="左结合与右结合"><a href="#左结合与右结合" class="headerlink" title="左结合与右结合"></a>左结合与右结合</h2><p>对于优先级别相同的运算符，大多数情况，计算顺序总是从左到右，这叫做运算符的“左结合”（left-to-right associativity），从左开始计算。</p>
+<p>但少数运算符的计算顺序是从右到左，即从右边开始计算，叫做运算符的“右结合”（right-to-left associativity）。其中，最主要的是复制运算符 = 和三元运算符 ?:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">w = x = y = z;</span><br><span class="line"><span class="comment">// 即 w = (x = (y = z))</span></span><br><span class="line">q = a ? b : c ? d : e ? f : g;</span><br><span class="line"><span class="comment">// 即 q = a ? b : (c ? d : (e ? f : g))</span></span><br></pre></td></tr></table></figure>
+<p>指数运算符 <code>**</code> 也是右结合的</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">3</span> ** <span class="number">2</span> </span><br><span class="line"><span class="comment">// 即 2 ** (3 ** 2)</span></span><br><span class="line"><span class="comment">// 512</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/69/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/68/">68</a><a class="page-number" href="/page/69/">69</a><span class="page-number current">70</span><a class="page-number" href="/page/71/">71</a><a class="page-number" href="/page/72/">72</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/71/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

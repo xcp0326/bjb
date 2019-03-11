@@ -1,0 +1,99 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>从数值包装对象理解原型链 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">从数值包装对象理解原型链</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-12-17 18:47:51</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/proto/">__proto__</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/prototype/">prototype</a></li></ul>
+      
+    </span>
+    
+      <div class="article-category">分类：
+        <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+      </div>
+    
+  </div>
+  <div class="post-content">
+    <p>JavaScript 里的一切都可以被当作对象。原始类型也是可以的。</p>
+<p>我们来新建一个数值，新建数值有两种方法：</p>
+<ul>
+<li><p>一个是 <code>var n1 = 1</code></p>
+</li>
+<li><p>一个是 <code>var n2 = new Number(1)</code></p>
+</li>
+</ul>
+<p>两种方案都是表示数值 1，只是 n1 是原始类型的数值，而 n2 是数值包装对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> n1 = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> n2 = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> n1 <span class="comment">// "number"</span></span><br><span class="line"><span class="keyword">typeof</span> n2 <span class="comment">// "object"</span></span><br></pre></td></tr></table></figure>
+<p>所以它俩的内存图是这样的：</p>
+<p><img src="/images/prototype/number.png" alt="number"></p>
+<p>n1 是原始类型所以值是存在栈里面的，而 n2 是对象复杂类型，它是在栈里存了一个内存地址（假设地址为 ADDR 35），并把值 1 存在了堆中地址为 35 的位置。</p>
+<p>地址 35 中存的 Number 实例对象，它除了存值为 1 的原始值外，还有一个 <code>__proto__</code> 的对象。</p>
+<h2 id="proto-对象"><a href="#proto-对象" class="headerlink" title="__proto__ 对象"></a>__proto__ 对象</h2><p><code>__proto__</code> 对象下包含了所有 Number 实例对象的共有属性。所有 Number 实例对象都会有一个 <code>__proto__</code> 指向同一块内存。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nn = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">var</span> nn2 = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">2</span>)</span><br><span class="line">nn.__proto__ === nn2.__proto__ <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/prototype/number-instance.png" alt="number-instance">可以看出 nn 的 <code>__proto__</code> 对象下有 constructor 指向到 Number 函数， 然后还有 Number 实例的几个方法：toExponential、toFixed、toLocaleString、toPrecision、toString、valueOf，然后还有对象的 <code>__proto__</code>。而对象的 <code>__proto__</code> 除了 constructor 函数，还包含实例方法 hasOwnProperty、isPropertypeOf、propertyIsEnumerable、toLocaleString、toString、valueOf。</p>
+<p>nn 有自己的 toString、toLocaleString、valueOf，如果我们执行 nn.toString()，执行的就是 Number.prototype.toString 方法，假设 Number 的原型对象没有 toString 方法，就会去原型链的上一级 Object.prototype 里面找 toString，就会执行这个方法，假设 Object.prototype 也没有，JavaScript 引擎会继续往上找，不过发现已经到了原型链的顶端 null 了，于是就返回 undefined。</p>
+<p>nn 的共有属性包含对象的共有属性。即 <code>nn.__proto__.__proto__</code> 而 <code>实例对象.__proto__</code> 又对应的<code>对象.prototype</code>。</p>
+<p>这里形成的原型链就是：</p>
+<p> <code>nn --.__proto__--&gt; Number.prototype --.__proto__--&gt; Object.prototype --.__proto__--&gt; null</code></p>
+<p>可以得出这样一颗原型链树</p>
+<p><img src="/images/prototype/prototype-tree.png" alt="prototype-tree"></p>
+<h2 id="实例对象与「对象」的关系"><a href="#实例对象与「对象」的关系" class="headerlink" title="实例对象与「对象」的关系"></a>实例对象与「对象」的关系</h2><p>Number.prototype 里 Number 即构造函数（这里的「对象」），<code>构造函数.prototype === 实例对象.__proto__</code>，Number 的实例对象是 nn，那 Number 又是谁的实例对象了？我们声明一个 Number 包装对象的数值是 <code>var nn = new Number(0)</code>，Number 是一个函数，可以得知 Number 的构造函数就是 Function。所以我们又可以画一颗树：</p>
+<p><img src="/images/prototype/prototype-tree-2.png" alt="prototype-tree"></p>
+<p>最后总结为：</p>
+<ol>
+<li><code>构造函数.prototype.__proto__ === Object.prototype</code> （除 Object 以外的构造函数，因为 <code>Object.prototype.__proto__</code> 是原型链顶点 null）</li>
+<li><code>构造函数.__proto__ === Function.prototype</code></li>
+</ol>
+<p>套用一下 比如 构造函数是 Function</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.__proto__ === <span class="built_in">Object</span>.prototype</span><br><span class="line"><span class="built_in">Function</span>.__proto__ === <span class="built_in">Function</span>.prototype</span><br><span class="line"><span class="comment">// =&gt; Function.__proto__.__proto__ === Object.prototype</span></span><br></pre></td></tr></table></figure>
+<p>又比如构造函数是 Object</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.__proto__ === <span class="literal">null</span></span><br><span class="line"><span class="built_in">Object</span>.__proto__ === <span class="built_in">Function</span>.prototype</span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

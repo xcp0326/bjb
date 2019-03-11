@@ -1,0 +1,106 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">Lisp 入门</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-03-01 14:19:22</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h3 id="Lisp-语法"><a href="#Lisp-语法" class="headerlink" title="Lisp 语法"></a>Lisp 语法</h3><h4 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h4><p>先写一个操作符，再写值。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(+ 1 2) // 结果为 3</span><br><span class="line">(+ 1 2 3 4) // 结果为 10</span><br><span class="line">(+ (* 3 3) (* 4 4)) // 结果为 25</span><br></pre></td></tr></table></figure>
+<h4 id="较长的表达式"><a href="#较长的表达式" class="headerlink" title="较长的表达式"></a>较长的表达式</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">+</span> (<span class="name">*</span> <span class="number">3</span> (<span class="name">+</span> (<span class="name">*</span> <span class="number">2</span> <span class="number">4</span>) (<span class="name">+</span> <span class="number">3</span> <span class="number">5</span>))) (<span class="name">+</span> (<span class="name">-</span> <span class="number">10</span> <span class="number">7</span>) <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">// 可读性推荐加上空格以及换行</span><br><span class="line">(<span class="name">+</span> (<span class="name">*</span> <span class="number">3</span>)</span><br><span class="line"> 			(<span class="name">+</span> (<span class="name">*</span> <span class="number">2</span> <span class="number">4</span>))</span><br><span class="line">   				(+ 3 5)))</span><br><span class="line">		(<span class="name">+</span> (<span class="name">-</span> <span class="number">10</span> <span class="number">7</span>)</span><br><span class="line">      6))</span><br></pre></td></tr></table></figure>
+<h4 id="命名（也叫定义，不叫赋值）"><a href="#命名（也叫定义，不叫赋值）" class="headerlink" title="命名（也叫定义，不叫赋值）"></a>命名（也叫定义，不叫赋值）</h4><p>定义一个变量，就是 define 然后 接变量名，然后再接变量的值</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> size <span class="number">5</span>)</span><br><span class="line">(* size 2) // 结果为 10</span><br></pre></td></tr></table></figure>
+<h4 id="复合过程（函数定义）"><a href="#复合过程（函数定义）" class="headerlink" title="复合过程（函数定义）"></a>复合过程（函数定义）</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">fn</span> a b) (<span class="name">+</span> a b))</span><br><span class="line">(fn 1 2) // 结果为 3</span><br><span class="line">(<span class="name">define</span> (<span class="name">fn2</span> x) (<span class="name">*</span> x x))</span><br><span class="line">(fn2 4) // 结果为 16</span><br></pre></td></tr></table></figure>
+<h3 id="Lisp-求值"><a href="#Lisp-求值" class="headerlink" title="Lisp 求值"></a>Lisp 求值</h3><h4 id="递归求值"><a href="#递归求值" class="headerlink" title="递归求值"></a>递归求值</h4><p>Lisp 求值可以理解为递归求值，Lisp 表达式求值就是把操作法右侧的作用于操作符来计算求值，如果还有操作符，再把值作用于操作符，如果还有操作符，以此类推。</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">+</span></span><br><span class="line"> (<span class="name">*2</span></span><br><span class="line">  (<span class="name">+</span> <span class="number">7</span> <span class="number">8</span>))</span><br><span class="line"> (<span class="name">+3</span></span><br><span class="line">  (<span class="name">-</span> <span class="number">10</span> <span class="number">6</span>))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>上面表达式的求值，可以拆分为两个表达式：表达式一 <code>(*2 (+ 7 8))</code> 和表达式二 <code>(+3 (-10 6))</code> 以及操作符 <code>+</code>；表达式一再拆分为表达式 A <code>2</code> 和表达式 B <code>(+7 8)</code> 以及操作符 <code>*</code>；同理表达式二再拆分为表示 C <code>3</code> 和表达式 D <code>(-10 6)</code> 以及操作符 <code>+</code>。</p>
+<p>此时可以计算 表达式 B 值为 <code>15</code>，表达式 A 值为 2，作用于操作符 <code>*</code>，<code>2*15</code> 值为 <code>30</code>，所以得到表达式一的值为 <code>30</code>。</p>
+<p>同理可以计算表达式 D 值为 <code>4</code>，表达式 C 值为 <code>3</code>，作用于操作符 <code>+</code>，<code>3+4</code> 值为 <code>7</code>，所以得到的表达式二的值为 <code>7</code>。</p>
+<p>表达式一的值为 <code>30</code>，表达式二的值为 <code>7</code>，作用于操作符 <code>+</code>，所以得到的结果为 <code>37</code></p>
+<h4 id="代入求值"><a href="#代入求值" class="headerlink" title="代入求值"></a>代入求值</h4><p>递归求值是对具体的值的求值，代入求值是对定义的函数的求值。</p>
+<p>定义三个函数：</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">sq</span> x) (<span class="name">*</span> x x))</span><br><span class="line">(<span class="name">define</span> (<span class="name">sqsum</span> a b) (<span class="name">+</span> (<span class="name">sq</span> a) (<span class="name">sq</span> b)))</span><br><span class="line">(<span class="name">define</span> (<span class="name">f</span> z) (<span class="name">sqsum</span> z (<span class="name">+</span> z <span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+<p>求 (f 5)</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">f</span> <span class="number">5</span>) = (<span class="name">sqsum</span> <span class="number">5</span> (<span class="name">+</span> <span class="number">5</span> <span class="number">1</span>))</span><br><span class="line">			= (<span class="name">sqsum</span> <span class="number">5</span> <span class="number">6</span>)</span><br><span class="line">			= (<span class="name">+</span> (<span class="name">sq</span> <span class="number">5</span>) (<span class="name">sq</span> <span class="number">6</span>))</span><br><span class="line">			= (<span class="name">+</span> (<span class="name">*</span> <span class="number">5</span> <span class="number">5</span>) (<span class="name">*</span> <span class="number">6</span> <span class="number">6</span>))</span><br><span class="line">			= (<span class="name">+</span> <span class="number">25</span> <span class="number">36</span>)</span><br><span class="line">			= <span class="number">61</span></span><br></pre></td></tr></table></figure>
+<p>任何一个函数的值，一直代入函数，直到没有函数了，再递归求出来。</p>
+<h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><p>写一个求绝对值的函数</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">abs</span> a)</span><br><span class="line">  (<span class="name">if</span> (<span class="name">&gt;</span> a <span class="number">0</span>)</span><br><span class="line">      a</span><br><span class="line">      (<span class="name">-a</span>)))</span><br></pre></td></tr></table></figure>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><p>求一个正整数的阶乘 f(n) = n!，不完全归纳法得到 f(n) = f(n -1)*n （n &gt; 1）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(define (f n)</span><br><span class="line"> (<span class="keyword">if</span> (= n <span class="number">1</span>)</span><br><span class="line">			<span class="number">1</span></span><br><span class="line">			(* n * (f (- n <span class="number">1</span>))))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>😂 某著名程序是 Lisp 写的，它的最后一页被间谍盗取了，结果全部是反括号。</p>
+<p>求 (f 6)</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">f</span> <span class="number">6</span>) = (<span class="name">*</span> <span class="number">6</span> (<span class="name">f</span> <span class="number">5</span>))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">f</span> <span class="number">4</span>)))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">f</span> <span class="number">3</span>))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">*</span> <span class="number">3</span> (<span class="name">f</span> <span class="number">2</span>)))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">*</span> <span class="number">3</span> (<span class="name">*</span> <span class="number">2</span> (<span class="name">f</span> <span class="number">1</span>))))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">*</span> <span class="number">3</span> (<span class="name">*</span> <span class="number">2</span> (<span class="name">*</span> <span class="number">1</span>))))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">*</span> <span class="number">3</span> (<span class="name">*</span> <span class="number">2</span> <span class="number">1</span>)))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> (<span class="name">*</span> <span class="number">3</span> <span class="number">2</span>))))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> (<span class="name">*</span> <span class="number">4</span> <span class="number">6</span>)))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> (<span class="name">*</span> <span class="number">5</span> <span class="number">24</span>))</span><br><span class="line">			= (<span class="name">*</span> <span class="number">6</span> <span class="number">120</span>)</span><br><span class="line">			= <span class="number">720</span></span><br></pre></td></tr></table></figure>
+<p>整个求值过程就是先递进（展开）然后再回归（求值），这就是递归之所以叫递归。</p>
+<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>迭代求 6 的阶乘。先求 1 的阶乘，1 的阶乘 乘以 2 得到 2 的阶乘 再乘以 3 得到 3 的阶乘 再乘以 4 得到 4 的阶乘 再乘以 5 得到 5 的阶乘 再乘以 6 得到 6 的阶乘。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(f 6) = (j 1 1 6) // (j result n max-n) result 表示这次的计算结果，n 是第几次计算，max-n 是最多计算的次数</span><br><span class="line">			= (<span class="name">j</span> <span class="number">2</span> <span class="number">2</span> <span class="number">6</span>)</span><br><span class="line">			= (<span class="name">j</span> <span class="number">6</span> <span class="number">3</span> <span class="number">6</span>)</span><br><span class="line">			= (<span class="name">j</span> <span class="number">24</span> <span class="number">4</span> <span class="number">6</span>)</span><br><span class="line">			= (<span class="name">j</span> <span class="number">120</span> <span class="number">5</span> <span class="number">6</span>)</span><br><span class="line">			= (<span class="name">j</span> <span class="number">720</span> <span class="number">6</span> <span class="number">6</span>)</span><br><span class="line">			= (j  7 6) // 到第 7 次，7 大于 6 所以直接返回结果不再计算</span><br></pre></td></tr></table></figure>
+<p>每次 n + 1 进行计算，n &gt; max-n 时直接返回结果不再计算。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(define (factorial n)</span><br><span class="line">	fact-iter <span class="number">1</span> <span class="number">1</span> n)</span><br><span class="line">(define (fact-iter result n max-n)</span><br><span class="line">	(<span class="keyword">if</span> (&gt; n max-n)</span><br><span class="line">		result </span><br><span class="line">		(fact-iter (* n result)</span><br><span class="line">								(+ n <span class="number">1</span>)</span><br><span class="line">								max-n )))</span><br></pre></td></tr></table></figure>
+<p>从一个状态到下一个状态（每个状态是用固定数目的变量表示的）</p>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>假设有三个函数：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">sum-int</span> a b)</span><br><span class="line">	(<span class="name">if</span> (<span class="name">&lt;</span> a b)</span><br><span class="line">		<span class="number">0</span></span><br><span class="line">		(<span class="name">+</span> a (<span class="name">sum-int</span> (<span class="name">+</span> a <span class="number">1</span>) b))))</span><br><span class="line">(<span class="name">define</span> (<span class="name">sum-cube</span> a b)</span><br><span class="line">	(<span class="name">if</span> (<span class="name">&lt;</span> a b)</span><br><span class="line">		<span class="number">0</span></span><br><span class="line">		(<span class="name">+</span> (<span class="name">cube</span> a) (<span class="name">sum-cube</span> (<span class="name">+</span> a <span class="number">1</span>) b))))</span><br><span class="line">(<span class="name">define</span> (<span class="name">sum-square</span> a b)</span><br><span class="line">	(<span class="name">if</span> (<span class="name">&lt;</span> a b)</span><br><span class="line">		<span class="number">0</span></span><br><span class="line">		(+ square a) (sum-square (+ a 1) b))))</span><br></pre></td></tr></table></figure>
+<p>然后抽象这三个函数：</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (???<span class="number">1</span>??? a b)</span><br><span class="line">  (<span class="name">if</span> (<span class="name">&gt;</span> a b)</span><br><span class="line">      <span class="number">0</span></span><br><span class="line">      (<span class="name">+</span> (???<span class="number">2</span>??? a)</span><br><span class="line">         (???<span class="number">1</span>??? (???<span class="number">3</span>??? a) b))))</span><br></pre></td></tr></table></figure>
+<p>套入变量</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">sum</span> fn a next b)</span><br><span class="line">  (<span class="name">if</span> (<span class="name">&gt;</span> a b)</span><br><span class="line">      <span class="number">0</span></span><br><span class="line">      (<span class="name">+</span> (<span class="name">fn</span> a)</span><br><span class="line">         (<span class="name">sum</span> fn (<span class="name">next</span> a) next b))))</span><br></pre></td></tr></table></figure>
+<p>重写三个函数</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> (<span class="name">plus</span> n) (<span class="name">+n</span> <span class="number">1</span>))</span><br><span class="line">(<span class="name">define</span> (<span class="name">sum-cube</span> a b)</span><br><span class="line">  (<span class="name">sum</span> cube a plus b))</span><br><span class="line"></span><br><span class="line">(<span class="name">define</span> (<span class="name">nothing</span> n) n)</span><br><span class="line">(<span class="name">define</span> (<span class="name">sum-int</span> a b)</span><br><span class="line">  (<span class="name">sum</span> nothing a plus b))</span><br><span class="line"></span><br><span class="line">(<span class="name">define</span> (<span class="name">sum-square</span> a b)</span><br><span class="line">  (<span class="name">sum</span> square a plus b))</span><br></pre></td></tr></table></figure>
+<p>高阶函数是指一个函数操作了其他函数，那么这个函数就是高阶函数。</p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/12/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

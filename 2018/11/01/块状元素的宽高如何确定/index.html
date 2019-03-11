@@ -1,0 +1,87 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>块状元素的宽高如何确定 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">块状元素的宽高如何确定</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-01 12:24:59</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/双倍-margin/">双倍 margin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多行居中/">多行居中</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文本溢出问题/">文本溢出问题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文档流/">文档流</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <p>块状元素的宽度很好确定，就是父级的宽度，那父级的宽度了，如果没有设置 <code>width</code>，那么就是浏览器的窗口的宽度了。如果是 <code>float</code> 或者定位或者 <code>flex</code> 元素，就是内部容所占的宽度。那高度了，高度的情况复杂点，比如如果块状元素内部是文本。</p>
+<h2 id="内部是单行文本"><a href="#内部是单行文本" class="headerlink" title="内部是单行文本"></a>内部是单行文本</h2><p>单行文字高度由字体的行高决定。字体设计师会在字体文件里写一个建议行高，所以如果开发者没有设置 <code>line-height</code>，则这个块状元素内部的元素行高就是字体设计师定的建议行高。</p>
+<p>因为 HTML 会把文本之间的空格，包括 enter 回车（不是<code>&lt;br /&gt;</code>），多个 space 空格都合并显示为 一个空格。所以 HTML 回车实现的换行文本其实就是单行文本。这时候的高度同上，也是由字体的行高决定的。</p>
+<p>多个空格会被合并成一个空格，在 HTML 里面，我们实现多个空格用<code>&amp;nbsp;</code> 全称 no break space 来实现。虽然可以用 <code>&amp;nbsp;</code> 来实现多个空格，但是它是用来排版的，不要用来它来实现布局。</p>
+<p>比如，咱们常见的表单<code>&lt;label&gt;</code>内的文本两端对齐布局。因为空格的宽度也是由字体的设计师们定义的，有的字体可能是对应 2 个字符，这个时候咱们可能可以通过 <code>&amp;nbsp;</code> 来实现对齐，可是有的字体可能是 2.2 个字符，那就无法用 <code>&amp;nbsp;</code> 实现了。</p>
+<p>这种需求咱们可以这样实现对齐：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="zmQqxm" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="两行不同个数字体左右对齐" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/zmQqxm/" target="_blank" rel="noopener">两行不同个数字体左右对齐</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>如果给元素定义 <code>display:inline-block;</code> 或者 <code>display:inline;</code> 那么该元素之间的所有形式的空格都也只会显示为一个空格。</p>
+<p>内嵌文本之间的空格会被合并成一个空格，而内嵌文本的之外的空格会直接被 HTML 忽略。</p>
+<h2 id="内部是多行文本"><a href="#内部是多行文本" class="headerlink" title="内部是多行文本"></a>内部是多行文本</h2><p>如果内联文本很多时，文本就会出现到第二行。整个文本显示为从左到右，从上到下的排列方式。这种流动的方式就称为文档流，英文 Normal Flow。</p>
+<p>如果在文档流中遇到太长的字符时，会因为过长而另启一行，而且可能太长而导致超出块状元素的宽度。限制它超出可以在合适的位置加上连字符 <code>-</code>，或者定义它的样式为 <code>word-break: break-all;</code>，意思为按照块状元素的宽度切断字符。</p>
+<p>如果文本过多，文本会溢出，经常的需求是截断文本并用省略号结尾显示。</p>
+<p>单行文本溢出时切断并省略号结尾：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="MPdyVP" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="单行文本溢出" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/MPdyVP/" target="_blank" rel="noopener">单行文本溢出</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>实现多行文本溢出切断并省略号结尾：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="EdzKoz" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="多行文本超出部分变成省略号" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/EdzKoz/" target="_blank" rel="noopener">多行文本超出部分变成省略号</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="内部文本垂直居中"><a href="#内部文本垂直居中" class="headerlink" title="内部文本垂直居中"></a>内部文本垂直居中</h2><p>设置相同的 <code>padding-top</code> 和 <code>padding-bottom</code> 值来撑开块状元素的高度，实现多行和单行文本都能自适应垂直居中。前提是块状元素的高度不是固定的。</p>
+<h2 id="内部是块状元素"><a href="#内部是块状元素" class="headerlink" title="内部是块状元素"></a>内部是块状元素</h2><p>如果内部块状元素设置了 <code>margin-top</code> 或 <code>margin-bottom</code>，他们会被合并到外部元素的 <code>margin-top</code>，<code>margin-bottom</code>。如果没有给外部块状元素设置 <code>padding-top</code>，<code>padding-bottom</code>，<code>border-top</code>，<code>border-bottom</code>，<code>overflow</code> 等。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果内部是文本，则高度等于内部文本行高总和；如果内部是块状元素，则由所有内部块状元素的高度 加上所有内部块状元素的 <code>padding-top</code>，<code>padding-bottom</code>，<code>border-top</code>，<code>border-bottom</code>，以及他们没被合并到父级块状元素的 <code>margin-top</code> 和 <code>margin-bottom</code>的总和。</p>
+<h2 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h2><p><a href="https://zhuanlan.zhihu.com/p/25808995" target="_blank" rel="noopener">深入理解 CSS：字体度量、line-height 和 vertical-align</a></p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

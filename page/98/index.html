@@ -1,0 +1,641 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">W3C 标准之 HTML</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-10-15 00:00:00</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/">HTML</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML-标签/">HTML 标签</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MDN/">MDN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/W3C/">W3C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/可替代标签/">可替代标签</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/空标签/">空标签</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h2 id="W3C-简介"><a href="#W3C-简介" class="headerlink" title="W3C 简介"></a>W3C 简介</h2><p>W3C 全称 World Wide Web Consortium 中文 万维网联盟，W3C 理事会，是万维网的主要国际标准组织。为半自治非政府组织。</p>
+<p>1994 年李爵士离开 CERN 后创立，其目的是通过 W3C 制定标准来促进业界成员间的兼容性和协议。联盟试图让所有的供应商实施一套有联盟选择的核心原则和组件。</p>
+<p>为解决不兼容问题，保障网上信息的顺利和完整流通，W3C 制定了一系列标准并督促网上应用开发者和内容提供者遵循这些标准。其中包括语音的规范，开发中使用的导则和解释引擎的行为等。常见的标准有：<strong>HTML</strong>，CSS，DOM，SVG，XML，XHTML 等</p>
+<h2 id="MDN-简介"><a href="#MDN-简介" class="headerlink" title="MDN 简介"></a>MDN 简介</h2><p>MDN，MDN Web Docs 全称 Mozilla Developer Network，Mozilla Developer Center，是一个汇集众多 Mozilla 基金会成品和网上技术开发文档的免费网站。</p>
+<p>2017 年 10 月 18 日，Mozilla 携手 Google，微软，三星，W3C 同时宣布将 MDN 作为 Web 文档中心，共同为开发者创建一个统一的，跨浏览器的权威参考文档。</p>
+<h2 id="HTML-元素们"><a href="#HTML-元素们" class="headerlink" title="HTML 元素们"></a>HTML 元素们</h2><h3 id="根元素"><a href="#根元素" class="headerlink" title="根元素"></a>根元素</h3><p>html 表示 HTML 文档的根（顶级元素），也被称为根元素。所以其他元素必须是此元素的后呆。</p>
+<h3 id="文档元数据"><a href="#文档元数据" class="headerlink" title="文档元数据"></a>文档元数据</h3><p>元数据（Metadata）含有页面的相关信息，包括样式，脚本及数据，能帮助一些软件（如搜索引擎，浏览器等）更好地运用和渲染页面。对于样式和脚本的元数据，可以直接在网页定义，也可以链接到包含相关信息的外部文件。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>link</td>
+<td>link 元素规定了外部资源与当前文档的关系。这个元素可用来为导航定义一个关系框架。这个元素最常于链接样式表</td>
+</tr>
+<tr>
+<td>meta</td>
+<td>meta 元素表示那些不能由其他 HTML 元相关元素（base，link，script，style，title）表示的任何元数据信息</td>
+</tr>
+<tr>
+<td>style</td>
+<td>style 元素包含文档的样式信息或者文档的部分内容。</td>
+</tr>
+<tr>
+<td>title</td>
+<td>定义文档的标题，显示在浏览器的标题栏或标签页上。它只可以包含文本，若是包含有标签，则包含的任何标签都不会被解释。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="内容分区"><a href="#内容分区" class="headerlink" title="内容分区"></a>内容分区</h3><p>内容分区元素允许你将文档内容从逻辑上进行组织划分。使用包括页眉，页脚，导航和标题等分区元素，来为页面内容创建明确的大纲，以便区分各个章节的内容。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>address</td>
+<td>可以让作者为它最近的 article 或 body 祖先元素提供联系信息。在后一种情况下，它应用于整个文档。</td>
+</tr>
+<tr>
+<td>article</td>
+<td>article 表示文档，页面，应用或网站中的独立结构，其意在成为可独立分配的或可服用的结构，如在发布中，它可能是论坛帖子，杂志或新闻文章，博客，用户提交的评论，交互式组件，或者其他独立的内容项目。</td>
+</tr>
+<tr>
+<td>aside</td>
+<td>aside 元素表示一个和其余页面内容几乎无关的部分，被认为是独立于该内容的一部分并且可以被单独的拆分出来而不会使整体受影响。其通常表现为侧边栏或者嵌入内容。他们通常包含在工具条，例如来自词汇表的定义。也可能有其他类型的信息，例如相关的广告，笔者的传记，web 应用程序，个人资料信息，或在博客上的参考链接。</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>表示最近一个章节内容或者根节点元素的页脚。一个页脚通常包含该章节作者，版权数据或者与文档相关的链接等信息。</td>
+</tr>
+<tr>
+<td>header</td>
+<td>header 表示一组引导性的帮助，可能包含标题元素，也可以包含其他元素，像 logo，分节头部，搜索表单等。</td>
+</tr>
+<tr>
+<td>h1, h2, h3, h4, h5, h6</td>
+<td>h1 - h6, 一个标题元素能简要描述该节的主题。标题信息可以由用户代理可以使用，例如，自动构造某个文档中的内容表。</td>
+</tr>
+<tr>
+<td>hgroup</td>
+<td>代表一个段的标题。它规定了在文档轮廓里的单一标题是它所属的隐式或显式部分的标题。</td>
+</tr>
+<tr>
+<td>main</td>
+<td>呈现了文档 body 或应用的主体部分。主体部分由与文档直接相关，或者扩展于文档的中心主题，应用的主要功能部分的内容组成。这部分内容在文档中应当是独一无二的，不包含任何在一系列文档中重复的内容，比如侧边了，导航栏链接，版权信息，网站 logo，搜索框（除非搜索框作为文档的主要功能）</td>
+</tr>
+<tr>
+<td>nav</td>
+<td>描绘一个含有多个超链接的区域，这个区域包含撞到其他页面或者页面内部其他部分的链接列表</td>
+</tr>
+<tr>
+<td>section</td>
+<td>文档中的一个区域（或节），比如，内容中的一个专题组，一般来说会有包含一个标题。一般通过是否包含一个标题（h1 - h6）作为子节点来辨别每个 section</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文本内容"><a href="#文本内容" class="headerlink" title="文本内容"></a>文本内容</h3><p>使用 HTML 文本内容元素来组织在开标签 body 和闭合标签 /body 里的块或章节的内容。这些元素能标志内容的宗旨或结构，而这对于可访问和SEO都很重要。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>blockquote</td>
+<td>HTML 中的元素（或者 HTML 块级引用元素），代表其中的文字是引用内容。通常在渲染是， 这部分的内容会有一定的缩进。若引用的文字来源于网络，则可以将原内容的出处 URL 地址设置到 cite 属性上，若要以文本的形式告知读者引文的出处时，可以直接用 cite 元素</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>描述列表 dl 元素中一个术语的描述，必须出现在 dl 中的 dt 后</td>
+</tr>
+<tr>
+<td>div</td>
+<td>分区元素，是一个通用的流内容容器，它在语义上不代表任何类型的内容，它可以被用来对其他元素进行分组，一般用于样式和相关的需求或者对具有相同特性的一组元素进行分组（比如 lang），它应该在没有任何其他语义元素可用时才使用。</td>
+</tr>
+<tr>
+<td>dl</td>
+<td>描述列表元素，包含术语定义以及描述的列表。</td>
+</tr>
+<tr>
+<td>dt</td>
+<td>术语定义元素，通常在该元素后面回跟着 dd 元素，然而，多个连续出现的 dt 元素都将由出现在它们后面的第一个 dd 元素定义。</td>
+</tr>
+<tr>
+<td>figcaption</td>
+<td>是与其相关联的图片的说明/标题，用于描述其父节点 figure 元素里的其他数据。这意味着 figcaption 在 figure 块里是第一个或最后一个。同时 HTML figcaption 元素是可选的；如果没有该元素，这个父节点的图片只是会没有说明/标题。</td>
+</tr>
+<tr>
+<td>figure</td>
+<td>一段独立的内容。当它属于主体时，它的位置独立于主体。这个标签经常是主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。</td>
+</tr>
+<tr>
+<td>hr</td>
+<td>表示段落级元素之间的主题转换。</td>
+</tr>
+<tr>
+<td>li</td>
+<td>列表条目元素。它必须被包含在一个父元素里：ol,ul,menu。</td>
+</tr>
+<tr>
+<td>main</td>
+<td>呈现了文档或应用的主体部分。</td>
+</tr>
+<tr>
+<td>ol</td>
+<td>有序列表项</td>
+</tr>
+<tr>
+<td>p</td>
+<td>表示文本的一个段落 paragraph</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>预定义格式文本。在该元素中的文本通常按照原文件中的编排，以等宽字体的形式展现出来，文本中的空白符都会显示出来。（紧跟在 pre 开始标签后的换行符也会被省略）</td>
+</tr>
+<tr>
+<td>ul</td>
+<td>无序列表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="内联文本语义"><a href="#内联文本语义" class="headerlink" title="内联文本语义"></a>内联文本语义</h3><p>使用 HTML 内联文本语义定义语句，结构，可以是一个词，一段，或任意风格的文字。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>锚元素</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td>代表缩写，并可选择提供一个完整的描述。</td>
+</tr>
+<tr>
+<td>b</td>
+<td>提供注意元素 Bring Attention To。用于吸引读者的注意到该元素的内容上（如果没有另加特别强调）。注意过去 b 被认为是粗体元素 Boldface。</td>
+</tr>
+<tr>
+<td>bdi</td>
+<td>双向隔离元素，会隔离可能以不通方向进行格式的外部文件。 可以通过 CSS 规则 unicode-bidi 控制。<strong>场景时啥，特意写成了一个元素❓</strong></td>
+</tr>
+<tr>
+<td>bdo</td>
+<td>双向覆盖元素，用于覆盖当前文本的朝向，它使得字符按给定的方向排列。</td>
+</tr>
+<tr>
+<td>br</td>
+<td>生成一个换行符号。</td>
+</tr>
+<tr>
+<td>cite</td>
+<td>引用 citation 标签 表示一个作品的引用。它必须包含引用作品的符号简写格式的标题或者 URL，它可能是一个根据添加引用元数据的约定的简写形式。</td>
+</tr>
+<tr>
+<td>code</td>
+<td>等宽字体呈现一段计算机代码</td>
+</tr>
+<tr>
+<td>data</td>
+<td>将一个指定内容和机器可读性的翻译联系在一起。但如果内容是与 time 或者 date 相关的，一定要使用 time</td>
+</tr>
+<tr>
+<td>dfn</td>
+<td>表示术语的一个定义</td>
+</tr>
+<tr>
+<td>em</td>
+<td>着重元素，标记出需要用户着重阅读的内容，em 元素是可以嵌套的，嵌套层次越深则其包含的内容被认定为越需要着重阅读。</td>
+</tr>
+<tr>
+<td>i</td>
+<td>表示因某些原因需要区分普通文本的一系列文本。例如技术术语，外文短语或是小说中人物的思想活动等，它的内容通常以斜体显示。</td>
+</tr>
+<tr>
+<td>kbd</td>
+<td>键盘输入元素，用于表示用户输入，它将产生一个行内元素，以浏览器的默认 monospace 字体显示。</td>
+</tr>
+<tr>
+<td>mark</td>
+<td>代表突出显示的文字，例如可以为了标记特定上下文中的文本而使用这个标签。举个例子，它可以用来显示搜索引擎搜索后关键词。</td>
+</tr>
+<tr>
+<td>q</td>
+<td>HTML 引用标签 q 表示一个封闭的并且是短的行内引用的文本。这个标签是用来引用短的文本，所以不要引入换行符；对于长的文本的引用请使用 blockquote 替代。</td>
+</tr>
+<tr>
+<td>rb</td>
+<td></td>
+</tr>
+<tr>
+<td>rp</td>
+<td>rp 元素用于为那些不能使用 ruby 元素展示 ruby 注解的浏览器，提供随后的圆括号。</td>
+</tr>
+<tr>
+<td>rt</td>
+<td>HTML Ruby 文本 元素包含字符的发音</td>
+</tr>
+<tr>
+<td>rtc</td>
+<td>包含文字的语义注解，它们在 rb 元素中展示。rb 元素可以拥有发音 rt 和语义 rtc 注解</td>
+</tr>
+<tr>
+<td>ruby</td>
+<td>被用来展示东亚文字注音或字符注释。</td>
+</tr>
+<tr>
+<td>s</td>
+<td>使用删除线来渲染文本。使用 s 元素来表示不再相关，或者不再准确的事情。但是当表示文档编辑时，不提倡使用 s；为此，提倡使用 del 和 ins 元素。</td>
+</tr>
+<tr>
+<td>samp</td>
+<td>用于标识计算机程序输出，通常使用浏览器缺省的 monotype 字体</td>
+</tr>
+<tr>
+<td>small</td>
+<td>small 将使用文本的字体变小一号。（例如从大变成中等，从中等变成小，从小变成超小）。在 HTML5 中，除了它的样式含义，这个元素被重新定义为表示边注释和附属细则，包括版本和法律文本。</td>
+</tr>
+<tr>
+<td>span</td>
+<td>与 div 元素类似，只是 div 是一个块元素而 span 则是行内元素</td>
+</tr>
+<tr>
+<td>strong</td>
+<td>表示文本十分重要</td>
+</tr>
+<tr>
+<td>sub</td>
+<td>下标</td>
+</tr>
+<tr>
+<td>sup</td>
+<td>上标</td>
+</tr>
+<tr>
+<td>time</td>
+<td>用来表示 24 小时制时间或者公历日期，若表示日期则也可包含时间和时区。</td>
+</tr>
+<tr>
+<td>u</td>
+<td>使文本在其内容在基线下的一行呈现下划线。在 HTML5 中，此元素表示具有未标注的文本跨度，显示渲染，非文本注释，例如将文本标记为中文文本中的专有名称（一个正确的中文标记）或 将文本标记为拼写错误。</td>
+</tr>
+<tr>
+<td>var</td>
+<td>表示变量的名称，或者由用户提供的值。</td>
+</tr>
+<tr>
+<td>wbr</td>
+<td>一个文本中的位置，其中浏览器可以选择来换行，虽然它的换行规则可能不会在这里换行。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="图片和多媒体"><a href="#图片和多媒体" class="headerlink" title="图片和多媒体"></a>图片和多媒体</h3><p>多媒体资源</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>area</td>
+<td>图片上定义一个热点区域，可以关联一个超链接。area 元素仅在 map 元素内部使用</td>
+</tr>
+<tr>
+<td>audio</td>
+<td>表示音频内容。audio 可以包含多个音频资源，这些资源可以使用 src 属性或者 source 元素来进行描述；浏览器将会选择最合适的一个来使用。对于不支持 audio 元素的浏览器，audio 元素也可以作为浏览器不识别的内容加入到文档中。</td>
+</tr>
+<tr>
+<td>img</td>
+<td>图片标签</td>
+</tr>
+<tr>
+<td>map</td>
+<td>图片热点标签</td>
+</tr>
+<tr>
+<td>track</td>
+<td>被当作媒体元素 audio 和 video 的子元素来使用。它允许指定计时字幕（或者基于事件的数据），例如自动处理字幕。</td>
+</tr>
+<tr>
+<td>video</td>
+<td>表示视频内容。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="内嵌内容"><a href="#内嵌内容" class="headerlink" title="内嵌内容"></a>内嵌内容</h1><p>除了常规的多媒体内容， HTML 可以包括各种其他的内容，及时它并不容易交互。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>applet</td>
+<td>标志着包含了 Java 的 applet</td>
+</tr>
+<tr>
+<td>embed</td>
+<td>将外部内容嵌入文档中的指定位置。此内容由外部应用程序或其他交互式内容源（如浏览器插件）提供。</td>
+</tr>
+<tr>
+<td>iframe</td>
+<td>表示嵌套的浏览上下文，有效地将另一个 HTML 页面嵌入到当前页面中。在 HTML 4.01 中，文档可能包含头部和正文，或头部和框架集，但不能包含征文和框架集。但是 iframe 可以在正常的文档主体中使用。每个浏览上下文都有自己的会话历史记录和活动文当。包含嵌入内容的浏览上下文称为父浏览上下文。顶级浏览上下文（没有父级）通常是浏览器窗口。</td>
+</tr>
+<tr>
+<td>object</td>
+<td>HTML 嵌入对象元素，表示引入一个外部资源，这个资源可能是一个图片，一个嵌入的浏览上下文，亦或是一个插件所使用的资源。</td>
+</tr>
+<tr>
+<td>param</td>
+<td>用于定义 object 参数</td>
+</tr>
+<tr>
+<td>picture</td>
+<td>是一个容器，用来为其内部特定的 img 元素提供多样的 source 元素。浏览器会根据当前页面（即图片所在的盒子的容器）的布局以及当前浏览的设备（比如普通的屏幕和高清屏幕）去从中选择最合适的资源。</td>
+</tr>
+<tr>
+<td>source</td>
+<td>给 picture，audio 或 video 指定多个媒体资源，以供不同浏览器使用。是一个空元素。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h3><p>为了创建动态内容和 Web 应用程序，HTML 支持使用脚本语言，最突出的就是 JavaScript。某些元素支持词功能。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>canvas</td>
+<td>可被用来通过脚本绘制图形。比如，它可以被用来绘制图形，制作图片集合，甚至用来实现动画效果。你可以（也应该）在元素标签内写入可提供替代的代码内容，这些内容将会在旧的，不支持 canvas 元素的浏览器或是禁用了 JavaScript 的浏览器内渲染并展现。</td>
+</tr>
+<tr>
+<td>noscript</td>
+<td>如果页面上的脚步类型不受之处或者当前在浏览器中关闭了脚本，则在 HTML noscript 元素中定义的脚本未执行时的替代内容。</td>
+</tr>
+<tr>
+<td>script</td>
+<td>用于嵌入或引用可执行脚本。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="编辑标识"><a href="#编辑标识" class="headerlink" title="编辑标识"></a>编辑标识</h1><p>这些元素能标示出某个文本被更改果的部分。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>del</td>
+<td>表示一些被从文档中删除的文字内容。比如可以在需要显示修改记录或者源代码差异的情况使用这个标签。ins 标签的作用恰恰相反：表示文档中添加的内容。</td>
+</tr>
+<tr>
+<td>ins</td>
+<td>定义已经被插入文档中的文本。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="表格内容"><a href="#表格内容" class="headerlink" title="表格内容"></a>表格内容</h3><table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>caption</td>
+<td>展示一个表格的标题，常常被用作 table 的第一个子元素出现，同时显示在表格内容的最前面。可以通过 CSS 的 caption-side 控制 caption 的位置显示。</td>
+</tr>
+<tr>
+<td>col</td>
+<td>定义表格中的列，并用于定义该列上所有单元格上的公共语义。通常定义在 colgroup 内。</td>
+</tr>
+<tr>
+<td>colgroup</td>
+<td>表格 col 组合</td>
+</tr>
+<tr>
+<td>table</td>
+<td>表格</td>
+</tr>
+<tr>
+<td>tbody</td>
+<td>表格主体 可以一个或多个</td>
+</tr>
+<tr>
+<td>td</td>
+<td>table data</td>
+</tr>
+<tr>
+<td>tfoot</td>
+<td>表格列脚</td>
+</tr>
+<tr>
+<td>th</td>
+<td>表头单元格，scope 和 headers 属性控制展示</td>
+</tr>
+<tr>
+<td>thead</td>
+<td>表格列头</td>
+</tr>
+<tr>
+<td>tr</td>
+<td>table row</td>
+</tr>
+</tbody>
+</table>
+<h3 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h3><p>用来创建一个用户可以填写并提交到网站或应用程序的表单。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>button</td>
+<td>按钮，不写 type 值或者 type 值为 submit时，用户回车，触发表单的 onSubmit 事件</td>
+</tr>
+<tr>
+<td>datalist</td>
+<td>它的子元素 option 列表作为 list 值对应 datalist 的 id 值的其他表单元素</td>
+</tr>
+<tr>
+<td>fieldset</td>
+<td>角色就像 labels 一样，给表单的分块的元素</td>
+</tr>
+<tr>
+<td>form</td>
+<td>表示文档中的一个区域，这个区域包含有交互控制元件，用来向 web 服务器提交信息。</td>
+</tr>
+<tr>
+<td>input</td>
+<td>文本输入框</td>
+</tr>
+<tr>
+<td>label</td>
+<td>元素的描述</td>
+</tr>
+<tr>
+<td>legend</td>
+<td>fieldset 的描述</td>
+</tr>
+<tr>
+<td>meter</td>
+<td>用来显示已知访问的标量值或者分数值</td>
+</tr>
+<tr>
+<td>optgroup</td>
+<td>给 select 下的 option 分组</td>
+</tr>
+<tr>
+<td>option</td>
+<td>用于定义在 select optgroup datalist 元素中包含的项。</td>
+</tr>
+<tr>
+<td>output</td>
+<td>表示计算或用户操作的结果</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>用来显示一项任务的完成进度</td>
+</tr>
+<tr>
+<td>select</td>
+<td>下拉选择</td>
+</tr>
+<tr>
+<td>textarea</td>
+<td>多行文本输入框</td>
+</tr>
+</tbody>
+</table>
+<h3 id="交互元素"><a href="#交互元素" class="headerlink" title="交互元素"></a>交互元素</h3><p>创建交互式用户界面对象的元素</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>details</td>
+<td>创建一个可以切换显示的信息内容。关闭时只显示 summary 内的内容。</td>
+</tr>
+<tr>
+<td>dialog</td>
+<td>一个交互弹窗</td>
+</tr>
+<tr>
+<td>menu</td>
+<td>实验中</td>
+</tr>
+<tr>
+<td>menuitem</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>summary</td>
+<td>details 标签子元素</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Web-组件"><a href="#Web-组件" class="headerlink" title="Web 组件"></a>Web 组件</h3><p>Web 组件式中近似 HTML 的技术，这使得它能够，从本质上说，创建和使用自定义元素，就好像它是普通的 HTML。此外，可以创建自定义版本的标准 HTML 元素。不属于 HTML 规范 而是 Web 组件集合标准，而且还没最后确定，随时有可能发生更改。</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slot</td>
+<td>是 web 组件的一个占位符，可以用来插入自定义的标记文本。可以创建不同的 DOM 树进行渲染。</td>
+</tr>
+<tr>
+<td>template</td>
+<td>是一种用于保存客户端内容的机制，该内容在页面加载时不被渲染，但可以在运行时使用 JavaScript 进行实例化。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="什么是空标签"><a href="#什么是空标签" class="headerlink" title="什么是空标签"></a>什么是空标签</h2><p>空标签是指一个不肯跟存在子节点的标签。HTML 里的空标签有：area，base，br，col，command，embed，hr，img，input，keygen，link，meta，param，source，track，wbr，colgroup </p>
+<h2 id="什么是可替代标签"><a href="#什么是可替代标签" class="headerlink" title="什么是可替代标签"></a>什么是可替代标签</h2><p>可替代标签是指该标签的展现不是由 CSS 来控制的。这些元素是一类外观渲染独立于 CSS 的外部对象。可替代标签通常有固定的宽，固定的高，固定的宽高比。</p>
+<p>可替代的标签有：audio 全屏时，canvas 嵌入内容时，object / embed，iframe，img，input[type=”image”]，video，applet 插件，通过 CSS 中的 content 属性插入的对象被称为 匿名可替代标签。</p>
+<h2 id="可替代标签参考文章"><a href="#可替代标签参考文章" class="headerlink" title="可替代标签参考文章"></a>可替代标签参考文章</h2><p><a href="https://www.sitepoint.com/replaced-elements-html-myths-realities/" target="_blank" rel="noopener">Replaced Elements in HTML: Myths and Realities</a><br><a href="/2018/10/15/HTML-中的可替代标签-神化与真实/">我用我的憋足英文汉化了下</a>😄</p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/97/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/96/">96</a><a class="page-number" href="/page/97/">97</a><span class="page-number current">98</span><a class="page-number" href="/page/99/">99</a><a class="page-number" href="/page/100/">100</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/99/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

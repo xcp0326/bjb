@@ -1,0 +1,80 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>定时器 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">定时器</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-03-07 16:18:12</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>定时器 setTimeout() 和 setInterval() ，向任务队列添加定时任务。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> timerID = setTimeout(func|code, delay)</span><br></pre></td></tr></table></figure>
+<p>如果回调函数式对象的方法，那么 setTimeout 会使得内部的 this 关键字指向全局环境，而不是定义所在的那个对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">2</span>,</span><br><span class="line">  y: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">setTimeout(obj.y, <span class="number">1000</span>) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>为了防止出现这个问题，一种解决方法是将回调函数 obj.y 放入一个函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">2</span>,</span><br><span class="line">  y: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  obj.y();</span><br><span class="line">&#125;, <span class="number">1000</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>另一种方法是，使用 bind 方法，将 obj.y 这个方法绑定在 obj 上面</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  x: <span class="number">2</span>,</span><br><span class="line">  y: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">setTimeout(obj.y.bind(obj), <span class="number">1000</span>)</span><br><span class="line"><span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>setInterval 指定的是“开始执行”之间的间隔，并不考虑每次任务执行本身消耗的时间。比如 setInterval 指定每 100 ms 执行一次，每次执行需要 5ms，那么第一次执行结束后 95ms 就会开始第二次执行。如果某次执行耗时特别长，比如 105ms，那么它结束后会立即执行下一次。</p>
+<p>而 setTimeout 是在每次执行结束后再在指定的时间后再执行下一次。</p>
+<h3 id="debounce-函数"><a href="#debounce-函数" class="headerlink" title="debounce 函数"></a>debounce 函数</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">$(<span class="string">'textare'</span>).on(<span class="string">'keydown'</span>, debounce(ajax, <span class="number">2500</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, delay</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> context = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">var</span> args = <span class="built_in">arguments</span></span><br><span class="line">    clearTimeout(timer)</span><br><span class="line">    timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      fn.apply(context, args)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h3><p>setTimeout 和 setInterval 的运行机制，是将指定的代码移出本轮事件循环，等到下一轮事件循环，再检查是否到了指定时间。如果到了，就执行对应的代码；如果不到，就继续等待。</p>
+<p>这意味着，setTimeout 和 setInterval 指定的回调函数，必须等到本轮事件循环的所有同步任务都执行完，才会开始执行。由于前面的任务到底需要多少时间执行完，是不确定的，所以没有办法保证，setTimeout 和 setInterval 指定的任务，一定会按照预定时间执行。</p>
+<p>实际上，<code>setTimeout(f, 0)</code>不会真的在0毫秒之后运行，不同的浏览器有不同的实现。以 Edge 浏览器为例，会等到4毫秒之后运行。如果电脑正在使用电池供电，会等到16毫秒之后运行；如果网页不在当前 Tab 页，会推迟到1000毫秒（1秒）之后运行。这样是为了节省系统资源。</p>
+<h3 id="setTimeout-f-0-的应用"><a href="#setTimeout-f-0-的应用" class="headerlink" title="setTimeout(f, 0) 的应用"></a><code>setTimeout(f, 0)</code> 的应用</h3><p>调整事件的发生顺序：某个事件先发生在子元素，然后冒泡到父元素，即子元素的事件回调函数，会早于父元素的事件回调函数触发。如果，想让父元素的事件回调函数先发生，就要用到<code>setTimeout(f, 0)</code>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="button" id="myButton" value="click"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> input = <span class="built_in">document</span>.getElementById(<span class="string">'myButton'</span>);</span><br><span class="line"></span><br><span class="line">input.onclick = <span class="function"><span class="keyword">function</span> <span class="title">A</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">B</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    input.value +=<span class="string">' input'</span>;</span><br><span class="line">  &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.onclick = <span class="function"><span class="keyword">function</span> <span class="title">C</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  input.value += <span class="string">' body'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于<code>setTimeout(f, 0)</code>实际上意味着，将任务放到浏览器最早可得的空闲时段执行，所以那些计算量大、耗时长的任务，常常会被放到几个小部分，分别放到<code>setTimeout(f, 0)</code>里面执行。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>)[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二</span></span><br><span class="line"><span class="keyword">var</span> timer;</span><br><span class="line"><span class="keyword">var</span> i=<span class="number">0x100000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  timer = setTimeout(func, <span class="number">0</span>);</span><br><span class="line">  div.style.backgroundColor = <span class="string">'#'</span> + i.toString(<span class="number">16</span>);</span><br><span class="line">  <span class="keyword">if</span> (i++ == <span class="number">0xFFFFFF</span>) clearTimeout(timer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">timer = setTimeout(func, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

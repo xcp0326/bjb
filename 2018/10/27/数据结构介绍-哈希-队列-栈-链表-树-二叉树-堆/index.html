@@ -1,0 +1,208 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>数据结构介绍：哈希，队列，栈，链表，树，二叉树，堆 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">数据结构介绍：哈希，队列，栈，链表，树，二叉树，堆</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-10-27 23:51:17</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/二叉树/">二叉树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/哈希/">哈希</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/堆/">堆</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/栈/">栈</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树/">树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链表/">链表</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/队列/">队列</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h2 id="哈希-Hash"><a href="#哈希-Hash" class="headerlink" title="哈希 Hash"></a>哈希 Hash</h2><p>Hash 就是 哈希。所有满足一个健（key）对应一个值（value）的形式的结构就是 hash，比如 HTTP 请求和 HTTP 响应的第二段。其实数组也是 hash，因为它也符合一个健一个值的定义。数组跟对象没有区别，数组就是对象。</p>
+<h3 id="哈希的应用"><a href="#哈希的应用" class="headerlink" title="哈希的应用"></a>哈希的应用</h3><ul>
+<li>计数排序</li>
+<li>基数排序</li>
+<li>桶排序</li>
+</ul>
+<h3 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h3><p>与之对应的比较排序，比较排序必须是两个数比较，它的过程中至少是遍历一次然后比较一次，最快的排序时间是 O(nlogn)。对应的排序快排，随机快排的时间复杂度就是 O(nlogn)。</p>
+<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><ol>
+<li>把数组的值（假设数组项有 0）作为 hash 的 key，hash 的 value 记录每个值出现了多少次。</li>
+<li>找出 hash 里面的最大值</li>
+<li>从 0 到 hash 最大值作为 v 轮询 hash， hash[v] 个 数组的值 push 到 新的数组</li>
+<li>返回新的数组</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">a &lt;- &#123;</span><br><span class="line">  <span class="string">'0'</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="string">'1'</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="string">'2'</span>: <span class="number">3</span>,</span><br><span class="line">  <span class="string">'4'</span>: <span class="number">5</span>,</span><br><span class="line">  <span class="string">'5'</span>：<span class="number">11</span>,</span><br><span class="line">  <span class="string">'6'</span>: <span class="number">20</span>,</span><br><span class="line">  <span class="string">'7'</span>: <span class="number">30</span>,</span><br><span class="line">  <span class="string">'9'</span>: <span class="number">3</span>,</span><br><span class="line">  <span class="string">'length'</span>: <span class="number">10</span> <span class="comment">// JavaScript 里面数组的长度是 数组项的最大下标再加 1，所以是 10。</span></span><br><span class="line">&#125;</span><br><span class="line">hash = &#123;&#125; <span class="comment">// 定义一个 hash 记录 数组 a 的各项个数</span></span><br><span class="line">index &lt;- <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> index &lt; a[<span class="string">'length'</span>]</span><br><span class="line">	number = a[index]</span><br><span class="line">	<span class="keyword">if</span> hash[number] == <span class="literal">undefined</span> <span class="comment">// hash 里面不存在 number，说明没记录 number</span></span><br><span class="line">		hash[number] = <span class="number">1</span> </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">    hash[number] = hash[number] + <span class="number">1</span></span><br><span class="line">	end</span><br><span class="line">  index &lt;- index + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line"><span class="comment">// 至此完成了 hash 记录数组 a 的各项及各项的个数</span></span><br><span class="line"><span class="comment">// 接下来轮询 hash，从数组 a 的最小值 到 最大值，这里简单设最小值 index2 为 0</span></span><br><span class="line">index2 &lt;- <span class="number">0</span></span><br><span class="line">max &lt;- findMax(a)</span><br><span class="line">newArr &lt;- &#123;&#125; <span class="comment">// 初始化一个新数组用于存最后排好序的数组</span></span><br><span class="line"><span class="keyword">while</span> index2 &lt; max</span><br><span class="line">	count = hash[index2]</span><br><span class="line">	<span class="keyword">if</span> count != <span class="literal">undefined</span></span><br><span class="line">		countIndex = <span class="number">0</span></span><br><span class="line">		<span class="keyword">while</span> countIndex &lt; count <span class="comment">// 根据 hash 内记录的数组项的个数</span></span><br><span class="line">			newArr.push(index2) <span class="comment">// push 个数个数组项到新数组中</span></span><br><span class="line">			countIndex &lt;- countIndex + <span class="number">1</span></span><br><span class="line">		end</span><br><span class="line">  end</span><br><span class="line">  index2 &lt;- index2 + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line">print newArr</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>得到计数排序的复杂度是 O(n+max)，比快排还快。</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>必须要有个 hash 作为计数排序的工具，</li>
+<li>无法统计小数和负数进行排序</li>
+</ol>
+<h3 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h3><p>多个桶，每个桶里面放多个数字，而且是一个范围内的数字。然后再对桶里面的数据进行排序。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hash = &#123;</span><br><span class="line">  1: [1, 2, 3, 5], // 1 - 10 内的数字，然后对这些数字排序</span><br><span class="line">  2: [11],         // 10 - 20 内的数字</span><br><span class="line">  3: [20],				 // 20 - 30 内的数字</span><br><span class="line">  4: [30]					 // 30 - 40 内的数字</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>数组的项差异比较大时。相对于计数排序，桶排序节约空间但是浪费时间。桶的个数随意。</p>
+<h3 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h3><p>十进制的基数是十，二进制基数是二。根据基数来排序的就叫基数排序。先按照个位进桶，出桶；然后按照十位进桶，再出桶；然后按照百位进桶，然后出桶。以此内推。</p>
+<p>在这里看基数排序的可视化原理过程 <a href="https://visualgo.net/bn/sorting" target="_blank" rel="noopener">https://visualgo.net/bn/sorting</a></p>
+<p>桶的个数是固定的 十个。能适用很大很大的数字。</p>
+<table>
+<thead>
+<tr>
+<th>排序</th>
+<th>桶的个数</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>计数排序</td>
+<td>数组的长度多长桶就有多少个</td>
+<td>进桶 n<br>出桶 max <br>= <strong>n + max</strong></td>
+</tr>
+<tr>
+<td>桶排序</td>
+<td>开发根据数组项的范围来定义桶的个数</td>
+<td>进桶常数级别<br>然后对桶里的值进行排序最快为 nlogn<br>然后出桶也是常数级别 <br>= <strong>nlogn</strong></td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>按照十进制记录的桶个数即十个</td>
+<td>个位进桶 n，出桶 n，<br>十位进桶 n，出桶 n，<br>百位进桶 n，出桶 n，<br>千位进桶 n，出桶 n<br> …<br> = <strong>2倍位数的n</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="队列-Queue"><a href="#队列-Queue" class="headerlink" title="队列 Queue"></a>队列 Queue</h2><p>队列的概念是先进先出。可以用数组实现，数组的 push 进队，数组的 shift 出队。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = []</span><br><span class="line">queue.push(<span class="number">1</span>)</span><br><span class="line">queue.push(<span class="number">2</span>)</span><br><span class="line">queue.push(<span class="number">3</span>)</span><br><span class="line">queue.shift() <span class="comment">// 1 出队了</span></span><br><span class="line">queue.shift() <span class="comment">// 2 出队了</span></span><br></pre></td></tr></table></figure>
+<p>现实生活中的排队场景就是队列。</p>
+<p>在基数排序出桶的时候就是用的队列。</p>
+<h2 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 Stack"></a>栈 Stack</h2><p>概念是先进后出。也可以用数组实现的，数组的 push 进队，数组的 pop 出队。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const queue = []</span><br><span class="line">queue.push(1)</span><br><span class="line">queue.push(2)</span><br><span class="line">queue.push(3)</span><br><span class="line">queue.pop() // 3 出栈了</span><br><span class="line">queue.pop() // 2 出栈了</span><br></pre></td></tr></table></figure>
+<p>盗梦空间就是一个栈的场景。</p>
+<h2 id="链表-Linked-List"><a href="#链表-Linked-List" class="headerlink" title="链表 Linked List"></a>链表 Linked List</h2><p>因为数组是连续的，数组的缺点，要删除某个值时，还要把这个值后面的项目往前移。链表也是 hash</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a1 &lt;- &#123;</span><br><span class="line">  value: 0,</span><br><span class="line">  next: a2</span><br><span class="line">&#125;</span><br><span class="line">a2 &lt;- &#123;</span><br><span class="line">  value: 2,</span><br><span class="line">  next: a3</span><br><span class="line">&#125;</span><br><span class="line">a3 &lt;- &#123;</span><br><span class="line">  value: 3,</span><br><span class="line">  next: undefined</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改为 JavaScript 代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">a1 = &#123;</span><br><span class="line">  value: <span class="number">0</span>,</span><br><span class="line">  next: &#123;</span><br><span class="line">    value: <span class="number">2</span>,</span><br><span class="line">    next: &#123;</span><br><span class="line">      value: <span class="number">3</span>,</span><br><span class="line">      next: <span class="literal">undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要删除 a2， 直接把 a1 的 next 改为 a3 就可以了，也就是 a2 没有人引用了。</p>
+<p>删除 a2 的话，代码就是直接执行 a1.next = a3 就可以了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">a1 = &#123;</span><br><span class="line">  value: <span class="number">0</span>,</span><br><span class="line">  next: &#123;</span><br><span class="line">    value: <span class="number">3</span>,</span><br><span class="line">    next: <span class="literal">undefined</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>链表的缺点，如果要取链表的第 n 项，需要 a.next.next….next，a点 n - 1 个 next 才能得到；但是数组就很方便，arr[n - 1] 就能取到数组里面的第 n 项。</p>
+<p>比较而已，就是链表删除快，数组查询快。</p>
+<p>最上层的 a 是 head，链表的表头，也是节点，然后其他的点叫节点。</p>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>有层级结构的地方就有树，比如 DOM 树。</p>
+<p><img src="http://www.w3school.com.cn/i/ct_htmltree.gif" alt="HTML DOM Node Tree"></p>
+<p>hash 分叉就是树，如果没有分叉就是链表。</p>
+<p>节点下么有节点就是叶子节点，其他的叫普通节点，图上 DOM 树深度有 4 层，第 1/0 层 是 html，第 2 层是 head / body</p>
+<h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>每次最多分 2 个叉，就是一个二叉树。</p>
+<p>长满了叶子节点，<strong>满二叉树</strong></p>
+<p>左子树，右子树</p>
+<h3 id="二叉树的规律"><a href="#二叉树的规律" class="headerlink" title="二叉树的规律"></a>二叉树的规律</h3><table>
+<thead>
+<tr>
+<th>层数 i</th>
+<th>那一层的最多有几个节点</th>
+<th>所有层的节点</th>
+<th>数组存树</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1 (2^0)</td>
+<td>1 (2^1 - 1)</td>
+<td>数组的第 1 项存第 0 层</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2 (2^1)</td>
+<td>3 (2^2 - 1)</td>
+<td>数组的 2 - 3 项目 存 第 1 层树</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4 (2^2)</td>
+<td>7 (2^3 - 1)</td>
+<td>数组的 4 - 7 项 存 第 2 层</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8 (2^3)</td>
+<td>15 (2^4 - 1)</td>
+<td>数组的 8 - 15 项 存 第 3 层</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16 (2^4)</td>
+<td>31 (2^5 - 1)</td>
+<td>数组的 16 - 31 项 存 第 4 层</td>
+</tr>
+<tr>
+<td>5</td>
+<td>32 (2^5)</td>
+<td>63 (2^6 - 1)</td>
+<td>数组的 32 - 63 项 存 第 5 层</td>
+</tr>
+<tr>
+<td>6</td>
+<td>64 (2^6)</td>
+<td>127 (2^7 - 1)</td>
+<td>数组的 64 - 127 项 存 第 6 层</td>
+</tr>
+<tr>
+<td>7</td>
+<td>128 (2^7)</td>
+<td>255 (2^8 - 1)</td>
+<td>数组的 128 - 255 项 存 第 7 层</td>
+</tr>
+</tbody>
+</table>
+<p><strong>完全二叉树</strong>，除了最后一层外，若其余层都是满的，并且最后一层是满的，或者最后一层的右边连续没叶子节点。</p>
+<p>通过二叉树的规律可以用数组实现完全二叉树，满二叉树。在上表中可以表示二叉树的各项：arr = [1,    2,3,    4,5,6,7,    8,9,10,11,12,13,14,15,  16]。这里就很好查询二叉树上某个节点的值了，比如获取第 3 层的第 1 个节点，也就是 arr[2^2 - 1] 得到 4。</p>
+<p>其他二叉树或者树的形式就不适用这种方法了，因为树中有空节点。</p>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>所有节点都满足子节点小于或者大于父节点，那这个树就是一个堆。</p>
+<p>大顶堆是最大元素出现在根节点。arr[i] &gt;= arr[2i+1] &amp;&amp; arr[i] &gt;= arr[2i+2]<br>小顶堆是最小元素出现在根节点。arr[i] &lt;= arr[2i+1] &amp;&amp; arr[i] &lt;= arr[2i+2] </p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ol>
+<li>根据数组构建堆，将数组构建成一个无序的大顶堆（一般升序为大顶堆，降序为小顶堆）</li>
+<li>将堆顶元素与末尾元素交换，使末尾元素最大。然后继续调整堆为大顶堆，再将堆顶元素与末尾元素交换，使末尾元素为第二大元素。如此反复进行交换、调整、交换……。完成排序。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> heapSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> adjuestHeap = (arr, i, arrLen) &#123;</span><br><span class="line">    <span class="keyword">const</span> tmp = arr[i]</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i*<span class="number">2</span> + <span class="number">1</span>; j &lt; arrLen; j = j*<span class="number">2</span> + <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (j + <span class="number">1</span> &lt; arrLen &amp;&amp; arr[j] &lt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">        j++</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &gt; tmp) &#123;</span><br><span class="line">        arr[i] = arr[j]</span><br><span class="line">        i = j</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    arr[i] = tmp</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> arrLen = arr.length</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = arrLen / <span class="number">2</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    adjuestHeap(arr, i, arrLen)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> k = arrLen - <span class="number">1</span>; k &gt; <span class="number">0</span>; k--) &#123;</span><br><span class="line">    <span class="keyword">const</span> tmp = arr[<span class="number">0</span>]</span><br><span class="line">    arr[<span class="number">0</span>] = arr[k]</span><br><span class="line">    arr[k] = tmp</span><br><span class="line">    adjuestHeap(arr, <span class="number">0</span>, j)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.cnblogs.com/chengxiao/p/6129630.html" target="_blank" rel="noopener">图解排序算法(三)之堆排序</a></p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>
