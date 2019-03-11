@@ -1,0 +1,168 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>数值 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">数值</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-19 18:28:55</span>
+    <span class="post-tags">
+      
+    </span>
+    
+      <div class="article-category">分类：
+        <a class="article-category-link" href="/categories/数据类型/">数据类型</a>
+      </div>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="1-1-整数与浮点数"><a href="#1-1-整数与浮点数" class="headerlink" title="1.1 整数与浮点数"></a>1.1 整数与浮点数</h3><p>JavaScript 内部，所有数字都是以 64 位浮点数存储的，包括整数也是。所以 1 和 1.0 是同一个数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> === <span class="number">1.0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>这样看来，JavaScript 语言的底层是没有整数的，所有数字都是小数（64 位浮点数）。</p>
+<p>但是，位运算时 JavaScript 会自动把 64 位浮点数转换成 32 位带符号的整数，然后再进行运算，运算的结果也是一个 32 位带符号的整数。</p>
+<p>浮点数不是精确的值，所以在比较或者运算时要注意：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">0.3</span>/<span class="number">0.1</span> <span class="comment">// 2.9999999999999996</span></span><br><span class="line">(<span class="number">0.3</span> - <span class="number">0.2</span>) === (<span class="number">0.2</span> - <span class="number">0.1</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-数值精度"><a href="#1-2-数值精度" class="headerlink" title="1.2 数值精度"></a>1.2 数值精度</h3><p>JavaScript 浮点数是用的国际标准 IEEE 754 存储的 64 位浮点数，从最左边开始，是这样组成的：</p>
+<ul>
+<li>第 1 位是符号位，0 表示正数，1 表示负数</li>
+<li>第 2 位到第 12 位，共 11 位是指数部分</li>
+<li>第 13 位到第 64 位，共 52 位是小数部分</li>
+</ul>
+<p>指数部分一共有 11 个二进制位，<code>2**11</code>等于 2048，即大小范围为 0 到 2047。IEE 754 规定，如果指数部分的值在 0 到 2047 之间（不含两个端点），那么有效数字的第一位默认总是 1， 不保存在 64 位浮点数之中。也就是说，有效数字这时总是 1.xx…xx 的形式，其中 xx…xx 的部分保存在 64 位浮点数之中，最长可能位 52 位。因此，JavaScript 提供的有效数字长度为 53 个二进制位。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">53</span> <span class="comment">// 9007199254740992</span></span><br><span class="line"><span class="number">2</span> ** <span class="number">53</span> + <span class="number">1</span> <span class="comment">// 9007199254740992</span></span><br><span class="line"><span class="number">2</span> ** <span class="number">53</span> + <span class="number">2</span> <span class="comment">// 9007199254740994</span></span><br><span class="line"><span class="number">2</span> ** <span class="number">53</span> + <span class="number">3</span> <span class="comment">// 9007199254740996</span></span><br><span class="line"><span class="number">2</span> ** <span class="number">53</span> + <span class="number">4</span> <span class="comment">// 9007199254740996</span></span><br></pre></td></tr></table></figure>
+<p>可以看出 2 的 53 次方后，整数运算结果出现了错误。大于 2 的 53 次方的数字是无法保存精度的。</p>
+<p>2 的 53 次方是一个 16 位的十进制数值，所以可以简单理解为 JavaScript 对 15 位的十进制数是可以精确处理的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">123456789012345678</span> <span class="comment">// 输入 18 位的十进制数 123456789012345678 返回的却是 123456789012345680</span></span><br><span class="line"><span class="number">12345678901234567</span> <span class="comment">// 输入 17 位的十进制数 12345678901234567 返回的却是 12345678901234568 </span></span><br><span class="line"><span class="number">1234567890123456</span> <span class="comment">// 输入 16 位的十进制数 1234567890123456 返回的却是 1234567890123456 </span></span><br><span class="line"><span class="number">90071992547409921</span> <span class="comment">// 输入 17 位的十进制数 90071992547409921 返回的却是 90071992547409920 </span></span><br><span class="line"><span class="number">9999999999999999</span> <span class="comment">// 输入 16 位的十进制 9999999999999999 返回的却是 10000000000000000</span></span><br></pre></td></tr></table></figure>
+<p>一个有意思的题目</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">111111111111111110000</span>,</span><br><span class="line">    b = <span class="number">1111</span>;</span><br><span class="line">a + b; <span class="comment">// 111111111111111110000</span></span><br></pre></td></tr></table></figure>
+<p>111111111111111110000 位数超过了 15 位，再给它加上 1111，JavaScript 无法精确处理的：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">111111111111111110000.</span>.toString(<span class="number">2</span>)</span><br><span class="line"><span class="comment">// "1100000010111111001111101101101110100011000101111001000000000000000"</span></span><br><span class="line"><span class="number">1111.</span>.toString(<span class="number">2</span>)</span><br><span class="line"><span class="comment">// "10001010111"</span></span><br><span class="line"><span class="number">111111111111111110000</span> + <span class="number">1111</span></span><br><span class="line"><span class="comment">// =&gt; 转成二进制</span></span><br><span class="line"><span class="comment">// =&gt; 1100000010111111001111101101101110100011000101111001000000000000000 + 10001010111</span></span><br><span class="line"><span class="comment">// =&gt; 转成 64 位浮点数格式</span></span><br><span class="line"><span class="comment">// =&gt; 0:2^66:1000000101111110011111011011011101000110001011110010 + 0:2^66:0000000000000000000000000000000000000000000000000000</span></span><br><span class="line"><span class="comment">// =&gt; 0:2^66:1000000101111110011111011011011101000110001011110010</span></span><br><span class="line"><span class="comment">// =&gt; 转成十进制 111111111111111110000</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-3-数值的范围"><a href="#1-3-数值的范围" class="headerlink" title="1.3 数值的范围"></a>1.3 数值的范围</h3><p>根据 IEE 754 标准，64 位浮点数的指数部分的长度是 11 个二进制位，指数部分的最大值为 2047 （2 的 11 次方 - 1）。其中一半表示负指数，一半表示正指数，则 JavaScript 能表示的数值范围为 2<sup>1024</sup> 到 2<sup>-1023</sup> ，超出这个范围的数无法表示。</p>
+<p>如果一个数大于等于 2 的 1024 次方，那么就会发生“正向溢出”，即 JavaScript 无法表示这么大的数，这是就会返回 Infinity。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">1024</span> <span class="comment">// Infinity</span></span><br></pre></td></tr></table></figure>
+<p>如果一个数小于等于 2 的 -1075 次方，指数部分最小值 -1023 再加上小数部分的 52 位，那么就会发生“负向溢出”，即 JavaScript 无法表示这么小的数，这是就会直接返回 0.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">-1075</span> <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">0.5</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> x = <span class="number">0</span>; i &lt; <span class="number">25</span>; i++) &#123;</span><br><span class="line">  x = x * x</span><br><span class="line">&#125;</span><br><span class="line">x <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p>对 0.5 连续做了 25 次平方，最后的结果太接近 0，超出了可表示的范围，JavaScript 就直接将其转为 0</p>
+<p>JavaScript 提供 Number 对象的 MAX_VALUE 和 MIN_VALUE 属性，返回可以表示的具体的最大值和最小值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>.MAX_VALUE <span class="comment">// 1.7976931348623157e+308</span></span><br><span class="line"><span class="built_in">Number</span>.MIN_VALUE <span class="comment">// 5e-324</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-数值的表示法"><a href="#2-数值的表示法" class="headerlink" title="2. 数值的表示法"></a>2. 数值的表示法</h2><p>JavaScript 的数值有很多中表示方法，可以用字面形式直接表示，比如 十进制 35 和 十六进制 0xFF。</p>
+<p>数值也可以用科学计数法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">123e3</span> <span class="comment">// 123000</span></span><br><span class="line"><span class="number">123e-3</span> <span class="comment">// 0.123</span></span><br><span class="line"><span class="number">-3.1E+12</span> <span class="comment">// -3100000000000</span></span><br><span class="line"><span class="number">.1e-23</span> <span class="comment">// 1e-24 // 0.000000000000000000000001</span></span><br></pre></td></tr></table></figure>
+<p>JavaScript 会自动把数值转为科学计数法：</p>
+<p>当小数点前的数字多于 21 位</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1234567890123456789012</span> <span class="comment">// 1.2345678901234568e+21</span></span><br><span class="line"><span class="number">123456789012345678901</span> <span class="comment">// 123456789012345680000</span></span><br></pre></td></tr></table></figure>
+<p>当小数点后的零多于 5 个时：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0.0000003</span> <span class="comment">// 3e-7</span></span><br><span class="line"><span class="number">0.000003</span> <span class="comment">// 0.000003</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-数值的进制"><a href="#3-数值的进制" class="headerlink" title="3. 数值的进制"></a>3. 数值的进制</h2><p>使用字面量 literal 直接表示一个数值时，JavaScript 对整数提供四种进制表示：十进制，十六进制，八进制，二进制</p>
+<ul>
+<li>八进制：前缀 0o 或者 0O</li>
+<li>十六进制：前缀 0x 或者 0X</li>
+<li>二进制：前缀 0b 或者 0B</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0b11</span>.toString() <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-特殊数值"><a href="#4-特殊数值" class="headerlink" title="4. 特殊数值"></a>4. 特殊数值</h2><h3 id="4-1-正零和负零"><a href="#4-1-正零和负零" class="headerlink" title="4.1 正零和负零"></a>4.1 正零和负零</h3><p>JavaScript 内部有两个 0，一个 +0，一个 -0，区别就是 64 位浮点数表示法的符号位不同。它们是等价的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">+<span class="number">0</span> === <span class="number">-0</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">0</span> === +<span class="number">0</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">0</span> === <span class="number">-0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>几乎所有场合，+0 和 -0 都会被当作普通的 0。唯一不同的是，+0 或者 -0 被当作分母，返回的值不相等</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="number">1</span> / +<span class="number">0</span>) === (<span class="number">1</span> / <span class="number">-0</span>) <span class="comment">// false</span></span><br><span class="line"><span class="number">1</span> / +<span class="number">0</span> <span class="comment">// +Infinity</span></span><br><span class="line"><span class="number">1</span> / <span class="number">-0</span> <span class="comment">// -Infinity</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-2-NaN"><a href="#4-2-NaN" class="headerlink" title="4.2 NaN"></a>4.2 NaN</h3><p>NaN Not a Number</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">5</span> - <span class="string">'x'</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="number">5</span> + <span class="string">'undefined'</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Math</span>.acos(<span class="number">2</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Math</span>.log(<span class="number">-1</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Math</span>.sqrt(<span class="number">-1</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="number">0</span> / <span class="number">0</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p>NaN 的数据类型是 number</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">NaN</span> <span class="comment">// number</span></span><br></pre></td></tr></table></figure>
+<p>NaN 不等于任何值包括自己</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>数组的 indexOf 方法内部使用的是严格相等运算符，所以该方法对 NaN 也是不成立的</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[<span class="literal">NaN</span>].indexOf(<span class="literal">NaN</span>) <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
+<p>NaN 在 boolean 运算时，返回 false</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Boolean</span>(<span class="literal">NaN</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>NaN 与任何数包括自己的运算，返回的都是 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">NaN</span> + <span class="number">0</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">NaN</span> - <span class="number">0</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">NaN</span> * <span class="number">0</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">NaN</span> / <span class="number">1</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-3-Infinity"><a href="#4-3-Infinity" class="headerlink" title="4.3 Infinity"></a>4.3 Infinity</h3><p>Infinity 表示无穷，如果数值太大或者太小，JavaScript 无法表示时，或者是非 0 除 0，返回 Infinity。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">1024</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="number">0</span> / <span class="number">0</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="number">1</span> / <span class="number">0</span> <span class="comment">// Infinity</span></span><br></pre></td></tr></table></figure>
+<p>正负 Infinity</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> / <span class="number">0</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="number">1</span> / <span class="number">-0</span> <span class="comment">// -Infinity</span></span><br><span class="line"><span class="literal">Infinity</span> === -<span class="literal">Infinity</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">-1</span> / <span class="number">-0</span> <span class="comment">// Infinity</span></span><br></pre></td></tr></table></figure>
+<p>由于数值正向溢出（overflow）、负向溢出（underflow）和被 0 除，JavaScript 都不报错，所以单纯的数学运算几乎没有可能会抛出错误。</p>
+<p>Infinity 大于一切数值除了 NaN，-Infinity 小于一切数值除了 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">Infinity</span> &gt; <span class="number">1000</span> <span class="comment">// true</span></span><br><span class="line">-<span class="literal">Infinity</span> &lt; <span class="number">-1000</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// NaN 所有操作都是 NaN..</span></span><br><span class="line"><span class="literal">Infinity</span> &gt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line">-<span class="literal">Infinity</span> &gt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line">-<span class="literal">Infinity</span> &lt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">Infinity</span> &lt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>Infinity 四则运算，符合数学的计算规则</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">5</span> * <span class="literal">Infinity</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">Infinity</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="number">5</span> - <span class="literal">Infinity</span> <span class="comment">// - Infinity</span></span><br><span class="line"><span class="literal">Infinity</span> / <span class="number">5</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="number">5</span> / <span class="literal">Infinity</span> <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// null 参与数学运算时，会被转换为 0</span></span><br><span class="line"><span class="number">0</span> * <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">null</span> * <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="number">0</span> / <span class="literal">Infinity</span> <span class="comment">// 0</span></span><br><span class="line"><span class="literal">null</span> / <span class="literal">Infinity</span> <span class="comment">// 0</span></span><br><span class="line"><span class="literal">Infinity</span> / <span class="number">0</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="literal">Infinity</span> / <span class="literal">null</span> <span class="comment">// Infinity</span></span><br><span class="line"></span><br><span class="line"><span class="literal">Infinity</span> + <span class="literal">Infinity</span> <span class="comment">// Infinity</span></span><br><span class="line"><span class="literal">Infinity</span> * <span class="literal">Infinity</span> <span class="comment">// Infinity</span></span><br><span class="line"></span><br><span class="line"><span class="literal">Infinity</span> - <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> / <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// undefined 参与数学运算都是返回 NaN</span></span><br><span class="line"><span class="literal">undefined</span> + <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">undefined</span> - <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">undefined</span> / <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">undefined</span> * <span class="literal">Infinity</span> <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">Infinity</span> / <span class="literal">undefined</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-与数值相关的全局方法"><a href="#5-与数值相关的全局方法" class="headerlink" title="5. 与数值相关的全局方法"></a>5. 与数值相关的全局方法</h2><h3 id="5-1-parseInt"><a href="#5-1-parseInt" class="headerlink" title="5.1 parseInt()"></a>5.1 parseInt()</h3><p>将字符串转为整数，如果参数不是字符串，会先转换为字符串再转换为整数，字符串一个一个字符依次转换，如果遇到不能转为数字的字符，就不再进行下去，返回已经转换好的部分。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="number">1.23</span>) <span class="comment">// 会先转换 1.23 为字符串 ‘1.23’ 再转换成整数，返回 1</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'   1.5'</span>) <span class="comment">// 会删除掉字符串中的空格</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'14a'</span>) <span class="comment">// 14</span></span><br></pre></td></tr></table></figure>
+<p>parseInt 的返回值只有两种可能，要么是一个十进制，要么是 NaN</p>
+<p>如果字符串是以 0x 或者 0X 开头，parseInt 会将其按照十六进制数解析。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'0x10'</span>) <span class="comment">// 16</span></span><br></pre></td></tr></table></figure>
+<p>如果字符串是 0 开头，还是按照十进制解析</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'011'</span>) <span class="comment">// 11</span></span><br></pre></td></tr></table></figure>
+<p>对于那些会自动转为科学计数法的数值，parseInt 会将科学计数法的表示方法视为字符串，所以会导致一些奇怪的结果：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="number">1000000000000000000000.5</span>) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1e+21'</span>) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">0.0000008</span>) <span class="comment">// 8</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'8e-7'</span>) <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+<p>parseInt 方法的第二个参数是要解析的值的进制，默认值是 10，在 2 到 36 之间的进制，如果是 0，null，undefined 直接忽略。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">10</span>)  <span class="comment">// 1000</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>)  <span class="comment">// 1000</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">2</span>)  <span class="comment">// 8</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">16</span>)  <span class="comment">// 4096</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">8</span>)  <span class="comment">// 512</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">37</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">1</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="literal">null</span>) <span class="comment">// 10</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="number">0</span>) <span class="comment">// 10</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1000'</span>, <span class="literal">undefined</span>) <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+<p>如果字符串包含超出进制的字符，则从最高为开始，只返回可以转换的数字，如果最高为无法转换，返回 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'1546'</span>, <span class="number">2</span>) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'31'</span>, <span class="number">2</span>) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p>如果第一个参数不是字符串，是一个进制数，会先将进制数转换为十进制字符串，然后再取整。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="number">0x11</span>, <span class="number">2</span>) <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 0x11 转换为 十进制是 17，再运行 parseInt('17', 2)，因为 7 不在二进制里，所以返回的是 1</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-2-parseFloat"><a href="#5-2-parseFloat" class="headerlink" title="5.2 parseFloat()"></a>5.2 parseFloat()</h3><p>将一个字符串转换为浮点数</p>
+<p>如果字符串符合科学计数法，则会进行相应的转换</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseFloat</span>(<span class="string">'3e-2'</span>) <span class="comment">// 0.03</span></span><br></pre></td></tr></table></figure>
+<p>会自动过滤到前导的空格</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseFloat</span>(<span class="string">'\t\v\v\n1'</span>) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>parseInt，parseFloat 是字符串一个字符一个字符的转换，而 Number 则是整个字符串直接转换：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseFloat</span>(<span class="literal">true</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseFloat</span>(<span class="literal">true</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="literal">true</span>) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">parseFloat</span>(<span class="literal">null</span>) <span class="comment">// NaN</span></span><br><span class="line">praseInt(<span class="literal">null</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="literal">null</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">parseFloat</span>(<span class="string">''</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">''</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">''</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">parseFloat</span>(<span class="string">'123.45#'</span>) <span class="comment">// 123.45</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="string">'123.45#'</span>) <span class="comment">// 123</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">'123.45#'</span>) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-3-isNaN"><a href="#5-3-isNaN" class="headerlink" title="5.3 isNaN()"></a>5.3 isNaN()</h3><p>判断一个值是不是 NaN</p>
+<p>参数是数值，如果传入其他值，会先转成 NaN，然后返回 true。也就是说如果 isNaN 返回 true，并不代表值一定是 NaN，而有可能传入的只是一个字符串而已。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="string">'Hello'</span>) <span class="comment">// true 其实是先将 Hello 运行 Number('Hello') 转为了 NaN 了..</span></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="built_in">Number</span>(<span class="string">'Hello'</span>)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>但对于空数组或者只有一个数值成员的数组，isNaN 返回 false</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">isNaN</span>([]) <span class="comment">// Number([]) 返回的是 0，所以这里返回的是 false</span></span><br><span class="line"><span class="built_in">isNaN</span>([<span class="number">123</span>]) <span class="comment">// Number([123]) 返回的是 123，所以这里返回的是 false </span></span><br><span class="line"><span class="built_in">isNaN</span>([<span class="string">'123'</span>]) <span class="comment">// Number(['123']) 返回的是 123，所以这里返回的是 false</span></span><br><span class="line"><span class="built_in">isNaN</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>判断 NaN 更可靠的方法，利用 NaN 为唯一不等于自身的值的这个特点进行判断</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> myIsNaN = <span class="function"><span class="params">value</span> =&gt;</span> value != value</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-isFinite"><a href="#5-4-isFinite" class="headerlink" title="5.4 isFinite()"></a>5.4 isFinite()</h3><p>isFinite 方法判断一个值是否为正常的数值，返回布尔值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">isFinity(<span class="literal">Infinity</span>) <span class="comment">// false</span></span><br><span class="line">isFinity(-<span class="literal">Infinity</span>) <span class="comment">// false</span></span><br><span class="line">isFinity(<span class="literal">NaN</span>) <span class="comment">// false</span></span><br><span class="line">isFinity(<span class="literal">undefined</span>) <span class="comment">// false</span></span><br><span class="line">isFinity(<span class="literal">null</span>) <span class="comment">// true</span></span><br><span class="line">isFinity(<span class="number">-1</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

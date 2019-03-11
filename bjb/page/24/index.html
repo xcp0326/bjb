@@ -1,0 +1,105 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">EventTarget 接口</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-02-03 11:28:29</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DOM/">DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件/">事件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/发布订阅/">发布订阅</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>事件本质是程序各个组成部分之间的一种通信方式，也是异步编程的一种实现。</p>
+<p>DOM 的事件操作（监听和触发）都定义在 EventTarget 接口。所有节点对象都部署了这个接口 比如一个 div 节点元素：</p>
+<p>HTMLDivElement 继承自 HTMLElement<br>  =&gt; HTMLElement 继承自 Element<br>    =&gt; Element 继承自 Node<br>      =&gt; Node 继承自 EventTarget<br>        =&gt; EventTarget 继承自 Object 原型链终点</p>
+<p>还有其他一些需要事件通信的浏览器内置对象 比如 XMLHttpRequest 也部署了这个接口：</p>
+<p>XMLHttpRequest 继承自 XMLHttpRequestEventTarget<br>  =&gt; XMLHttpRequest 继承自 EventTarget<br>    =&gt; EventTarget 继承自 Object 原型链终点</p>
+<p>EventTarget 接口的三个实例方法：</p>
+<ul>
+<li>addEventListener 添加事件侦听器</li>
+<li>removeEventListener 移除事件侦听器</li>
+<li>dispatchEvent （IE 的 fireEvent，jQuery 的 trigger() 方法）触发指定事件</li>
+</ul>
+<h3 id="addEventListener-添加事件侦听器"><a href="#addEventListener-添加事件侦听器" class="headerlink" title="addEventListener 添加事件侦听器"></a>addEventListener 添加事件侦听器</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target.addEventListener(eventType, listener[, useCapture])</span><br><span class="line">target.addEventListener(eventType, listener[, options])</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>useCapture：true 表示捕获，false 表示冒泡，默认为 false 冒泡<br><img src="https://www.w3.org/TR/DOM-Level-3-Events/images/eventflow.svg" alt="Graphical representation of an event dispatched in a DOM tree using the DOM event flow"></p>
+</li>
+<li><p>listener：是指实现了 EventListener 接口的对象或者说一个函数</p>
+<ul>
+<li><p>一个 EventListener 接口对象的例子：EventListener 下须有且只有 handleEvent() 函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">buttonElement.addEventListener(<span class="string">'click'</span>, &#123;</span><br><span class="line">  handleEvent: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'Element clicked through handleEvent property!'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>options：是一个属性配置对象，<code>{capture: true, once: true, passive: true}</code>。capture 是否在捕获阶段触发事件；once 表示监听事件只会触发一次，然后自动移除；passive 表示 listener 不会调用事件的 preventDefault 方法，如果 listener 调用了这个函数，客户端将会忽略它并抛出一个控制台警告。</p>
+</li>
+</ul>
+<h3 id="removeEventListener-移除事件侦听器"><a href="#removeEventListener-移除事件侦听器" class="headerlink" title="removeEventListener 移除事件侦听器"></a>removeEventListener 移除事件侦听器</h3><p>移除 addEventListener 方法添加的事件侦听器，参数必须与 addEventListener 完全一致，节点也必须是同一个。</p>
+<h3 id="dispathEvent-触发事件"><a href="#dispathEvent-触发事件" class="headerlink" title="dispathEvent 触发事件"></a>dispathEvent 触发事件</h3><p>在节点上触发指定事件（事件必须是 Event 对象实例），从而触发 listener 的执行。返回一个布尔值，如果 listener 调用了 event.preventDefault()，返回 false，否则 true。</p>
+<p>可以根据返回值判断事件是否被取消了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> canceled = !cb.dispatchEvent(event);</span><br><span class="line"><span class="keyword">if</span> (canceled) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'事件取消'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'事件未取消'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="事件侦听器-vs-事件处理器"><a href="#事件侦听器-vs-事件处理器" class="headerlink" title="事件侦听器 vs 事件处理器"></a>事件侦听器 vs 事件处理器</h3><ul>
+<li>事件侦听器是通过 EventTarget.addEventListener 注册的函数，一个事件可以注册多个，在 eventloop 时候，会先后执行。</li>
+<li>事件处理器是通过 on… 属性注册的函数，一个事件只能注册一个，后注册的会覆盖先注册的函数。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">1</span>)&#125;, <span class="literal">false</span>)</span><br><span class="line">div.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">2</span>)&#125;, <span class="literal">false</span>)</span><br><span class="line">div.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">3</span>)&#125;</span><br><span class="line">div.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">4</span>)&#125;</span><br><span class="line"><span class="keyword">const</span> e = <span class="keyword">new</span> Event(<span class="string">'click'</span>)</span><br><span class="line">div.dispatchEvent(e) <span class="comment">// 依次 alert 1，2，4</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/23/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/25/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

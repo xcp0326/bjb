@@ -1,0 +1,45 @@
+<article class="post">
+  <div class="post-title">
+    <h2 class="title"><%= page.title %></h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time"><%- date(page.date, "YYYY-MM-DD HH:mm:ss") %></span>
+    <span class="post-tags">
+      <% if (page.tags && page.tags.length){ %>
+        <%- list_tags(page.tags, {
+          show_count: false,
+          class: 'article-tag'
+        }) %>
+      <% } %>
+    </span>
+    <% if (page.categories && page.categories.length){ %>
+      <div class="article-category">分类：
+        <%- list_categories(page.categories, {
+          show_count: false,
+          class: 'article-category',
+          style: 'none',
+          separator: '►'
+        }) %>
+      </div>
+    <% } %>
+  </div>
+  <div class="post-content">
+    <%- page.content %>
+  </div>
+  <% if (typeof isPageHome === 'dsphoebe') {%>
+    <div id="gitalk-container"></div>
+    <script>
+      var gitalk = new Gitalk({
+        clientID: 'ef15f4504260877defa7',
+        clientSecret: 'fec978ac841d76e9177c1a8cadd5092de489dc0e',
+        repo: 'blog',
+        owner: 'dsphoebe',
+        admin: ['dsphoebe'],
+        id: '<%- date(page.date, "YYYY-MM-DD HH:mm:ss") %>',
+        title: document.title.slice(0, -14),
+        enableHotKey: true
+      })
+      gitalk.render('gitalk-container')
+    </script>
+  <% } %>
+</article>

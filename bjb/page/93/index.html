@@ -1,0 +1,125 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">理解 CSS 的堆叠上下文和堆叠顺序</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-01 16:16:06</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/z-index/">z-index</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/堆叠上下文/">堆叠上下文</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/堆叠顺序/">堆叠顺序</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h2 id="堆叠顺序"><a href="#堆叠顺序" class="headerlink" title="堆叠顺序"></a>堆叠顺序</h2><p>从下面这些例子里面可以看出来，各属性及元素的堆叠顺序。</p>
+<p><code>background</code> 高于负 <code>z-index</code> :</p>
+<p></p><p data-height="263" data-theme-id="light" data-slug-hash="VEorav" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: background vs negative z-index" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/VEorav/" target="_blank" rel="noopener">The stacking order: background vs negative z-index</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p><code>background</code> 在 <code>border</code> 层下面，就像 Photoshop 里面，新建一个文件，默认的第一个图层而且是不可编辑图层就是带背景的图层，想通的可以这样理解为，设计 CSS 的人也是认为背景是最下面的，这大概是个常识吧。</p>
+<p><code>border</code> 高于 <code>background</code> ：</p>
+<p></p><p data-height="200" data-theme-id="light" data-slug-hash="YJmrXd" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/YJmrXd/" target="_blank" rel="noopener">The stacking order</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>内联元素高于 <code>border</code>：</p>
+<p></p><p data-height="300" data-theme-id="light" data-slug-hash="xyvXOj" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: border vs inline/text" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/xyvXOj/" target="_blank" rel="noopener">The stacking order: border vs inline/text</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>浮动元素高于 <code>border</code>：</p>
+<p></p><p data-height="251" data-theme-id="light" data-slug-hash="yRmzQp" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: border vs float" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/yRmzQp/" target="_blank" rel="noopener">The stacking order: border vs float</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>内嵌元素高于浮动元素：</p>
+<p></p><p data-height="239" data-theme-id="light" data-slug-hash="xyvXdJ" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: multiple inline VS float" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/xyvXdJ/" target="_blank" rel="noopener">The stacking order: multiple inline VS float</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>浮动元素高于块级元素：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="gBVGob" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: float vs block" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/gBVGob/" target="_blank" rel="noopener">The stacking order: float vs block</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>定位元素高于浮动元素。</p>
+<p></p><p data-height="236" data-theme-id="light" data-slug-hash="PyMJyN" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking order: float vs position" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/PyMJyN/" target="_blank" rel="noopener">The stacking order: float vs position</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="总结为："><a href="#总结为：" class="headerlink" title="总结为："></a>总结为：</h3><p>从高到低从第一层到第八层：</p>
+<p>第一层 正 <code>z-index</code><br>第二层  <code>z-index</code> 0 层<br>第三层 内嵌元素 / 文本<br>第四层 浮动元素<br>第五层 块级元素<br>第六层 <code>border</code> 层<br>第七层 <code>background</code> 层<br>第八层 负 <code>z-index</code> 层</p>
+<p>如果相同层级的元素，后出现的会盖住先出现的。</p>
+<h2 id="堆叠上下文"><a href="#堆叠上下文" class="headerlink" title="堆叠上下文"></a>堆叠上下文</h2><p>根据元素自身的属性按照优先级顺序占用堆叠上下文的空间。</p>
+<p>堆叠的属性及元素：</p>
+<ul>
+<li>HTML</li>
+<li><code>z-index</code> 值 不为 <code>auto</code> 的 绝对/相对定位</li>
+<li><code>z-index</code> 值 不为 <code>auto</code> 的 <code>flex</code> item 元素</li>
+<li><code>opacity</code> 不为 1</li>
+<li><code>transform</code> 不为 <code>none</code></li>
+<li><code>mix</code>-blend-mode 不为 <code>normal</code></li>
+<li><code>filter</code> 不为 <code>none</code></li>
+<li><code>perspective</code> 不为 <code>none</code></li>
+<li><code>isolation</code> 不为 <code>isolate</code></li>
+<li><code>position</code> 为 <code>fixed</code></li>
+<li><code>will-change</code> 指定了 CSS 属性，即使没指定这些属性的值</li>
+<li><code>-webkit-overflow-scrolling</code> 为 <code>touch</code></li>
+</ul>
+<h3 id="z-index"><a href="#z-index" class="headerlink" title="z-index"></a>z-index</h3><p>多个堆叠上下文间，<code>z-index</code> 父级越大的小子级大于小父级的大子级。</p>
+<p></p><p data-height="540" data-theme-id="light" data-slug-hash="xyvPrK" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="The stacking context: z-index" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/xyvPrK/" target="_blank" rel="noopener">The stacking context: z-index</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>son2 的 z-index 值大于 son1，但是 son1 却显示在 son2 上面一层，因为 father1 的 z-index 值大于 father2 的 z-index 值。</p>
+<h2 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h2><p><a href="https://www.zhangxinxu.com/wordpress/2016/01/understand-css-stacking-context-order-z-index/" target="_blank" rel="noopener">深入理解CSS中的层叠上下文和层叠顺序</a></p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/92/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/91/">91</a><a class="page-number" href="/page/92/">92</a><span class="page-number current">93</span><a class="page-number" href="/page/94/">94</a><a class="page-number" href="/page/95/">95</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/94/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

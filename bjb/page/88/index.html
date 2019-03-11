@@ -1,0 +1,93 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">JavaScript 导论</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-15 12:38:13</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本语言/">脚本语言</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="JavaScript-是一种轻量级的脚本语言"><a href="#JavaScript-是一种轻量级的脚本语言" class="headerlink" title="JavaScript 是一种轻量级的脚本语言"></a>JavaScript 是一种轻量级的脚本语言</h2><ul>
+<li><a href="http://www.yinwang.org/blog-cn/2013/03/29/scripting-language" target="_blank" rel="noopener">什么是“脚本语言”</a></li>
+<li><a href="https://www.zhihu.com/question/22220383" target="_blank" rel="noopener">什么是脚本语言？</a><ul>
+<li>Python 也是脚本语言，相对于 Python，JavaScript 是一种轻量级脚本语言。</li>
+<li>脚本语言比普通语言性能差</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/3e810a619e9f" target="_blank" rel="noopener">为什么说 Python 的性能差？</a></p>
+<ul>
+<li>是动态语言，编译器无法在编译的过程中获知变量的相关属性，导致无法优化</li>
+<li>虽然是解释执行，但是不支持 JIT</li>
+<li>一切都是对象，每个对象都需要维护引用计数，增加了额外的工作</li>
+<li><a href="http://cenalulu.github.io/python/gil-in-python/" target="_blank" rel="noopener">Python GIL</a>，Global Interpreter Lock</li>
+<li>垃圾回收，每次垃圾回收的时候都会中断正在执行的程序。<a href="https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&amp;mid=2650995396&amp;idx=1&amp;sn=3fc6f216fcf8f09232694b499da541c3" target="_blank" rel="noopener">据说 Instagram 禁用 GC 机制后，性能提升了 10%</a></li>
+</ul>
+<h2 id="JavaScript-也是一种嵌入式语言"><a href="#JavaScript-也是一种嵌入式语言" class="headerlink" title="JavaScript 也是一种嵌入式语言"></a>JavaScript 也是一种嵌入式语言</h2><p>核心算法不多，只能用来做一些数学和逻辑运算</p>
+<p>本身不提供任何于 I/O 相关的 API，都要靠宿主环境提供，所以 JavaScript 只合适嵌入更型的应用程序环境，去调用宿主环境提供的底层 API。</p>
+<p>常见的嵌入环境，浏览器或者服务器 Node 环境</p>
+<h2 id="JavaScript-是一种”对象模型”语言"><a href="#JavaScript-是一种”对象模型”语言" class="headerlink" title="JavaScript 是一种”对象模型”语言"></a>JavaScript 是一种”对象模型”语言</h2><p>各种宿主环境通过这个模型，描述自己的功能和操作接口，从而通过 JavaScript 控制这些功能。</p>
+<p>但是 JavaScript 并不是纯粹的“面向对象语言”，还支持七天编程范式（比如函数式编程）。</p>
+<p>JavaScript 的核心算法只包括两部分：基本语法构造 和标准库。除此之外，各种宿主环境提供额外的 API，比如浏览器提供的额外的 API 分为三大类：浏览器控制类用于操作浏览器， DOM 类用于操作网页的各种元素，Web 类用于实现互联网的各种功能。</p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/87/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/86/">86</a><a class="page-number" href="/page/87/">87</a><span class="page-number current">88</span><a class="page-number" href="/page/89/">89</a><a class="page-number" href="/page/90/">90</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/89/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

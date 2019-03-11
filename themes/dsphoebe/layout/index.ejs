@@ -1,0 +1,4 @@
+<% page.posts.each(function (post) { %>
+  <%- partial('post', {page: post, isPageHome: is_home()}) %>
+<% }) %>
+<%- partial('_partial/paginator') %>

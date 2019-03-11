@@ -1,0 +1,7 @@
+menu:
+  Home: /
+  Archives: /archives
+
+post_asset_folder: true
+
+favicon: /images/favico.png

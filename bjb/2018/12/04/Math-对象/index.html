@@ -1,0 +1,105 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Math 对象 | FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Math 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-12-04 15:24:01</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>Math 是 JavaScript 的原生对象，提供各种数学功能。该对象不是构造函数，不能生成实例，所有的属性和方法都必须在 Math 对象上调用。</p>
+<h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><p>Math 对象的静态属性，提供一些只读的数学常量。非严格模式下修改无效，严格模式下报错。</p>
+<ul>
+<li>Math.E：常数 e，（e 作为数学常数，是自然对数函数的底数。它是一个无限不循环小数，数值约为 2.71828182845904523536…，小数点后 20 位）</li>
+<li>Math.LN2：2 的自然对数（自然对数，是指以 e 为底数的对数函数，标记作 ln(x) 或者 log<sub>e</sub>(x)）</li>
+<li>Math.LN10：10 的自然对数</li>
+<li>Math.LOG2E：2 为底 e 的对数</li>
+<li>Math.LOG10E：10 为底 e 的对数</li>
+<li>Math.PI：常数 π</li>
+<li>Math.SQRT1_2：0.5 的平方根</li>
+<li>Math.SQRT2：2 的平方根</li>
+</ul>
+<h2 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h2><p><strong>Math.ceil()</strong>：ceiling 天花板数，向上取整</p>
+<p><strong>Math.floor</strong>()：地板数，向下取整</p>
+<p><strong>Math.max</strong>()：如果参数为空返回 -Infinity</p>
+<p><strong>Math.min</strong>()：如果参数为空返回 Infinity</p>
+<p><strong>Math.pow</strong>()：power 次方，缩写 pow</p>
+<p><strong>Math.sqrt</strong>()：开平方根，参数是负数返回 NaN</p>
+<p><strong>Math.log</strong>()：返回以 e 为底的自然对数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Math</span>.log(<span class="built_in">Math</span>.E) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">Math</span>.log(<span class="number">10</span>) <span class="comment">// 等同于 Math.LN10</span></span><br></pre></td></tr></table></figure>
+<p>如果要计算以 10 为底的对数，可以用 Math.log 求出自然对数，然后除以 Math.LN10；求以 2 为底的对数，可以除以 Math.LN2</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Math</span>.log(<span class="number">100</span>) / <span class="built_in">Math</span>.LN10 <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">Math</span>.log(<span class="number">8</span>) / <span class="built_in">Math</span>.LN2 <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>引申题：求整数的位数 比如 1234 是 4 位</p>
+<p>=&gt; Math.floor(Math.log(1234)/Math.LN10) + 1</p>
+</blockquote>
+<p><strong>Math.exp</strong>()：返回常数 e 的参数次方</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Math</span>.exp(<span class="number">3</span>) === <span class="built_in">Math</span>.E ** <span class="number">3</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p><strong>Math.round()</strong>：返回一个数字四舍五入后最接近的整数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">round</span>(<span class="params">number, percision</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.round(+number + <span class="string">'e'</span> + percision) / <span class="built_in">Math</span>.pow(<span class="number">10</span>, percision);</span><br><span class="line">  <span class="comment">// 或者</span></span><br><span class="line">  <span class="comment">// return Number(Math.round(+number + 'e' + percision) + 'e-' + percision)</span></span><br><span class="line">&#125;</span><br><span class="line">round(<span class="number">1.25</span>, <span class="number">1</span>) <span class="comment">// 1.3</span></span><br><span class="line">round(<span class="number">1.25</span>, <span class="number">0</span>) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p><strong>Math.random()</strong>：返回 0 到 1 之间的伪随机数。</p>
+<p>生成任意范围的随机数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomArbitrary</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.random() * (max - min) + min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成任意访问的随机整数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomArbitrary</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>)) + min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回随机字符串</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">random_str</span>(<span class="params">length</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ALPHABET = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>;</span><br><span class="line">  ALPHABET += <span class="string">'abcdefghijklmnopqrstuvwxyz'</span>;</span><br><span class="line">  ALPHABET += <span class="string">'0123456789-_'</span>;</span><br><span class="line">	<span class="keyword">var</span> str = <span class="string">''</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">    <span class="keyword">var</span> rand = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * ALPHABET.length)</span><br><span class="line">    str += ALPHABET.substr(rand, <span class="number">1</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> str</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="⚠️-三角函数方法"><a href="#⚠️-三角函数方法" class="headerlink" title="⚠️ 三角函数方法"></a>⚠️ 三角函数方法</h2><p>Math.sin 返回参数的正弦</p>
+<p>Math.cos 返回参数的余弦</p>
+<p>Math.tan 返回参数的正切</p>
+<p>Math.asin 返回参数的反正弦</p>
+<p>Math.acos 返回参数的反余弦</p>
+<p>Math.atan 返回参数的反正切</p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

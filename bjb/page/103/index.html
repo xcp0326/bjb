@@ -1,0 +1,79 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">Mac 下安装 virtualenv</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-05-18 12:06:06</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/virtualenv/">virtualenv</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <h3 id="第一步-pip-运行安装："><a href="#第一步-pip-运行安装：" class="headerlink" title="第一步 pip 运行安装："></a>第一步 pip 运行安装：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>如果报错：<br>matplotlib 1.3.1 requires nose, which is not installed.<br>matplotlib 1.3.1 requires tornado, which is not installed.<br>如果不想安装 matplotlib，可以：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -H pip install --ignore-install matplotlib virtualenv</span><br><span class="line">sudo -H pip install --ignore-install matplotlib virtualenvwrapper</span><br></pre></td></tr></table></figure></p>
+<h3 id="第二步-找到virtaulenvwrapper-sh的位置"><a href="#第二步-找到virtaulenvwrapper-sh的位置" class="headerlink" title="第二步 找到virtaulenvwrapper.sh的位置"></a>第二步 找到virtaulenvwrapper.sh的位置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">which virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+<h3 id="第三步-修改bash启动文件-bash-profile"><a href="#第三步-修改bash启动文件-bash-profile" class="headerlink" title="第三步 修改bash启动文件.bash_profile"></a>第三步 修改bash启动文件.bash_profile</h3><p>在.bash_profile的最后加入：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export WORKON_HOME=$HOME/.virtaulenvs</span><br><span class="line">source /user/local/bin/virtualenvwrapper.sh</span><br></pre></td></tr></table></figure></p>
+<h3 id="题外："><a href="#题外：" class="headerlink" title="题外："></a>题外：</h3><p>如果bash安装了oh my zsh，把上面俩行代码写入到 .zshrc</p>
+<ul>
+<li>.bash_profile 是用户登录会被读的</li>
+<li>.bashrc 是用户不登录也会被读的</li>
+<li>.zshrc 是用户登录、不登录都会被读的</li>
+</ul>
+<h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><p><a href="https://www.binss.me/blog/install-virtualenv-and-virtualenvwrapper-on-mac/" target="_blank" rel="noopener">Mac 下安装 virtualenv</a><br><a href="https://ruby-china.org/topics/20381" target="_blank" rel="noopener">.bashrc、.bash_profile 和 .zshrc</a></p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/102/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/101/">101</a><a class="page-number" href="/page/102/">102</a><span class="page-number current">103</span><a class="page-number" href="/page/104/">104</a><a class="page-number" href="/page/105/">105</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/104/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">Date 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-12-04 15:24:10</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>Date 对象是 JavaScript 原生的时间库。它以国际标准时间（UTC） 1970 年 1 月 1 日 00:00:00 作为时间的零点，可以表示的时间范围是前后各 1 亿天（单位为毫秒）</p>
+<h2 id="普通函数的用法"><a href="#普通函数的用法" class="headerlink" title="普通函数的用法"></a>普通函数的用法</h2><p>Date 对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。即使带有参数，Date 作为普通函数返回的依然是当前时间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:36 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="built_in">Date</span>(<span class="number">2010</span>, <span class="number">10</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:43 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 2018-12-04T05:38:16.321Z</span></span><br></pre></td></tr></table></figure>
+<h2 id="构造函数的用法"><a href="#构造函数的用法" class="headerlink" title="构造函数的用法"></a>构造函数的用法</h2><p>Date 还可以当作构造函数使用。对它使用 new 命令，会返回一个 Date 对象的实例。如果不参数，实例代表的就是当前时间。</p>
+<p>Date 实例有一个独特的地方。其他对象求值的时候，都默认调用 .valueOf 方法，但是 Date 实例求值的时候，默认调用的是 toString 方法。这导致对 Date 实例求值，返回的是一个字符串，代表该实例对应的时间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 然而并不是</span></span><br><span class="line"><span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// Node 下返回的格式并不是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// 2018-12-04T05:40:27.815Z</span></span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line">today.toString()</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// "Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)"</span></span><br><span class="line"></span><br><span class="line">today == today.toString() <span class="comment">// true</span></span><br><span class="line">today === today.toString() <span class="comment">// false 🤔</span></span><br><span class="line"></span><br><span class="line">today.valueOf()</span><br><span class="line"><span class="comment">// 1543902027815</span></span><br></pre></td></tr></table></figure>
+<p>作为构造函数时，Date 对象可以接受多种格式的参数，返回一个该参数对应的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数为时间零点开始计算的毫秒数</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">1378218728000</span>)</span><br><span class="line"><span class="comment">// Tue Sep 03 2013 22:32:08 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为日期字符串</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"><span class="comment">// Sun Jan 06 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为多个整数，</span></span><br><span class="line"><span class="comment">// 代表年、月、日、小时、分钟、秒、毫秒</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<p>第一：参数可以是负数，代表 1970 年元旦之前的时间</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">-1378218728000</span>)</span><br><span class="line"><span class="comment">// Fri Apr 30 1926 17:27:52 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<p>第二：只要能被 Date.parse 方法解析的字符串，都可以被当作参数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-2-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013/2/15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'02/15/2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-FEB-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15 Feb 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15, Feberuary, 2013'</span>)</span><br><span class="line"><span class="comment">// Fri Feb 15 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<p>第三：参数为年、月、日等多个整数时，年和月不能省略，其他参数可以省略。如果只传入了年参数，Date 会将其解释为毫秒数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>)</span><br><span class="line"><span class="comment">// Thu Jan 01 1970 08:00:02 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<p>最后 各个参数的取值范围</p>
+<ul>
+<li>年：使用四位数年份，比如 2000。如果写成两位数或个位数，则加上 1900，比如 1 代表 1901 年。如果是负数，则表示公元前</li>
+<li>月：0 表示 一月，依次类推，11 表示 12 月</li>
+<li>日：1 到 31</li>
+<li>小时：0 到 23</li>
+<li>分钟：0 到 59</li>
+<li>秒：0 到 59</li>
+<li>毫秒：0 到 999</li>
+</ul>
+<p>注意，月份从 0 开始计算，但是，天数从 1 开始计算。另外，除了日期的默认值为 1，小时、分、秒和毫秒都是 0。</p>
+<p>这些参数如果超出正常范围，会被自动折算。比如月为 15，就折算为下一年的 4 月</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">15</span>)</span><br><span class="line"><span class="comment">// Tue Apr 01 2014 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Mon Dec 31 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<p>参数可以是负数，表示扣去的时间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sat Dec 01 2012 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sun Dec 30 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
+<h2 id="日期的运算"><a href="#日期的运算" class="headerlink" title="日期的运算"></a>日期的运算</h2><p>类型自动转换，Date 实例如果转为数值，则等于对应的毫秒数；如果转为字符串，则等于对应的日期字符串。所以，两个日期实例对象进行减法运算时，返回的是他们间隔的毫秒数；进行加法运算时，返回的是两个字符串连接而成的字符串。</p>
+<h2 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h2><p>Date.now 返回当前时间距离时间零点 （1970 年 1 月 1 日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以 1000。</p>
+<p>Date.parse 方法用来解析日期字符串，返回该时间距离零点的毫秒数。日期字符串应该符合 RFC 2822 和 ISO 8061 这两个标准，即 YYYY-MM-DDTHH:mm:ss.sssZ 格式，其中最后的 Z 表示时区。但是，其他格式也可以被解析。如果解析失败返回 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Aug 9, 1995'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'January 26, 2011 13:51:50'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 GMT'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 +0430'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10T14:48:00'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'xxx'</span>) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p>Date.UTC 方法接受年、月、日等变量作为参数，返回该时间距离时间零点的毫秒数。Date.UTC 方法的参数，会被解析成为 UTC 时间（世界标准时间），Date 构造函数的参数会被解释为当前时区的时间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>,<span class="number">12</span>,<span class="number">12</span>)</span><br><span class="line"><span class="comment">// 2014-01-11T16:00:00.000Z</span></span><br><span class="line"><span class="keyword">var</span> dateUTC = <span class="built_in">Date</span>.UTC(<span class="number">2013</span>, <span class="number">12</span>, <span class="number">12</span>)</span><br><span class="line"><span class="comment">// 1389484800000</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(dateUTC)</span><br><span class="line"><span class="comment">// 2014-01-12T00:00:00.000Z</span></span><br></pre></td></tr></table></figure>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>Date 的实例方法，有几十个自己的方法，除了 valueOf 和 toString，可以分为以下三类：</p>
+<ul>
+<li>to 类：从 Date 对象返回一个字符串，表示指定的时间</li>
+<li>get 类：获取 Date 对象的日期和时间</li>
+<li>set 类：设置 Date 对象的日期和时间</li>
+</ul>
+<h3 id="Date-prototype-valueOf"><a href="#Date-prototype-valueOf" class="headerlink" title="Date.prototype.valueOf"></a>Date.prototype.valueOf</h3><p>valueOf 返回实例对象距离时间零点对应的毫秒数，该方法等同于 getTime 方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">d.valueOf() <span class="comment">// 1543905441996 </span></span><br><span class="line">d.getTime() <span class="comment">// 1543905441996</span></span><br></pre></td></tr></table></figure>
+<h3 id="to-类方法"><a href="#to-类方法" class="headerlink" title="to 类方法"></a>to 类方法</h3><p>Date.prototype.toString 返回一个完整的日期字符串。toString 是默认的调用方法，所以如果直接读取 Date 实例，就相当于调用这个方法。</p>
+<p>Date.prototype.toUTCString 返回对应的 UTC 时间，也就是比北京时间晚 8 个小时</p>
+<p>Date.prototype.toISOString 返回对应时间的 ISO8601 格式 YYYY-MM-DDTHH:mm:ss.sssZ，而且时间都是 UTC 时区的时间。</p>
+<p>Date.prototype.toJSON 返回一个符合 JSON 格式的 ISO 日期字符串，与 toISOString 方法的返回结果完全相同。</p>
+<p>Date.prototype.toDateString 返回日期字符串，不含日期、分、秒</p>
+<p>Date.prototype.toTimeString 返回时间字符串，不含年、月、日</p>
+<p><strong>本地时间</strong></p>
+<p>有三种方法可以将 Date 实例转为表示本地时间的字符串</p>
+<ul>
+<li>Date.prototype.toLocalString 完整的本地时间</li>
+<li>Date.prototype.toLocalDateString 本地日期</li>
+<li>Date.prototype.toLocalTimeString 本地时间</li>
+</ul>
+<p>三种方法都可以传入两个参数，第一个参数指定所用的语言的字符串，第二个参数指定返回字符串的格式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间格式</span></span><br><span class="line"><span class="comment">// 下面的设置是，星期和月份为完整文字，年份和日期为数字</span></span><br><span class="line">d.toLocaleDateString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  weekday: <span class="string">'long'</span>,</span><br><span class="line">  year: <span class="string">'numeric'</span>,</span><br><span class="line">  month: <span class="string">'long'</span>,</span><br><span class="line">  day: <span class="string">'numeric'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "Tuesday, January 1, 2013"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定时区</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'UTC'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'short'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "4:00:00 PM UTC"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'Asia/Shanghai'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'long'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM China Standard Time"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小时周期为12还是24</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "00:00:00"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM"</span></span><br></pre></td></tr></table></figure>
+<h2 id="get-方法"><a href="#get-方法" class="headerlink" title="get 方法"></a>get 方法</h2><p>Date 对象提供了一系列的 get 方法，用来获取实例对象的某个方面的值</p>
+<ul>
+<li>getTime 返回实例距离零点的毫秒数，等同于 valueOf</li>
+<li>getDate 返回实例对象对应月的几号 从 1 开始。</li>
+<li>getDay 返回星期几，星期日为 0，星期一为 1</li>
+<li><del>getYear 返回距离 1900 的年数，比如 2018 年距离 1900 是 118</del> 标准已经废弃，替换为 getFullYear</li>
+<li>getFullYear 返回四位的年份</li>
+<li>getMonth 返回月份，0 表示 1 月，11 表示 12 月</li>
+<li>getHours 返回小时 0 - 23</li>
+<li>getMilliseconds 返回毫秒数 0 - 999</li>
+<li>getMinutes 返回分钟 0 - 59</li>
+<li>getSeconds 返回秒 0 - 59</li>
+<li>getTimezoneOffset 返回当前时间与 UTC 的时间的差异，以分钟表示，返回结果考虑到了夏令时因素</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getMonth() <span class="comment">// 0</span></span><br><span class="line">d.getFullYear() <span class="comment">// 2013</span></span><br><span class="line">d.getTimezoneOffset() <span class="comment">// -480</span></span><br></pre></td></tr></table></figure>
+<p>最后一行返回 -480，即 UTC 时间减去当前时间，单位为分钟。-480 表示 UTC 比当前时间少了 480 分钟，即当前时区比 UTC 早 8 小时。</p>
+<p>计算本年度还剩下多少天</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leftDays</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">var</span> endYear = <span class="keyword">new</span> <span class="built_in">Date</span>(today.getFullYear(), <span class="number">11</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">999</span>)</span><br><span class="line">  <span class="keyword">var</span> msPerDay = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.round((endYear.getTime() - today.getTime()) / msPerDay)</span><br><span class="line">&#125;</span><br><span class="line">leftDays() <span class="comment">// 27 😱</span></span><br></pre></td></tr></table></figure>
+<p>Date 对象还提供了这些方法对应的 UTC 版本，用来返回 UTC 时间。</p>
+<ul>
+<li>getUTCDate</li>
+<li>getUTCFullYear</li>
+<li>getUTCMonth</li>
+<li>getUTCDay</li>
+<li>getUTCHours</li>
+<li>getUTCMinuts</li>
+<li>getUTCSeconds</li>
+<li>getUTCMilliseconds</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getUTCDate() <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<h2 id="set-类方法"><a href="#set-类方法" class="headerlink" title="set 类方法"></a>set 类方法</h2><p>Date 对象提供了一系列 set 方法，用来设置实例对象的各个方面</p>
+<ul>
+<li>setDate(date) 返回改变后的毫秒时间戳</li>
+<li><del>setYear</del> 标准已经废弃，替换为 setFullYear</li>
+<li>setFullYear(year[, mon, date]) 设置四位年份</li>
+<li>setHours(hour[, min, sec, ms])</li>
+<li>setMilliseconds(ms)：0 - 999 之间的值，如果超出会直接自动折算到年、月、日、分、秒上</li>
+<li>setMinutes(min[, sec, ms])</li>
+<li>setMonth(month[, date])</li>
+<li>setSeconds(sec[, ms])</li>
+<li>setTime(milliseconds)</li>
+</ul>
+<p>没有 setDay 方法，因为星期几时计算出来的，而不是设置的。</p>
+<p>set 方法的参数都是会自动折算的，如果超出应该的数，会向下一个年/月/日/时/分/秒顺延，如果参数是负数，表示上个年/月/日/时/分/秒减去对应数。</p>
+<p>set 方法除了 setTime 和 setYear，都有对应的 UTC 版本，设置对应 UTC 时区的时间。</p>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/54/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/53/">53</a><a class="page-number" href="/page/54/">54</a><span class="page-number current">55</span><a class="page-number" href="/page/56/">56</a><a class="page-number" href="/page/57/">57</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/56/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

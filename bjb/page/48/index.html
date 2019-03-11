@@ -1,0 +1,97 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE NOTEBOOK 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/style/gitalk.css">
+  <link rel="stylesheet" href="/style/style.css">
+  <script src="/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE NOTEBOOK 🚀</h1>
+  <h1 class="mobile"><a href="/">FE NOTEBOOK 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">函数的本质</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-12-20 13:23:19</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
+      
+    </span>
+    
+      <div class="article-category">分类：
+        <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+      </div>
+    
+  </div>
+  <div class="post-content">
+    <h2 id="函数怎么调用"><a href="#函数怎么调用" class="headerlink" title="函数怎么调用"></a>函数怎么调用</h2><p>如果是数据，就是直接用的。比如 n = 1，要用就直接写上 n 就可以了。而函数要用的话叫做 调用，英文 call 或者 invoke。那函数是怎么调用的了？比如</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x,y</span>) </span>&#123;<span class="keyword">return</span> x+y&#125;</span><br></pre></td></tr></table></figure>
+<p>函数 f 怎么调用了？</p>
+<h2 id="首先我们看，函数到底是什么？"><a href="#首先我们看，函数到底是什么？" class="headerlink" title="首先我们看，函数到底是什么？"></a>首先我们看，函数到底是什么？</h2><blockquote>
+<p>函数是一段可以反复调用的代码块</p>
+</blockquote>
+<p>比如，我们求三角形的面积，我们知道它的宽为 100、高为 200。三角形面积公式为 S = ah/2。所以结果为 100 x 200 / 2 = 10000。JavaScript 代码写下来：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">width = <span class="number">100</span></span><br><span class="line">height = <span class="number">200</span></span><br><span class="line"><span class="keyword">var</span> area = width * height / <span class="number">2</span></span><br><span class="line">area <span class="comment">// 10000</span></span><br></pre></td></tr></table></figure>
+<p>那上面的 <code>var area = width * height / 2</code> 以及返回 <code>area</code> 就是求三角形面积的两句话，那我们可以把这两句话写成一个函数，然后取一个名字。比如说：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> 求三角形面积(<span class="params">w,h</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> area = w * h / <span class="number">2</span></span><br><span class="line">  <span class="keyword">return</span> area</span><br><span class="line">&#125;</span><br><span class="line">求三角形面积(<span class="number">4</span>,<span class="number">3</span>) <span class="comment">// 6</span></span><br><span class="line">求三角形面积(<span class="number">5</span>,<span class="number">3</span>) <span class="comment">// 7.5</span></span><br></pre></td></tr></table></figure>
+<p>求三角形面积 这个函数就可以反复调用。</p>
+<h2 id="函数在内存中是怎么存的？"><a href="#函数在内存中是怎么存的？" class="headerlink" title="函数在内存中是怎么存的？"></a>函数在内存中是怎么存的？</h2><p>函数在内存里面是存的函数 toString 值。实际上是一个字符串。</p>
+<p><code>function f(x,y){return x+y}</code> 改用更明确的形式 <code>var f = new Function(&#39;x&#39;, &#39;y&#39;, &#39;return x+y&#39;)</code></p>
+<p>在栈中存入 f，值为 ADDR 77，然后在堆中有一个 ADDR 77 的值，它里面对应存了函数的参数，比如 <code>params：[&#39;x&#39;, &#39;y&#39;]</code>，然后还有函数体 <code>fbody:&#39;return x+y&#39;</code>，然后就是函数的共有属性 <code>__proto__</code>。而 <code>__proto__</code> 里面有个方法叫 call，call 调用 <code>fbody</code>。</p>
+<p><img src="/Users/sunyanhui/dp/hexo/dsphoebe/source/images/function/memory.png" alt="memory"></p>
+<p>这个调用的过程：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = &#123;&#125;</span><br><span class="line">f.name = f</span><br><span class="line">f.params = [<span class="string">'x'</span>, <span class="string">'y'</span>]</span><br><span class="line">f.fbody = <span class="string">'console.log(1)'</span></span><br><span class="line">f.call = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.eval(f.body)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">f.call() </span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>函数是一个对象，因为函数的调用过程，其实就是 eval 它的函数体的过程。</p>
+<p>eval 的参数是字符串，eval 执行它的参数。</p>
+<p>所以可以总结为：可以执行代码的对象叫做函数。</p>
+<h2 id="硬核玩家函数调用"><a href="#硬核玩家函数调用" class="headerlink" title="硬核玩家函数调用"></a>硬核玩家函数调用</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x,y</span>) </span>&#123;<span class="keyword">return</span> x+y&#125;</span><br><span class="line">f.call(<span class="literal">undefined</span>, <span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<h2 id="知识体系回顾"><a href="#知识体系回顾" class="headerlink" title="知识体系回顾"></a>知识体系回顾</h2><p>JavaScript 有 7 种数据类型：number，string，boolean，null，undefined，symbol，object</p>
+<p>最复杂的就是 object 它是复杂对象，它能包含其他数据类型。</p>
+<p>比如一个普通对象 {name: ‘frank’}，它有个 toString 方法，继承自它的 <code>__proto__</code> ，<code>__proto__</code>指向 Object.prototype。还有一个 Array.prototype 的原型，比如我们有个数组 [1,2,3]，它有个<code>__proto__</code> ，它是指向 Array.prototype，它有 push，pop 等方法。然后有个 Function.prototype 的原型，比如我们有个函数 <code>var f = function(){}</code>，它有个<code>__proto__</code>，它指向 Function.prototype，它里面有 bind、call、apply 方法。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>,<span class="number">2</span> <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">var</span> a = (<span class="number">1</span>,<span class="number">2</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/page/47/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="page-number" href="/page/47/">47</a><span class="page-number current">48</span><a class="page-number" href="/page/49/">49</a><a class="page-number" href="/page/50/">50</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/49/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 code.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,165 @@
+
+color = #00a0fc
+color2 = #424242
+code-color = #f5f2f0
+code-color2 = #dddbcc
+
+html
+    height 100% // 没懂为啥要这样？？
+html,
+body,
+pre
+    margin: 0
+    padding: 0
+table
+    border-collapse: collapse
+    margin: .5rem 0
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+    width: calc(100% - 2em - 80px)
+.mobile
+    display: none
+td, th
+    padding: .5rem 1rem
+    border: 1px solid code-color2
+body
+    font: 1.13rem / 1.8 Georgia,Times,"Times New Roman",serif
+    color: color2
+h1, h2, h3, nav, footer, .archive .post-title
+    font-family: PingFang SC, Microsoft YaHei, -apple-system, BlinkMacSystemFont, Helvetica Neue, Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif
+h2, h3
+    padding-top 1rem
+    line-height: 1.2
+a
+    text-decoration: none
+    color: color
+    border-bottom: 2px dashed transparent
+    &:hover
+        transition: all 1.5s
+        border-bottom: 2px dashed
+.header,
+.post-meta
+    ul,
+    li
+        list-style: none
+        padding: 0
+        margin: 0
+.post-year
+    list-style none
+    font-size 2.5rem
+.header
+    display: flow-root
+    text-align: center
+    color: color2
+    margin-bottom: 4rem
+    h1
+        font-size: 3rem    
+    em
+        font-style normal
+    
+.navbar
+    background: color
+    margin: 0 0 1rem
+    li
+        display: inline-block
+        padding: 0 2rem
+        &, a
+            color: white
+            
+
+.main
+    width 100%
+    max-width: 1000px
+    margin: 0 auto 5rem
+    min-height: calc(100vh - 378px)
+
+    .post
+        margin: 0 0 3rem
+        padding: .5rem 2rem 6rem
+        img 
+            display: block
+            margin: 1.5rem auto
+            max-width: 58rem
+    .post-meta
+        margin: 0 0 .5rem
+    .post-date,
+    .post-time
+        margin-right: .5rem
+        font-family: 'Courier New', Courier, monospace
+    .post-time
+        color: #555
+    .post-title
+        font-size: 1.5rem
+    .article-tag-list
+        display: inline-block
+    .article-tag-list-item
+        display: inline-block
+    .article-tag-list-item:not(:last-child)::after
+        content: '，'
+    .page-nav
+        display: flex
+        justify-content: center
+        * 
+            padding: 0 .5rem
+
+footer
+    background: color
+    color: white 
+    text-align: center
+    font-size: 1rem
+    a
+        color: inherit 
+
+figure
+    &, table, td
+        margin: 0
+        padding: 0
+.highlight 
+    table
+        width 100%
+    th, td
+        border: none
+    pre
+        background: code-color
+        border: 1px solid code-color2
+        border-radius: 3px
+        font-size: 1.3rem
+        line-height: 1.8
+        margin: .8rem 0
+        padding: .8rem
+        white-space: pre-wrap
+
+blockquote 
+    padding-left: 1.5rem
+    border-left: .2rem solid
+    color: #888
+
+code
+    color: color;
+    white-space: nowrap;
+    margin: 0 2px;
+    padding: 0 5px;
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    border-radius: 3px;
+    font-size: 1.3rem
+
+.practice
+    position absolute
+    right 0
+    border 1px solid color
+    border-radius 2px
+    width 1rem
+
+@import "_variables"
+@import "_highlight"
+
+@media screen and (max-width: 425px)
+    html
+        font-size: 14px
+    .pc
+        display: none
+    .mobile
+        display: block
