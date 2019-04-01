@@ -38,68 +38,151 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">数组 API 之 forEach、reduce</h2>
+    <h2 class="title">RegExp 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-18 23:31:15</span>
+    <span class="post-time">2018-12-20 22:08:36</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/forEach/">forEach</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reduce/">reduce</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/正则/">正则</a></li></ul>
       
     </span>
     
-      <div class="article-category">分类：
-        <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-      </div>
-    
   </div>
   <div class="post-content">
-    <h2 id="forEach-的实现"><a href="#forEach-的实现" class="headerlink" title="forEach 的实现"></a>forEach 的实现</h2><p>一个数组 arr 调用 forEach 方法，并传入 callback 方法：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, index</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value, index)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 1 0</span></span><br><span class="line"><span class="comment">// 2 1</span></span><br><span class="line"><span class="comment">// 3 2</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到 callback 里面并没有传入 arr，那 callback 是怎么获取到数组 arr 的 value 和 index 的了。</p>
-<p>它是通过 this 关键字来传入的。JavaScript 已经帮我们把 arr 传入了，类似调用了函数的 call 方法，并把 call 方法的第一个参数 this 指向 arr。如下：<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line">arr.forEach.call(arr, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>我们的 forEach 的实现<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 我们的 forEach 实现</span></span><br><span class="line">obj.forEach = <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; obj.length; i++) &#123;</span><br><span class="line">    x(obj[i], i)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 有个 obj</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="number">0</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="number">1</span>: <span class="number">2</span>,</span><br><span class="line">  length: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用 forEach 方法：</span></span><br><span class="line">obj.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, key</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value, key)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 1 0</span></span><br><span class="line"><span class="comment">// 2 1</span></span><br></pre></td></tr></table></figure></p>
-<p>所以从数据结构来看，数组和对象其实没有差别。</p>
-<h2 id="arr-sort"><a href="#arr-sort" class="headerlink" title="arr.sort"></a>arr.sort</h2><p>arr.sort 原地排序自身，可以省空间。数组的其他 API 都不会修改原数组。</p>
-<p>数组的 API 返回一个数组，所以可以操作成链式操作。</p>
-<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><p>举个列子，范伟火车上打劫 “IC、IP、IQ 卡通通告诉我密码。” 😂，火车上有 10 个人。</p>
-<table>
-<thead>
-<tr>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>100</td>
-<td>200</td>
-<td>30</td>
-<td>10</td>
-<td>20</td>
-<td>200</td>
-<td>100</td>
-<td>30</td>
-<td>10</td>
-<td>30</td>
-</tr>
-</tbody>
-</table>
-<p>范伟手里最开始是么有钱的，钱数为 0，即初始值为 0<br>当打劫完第 1 个人，钱数变为了 0 + 100 = 100<br>打劫完第 2 个人，钱数变成了 100 + 200 = 300<br>打劫完第 3 个人，钱数就变成了 300 + 30 = 330<br>…<br>就是也就是累加。把之前打劫的钱加上新的打劫的钱。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">30</span>]</span><br><span class="line">arr.reduce(<span class="function">(<span class="params">preValue, currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> preValue + currentValue</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// 730</span></span><br></pre></td></tr></table></figure>
-<p>map 和 filter 都可以用 reduce 表示。</p>
-<h3 id="map-用-reduce-表示"><a href="#map-用-reduce-表示" class="headerlink" title="map 用 reduce 表示"></a>map 用 reduce 表示</h3><p>数组所有值乘以 2</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">30</span>]</span><br><span class="line">arr.reduce(<span class="function">(<span class="params">prevValue, currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  prevValue.push(currentValue * <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">return</span> prevValue</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
-<h3 id="filter-用-reduce-表示"><a href="#filter-用-reduce-表示" class="headerlink" title="filter 用 reduce 表示"></a>filter 用 reduce 表示</h3><p>比如过滤大于 100 的数值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">100</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">30</span>, <span class="number">10</span>, <span class="number">30</span>]</span><br><span class="line">arr.reduce(<span class="function">(<span class="params">prevValue, currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (currentValue &gt; <span class="number">100</span>) &#123;</span><br><span class="line">    prevValue.push(currentValue)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> prevValue</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
-<p>所以说，map 和 filter 其实这是 reduce 的一个实现。</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>正则表达式 regular expression 是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。</p>
+<p>新建正则表达式有两种方法。一种是使用字面量，以斜杆表示开始和结束。另一种是使用 RegExp 构造函数。这两种写法是等价的。他们的主要差别是，字面量方法在<strong>引擎编译代码时新建正则表达式</strong>，而构造函数是在<strong>运行时新建正则表达式</strong>，所以前者的效率更高，而且便利直观。</p>
+<h2 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h2><p>3 个只读的修饰符是否设置的属性：RegExp.prototyp.ignoreCase、 RegExp.prototype.global、RegExp.prototype.multiline。</p>
+<p>RegExp.prototype.lastIndex：返回一个整数，表示下一次开始搜索的位置。该属性可读写，但是只在进行连续搜索时才有意义。</p>
+<p>RegExp.prototype.source 返回正则表达式的字符串形式，不包括反斜杆，该属性只读。</p>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>RegExp.prototype.test 返回一个布尔值，表示当前模式是否匹配参数字符串。如果正则表达式带了 g 修饰符，则每一次 test 方法都从上一次结束的位置开始向后匹配。带有 g 修饰符时，可以通过正则实例对象的 lastIndex 属性指定开始搜索的位置。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/x/g</span></span><br><span class="line"><span class="keyword">var</span> s = <span class="string">'_x_x'</span></span><br><span class="line"></span><br><span class="line">r.lastIndex = <span class="number">4</span> <span class="comment">// 从第 5 个位置开始搜索</span></span><br><span class="line">r.test(s) <span class="comment">// 这个位置是空的，所以返回 false</span></span><br></pre></td></tr></table></figure>
+<p>注意 带有 g 修饰符时，正则表达式内部会记住上一次的 lastIndex 属性，这时不应该更换要匹配的字符串，否则会有一些难以察觉的错误。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/bb/g</span>;</span><br><span class="line">r.test(<span class="string">'bb'</span>) <span class="comment">// true</span></span><br><span class="line">r.test(<span class="string">'-bb-'</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>如果正则构造函数模式时是一个空字符串，则匹配所有字符串。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">''</span>).test(<span class="string">'abc'</span>) <span class="comment">// true</span></span><br><span class="line">/<span class="string">''</span>/.test(<span class="string">'abc'</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>RegExp.prototype.exec 用来返回匹配结构。如果发现匹配，就返回一个数组，成员是匹配成功的子字符串，否则返回 null</p>
+<p>如果正则表达式包含圆括号，即含有“组匹配”，则返回的数组会包括多个成员。第一个成员是整个匹配成功的结果，后面的成员就是圆括号对应的匹配成功的组。也就是说，第二个成员对应第一个括号，第三个成员对应第二个括号，以此类推。整个数组的 length 属性等于组匹配的数量再加 1。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'_x_x'</span></span><br><span class="line"><span class="keyword">var</span> r = <span class="regexp">/_(x)/</span></span><br><span class="line">r.exec(s) <span class="comment">// ['_x', 'x']</span></span><br></pre></td></tr></table></figure>
+<p>exec 方法的返回数组还包含两个属性：</p>
+<ul>
+<li>input：整个原字符串</li>
+<li>index：整个模式匹配成功的开始位置（从 0 开始计数）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/a(b+)a/</span></span><br><span class="line"><span class="keyword">var</span> arr = r.exec(<span class="string">'_abbba_aba_'</span>)</span><br><span class="line"></span><br><span class="line">arr <span class="comment">// ["abbba", "aba"]</span></span><br><span class="line"></span><br><span class="line">arr.index <span class="comment">// 1</span></span><br><span class="line">arr.input <span class="comment">// "_abbba_aba_"</span></span><br></pre></td></tr></table></figure>
+<p>如果正则表达式加上 g 修饰符，则可以使用多次 exec 方法，下一次搜索的位置从上一次匹配成功结束的位置开始。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> reg = <span class="regexp">/a/g</span></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'abc_abc_abc'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r1 = reg.exec(str) <span class="comment">// ["a", index: 0, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 0</span></span><br><span class="line">reg.lastIndex <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r2 = reg.exec(str) <span class="comment">// ["a", index: 4, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 4</span></span><br><span class="line">reg.lastIndex <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r3 = reg.exec(str) <span class="comment">// ["a", index: 8, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 8</span></span><br><span class="line">reg.lastIndex <span class="comment">// 9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r4 = reg.exec(str) <span class="comment">// ["a", index: 8, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r4 <span class="comment">// null</span></span><br><span class="line">reg.lastIndex <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p>正则实例对象的 lastIndex 属性重置为 0，lastIndex 不仅可读，还可写。设置了 g 修饰符的时候，只要手动设置了 lastIndex 的值，就会从指定位置开始匹配。</p>
+<h2 id="字符串的正则方法"><a href="#字符串的正则方法" class="headerlink" title="字符串的正则方法"></a>字符串的正则方法</h2><p>String.prototype.match：返回一个数组，成员是所有匹配的子字符串。如果没有匹配值返回 null。如果正则表达式带了 g 修饰符，会一次性返回所有匹配成功的结果，也因此 lastIndex 是无效的。</p>
+<p>String.prototype.search：按照给定的正则表达式或者字符串搜索，返回一个整数，表示匹配开始的位置。如果没有就返回 -1。如果参数不传或者空字符串，返回 0。String.prototype.indexOf，String.prototype.lastIndexOf 也是搜索子字符串，不过参数必须是字符串，不支持正则。可用来消除首尾两端空格。</p>
+<p>String.prototype.replace：按照给定的正则表达式替换，返回替换后的字符串。</p>
+<p>第二个参数可以用美元符号：</p>
+<ul>
+<li><code>$&amp;</code> 匹配的子字符串</li>
+<li><code>$`</code> 匹配结果前面的文本</li>
+<li><code>$&#39;</code> 匹配结果后面的文本</li>
+<li><code>$n</code> 匹配成功的第 n 组内容，n 是从 1 开始的自然数</li>
+<li><code>$$</code> 指代美元符号 $</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'hello world'</span>.replace(<span class="regexp">/(\w+)\s(\w+)/</span>, <span class="string">'$2 $1'</span>)</span><br><span class="line"><span class="comment">// "world hello"</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abc'</span>.replace(<span class="string">'b'</span>, <span class="string">'[$`-$&amp;-$\']'</span>)</span><br><span class="line"><span class="comment">// "a[a-b-c]c"</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数可以是函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'The quick brown fox jumped over the lazy dog.'</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/quick|brown|lazy/ig</span>;</span><br><span class="line"></span><br><span class="line">a.replace(pattern, <span class="function"><span class="keyword">function</span> <span class="title">replacer</span>(<span class="params">match</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> match.toUpperCase();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// The QUICK BROWN fox jumped over the LAZY dog.</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数函数可以接受多个参数。其中，第一个参数是捕捉到的内容，第二个参数开始是捕捉到的组匹配（有多少个组匹配，就有多少个对应的参数）。最后面还有 2 个参数，对应匹配到的子字符串在原字符串中的偏移量，最后一个参数是被匹配的原字符串。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replacer</span>(<span class="params">match, p1, p2, p3, offset, string</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// p1 is nondigits, p2 digits, and p3 non-alphanumerics</span></span><br><span class="line">  <span class="keyword">return</span> [p1, p2, p3].join(<span class="string">' - '</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> newString = <span class="string">'abc12345#$*%'</span>.replace(<span class="regexp">/([^\d]*)(\d*)([^\w]*)/</span>, replacer);</span><br><span class="line"><span class="built_in">console</span>.log(newString);  <span class="comment">// abc - 12345 - #$*%</span></span><br></pre></td></tr></table></figure>
+<p>String.prototype.split：按照给定的正则进行字符串分割，返回一个数组，包含分给后的各个成员。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'aaa**a*'</span>.split(<span class="regexp">/a*/</span>)</span><br><span class="line"><span class="comment">// ["", "*", "*", "*"]</span></span><br></pre></td></tr></table></figure>
+<p>第一个分隔符是<code>aaa</code>，第二个分隔符是0个<code>a</code>（即空字符），第三个分隔符是<code>a</code>，所以将字符串分成四个部分。</p>
+<p>如果正则表达式带有括号，则括号匹配的部分也会作为数组成员返回。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'aaa*a*'</span>.split(<span class="regexp">/(a*)/</span>)</span><br><span class="line"><span class="comment">// [ '', 'aaa', '*', 'a', '*' ]</span></span><br></pre></td></tr></table></figure>
+<h2 id="匹配规则"><a href="#匹配规则" class="headerlink" title="匹配规则"></a>匹配规则</h2><p>某个字符只表示它字面的含义，就叫做字面量字符</p>
+<p>元字符：</p>
+<ul>
+<li>点字符.，点字符匹配除了回车符、换行符、行分隔符和段落分隔符以外的所有字符。大于 0xFFFF 的字符，点字符不能正确匹配，会认为是两个字符。</li>
+<li>位置字符：^ 表示字符串开始位置，<code>$</code> 表示字符串结束的位置</li>
+<li>选择符 |</li>
+</ul>
+<p>转义字符，在 RegExp 构造正则时，转义需要使用两个斜杆，因为字符串内部会先转义一次。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'1\+1'</span>)).test(<span class="string">'1+1'</span>)</span><br><span class="line"><span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'1\\+1'</span>)).test(<span class="string">'1+1'</span>)</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>不能打印的特殊字符：</p>
+<ul>
+<li><code>\cx</code> 表示 <code>ctrl-[x]</code> 其中 x 时 A - Z 之间的任意一个英文字母，用来匹配控制字符</li>
+<li><code>[\b]</code> 匹配退格键 U+0008</li>
+<li><code>\n</code> 换行符</li>
+<li><code>\r</code> 回车符</li>
+<li><code>\t</code> 制表符 tab U+0009</li>
+<li><code>\v</code> 垂直制表符 U+000B</li>
+<li><code>\f</code> 换页符 U+000C</li>
+<li><code>\0</code> null 字符 U+0000</li>
+<li><code>\xhh</code> 匹配一个两位十六进制表示的字符 （\x00 - \xFF）</li>
+<li><code>\uhhhh</code>  匹配一个四位十六进制表示的 Unicode 字符 （\u0000 - \uFFFF）</li>
+</ul>
+<p>脱字符 ^：</p>
+<p>脱字符只有在字符类的第一个位置才有特殊含义，否则就是字面含义。</p>
+<p>如果方括号内的第一个字符是 [^]，则表示除了字符类之中的字符，其他字符都可以匹配。<br>如果方括号内没有其他字符，即只有[^]，就表示匹配一切字符，其中包括换行符。相比点号作为元字符是不包括换行符的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'Please yes\nmake my day!'</span>;</span><br><span class="line"></span><br><span class="line">s.match(<span class="regexp">/yes.*day/</span>) <span class="comment">// null</span></span><br><span class="line">s.match(<span class="regexp">/yes[^]*day/</span>) <span class="comment">// [ 'yes\nmake my day']</span></span><br></pre></td></tr></table></figure>
+<p>连字符 - ：</p>
+<p>某些情况下，对于连续序列的字符，连字符 - 用来提供简写形式，表示字符的连续范围。比如 [a-d] 表示 [abcd]。<br>[1-31] 不代表 1 到 31，只表示 1 - 3 之间的数值。<br>可以用来指定 Unicode 字符的范围。</p>
+<p>[A-z] 表面上看是选中大写 A 到小写 z 之间的 52 个字母，但是由于在 ASCII 编码之中，大写字母与小写字母之间还有其他字符，结果可能会匹配出错。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/[A-z]/.test(<span class="string">'\\'</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>预定义模式：几个常见模式的简写方式</p>
+<ul>
+<li><code>\d</code> : 匹配 0 - 9 之间的任一数值</li>
+<li><code>\D</code>： 匹配 0 - 9以外的字符</li>
+<li><code>\w</code>： 匹配任意字母、数字、下划线</li>
+<li><code>\W</code>： 除了字母、数字、下划线以外的字符</li>
+<li><code>\s</code>：匹配空格（包括换行符、制表符、空格符等）</li>
+<li><code>\S</code>：匹配除了空格以外的字符</li>
+<li><code>\b</code>：匹配词的边界</li>
+<li><code>\B</code>：匹配非词的边界，即在词的内部匹配</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// \s 的例子</span></span><br><span class="line">/\s\w*<span class="regexp">/.exec('hello world') /</span><span class="regexp">/ [" world"]</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ \b 的例子</span></span><br><span class="line"><span class="regexp">/</span>\bworld/.test(<span class="string">'hello world'</span>) <span class="comment">// true</span></span><br><span class="line">/\bworld/.test(<span class="string">'hello-world'</span>) <span class="comment">// true</span></span><br><span class="line">/\bworld/.test(<span class="string">'helloworld'</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// \B 的例子</span></span><br><span class="line">/\Bworld/.test(<span class="string">'hello-world'</span>) <span class="comment">// false</span></span><br><span class="line">/\Bworld/.test(<span class="string">'helloworld'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>通常，正则表达式遇到换行符 \n 就会停止匹配。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">"&lt;b&gt;Hello&lt;/b&gt;\n&lt;i&gt;world!&lt;/i&gt;"</span>;</span><br><span class="line"></span><br><span class="line">/.*<span class="regexp">/.exec(html)[0]</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ "&lt;b&gt;Hello&lt;/</span>b&gt;<span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p>因为点字符不匹配换行符，所以没能匹配到整个 HTML 语句。</p>
+<p>改用 <code>\s</code> 字符类，就可以了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">"&lt;b&gt;Hello&lt;/b&gt;\n&lt;i&gt;world!&lt;/i&gt;"</span>;</span><br><span class="line"></span><br><span class="line">/[\S\s]*<span class="regexp">/.exec(html)[0]</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ "&lt;b&gt;Hello&lt;/</span>b&gt;\n&lt;i&gt;world!<span class="xml"><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p><code>[\S\s]</code> 指代一切字符！<code>[\D\d]</code> 和 [\W\w] 也能达到这个效果。</p>
+<p>重复类 <code>{m, n}</code>: 精确匹配不少于 n 次，不多余 m 次。</p>
+<p>量词符：</p>
+<ul>
+<li><code>?</code> 表示某个模式出现 0 或 1 次，等同于{0, 1}</li>
+<li><code>*</code> 表示某个模式出现 0 次或多次，等同于 {0,}</li>
+<li><code>+</code> 表示某个模式出现 1 次或多次，等同于 {1,}</li>
+</ul>
+<p>贪婪模式：</p>
+<p>量词符默认情况下都是最大可能匹配，即匹配直到下一个字符不满足匹配位止。这被称为贪婪模式。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'aaa'</span>;</span><br><span class="line">s.match(<span class="regexp">/a+/</span>) <span class="comment">// ["aaa"]</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，模式是<code>/a+/</code>，表示匹配1个<code>a</code>或多个<code>a</code>，那么到底会匹配几个<code>a</code>呢？因为默认是贪婪模式，会一直匹配到字符<code>a</code>不出现为止，所以匹配结果是3个<code>a</code>。</p>
+<p>如果想将贪婪模式改为非贪婪模式，可以给量词符后面加一个问号</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab+/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab+?/</span>) <span class="comment">// ["ab"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab*b/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab*?b/</span>) <span class="comment">// ["ab"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab?b/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab??b/</span>) <span class="comment">// ["ab"]</span></span><br></pre></td></tr></table></figure>
+<p>修饰符：</p>
+<p>g 修饰符可以多次调用 test 方法。exec 也可以多次调用。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> regex = <span class="regexp">/b/g</span>;</span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'abba'</span>;</span><br><span class="line"></span><br><span class="line">regex.test(str); <span class="comment">// true</span></span><br><span class="line">regex.test(str); <span class="comment">// true</span></span><br><span class="line">regex.test(str); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>i 修饰符：不区分大小写</p>
+<p>m 修饰符：表示多行模式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/^b/m.test(<span class="string">'a\nb'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>加上<code>m</code>修饰符以后，<code>^</code>和<code>$</code>还会匹配行首和行尾，即<code>^</code>和<code>$</code>会识别换行符（<code>\n</code>）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/world$/.test(<span class="string">'hello world\n'</span>) <span class="comment">// false</span></span><br><span class="line">/world$/m.test(<span class="string">'hello world\n'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>组匹配：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m = <span class="string">'abcabc'</span>.match(<span class="regexp">/(.)b(.)/</span>);</span><br><span class="line">m</span><br><span class="line"><span class="comment">// ['abc', 'a', 'c']</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，正则表达式<code>/(.)b(.)/</code>一共使用两个括号，第一个括号捕获<code>a</code>，第二个括号捕获<code>c</code>。</p>
+<p>注意，使用组匹配时，不宜同时使用<code>g</code>修饰符，否则<code>match</code>方法不会捕获分组的内容。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m = <span class="string">'abcabc'</span>.match(<span class="regexp">/(.)b(.)/g</span>);</span><br><span class="line">m <span class="comment">// ['abc', 'abc']</span></span><br></pre></td></tr></table></figure>
+<p>使用正则表达式的<code>exec</code>方法，配合循环，才能读到每一轮匹配的组捕获。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'abcabc'</span>;</span><br><span class="line"><span class="keyword">var</span> reg = <span class="regexp">/(.)b(.)/g</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> result = reg.exec(str);</span><br><span class="line">  <span class="keyword">if</span> (!result) <span class="keyword">break</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ["abc", "a", "c"]</span></span><br><span class="line"><span class="comment">// ["abc", "a", "c"]</span></span><br></pre></td></tr></table></figure>
+<p>组匹配非常有用，下面是一个匹配网页标签的例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">'&lt;b class="hello"&gt;Hello&lt;/b&gt;&lt;i&gt;world&lt;/i&gt;'</span>;</span><br><span class="line"><span class="keyword">var</span> tag = <span class="regexp">/&lt;(\w+)([^&gt;]*)&gt;(.*?)&lt;\/\1&gt;/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> match = tag.exec(html);</span><br><span class="line"></span><br><span class="line">match[<span class="number">1</span>] <span class="comment">// "b"</span></span><br><span class="line">match[<span class="number">2</span>] <span class="comment">// " class="hello""</span></span><br><span class="line">match[<span class="number">3</span>] <span class="comment">// "Hello"</span></span><br><span class="line"></span><br><span class="line">match = tag.exec(html);</span><br><span class="line"></span><br><span class="line">match[<span class="number">1</span>] <span class="comment">// "i"</span></span><br><span class="line">match[<span class="number">2</span>] <span class="comment">// ""</span></span><br><span class="line">match[<span class="number">3</span>] <span class="comment">// "world"</span></span><br></pre></td></tr></table></figure>
+<p>非捕获组：<code>(?:x)</code> 表示非捕获组，表示不返回该组匹配的内容，即匹配的结果中不计入这个括号。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 正常匹配</span></span><br><span class="line"><span class="keyword">var</span> url = <span class="regexp">/(http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/</span>;</span><br><span class="line"></span><br><span class="line">url.exec(<span class="string">'http://google.com/'</span>);</span><br><span class="line"><span class="comment">// ["http://google.com/", "http", "google.com", "/"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非捕获组匹配</span></span><br><span class="line"><span class="keyword">var</span> url = <span class="regexp">/(?:http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/</span>;</span><br><span class="line"></span><br><span class="line">url.exec(<span class="string">'http://google.com/'</span>);</span><br><span class="line"><span class="comment">// ["http://google.com/", "google.com", "/"]</span></span><br></pre></td></tr></table></figure>
+<p>先行断言：<code>x(?=y)</code> 称为先行断言，x 值有在 y 前面才匹配，y 不计入返回结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配 c 前面的 b</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">'abc'</span>.match(<span class="regexp">/b(?=c)/</span>);</span><br><span class="line">m <span class="comment">// ["b"]</span></span><br></pre></td></tr></table></figure>
+<p>先行否定断言：<code>x(?!y)</code>， x 只有不在 y 前面才匹配，y 不计入返回结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配不在小数点前面的数值</span></span><br><span class="line">/\d+(?!\.)/.exec(<span class="string">'3.14'</span>)</span><br><span class="line"><span class="comment">// ["14"]</span></span><br></pre></td></tr></table></figure>
+<p>“先行否定断言”中，括号里的部分是不会返回的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配不在 c 前面的 b</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">'abd'</span>.match(<span class="regexp">/b(?!c)/</span>);</span><br><span class="line">m <span class="comment">// ['b']</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -107,7 +190,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/48/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="page-number" href="/page/48/">48</a><span class="page-number current">49</span><a class="page-number" href="/page/50/">50</a><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/50/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/48/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="page-number" href="/page/48/">48</a><span class="page-number current">49</span><a class="page-number" href="/page/50/">50</a><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/50/">下一页&raquo;</a>
   </nav>
 
     </main>

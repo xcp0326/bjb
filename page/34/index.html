@@ -38,82 +38,77 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">JavaScript 操作 CSS</h2>
+    <h2 class="title">理解 TCP 协议</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-28 11:37:54</span>
+    <span class="post-time">2019-01-07 13:23:28</span>
     <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP/">TCP</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <blockquote>
-<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
-</blockquote>
-<p>HTML 元素的 style 属性：JavaScript 可以用标签元素的 getAttribute、setAttriubte 和 remoteAttriubte 三个方法来操作。style 不仅可以使用字符串读写，它本身还是一个对象，部署了 CSSStyleDeclaration 接口。</p>
-<h2 id="CSSStyleDeclaration-接口"><a href="#CSSStyleDeclaration-接口" class="headerlink" title="CSSStyleDeclaration 接口"></a>CSSStyleDeclaration 接口</h2><p>有三个地方部署了这个接口：</p>
-<ol>
-<li>元素节点的 style 属性 Element.style</li>
-<li>CSSStyle 实例的 style 属性 <strong><em>❓没找到 CSSStyle 相关的文章 ❓</em></strong></li>
-<li>window.getComputedStyle() 方法的返回值</li>
-</ol>
-<p>CSSStyleDeclaration 接口可以直接读写 CSS 的样式属性，不过，连词号需要变成骆驼拼写法。</p>
-<p>CSSStyleDeclaration.cssText 属性用来读写当前规则的所有样式文本。删除一个元素的所有行内样式，最简便的方法就是设置 cssText 为空字符串。</p>
-<p>CSSStyleDeclaration.length 属性返回一个整数值，表示当前规则包含了多少条样式声明</p>
-<p>CSSStyleDeclaration.parentRule 属性返回当前规则所属的那个样式块 （CSSRule 实例）。如果不存在所属的样式块，该属性返回 null。该属性为只读，且只在使用 CSSRule 接口时才有意义。</p>
-<p>CSSStyleDeclaration.getPropertyPriority() 接受 CSS 样式的属性名作为参数，返回一个字符串，表示有没有设置 important 优先级。有返回 important，没有则返回空。</p>
-<p>CSSStyleDeclaration.getPropertyValue() 返回参数的 CSS 属性值</p>
-<p>CSSStyleDeclaration.item() 接受一个整数值作为参数，返回该位置的 CSS 属性名</p>
-<p>CSSStyleDeclaration.removeProperty() 删除 CSS 规则里面的属性名参数的属性值返回这个属性原来的值</p>
-<p>CSSStyleDeclaration.setProperty() 设置新的 CSS 属性。第一个参数表示属性名，第二个参数表示属性值，第三个参数唯一合法值是 important</p>
-<h2 id="CSS-对象"><a href="#CSS-对象" class="headerlink" title="CSS 对象"></a>CSS 对象</h2><p>CSS.escape() 转义 CSS 选择器里面的特殊字符</p>
-<p>CSS.supports() 返回一个布尔值，表示当前环境是否支持某个 CSS 规则</p>
-<h2 id="window-getComputedStyle"><a href="#window-getComputedStyle" class="headerlink" title="window.getComputedStyle()"></a>window.getComputedStyle()</h2><p>返回浏览器计算后得到的最终规则。返回一个 CSSStyleDeclaration 实例，包含了指定节点的最终样式信息。</p>
-<p>CSSStyleDeclaration 实例是一个活的对象，任何对于样式的修改，会实时反映到这个实例上面。另外这个实例是只读的。</p>
-<p>getComputedStyle() 的第二个参数是表示当前元素的伪元素（比如：<code>:before</code>、<code>:after</code> 等）</p>
-<p>CSS 规则的简写形式无效。比如读取 margin 的值不能直接读，只能读 marginLeft、marginTop 等。</p>
-<p>getComputedStyle 方法返回的 CSSStyleDeclaration 实例的 cssText 属性无效，返回 undefined。</p>
-<h2 id="CSS-伪元素"><a href="#CSS-伪元素" class="headerlink" title="CSS 伪元素"></a>CSS 伪元素</h2><p>节点元素的 style 属性无法读写伪元素的样式，这时候要用的 window.getComputedStyle() 。JavaScript 获取伪元素，可以使用下面的方法：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> test = <span class="built_in">document</span>.querySelector(<span class="string">'#test'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>).content;</span><br><span class="line"><span class="keyword">var</span> color = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>).color;</span><br></pre></td></tr></table></figure>
-<p>此外，也可以使用 CSSStyleDeclaration 实例的 getPropertyValue 方法，获取伪元素的属性</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>)</span><br><span class="line">  .getPropertyValue(<span class="string">'content'</span>);</span><br><span class="line"><span class="keyword">var</span> color = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>)</span><br><span class="line">  .getPropertyValue(<span class="string">'color'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="StyleSheet-接口"><a href="#StyleSheet-接口" class="headerlink" title="StyleSheet 接口"></a>StyleSheet 接口</h2><p>代表网页的一张样式表，包括 link 元素加载的样式表和 style 元素内勤的样式表。document 对象的 styleSheets 属性返回当前页面的所有 StyleSheet 实例，是一个伪数组。</p>
-<p>如果 style 元素嵌入的样式表，还可以通过节点元素的 sheet 属性获取 StyleSheet 实例。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码为 &lt;style id="myStyle"&gt;&lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> myStyleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line">myStyleSheet <span class="keyword">instanceof</span> StyleSheet <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>StyleSheet.disabled 是否禁用该样式表。可以通过 JavaScript 里面设置 disabled 为 true，等同于 link 里面将这张表设为 alternate stylesheet，即该样式不会生效。</p>
-<p>StyleSheet.href 返回样式表的网址</p>
-<p>StyleSheet.media  返回一个伪数组对象 MediaList 实例，成员是表示适用媒介的字符串：screen、print、handheld、all</p>
-<p>StyleSheet.title</p>
-<p>StyleSheet.type</p>
-<p>StyleSheet.parentStyleSheet CSS 的 @import 加载其他样式表</p>
-<p>StyleSheet.ownerNode 返回 StyleSheet 对象所在 DOM 节点，通常是 link 或者 style 节点</p>
-<p>CSSStyleSheet.cssRules 属性指向一个类似数组的对象（CSSRuleList 实例），里面每一个成员就是当前样式表的一条 CSS 规则。使用该规则的 cssText 属性，可以得到 CSS 规则对应的字符串。每条 CSS 规则有个 style 属性指向一个对象，可以i 用来读写具体的 CSS 命令。</p>
-<p>CSSStyleSheet.ownerRule 通过 @import 规则引入的 CSS 文件，它的 ownerRule 属性会返回一个 CSSRule 实例，代表那行 @import 规则。</p>
-<p>CSSStyleSheet.insertRule() 方法用于在当前样式表插入一个新的 CSS 规则</p>
-<p>CSSStyleSheet.deleteRule() 传入要删除的规则在 cssRules 对象中位置删除这条规则</p>
-<h2 id="添加样式表"><a href="#添加样式表" class="headerlink" title="添加样式表"></a>添加样式表</h2><p>JavaScript 添加 link 或者 style 标签，再加入对应的 href 或者 innerHTML 值</p>
-<h2 id="CSSRuleList-接口"><a href="#CSSRuleList-接口" class="headerlink" title="CSSRuleList 接口"></a>CSSRuleList 接口</h2><p>CSSRuleList 是一个伪数组，表示一组 CSS 规则，成员都是 CSSRule 实例。获取 CSSRuleList 实例，一般都是通过 StyleSheet.cssRules 属性。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;style id="myStyle"&gt;</span></span><br><span class="line"><span class="comment">//   h1 &#123; color: red; &#125;</span></span><br><span class="line"><span class="comment">//   p &#123; color: blue; &#125;</span></span><br><span class="line"><span class="comment">// &lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> myStyleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line"><span class="keyword">var</span> crl = sheet.cssRules</span><br><span class="line">crl instanceOf CSSRuleList <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<h2 id="CSSRule"><a href="#CSSRule" class="headerlink" title="CSSRule"></a>CSSRule</h2><p>一条 CSS 规则包括两个部分：CSS 选择器和样式声明。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.myClass</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">  <span class="attribute">background-color</span>: yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>JavaScript 通过 CSSRule 接口操作 CSS 规则，一般通过 CSSRuleList 接口。CSSStyleSheet.cssRules 获取 CSSRuleList 实例。</p>
-<p>CSSRule.cssText 返回当前规则的文本</p>
-<p>CSSRule.parentStyleSheet 返回当前规则所在 StyleSheet 实例</p>
-<p>CSSRule.parentRule 返回包含当前规则的父规则，如果不存在父规则（即当前规则是顶层规则），则返回 null。父规则最常见的情况是，当前规则包含在 @media 规则代码块中。</p>
-<p>CSSRule.type 返回一个当前规则的类型的整数：普通样式规则 1 CSSStyleRule 实例，@import 规则 3，@media 规则 4 CSSMediaRule 实例，@font-size 规则 5。</p>
-<h3 id="CSSStyleRule-接口"><a href="#CSSStyleRule-接口" class="headerlink" title="CSSStyleRule 接口"></a>CSSStyleRule 接口</h3><p>如果一条普通 CSS 规则的样式（不含特殊的 CSS 命令），那么除了 CSSRule 接口，它还部署了 CSSStyleRule 接口。</p>
-<p>CSSStyleRule.selectorText 返回当前规则的选择器，可读写</p>
-<p>CSSStyleRule.style 返回一个 CSSStyleDeclaration 实例，选择器后面的大括号里的部分。而 CSSStyleDeclaration 实例的 cssText 属性可以返回样式声明的字符串格式。</p>
-<h3 id="CSSMediaRule接口"><a href="#CSSMediaRule接口" class="headerlink" title="CSSMediaRule接口"></a>CSSMediaRule接口</h3><p>如果一条 CSS 规则是 @media 代码块，那么它除了 CSSRule 接口，还部署了 CSSMediaRule 接口。</p>
-<p>该接口主要提供了 media 属性和 conditionText 属性。前者返回代表 @media 规则的一个对象 MediaList 实例，后者返回 @media 规则的生效条件。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;style id="myStyle"&gt;</span></span><br><span class="line"><span class="comment">//   @media screen and (min-width: 900px) &#123;</span></span><br><span class="line"><span class="comment">//     article &#123; display: flex; &#125;</span></span><br><span class="line"><span class="comment">//   &#125;</span></span><br><span class="line"><span class="comment">// &lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> styleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>] <span class="keyword">instanceof</span> CSSMediaRule</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>].media</span><br><span class="line"><span class="comment">//  &#123;</span></span><br><span class="line"><span class="comment">//    0: "screen and (min-width: 900px)",</span></span><br><span class="line"><span class="comment">//    appendMedium: function,</span></span><br><span class="line"><span class="comment">//    deleteMedium: function,</span></span><br><span class="line"><span class="comment">//    item: function,</span></span><br><span class="line"><span class="comment">//    length: 1,</span></span><br><span class="line"><span class="comment">//    mediaText: "screen and (min-width: 900px)"</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>].conditionText</span><br><span class="line"><span class="comment">// "screen and (min-width: 900px)"</span></span><br></pre></td></tr></table></figure>
-<h2 id="window-macthMedia"><a href="#window-macthMedia" class="headerlink" title="window.macthMedia()"></a>window.macthMedia()</h2><p>用来将 CSS 的 MediaQuery 条件语句，转换成一个 MediaQueryList 实例。就算参数是非法 MediaQuery 条件语句，不报错。</p>
-<h3 id="MediaQueryList-接口"><a href="#MediaQueryList-接口" class="headerlink" title="MediaQueryList 接口"></a>MediaQueryList 接口</h3><p>MediaQueryList.media 返回一个字符串，表示对应的 MediaQuery 条件语句</p>
-<p>MediaQueryList.matches 表示当前页面是否符合指定的 MediaQuery 条件语句</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.matchMedia(<span class="string">"(max-width: 700px)"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (result.matches)&#123;</span><br><span class="line">  <span class="keyword">var</span> linkElm = <span class="built_in">document</span>.createElement(<span class="string">'link'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'rel'</span>, <span class="string">'stylesheet'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'type'</span>, <span class="string">'text/css'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'href'</span>, <span class="string">'small.css'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">document</span>.head.appendChild(linkElm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>MediaQueryList.onChange 如果条件适配环境发生变化，会触发 change 事件。该函数的参数是 change 事件对象（MediaQueryListEvent 实例），该对象与 MediaQueryList 实例类似，也有 media 和 matches 属性。</p>
-<p>MediaQueryList.addListener() 和 MediaQueryList.removeListener() 用来为 change 事件添加或者撤销监听函数。</p>
+    <h2 id="了解什么是-OSI-七层模型？"><a href="#了解什么是-OSI-七层模型？" class="headerlink" title="了解什么是 OSI 七层模型？"></a>了解什么是 OSI 七层模型？</h2><p>OSI Open System Interconnection Reference Model 开放式系统互联通信参考模型，简称 OSI 模型 OSI model，由国际标准化组织 ISO 于 1984 年提出。</p>
+<p>分为应用层、表示层、会话层、传输层、网络层、数据链路层、物理层七层。</p>
+<p><img src="/images/http/iso.gif" alt="iso"></p>
+<center><sup><a href="https://blog.csdn.net/yaopeng_2005/article/details/7064869" title="OSI七层模型详解" target="_blank" rel="noopener"></a>图来自：OSI七层模型详解</sup></center>
+
+<p>应用层 Application Layer 提供为应用软件而设的接口，以设置与另一应用软件之间的通信。例如：HTTP、HTTPS、FTP、TELNET、SSH、SMTP、POP3 等。</p>
+<p>表示层 Presentation Layer 把数据转换为能与接收者的系统格式兼容并适合传输的格式。</p>
+<p>会话层 Session Layer 负责在数据传输中设置和维护计算机网络中两台计算机之间的通信连接。</p>
+<p>传输层 Transport Layer 把传输表头 TH 加至数据以形成数据包。传输表头包含了所使用的协议等发送信息。例如：TCP、UDP 等。</p>
+<p>网络层 Network Layer 决定数据的路径选择和转寄，将网络表头 NH 加至数据包，以形成分组。网络表头包含了网络数据。例如：互联网协议 IP 等等。</p>
+<p>数据链路层 Data Link Layer 负责网络寻址、错误侦测和改错。当表头和表尾被加至数据包时，会形成帧。数据链表头 DLH 是包含了物理地址和错误侦测及改错的方法。数据链表尾 DLT 是一串指示数据末端的字符串。例如 以太网、无线局域网 Wi-Fi 和 通用分组无线服务（GPRS）等。</p>
+<p>物理层 Physical Layer 在局部局域网上传送数据帧 data frame，它负责管理计算机通信设备和网络媒体之间的互通。包括了针脚、电压、线缆规范、集线器、中断器、网卡、主机适配器等。</p>
+<h2 id="什么是-TCP-IP-四层模型"><a href="#什么是-TCP-IP-四层模型" class="headerlink" title="什么是 TCP/IP 四层模型"></a>什么是 TCP/IP 四层模型</h2><p>因为 ISO 七层里面的分层分得不够清晰，有的层没什么用，有的层的实现却在其他的层里，所以后来 ISO 七层模型别 TCP/IP 四层模型替换掉了：应用层、传输层、网络层、数据链路层。</p>
+<p>应用层是大多数普通与网络相关的程序为了通过网络与其他程序通信所使用的层。这个层的处理过程是应用特有的；数据从网络相关的程序以这种应用内部使用的格式进行传送，然后被编码成标准协议的格式。每一个应用层协议一般都会使用到传输层协议 TCP 和 UDP 协议之一：</p>
+<p>运行在 TCP 协议上的协议：</p>
+<ul>
+<li>HTTP（80 端口），主要用于普通浏览</li>
+<li>HTTPS（443 端口），HTTP 协议的安全版本</li>
+<li>FTP（20 和 21 端口），用于文件传输</li>
+<li>POP3（110 端口），收邮件用</li>
+<li>SMTP（25 端口），用来发送邮件</li>
+<li>SSH（22端口），用于加密安全登陆用</li>
+</ul>
+<p>运行在 UDP 协议上的应用层协议：</p>
+<ul>
+<li>DHCP（67 端口，动态主机配置协议），动态配置 IP 地址</li>
+</ul>
+<p>其他：</p>
+<ul>
+<li>DNS（Domain Name Service 域名服务），用于完成地址查找，邮件转发等工作（运行在 TCP 和 UDP 协议上）</li>
+<li>SNMP（Simple Network Management Protocal，简单网络管理协议），用于网络信息的收集和网络管理</li>
+<li>ARP（Address Resolution Protocol，地址解析协议），用于动态解析以太网硬件的地址。</li>
+</ul>
+<p>传输层：解决诸如端对端可靠性（数据是否已经到达目的地）和保证数据按照正确的顺序到达这样的问题。TCP 和 UDP 都是传输层协议。</p>
+<p>网络层：解决在一个单一网络上传输数据包的问题。IP 协议是网络层协议</p>
+<p>数据链路层：它是数据包从一个设备的网络层传输到另外一个设备的网络层的方法。这个过程能够在网卡的软件驱动程序中控制或者专用芯片中控制。这将完成如添加报头准备发送、通过实体介质实际发送这样一些数据链路功能。另一端，链路层将完成数据帧接收、去除报头并且将接收到的包传到网络层。</p>
+<h2 id="TCP-的三次握手"><a href="#TCP-的三次握手" class="headerlink" title="TCP 的三次握手"></a>TCP 的三次握手</h2><p>TCP 传输控制协议，面向连接的可靠的基于字节流的传输层通信协议。</p>
+<p>A：SYN 提问的序号，seq 提问的内容<br>B：ACK 回答的问题的序号，ack 已经回答了，在提问的内容上加 1。同时提问 SYN 提问序号，seq 提问内容<br>A：ACK 回答的问题的序号，ack 针对谁的回答，谁 加 1，同时我当前的问题为 seq 序号加 1。</p>
+<p><img src="/images/http/tcp3.jpg" alt="TCP 的三次握手"></p>
+<ul>
+<li>客户端发送 SYN 报文给服务器端，序号为 n，进入 SYN-SEND 状态</li>
+<li>服务器端收到 SYN 报文，回应一个 ACK（序号是 n + 1）同时发送一个 SYN 报文，序号是 m，进入 SYN-RCVD 状态</li>
+<li>客户端收到服务器端的 SYN 报文，回应一个 ACK 序号为 m + 1，进入 Established 状态。表示连接成功。注意第三次挥手的 seq 与服务器的 ack 是一样的。</li>
+</ul>
+<h2 id="TCP-四次挥手"><a href="#TCP-四次挥手" class="headerlink" title="TCP 四次挥手"></a>TCP 四次挥手</h2><p><img src="/images/http/tcp4.jpg" alt="TCP 的四次挥手"></p>
+<p>服务器去终止传输必须等到应用传输完成才能终止，所以才有四次挥手。</p>
+<ul>
+<li>客户端发送一个 FIN，告诉服务器想关闭连接</li>
+<li>服务器收到这个 FIN，发回一个 ACK</li>
+<li>服务器通知应用程序关闭网络连接，应用程序关闭后通知服务器。服务器发送一个 FIN 给客户端</li>
+<li>客户端发回 ACK 报文确认</li>
+</ul>
+<p>服务器端的 LISTEN 状态下的 SOCKET 当收到客户端建立连接请求的 SYN 报文后，它可以把 ACK 和 SYN （ACK 起应答作用，而 SYN 起同步作用）放在一个报文里来发送。但关闭连接时，当服务器收到客户端的 FIN 报文通知时，服务器只能发一个回应报文 ACK：“哦，我知道了”，然后通知应用程序。等应用程序完成全部数据发送并确定可以终止了，服务器才能发送 FIN 告诉客户端可以真正断开连接了。所以这一步 ACK 报文和 FIN 报文需要分开发送，因此有四次挥手，而不是三次。</p>
+<h2 id="TCP-报文格式"><a href="#TCP-报文格式" class="headerlink" title="TCP 报文格式"></a>TCP 报文格式</h2><p><img src="/images/http/tcp.jpg" alt></p>
+<ul>
+<li>ACK：TCP 协议规定，只有 ACK = 1 时有效，也规定连接建立后所有发送给的报文的 ACK 必须为 1</li>
+<li>SYN（SYNchronization）：在连接建立时用来同步序号。当 SYN = 1 而 ACK = 0 时，标明这是一个连接请求报文。对方若同意建立连接，则应在响应报文中使用 SYN = 1 和 ACK = 1，因此，SYN 置 1 就表示这是一个连接请求或连接接受报文。</li>
+<li>FIN（finish）用来释放一个连接。当 FIN = 1 时，表明此报文段的发送方的数据已经发送完毕，并要求释放连接。</li>
+</ul>
 
   </div>
   
@@ -121,7 +116,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/33/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/page/35/">35</a><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/35/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/33/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/page/35/">35</a><a class="page-number" href="/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/35/">下一页&raquo;</a>
   </nav>
 
     </main>

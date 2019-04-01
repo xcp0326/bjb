@@ -38,61 +38,225 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">n 方排序：冒泡、选择、插入排序</h2>
+    <h2 class="title">CSS 基础知识</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-06 10:51:16</span>
+    <span class="post-time">2018-11-13 10:57:16</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/伪代码/">伪代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/冒泡排序/">冒泡排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/插入排序/">插入排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/流程图/">流程图</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/选择排序/">选择排序</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h2 id="什么是结构化编程"><a href="#什么是结构化编程" class="headerlink" title="什么是结构化编程"></a>什么是结构化编程</h2><p>一种编程范式。它采用子程序、代码区块、for 循环以及 while 循环等结构来取代 goto 指令的程序。</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
-<li>仅有一个入口</li>
-<li>仅有一个出口</li>
-<li>结构中任一部分都应有执行到的机会</li>
-<li>不出现死循环</li>
+    <h2 id="CSS-是什么"><a href="#CSS-是什么" class="headerlink" title="CSS 是什么"></a>CSS 是什么</h2><p>CSS 全称 Cascading Style Sheets 层叠样式表，是一种样式表的语言，用来描述 HTML 或 XML 文档的呈现。CSS 描述了在屏幕、纸质、音频等媒体上的元素应该如何渲染。</p>
+<ul>
+<li>94 年由哈肯&middot;唯姆&middot;莱提出并展示，W3C 也正是这一年由李爵士成立。</li>
+<li>95 年 W3C 组织 CSS 讨论会</li>
+<li>96 年 12 月哈肯&middot;唯姆&middot;莱与伯特&middot;波斯发布 CSS 规范第 1 版</li>
 </ul>
-<p>结构化编程描述算法的方法：伪代码，流程图。</p>
-<p>以下写画下常见的九大排序算法的伪代码和流程图，还有 JavaScript 的实现。</p>
-<h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>两两比较，大的往后排。第 1 项 与 第 2 项，大的往后；然后第 2 项 与 第 3 项比较，大的往后；然后第 3 项 与 第 4 项比较，大的往后排；然后第 4 项与第 5 项比较，大的往后排；…直到第 n 项 完成一轮排序。</p>
-<p>进行下一轮排序时，可以确定前一轮已经确定了数组后面的轮数的项已经排好了，就不需要再进行排序。</p>
-<p>…… 以此类推完成 n - 1 轮排序</p>
-<p>流程图</p>
-<p><img src="https://i.loli.net/2018/10/22/5bcd6ed2561e5.jpg" alt="1271540189276_.pic.jpg"></p>
-<p>伪代码</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> !arr || !arr.length</span><br><span class="line">  print arr</span><br><span class="line">end</span><br><span class="line">loopTimes &lt;- <span class="number">1</span></span><br><span class="line">arrLen &lt;- arr[<span class="string">'length'</span>]</span><br><span class="line">i &lt;- <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> loopTimes &lt; arrLen</span><br><span class="line">  <span class="comment">// arrLen - loopTimes 是每一次循环都能确定一个当前循环的最大值，</span></span><br><span class="line">  <span class="comment">// 下次再循环的时候，可以减少一次循环</span></span><br><span class="line">  <span class="keyword">while</span> i &lt; arrLen - loopTimes</span><br><span class="line">    <span class="keyword">if</span> arr[i] &gt; arr[i + <span class="number">1</span>]</span><br><span class="line">      t &lt;- arr[i]</span><br><span class="line">      arr[i] &lt;- arr[i + <span class="number">1</span>]</span><br><span class="line">      arr[i + <span class="number">1</span>] &lt;- arr[i]</span><br><span class="line">      i &lt;- i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      i &lt;- i + <span class="number">1</span></span><br><span class="line">    end</span><br><span class="line">    loopTimes &lt;- loopTimes + <span class="number">1</span></span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line">print arr</span><br></pre></td></tr></table></figure>
-<p>JavaScript 实现</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> bubbleSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!arr || !arr.length) &#123;</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> arrLen = arr.length</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> loopTimes = <span class="number">1</span>; loopTimes &lt; arrLen; loopTimes++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arrLen - loopTimes; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[i] &gt; arr[i + <span class="number">1</span>]) &#123;</span><br><span class="line">          [arr[i], arr[i + <span class="number">1</span>]] = [arr[i + <span class="number">1</span>], arr[i]]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果 loopTimes 等于 1 的循环完成后，数据并没有交换，那么就可以确定数组是有序的，不需要再进行之前的比较了，可以定义一个变量 swapFlag，标记是否发生交换，如果没有交换就直接退出程序。</p>
-<p>JavaScript 优化实现</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> bubbleSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!arr || !arr.length) &#123;</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> arrLen = arr.length</span><br><span class="line">  <span class="keyword">let</span> swapFlag = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> loopTimes = <span class="number">1</span>; loopTimes &lt; arrLen; loopTimes++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arrLen - loopTimes; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[i] &gt; arr[i + <span class="number">1</span>]) &#123;</span><br><span class="line">        [arr[i], arr[i + <span class="number">1</span>]] = [arr[i + <span class="number">1</span>], arr[i]]</span><br><span class="line">        swapFlag = <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (swapFlag == <span class="literal">false</span>) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>效率测试</p>
-<p>随机生成一个长度为 100，最大值为 1000 的超大数组排序，通过 console.time 记录排序时间</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> randomArr = <span class="function">(<span class="params">arrLen = <span class="number">100</span>, maxValue = <span class="number">1000</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> arr = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arrLen; i++) &#123;</span><br><span class="line">    arr[i] = <span class="built_in">Math</span>.floor((maxValue + <span class="number">1</span>) * <span class="built_in">Math</span>.random())</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr = randomArr(<span class="number">1000</span>, <span class="number">100</span>)</span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'bubbleSort'</span>)</span><br><span class="line">bubbleSort(arr)</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'bubbleSort'</span>)</span><br><span class="line"><span class="comment">// bubbleSort: 4.602783203125ms</span></span><br><span class="line"></span><br><span class="line">randomArr(<span class="number">10000</span>, <span class="number">100</span>)</span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'bubbleSort'</span>)</span><br><span class="line">bubbleSort(arr)</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'bubbleSort'</span>)</span><br><span class="line"><span class="comment">// bubbleSort: 308.89599609375ms</span></span><br></pre></td></tr></table></figure>
-<p>看起来数组长度增加 10 倍，排序时间增加差不多 100 倍。多次在 Chrome 上测试，却发现每次运行的时间不同，而且还出现了数组越长时间越短的情况。不知道是不是 V8 进行了优化。</p>
-<p><img src="https://i.loli.net/2018/10/23/5bce9da0d814a.jpg" alt="1301540267403_.pic_hd.jpg"></p>
-<h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3><p>第一轮循环执行 是 n - 1<br>第二轮 n - 2<br>第三轮 n - 3<br>…<br>第 n 轮 n - n</p>
-<p>得出 (n - 1) + (n - 2) + (n - 3)+…1 等差数列求和，即 n*(1 + (n -1)) /2。解开得到 n ^ 2 / 2，所以时间复杂度为 O(n^2)。</p>
-<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>循环<strong>选择出</strong>数组中的最大值，将最大值挪到数组最后；再进行下一次循环，选择出第二大的项…… 以此类推完成排序。或者循环选择出数组中的最小值，将最小值挪到数组最前面；再进行下一次循环，选择出第二小的项…… 以此类推完成排序。</p>
-<p>伪代码</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> !arr || !arr.length</span><br><span class="line">  print arr</span><br><span class="line">end</span><br><span class="line">loopTimes &lt;- <span class="number">1</span></span><br><span class="line">arrLen = arr[<span class="string">'length'</span>]</span><br><span class="line"><span class="keyword">while</span> loopTimes &lt; arrLen</span><br><span class="line">  maxPos &lt;- <span class="number">0</span></span><br><span class="line">  j &lt;- <span class="number">1</span></span><br><span class="line">  lastIndex &lt;- arrLen - loopTimes</span><br><span class="line">  <span class="keyword">while</span> j &lt;= lastIndex</span><br><span class="line">    <span class="keyword">if</span> arr[j] &gt; arr[maxPos]</span><br><span class="line">      maxPos &lt;- j</span><br><span class="line">      j &lt;- j + <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      j &lt;- j + <span class="number">1</span></span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">  <span class="keyword">if</span> maxPos != lastIndex</span><br><span class="line">    t &lt;- arr[lastIndex]</span><br><span class="line">    arr[lastIndex] &lt;- arr[maxPos]</span><br><span class="line">    arr[maxPos] &lt;- t</span><br><span class="line">    loopTimes &lt;- loopTimes + <span class="number">1</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    loopTimes &lt;- loopTimes + <span class="number">1</span></span><br><span class="line">  end</span><br><span class="line">print arr</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>JavaScript 实现</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> sectionSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!arr || !arr.length) &#123;</span><br><span class="line">        <span class="keyword">return</span> arr</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> arrLen = arr.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> loopTimes = <span class="number">1</span>; loopTimes &lt; arrLen; loopTimes++) &#123;</span><br><span class="line">        <span class="keyword">let</span> maxPos = <span class="number">0</span>,</span><br><span class="line">            lastIndex = arrLen - loopTimes;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt;= lastIndex; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[maxPos]) &#123;</span><br><span class="line">                maxPos = j</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (maxPos != lastIndex) &#123;</span><br><span class="line">            [arr[lastIndex], arr[maxPos]] = [arr[maxPos], arr[lastIndex]]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在每次循环获取最大值时，同时可以获取到最小值，可以通过这个来优化一下算法。</p>
-<p>优化实现</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> sectionSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> begin = <span class="number">0</span>,</span><br><span class="line">      end = arr.length - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (begin &lt; end) &#123;</span><br><span class="line">    <span class="keyword">let</span> maxPos = begin,</span><br><span class="line">        minPos = begin;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = begin; i &lt; end; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[i] &gt; arr[maxPos]) &#123;</span><br><span class="line">        maxPos = i</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (arr[i] &lt; arr[minPos]) &#123;</span><br><span class="line">        minPos = i</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [arr[end], arr[maxPos]] = [arr[maxPos], arr[end]]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (minPos == end) &#123;</span><br><span class="line">      minPos = maxPos</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [arr[begin], arr[minPos]] = [arr[minPos], arr[begin]]</span><br><span class="line"></span><br><span class="line">    begin++</span><br><span class="line">    end--</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><p>类比扑克牌时，拿到牌后的整理牌的操作。第 2 个和第 1 个比较大小，排好序；第 3 个和前面两个比较，排好序；第 4 个和前面三个比较，排好序；以此类推。和前面已经排好序的元素序列中<strong>从后向前</strong>扫描。</p>
-<p>伪代码</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">index &lt;- <span class="number">1</span></span><br><span class="line">arrLen &lt;- arr.length</span><br><span class="line"><span class="keyword">while</span> index &lt;= arrLen - <span class="number">1</span></span><br><span class="line">  last &lt;- index</span><br><span class="line">  tmp &lt;- arr[last]</span><br><span class="line">  <span class="keyword">while</span> last &gt; <span class="number">0</span> &amp;&amp; tmp &lt; arr[last<span class="number">-1</span>]</span><br><span class="line">    arr[last] &lt;- arr[last<span class="number">-1</span>]</span><br><span class="line">    last &lt;- last - <span class="number">1</span></span><br><span class="line">  end</span><br><span class="line">  arr[last] &lt;- tmp</span><br><span class="line">  index &lt;- index + <span class="number">1</span></span><br><span class="line">end</span><br><span class="line">print arr</span><br></pre></td></tr></table></figure>
-<p>JavaScript 实现</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> insertionSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> tmp = arr[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; arr[j - <span class="number">1</span>] &gt; tmp; j--) &#123;</span><br><span class="line">      arr[j] = arr[j - <span class="number">1</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    arr[j] = tmp</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="splice-方法实现插入排序"><a href="#splice-方法实现插入排序" class="headerlink" title="splice 方法实现插入排序"></a>splice 方法实现插入排序</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> insertionSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[i] &lt; arr[j]) &#123;</span><br><span class="line">        arr.splice(j, <span class="number">0</span>, arr[i])</span><br><span class="line">        arr.splice(i + <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.jianshu.com/p/5597bd9db39c" target="_blank" rel="noopener">伪·从零开始学算法 - 1.4 结构化编程与逻辑结构</a><br><a href="https://blog.csdn.net/qq_36528114/article/details/78685661" target="_blank" rel="noopener">九种常见排序的比较和实现</a><br><a href="https://jirengu.github.io/algorithm-you-should-know/zh-cn/sort-algorithm/" target="_blank" rel="noopener">排序算法</a></p>
+<h2 id="为什么使用-CSS"><a href="#为什么使用-CSS" class="headerlink" title="为什么使用 CSS"></a>为什么使用 CSS</h2><p>样式从内容分离到单独的样式文件中可：</p>
+<ul>
+<li>避免重复</li>
+<li>更容易维护</li>
+<li>为不同目的，使用不同的样式而内容相同</li>
+</ul>
+<p>!import 是为用户提供的，相对于开发者的样式，浏览器的样式，用户自定义的样式级别最高。</p>
+<h2 id="CSS-是如何工作的？"><a href="#CSS-是如何工作的？" class="headerlink" title="CSS 是如何工作的？"></a>CSS 是如何工作的？</h2><p>当浏览器显示文档时，它必须将文档的内容与其样式信息结合。它分为两个阶段：</p>
+<ol>
+<li>浏览器先将标 HTML 和 CSS 转化成 DOM，DOM 代表了计算机内存中的相应文档，因为它已经融合了文档内容和相应的样式表。</li>
+<li>浏览器显示 DOM 的内容。</li>
+</ol>
+<p><img src="https://mdn.mozillademos.org/files/11781/rendering.svg" alt="img"></p>
+<h2 id="CSS-语法"><a href="#CSS-语法" class="headerlink" title="CSS 语法"></a>CSS 语法</h2><h3 id="CSS-声明"><a href="#CSS-声明" class="headerlink" title="CSS 声明"></a>CSS 声明</h3><p><img src="https://mdn.mozillademos.org/files/16188/css_syntax_-_declaration.png" alt></p>
+<h3 id="CSS-声明块"><a href="#CSS-声明块" class="headerlink" title="CSS 声明块"></a>CSS 声明块</h3><p><img src="https://mdn.mozillademos.org/files/3667/css%20syntax%20-%20declarations%20block.png" alt="img"></p>
+<h3 id="CSS-选择器和规则"><a href="#CSS-选择器和规则" class="headerlink" title="CSS 选择器和规则"></a>CSS 选择器和规则</h3><p><img src="https://mdn.mozillademos.org/files/3668/css%20syntax%20-%20ruleset.png" alt="img"></p>
+<h3 id="CSS-语句"><a href="#CSS-语句" class="headerlink" title="CSS 语句"></a>CSS 语句</h3><ul>
+<li>@ 规则 用来传递元数据、条件信息或其他描述性信息。用 @ 开始，半角分号 ; 结束。<ul>
+<li>@charset 和 @import 元数据</li>
+<li>@media、 @document、@supports 条件信息<ul>
+<li>@media 浏览器的设备匹配表达式条件运用该规则下的内容</li>
+<li>@supports 浏览器支持被测功能时运用该规则下的内容</li>
+<li>@document 当前页面匹配一些条件时运用该规则下的内容</li>
+</ul>
+</li>
+<li>@font-face描述性信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2><h3 id="简单选择器"><a href="#简单选择器" class="headerlink" title="简单选择器"></a>简单选择器</h3><ul>
+<li>类型选择器 / 元素选择器</li>
+<li>类选择器</li>
+<li>ID 选择器</li>
+<li>通用选择器（<code>*</code>）</li>
+</ul>
+<h3 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h3><ul>
+<li>存在和值属性选择器：<ul>
+<li>[attr]：选择有 attr 属性的元素</li>
+<li>[attr=”val”]：选择属性 attr 的值为 val 的元素</li>
+<li>[attr~=”val”]：选择属性 attr 的值含有单词 val 的元素</li>
+</ul>
+</li>
+<li>子串值属性值 / <strong>伪正则选择器</strong>：<ul>
+<li>[attr|=”val”]：选择 attr 属性的值是单词 val 或者以子字符串 val- 开头的元素</li>
+<li>[attr^=”val”]：选择 attr 属性的值以子字符串 val 开头（包含子字符串 val）的元素</li>
+<li>[attr$=”val”]：选择 attr 属性的值以子字符串 val 结尾（包含子字符串 val）的元素。</li>
+<li>[attr*=”val”]：选择 attr 属性的值中包含子字符串 val 的元素</li>
+</ul>
+</li>
+<li>大小写匹配属性选择器<ul>
+<li>[attr=”val” i]</li>
+</ul>
+</li>
+</ul>
+<h3 id="伪类"><a href="#伪类" class="headerlink" title="伪类"></a>伪类</h3><p>大部分伪类元素都是针对表单元素的，<code>:focus</code> 、<code>:blur</code>、<code>:disabled</code>、<code>:enabled</code>、<code>:in-range</code>、<code>:out-of-range</code>、<code>:valide</code>、<code>:invalide</code>、<code>:indeterminate</code>、<code>:default</code>、<code>:required</code>、<code>:optional</code>、<code>:checked</code></p>
+<p>然后是<code>&lt;a&gt;</code>标签的，<code>:link</code>、<code>:visited</code>、<code>:hover</code>、<code>:active</code></p>
+<p>所有元素的，<code>:hover</code>、<code>:focus</code>、<code>:blur</code>、<code>:first-child</code>、<code>:last-child</code>、<code>:nth-child</code>、<code>:nth-last-child</code>、<code>:only-of-type</code>、<code>:only-child</code>、<code>:nth-last-of-type</code>、<code>:nth-of-type</code>、<code>:first-of-type</code>、<code>:last-of-type</code>、<code>:target</code></p>
+<p>空元素 <code>:empty</code></p>
+<p>非选择器 <code>:not()</code></p>
+<p><code>&lt;style&gt;</code>元素的 <code>:scope</code></p>
+<p>根元素 <code>:root</code></p>
+<p>打印相关：<code>:left</code>、<code>:right</code>、<code>:first</code>、<code>:last</code>、</p>
+<table>
+<thead>
+<tr>
+<th>伪类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:indeterminate</code></td>
+<td>表示不确定的表单元素。<code>&lt;progress&gt;</code> <code>&lt;input type=&quot;radio&quot;&gt;</code> <code>&lt;input type=&quot;checkbox&quot;&gt;</code></td>
+</tr>
+<tr>
+<td><code>:only-of-type</code></td>
+<td>任意一个元素，这个元素没有其他相同类型的兄弟元素</td>
+</tr>
+<tr>
+<td><code>:in-range</code> 与 <code>:out-of-range</code></td>
+<td><code>&lt;input&gt;</code>元素的当前值是否处于 <code>min</code> 和 <code>max</code> 限定的范围之内</td>
+</tr>
+<tr>
+<td><code>:default</code></td>
+<td>表示一组相关元素中的默认表单元素</td>
+</tr>
+<tr>
+<td><code>:empty</code></td>
+<td>没有子元素的元素，子元素只可以是元素节点或者文本（包括空格）</td>
+</tr>
+<tr>
+<td><code>:left</code> <code>:right</code></td>
+<td>需要和 <code>@</code> 规则 <code>@page</code>配套使用，对打印文档的左 / 右侧页设置 CSS 样式</td>
+</tr>
+<tr>
+<td><code>:link</code> <code>:visited</code> <code>:hover</code> <code>:active</code></td>
+<td>出于隐私原因 <code>:visited</code> 可以设置的样式只有 color，background-color，border-color，border-bottom-color，border-left-color，border-right-color，border-top-color，column-rule-color，outline-color。<code>:active</code> 它让页面能在浏览器监测到激活时给出反馈，比如鼠标交互时，它代表的是用户按下按键和松开按揭之间的时间。LVHA</td>
+</tr>
+<tr>
+<td><code>:root</code></td>
+<td>文档的根元素，优先级比 <code>html</code> 选择器高</td>
+</tr>
+<tr>
+<td><code>:first</code></td>
+<td><code>@page</code> 打印文档的第一页样式</td>
+</tr>
+<tr>
+<td><code>:scope</code></td>
+<td>CSS 作用域，可以给 <code>&lt;style&gt;</code> 定义 scope 来定义新的参考点， Vue ❓</td>
+</tr>
+<tr>
+<td><code>:target</code></td>
+<td>代表一个唯一的页面元素，其 ID 与当前 URL 片段匹配  ❕ 很有意思的一个伪类，可以用它来实现无 JavaScript 的弹窗</td>
+</tr>
+<tr>
+<td><code>:valid</code> <code>:invalid</code></td>
+<td>通过验证 未通过验证的 <code>&lt;input&gt;</code>或者 <code>&lt;form&gt;</code> 元素</td>
+</tr>
+<tr>
+<td><code>:only-child</code></td>
+<td>独生子元素，等效于 <code>:first-child:last-child</code> 或者 <code>:nth-child(1):nth-lastchild(1)</code>，只是 <code>:only-child</code>  优先级更高</td>
+</tr>
+<tr>
+<td>:not()</td>
+<td>可以将一个或多个以逗号分隔的选择器作为其参数，选择器中不得包含另一个否定选择符或者伪元素</td>
+</tr>
+</tbody>
+</table>
+<h3 id="伪元素"><a href="#伪元素" class="headerlink" title="伪元素"></a>伪元素</h3><ul>
+<li>::after，::before，::first-line，::first-letter</li>
+<li>::selection 只有一小部分 CSS 属性可以用：color，background-color，cursor，outline，text-decoration，text-emphasis-color，text-shadow</li>
+</ul>
+<h3 id="组合器和选择器组"><a href="#组合器和选择器组" class="headerlink" title="组合器和选择器组"></a>组合器和选择器组</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>组合器</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>选择器组</td>
+<td>A, B</td>
+<td></td>
+</tr>
+<tr>
+<td>后代选择器</td>
+<td>A B</td>
+<td></td>
+</tr>
+<tr>
+<td>子选择器</td>
+<td>A &gt; B</td>
+<td></td>
+</tr>
+<tr>
+<td>相邻兄弟选择器</td>
+<td>A + B</td>
+<td>上一个兄弟是 A 的 B 元素</td>
+</tr>
+<tr>
+<td>通用兄弟选择器</td>
+<td>A ~ B</td>
+<td>之前有一个兄弟是 A 的 B 元素</td>
+</tr>
+</tbody>
+</table>
+<h3 id="CSS-选择器的优先级"><a href="#CSS-选择器的优先级" class="headerlink" title="CSS 选择器的优先级"></a>CSS 选择器的优先级</h3><ul>
+<li><code>style</code> 属性中的声明在千位加 1；</li>
+<li>每包含一个 ID 选择器就在百位加 1；</li>
+<li>每包含一个类选择器、属性选择器、或者伪类在十位加 1；</li>
+<li>每包含一个元素选择器、或者伪元素就在个位中加 1。</li>
+</ul>
+<p>通用选择器（<code>*</code>），复合选择器（<code>+</code>，<code>&gt;</code>，<code>~</code>，<code>&#39;&#39;</code>）和否定伪类选择器（<code>:not</code>）不符合上面的规则。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><ul>
+<li>inherit 继承自父元素</li>
+<li>initial 没有浏览器默认值的自然继承属性值与 inherit 一样</li>
+<li>unset 重置为自然值，如果自然继承属性值为 inherit，否则为 initail</li>
+<li>revert 当前节点没有任何样式，设置为用户设置的样式</li>
+</ul>
+<p>有意思的一点：没设置<code>border-color</code> 的时候，<code>border-color</code>继承的是 <code>color</code> 的值</p>
+<h2 id="CSS-的值和单位"><a href="#CSS-的值和单位" class="headerlink" title="CSS 的值和单位"></a>CSS 的值和单位</h2><p>0 是无单位的，比如 <code>margin: 0</code> ；无单位的行高 <code>line-height: 1.2</code>； 动画执行的次数 <code>animation-iteration-count: 5</code> ；透明度 <code>opacity: .5</code> ；</p>
+<p>常见单位：</p>
+<ul>
+<li>绝对单位：px</li>
+<li>相对单位：<ul>
+<li>em 相对父级 M 的宽度，</li>
+<li>rem 相对于 <code>html</code> M 的宽度，</li>
+<li>百分比</li>
+<li>vw，vh 视窗宽度的 1 / 100，视窗高度的 1 / 100</li>
+</ul>
+</li>
+</ul>
+<p>十六进制值与颜色值：#ff0000，缩写 #f00，颜色值 red</p>
+<p>函数：rgb(r,g,b)，rgba(r,g,b,透明度)，hsl()，hsla()，url()，calc()，rotate()，translate()</p>
+<h2 id="CSS-盒模型"><a href="#CSS-盒模型" class="headerlink" title="CSS 盒模型"></a>CSS 盒模型</h2><p>border-box 盒模型</p>
+<p><img src="https://mdn.mozillademos.org/files/13649/box-model-alt-small.png" alt="img"></p>
+<p>普通盒模型</p>
+<p><img src="https://mdn.mozillademos.org/files/13647/box-model-standard-small.png" alt="img"></p>
+<p>框的高度不遵守百分比的长度；框的高度总是采用框内容的高度，除非制定一个绝对的高度值。</p>
 
   </div>
   
@@ -100,7 +264,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/90/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/89/">89</a><a class="page-number" href="/page/90/">90</a><span class="page-number current">91</span><a class="page-number" href="/page/92/">92</a><a class="page-number" href="/page/93/">93</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/92/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/90/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/89/">89</a><a class="page-number" href="/page/90/">90</a><span class="page-number current">91</span><a class="page-number" href="/page/92/">92</a><a class="page-number" href="/page/93/">93</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/92/">下一页&raquo;</a>
   </nav>
 
     </main>

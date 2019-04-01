@@ -38,53 +38,55 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">简易 MVC 实践</h2>
+    <h2 class="title">Event 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-01-16 10:35:11</span>
+    <span class="post-time">2019-02-14 11:35:55</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <p>MVC = Model （操作数据）、View （表示视图）、Controller （控制器） 是代码组织形式，只是一种思想。就是把一坨代码转成 MVC 结构的代码。</p>
-<ol>
-<li><p>功能转换为模块</p>
-</li>
-<li><p>模块对应的能看到的部分 HTML 指定给 view</p>
-</li>
-<li><p>操作 view 的逻辑指定为 controller，所以可以转换为函数 controller，controller(view)</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> view = <span class="built_in">document</span>.querySelector(<span class="string">'#wrapper'</span>)</span><br><span class="line"><span class="keyword">var</span> controller = <span class="function"><span class="keyword">function</span>(<span class="params">view</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">'click'</span>, e =&gt; view.classList.add(<span class="string">'class'</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>controller 作为对象，把 controller 函数作为这个对象的 init 函数，controller(view) 转换为 controller.init(view)</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> view = <span class="built_in">document</span>.querySelector(<span class="string">'#wrapper'</span>)</span><br><span class="line"><span class="keyword">var</span> controller = &#123;</span><br><span class="line">  view: <span class="literal">null</span>,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params">view</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.view = view</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">'click'</span>, e =&gt; view.classList.add(<span class="string">'class'</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">controller.init(view)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>controller 对象下再加上一个 bindEvents 函数，也就是操作 view</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> view = <span class="built_in">document</span>.querySelector(<span class="string">'#wrapper'</span>)</span><br><span class="line"><span class="keyword">var</span> controller = &#123;</span><br><span class="line">  view: <span class="literal">null</span>,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params">view</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.view = view</span><br><span class="line">    <span class="keyword">this</span>.bindEvents()		</span><br><span class="line">  &#125;,</span><br><span class="line">  bindEvents: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> view = <span class="keyword">this</span>.view</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">'click'</span>, e =&gt; view.classList.add(<span class="string">'class'</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">controller.init(view)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>bindEvents 只进行 bind 事件</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> view = <span class="built_in">document</span>.querySelector(<span class="string">'#wrapper'</span>)</span><br><span class="line"><span class="keyword">var</span> controller = &#123;</span><br><span class="line">  view: <span class="literal">null</span>,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params">view</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.view = view</span><br><span class="line">    <span class="keyword">this</span>.bindEvents()		</span><br><span class="line">  &#125;,</span><br><span class="line">  bindEvents: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">'click'</span>, e =&gt; <span class="keyword">this</span>.clickWrapper)</span><br><span class="line">  &#125;,</span><br><span class="line">  clickWrapper: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.view.classList.add(<span class="string">'class'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">controller.init(view)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>整个代码都变得很有条理了：</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>事件发生后，会产生一个事件对象，作为参数传给监听函数。浏览器原生提供一个 Event 对象，所有的事件都是这个对象的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event = <span class="keyword">new</span> Event(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 是一个对象，表示事件对象的配置，有两个属性：</p>
 <ul>
-<li>一个 view；</li>
-<li>一个 controller，<ul>
-<li>controller.init(view)，</li>
-<li>controller 里有一个 bindEvents，</li>
-<li>以及在 controller 里定义操作 view 的函数</li>
-<li>再到 bindEvents 里面执行这些操作 view 的函数们。</li>
+<li>bubbles：布尔值，可选，默认为 false，表示事件对象是否冒泡。</li>
+<li>cancelable：布尔值，可选，默认为 false，表示事件是否可以被 Event.preventDefault() 取消，一旦事件被取消，就不会触发浏览器对该事件的默认行为。</li>
 </ul>
-</li>
+<p>注意：如果没有显式指定 bubbles 属性为 true，生成的事件就只能在捕获阶段触发监听函数。</p>
+<h3 id="Event-bubbles、Event-eventPhase"><a href="#Event-bubbles、Event-eventPhase" class="headerlink" title="Event.bubbles、Event.eventPhase"></a>Event.bubbles、Event.eventPhase</h3><p>Event.bubbles 属性返回一个只读布尔值，表示当前事件是否会冒泡。</p>
+<p>Event.eventPhase 属性返回一个只读整数常量，表示事件目前所处的阶段。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> phase = event.eventPhase;</span><br></pre></td></tr></table></figure>
+<p>四个阶段：</p>
+<ul>
+<li>0 表示事件目前没有发生</li>
+<li>1 表示事件目前处于捕获阶段，从祖先节点向目标节点传播的过程中</li>
+<li>2 表示事件达到目标节点，event.target 属性指向的那个节点</li>
+<li>3 表示事件冒泡阶段，从目标节点向祖先节点的反向传播过程中</li>
 </ul>
-<p>最后一个 Model 与数据库交互</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> model = &#123;</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 数据初始化逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">  fetch: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取数据</span></span><br><span class="line">  &#125;,</span><br><span class="line">  save: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// return promise 对象</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> controller = &#123;</span><br><span class="line">  view: <span class="literal">null</span>,</span><br><span class="line">  model: <span class="literal">null</span>,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params">view, model</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.view = view</span><br><span class="line">    <span class="keyword">this</span>.model = model</span><br><span class="line">    model.init()</span><br><span class="line">  &#125;,</span><br><span class="line">  .....</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">controller.init(view, model)</span><br></pre></td></tr></table></figure>
-<p>Model 和服务器交互，Model 将得到的数据交给 Controller，Controller 把数据填入 View，并监听 View。用户操作 View，比如点击按钮，Controller 就会接受到点击时间，Controller 这时会去调用 Model，Model 会与服务器交互，得到数据后返回给 Controller，Controller 得到数据就去更新 View。</p>
-<p>MVC ：职责分明，模块清晰，代码简单！😄</p>
-<p><img src="/images/mvc/1.png" alt="Model、View、Controller"></p>
+<h3 id="Event-cancelable、Event-cancelBubble、Event-defaultPrevented"><a href="#Event-cancelable、Event-cancelBubble、Event-defaultPrevented" class="headerlink" title="Event.cancelable、Event.cancelBubble、Event.defaultPrevented"></a>Event.cancelable、Event.cancelBubble、Event.defaultPrevented</h3><p>Event.cancelable 属性返回一个只读布尔值，表示事件是否可以取消。大多数浏览器的原生事件是可以取消的，比如 click 事件，点击链接将无效。如果事件不可以被取消，调用 Event.preventDefault() 无效。</p>
+<p>Event.cancelBubble 属性是一个布尔值，true 表示执行 Event.stopPropagation() 阻止事件的传播</p>
+<p>Event.defaultPrevented 属性返回一个只读布尔值，表示该事件是否可以调用过 Event.preventDefault 方法</p>
+<h3 id="Event-currentTarget、Event-target"><a href="#Event-currentTarget、Event-target" class="headerlink" title="Event.currentTarget、Event.target"></a>Event.currentTarget、Event.target</h3><p>Event.currentTarget 属性返回事件当前所在的节点，即正在执行的监听函数所绑定的那个节点</p>
+<p>Event.target 属性返回原始触发事件的那个节点，即事件最初发生的节点。事件的传播过程中，不同节点的监听函数内部的 Event.target 与 Event.currentTarget 属性的值是不一样的，前者总是变化的，后者则是指向监听函数所在的那个节点对象。</p>
+<h3 id="Event-type"><a href="#Event-type" class="headerlink" title="Event.type"></a>Event.type</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> Event(<span class="string">'foo'</span>)</span><br><span class="line">evt.type <span class="comment">// "foo"</span></span><br></pre></td></tr></table></figure>
+<h3 id="Event-timeStamp"><a href="#Event-timeStamp" class="headerlink" title="Event.timeStamp"></a>Event.timeStamp</h3><p>返回事件发生的毫秒时间戳</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> Event(<span class="string">'foo'</span>)</span><br><span class="line">evt.timeStamp <span class="comment">// 3658.333</span></span><br></pre></td></tr></table></figure>
+<p>它的返回值有可能是整数，也有可能是小数（高精度时间戳），取决于浏览器的设置</p>
+<p>下面是一个计算鼠标移动速度的例子，显示每秒移动的像素数量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> previousX, previousY, previousT</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'mousemove'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (previousX !== <span class="literal">undefined</span> &amp;&amp; previousY !== <span class="literal">undefined</span> &amp;&amp; previousT !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> deltaX = event.screenX - previousX</span><br><span class="line">    <span class="keyword">var</span> deltaY = event.screenY - previousY</span><br><span class="line">    <span class="keyword">var</span> deltaD = <span class="built_in">Math</span>.sqrt(deltaX**<span class="number">2</span> + deltaY**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">var</span> deltaT = event.timeStamp - previousT</span><br><span class="line">    <span class="built_in">console</span>.log(deltaD / deltaT * <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  previousX = event.screenX</span><br><span class="line">  previousY = event.screenY</span><br><span class="line">  previousT = event.timeStamp</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Event-isTrusted"><a href="#Event-isTrusted" class="headerlink" title="Event.isTrusted"></a>Event.isTrusted</h3><p>返回一个布尔值，表示事件是否由真实用户行为产生。比如用户点击链接就会产生一个 click 事件，该事件是用户产生的；Event 构造函数生产的事件则是由脚本产生。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> Event(<span class="string">'foo'</span>)</span><br><span class="line">evt.isTrusted <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h3 id="Event-detail"><a href="#Event-detail" class="headerlink" title="Event.detail"></a>Event.detail</h3><p>只有浏览器的 UI 事件才有 Event.detail。该属性返回一个数值，表示事件的某种信息。具体含义与事件类型相关。比如 对于 click 和 dblclick 事件，Event.detail 是鼠标按下的次数（1 表示单击，2 表示双击，3 表示三击）；对于鼠标滚轮事件，Event.detail 是滚轮正向滚动的距离，负值是负向滚动的距离，返回值总是 3 的倍数。</p>
+<h3 id="Event-stopPropagation"><a href="#Event-stopPropagation" class="headerlink" title="Event.stopPropagation()"></a>Event.stopPropagation()</h3><p>方法阻止事件在 DOM 中继续传播，防止再触发定义在别的节点上的监听函数，但是不包括在当前节点上其他的事件监听函数。如果要阻止当前节点上的事件监听函数用 Event.stopImmediatePropagation()</p>
+<h3 id="Event-stopImmediatePropagation"><a href="#Event-stopImmediatePropagation" class="headerlink" title="Event.stopImmediatePropagation()"></a>Event.stopImmediatePropagation()</h3><p>阻止同一个事件的其他监听函数被调用，不管监听函数定义在当前节点还是其他节点。也就是说，该方法阻止事件的传播，比 Event.stopPropagation() 更彻底。</p>
+<p>如果同一个节点对于同一个事件指定了多个监听函数，这些函数会根据添加的顺序依次调用。只要其中有一个监听函数调用了 Event.stopImmediatePropagation 方法，其他的监听函数就不会再执行了。</p>
+<h3 id="Event-composedPath"><a href="#Event-composedPath" class="headerlink" title="Event.composedPath()"></a>Event.composedPath()</h3><p>返回一个成员是事件的最底层节点和依次冒泡经过的所有上层节点的数组。</p>
 
   </div>
   
@@ -92,7 +94,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/25/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/27/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/25/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/27/">下一页&raquo;</a>
   </nav>
 
     </main>

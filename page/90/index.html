@@ -38,81 +38,43 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">SFTP 传输协议简介</h2>
+    <h2 class="title">JavaScript 导论</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-06 18:50:03</span>
+    <span class="post-time">2018-11-15 12:38:13</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SFTP/">SFTP</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本语言/">脚本语言</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h2 id="什么是-SFTP"><a href="#什么是-SFTP" class="headerlink" title="什么是 SFTP"></a>什么是 SFTP</h2><p>SFTP SSH 文件传输协议，与普通的文本传输协议 FTP 相比，SFTP 传输过程中用了加密/解密技术，效率比 FTP 传输要低得多。</p>
-<p><strong>它的优势是可以利用安全的连接传输文件</strong>，<strong>还能遍历本地和远端系统上的文件</strong>。</p>
-<h2 id="登录服务器"><a href="#登录服务器" class="headerlink" title="登录服务器"></a>登录服务器</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sftp username@remote_host_name_or_IP</span><br></pre></td></tr></table></figure>
-<p><code>!</code> 或 <code>exit</code> 或 <code>bye</code> 退出 SFTP</p>
-<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p>登录远端服务器后，这些 SFTP 命令 ～</p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pwd</td>
-<td>查看远端当前目录</td>
-</tr>
-<tr>
-<td>lpwd</td>
-<td>查看本地当前目录</td>
-</tr>
-<tr>
-<td>ls</td>
-<td>查看远端当前目录下的文件</td>
-</tr>
-<tr>
-<td>lls</td>
-<td>查看本地当前目录下的文件</td>
-</tr>
-<tr>
-<td>cd</td>
-<td>跳转到远端某个目录</td>
-</tr>
-<tr>
-<td>lcd</td>
-<td>跳转到本地某个目录</td>
-</tr>
-<tr>
-<td>mkdir</td>
-<td>创建远端目录</td>
-</tr>
-<tr>
-<td>lmkdir</td>
-<td>创建本地目录</td>
-</tr>
-<tr>
-<td>rm</td>
-<td>删除远端文件</td>
-</tr>
-<tr>
-<td>rmdir</td>
-<td>删除远端文件夹</td>
-</tr>
-<tr>
-<td>chmod、chown、chgrp</td>
-<td>修改文件权限</td>
-</tr>
-</tbody>
-</table>
-<p>远端命令前加小写字母 <code>l</code> 就是本地的命令。在 put / get 传输完文件，<code>lls</code>, <code>ls</code> 切换查看本地和远端文件传输情况。</p>
-<h2 id="传输文件到远端"><a href="#传输文件到远端" class="headerlink" title="传输文件到远端"></a>传输文件到远端</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">put local_file_name</span><br><span class="line">put -r local_dir</span><br><span class="line">reput local_file_name // 续传，帅</span><br></pre></td></tr></table></figure>
-<h2 id="下载文件到本地"><a href="#下载文件到本地" class="headerlink" title="下载文件到本地"></a>下载文件到本地</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">get remote_file_name</span><br><span class="line">get -r remote_dir</span><br><span class="line">reget remote_file_name // 续传，接着下载，好帅呀</span><br></pre></td></tr></table></figure>
-<p>基本上上面几个命令就够平常的操作了。</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="JavaScript-是一种轻量级的脚本语言"><a href="#JavaScript-是一种轻量级的脚本语言" class="headerlink" title="JavaScript 是一种轻量级的脚本语言"></a>JavaScript 是一种轻量级的脚本语言</h2><ul>
+<li><a href="http://www.yinwang.org/blog-cn/2013/03/29/scripting-language" target="_blank" rel="noopener">什么是“脚本语言”</a></li>
+<li><a href="https://www.zhihu.com/question/22220383" target="_blank" rel="noopener">什么是脚本语言？</a><ul>
+<li>Python 也是脚本语言，相对于 Python，JavaScript 是一种轻量级脚本语言。</li>
+<li>脚本语言比普通语言性能差</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/3e810a619e9f" target="_blank" rel="noopener">为什么说 Python 的性能差？</a></p>
+<ul>
+<li>是动态语言，编译器无法在编译的过程中获知变量的相关属性，导致无法优化</li>
+<li>虽然是解释执行，但是不支持 JIT</li>
+<li>一切都是对象，每个对象都需要维护引用计数，增加了额外的工作</li>
+<li><a href="http://cenalulu.github.io/python/gil-in-python/" target="_blank" rel="noopener">Python GIL</a>，Global Interpreter Lock</li>
+<li>垃圾回收，每次垃圾回收的时候都会中断正在执行的程序。<a href="https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&amp;mid=2650995396&amp;idx=1&amp;sn=3fc6f216fcf8f09232694b499da541c3" target="_blank" rel="noopener">据说 Instagram 禁用 GC 机制后，性能提升了 10%</a></li>
+</ul>
+<h2 id="JavaScript-也是一种嵌入式语言"><a href="#JavaScript-也是一种嵌入式语言" class="headerlink" title="JavaScript 也是一种嵌入式语言"></a>JavaScript 也是一种嵌入式语言</h2><p>核心算法不多，只能用来做一些数学和逻辑运算</p>
+<p>本身不提供任何于 I/O 相关的 API，都要靠宿主环境提供，所以 JavaScript 只合适嵌入更型的应用程序环境，去调用宿主环境提供的底层 API。</p>
+<p>常见的嵌入环境，浏览器或者服务器 Node 环境</p>
+<h2 id="JavaScript-是一种”对象模型”语言"><a href="#JavaScript-是一种”对象模型”语言" class="headerlink" title="JavaScript 是一种”对象模型”语言"></a>JavaScript 是一种”对象模型”语言</h2><p>各种宿主环境通过这个模型，描述自己的功能和操作接口，从而通过 JavaScript 控制这些功能。</p>
+<p>但是 JavaScript 并不是纯粹的“面向对象语言”，还支持七天编程范式（比如函数式编程）。</p>
+<p>JavaScript 的核心算法只包括两部分：基本语法构造 和标准库。除此之外，各种宿主环境提供额外的 API，比如浏览器提供的额外的 API 分为三大类：浏览器控制类用于操作浏览器， DOM 类用于操作网页的各种元素，Web 类用于实现互联网的各种功能。</p>
 
   </div>
   
@@ -120,7 +82,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/89/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="page-number" href="/page/89/">89</a><span class="page-number current">90</span><a class="page-number" href="/page/91/">91</a><a class="page-number" href="/page/92/">92</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/91/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/89/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="page-number" href="/page/89/">89</a><span class="page-number current">90</span><a class="page-number" href="/page/91/">91</a><a class="page-number" href="/page/92/">92</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/91/">下一页&raquo;</a>
   </nav>
 
     </main>

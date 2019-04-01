@@ -38,42 +38,51 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Text 节点和 DocumentFragment 节点</h2>
+    <h2 class="title">一个页面从输入 URL 到页面加载显示完成，这个过程中都发生了什么？</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-27 13:22:53</span>
+    <span class="post-time">2019-01-07 11:51:20</span>
     <span class="post-tags">
       
     </span>
     
+      <div class="article-category">分类：
+        <a class="article-category-link" href="/categories/面试题/">面试题</a>
+      </div>
+    
   </div>
   <div class="post-content">
-    <blockquote>
-<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
-</blockquote>
-<p>Text 节点代表元素节点和属性节点的文本内容。如果一个节点只包含一段文本，那么它就有一个文本子节点，代表该节点的文本内容。</p>
-<p>可以使用父节点的 firstChild、nextSibling 等属性获取文本节点<br>使用 Document.createTextNode 方法创造一个文本节点</p>
-<p>浏览器原生提供了一个 Text 构造函数，它返回一个文本节点实例。它的参数就是该文本节点的文本内容。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="keyword">new</span> Text(<span class="string">'I\'m a lovely Panda.'</span>)</span><br></pre></td></tr></table></figure>
-<p>文本节点继承了 Node 接口，还继承了 CharacterData 接口。</p>
-<h2 id="Text-节点的属性"><a href="#Text-节点的属性" class="headerlink" title="Text 节点的属性"></a>Text 节点的属性</h2><p>data 属性等同于 nodeValue 属性，用来设置或读取文本节点的内容。</p>
-<p>wholeText 属性将当前文本节点于毗邻的文本节点，作为一个整体返回。大多数情况下，wholeText 属性的返回值，与 data 属性和 textContext 属性相同。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"para"</span>&gt;</span></span><br><span class="line">  A <span class="tag">&lt;<span class="name">em</span>&gt;</span>B<span class="tag">&lt;/<span class="name">em</span>&gt;</span> C</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这时候的 wholeText 属性和 data 属性返回值相同</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.getElementById(<span class="string">'para'</span>);</span><br><span class="line">el.firstChild.wholeText <span class="comment">// "A "</span></span><br><span class="line">el.firstChild.data <span class="comment">// "A "</span></span><br></pre></td></tr></table></figure>
-<p>但是一旦移除 em 节点，wholeText 属性与 data 属性就会有差异，因为这时其实 p 节点下面包含了两个毗邻的文本节点</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">el.removeChild(para.childNodes[<span class="number">1</span>]);</span><br><span class="line">el.firstChild.wholeText <span class="comment">// "A C"</span></span><br><span class="line">el.firstChild.data <span class="comment">// "A "</span></span><br></pre></td></tr></table></figure>
-<p>length、nextElementSibling、previousElementSibling </p>
-<p>appendData() 在 Text 节点后追加字符串、deleteData() 删除 Text 节点内部的子字符串，第一个参数为子字符串，第二个参数为子字符串的长度、insertData() 在 Text 节点插入字符串，第一个参数为插入的位置，第二个参数为插入的子字符串、replaceData() 用于替换文本，第一个参数为替换开始位置，第二个参数为需要被替换掉的长度，第三个参数为新加入的字符串、subStringData() 用于获取子字符串，第一个参数为子字符串在 Text 节点的开始位置，第二个参数为子字符串长度：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码为</span></span><br><span class="line"><span class="comment">// &lt;p&gt;Hello World&lt;/p&gt;</span></span><br><span class="line"><span class="keyword">var</span> pElementText = <span class="built_in">document</span>.querySelector(<span class="string">'p'</span>).firstChild;</span><br><span class="line"></span><br><span class="line">pElementText.appendData(<span class="string">'!'</span>);</span><br><span class="line"><span class="comment">// 页面显示 Hello World!</span></span><br><span class="line">pElementText.deleteData(<span class="number">7</span>, <span class="number">5</span>);</span><br><span class="line"><span class="comment">// 页面显示 Hello W</span></span><br><span class="line">pElementText.insertData(<span class="number">7</span>, <span class="string">'Hello '</span>);</span><br><span class="line"><span class="comment">// 页面显示 Hello WHello</span></span><br><span class="line">pElementText.replaceData(<span class="number">7</span>, <span class="number">5</span>, <span class="string">'World'</span>);</span><br><span class="line"><span class="comment">// 页面显示 Hello WWorld</span></span><br><span class="line">pElementText.substringData(<span class="number">7</span>, <span class="number">10</span>); </span><br><span class="line"><span class="comment">// 页面显示不变，返回"World "</span></span><br></pre></td></tr></table></figure>
-<p>remove() 移除当前 Text 节点</p>
-<p>splitText() 将 Text 节点一分为二，变成两个毗邻的 Text 节点。它的参数就是分割位置（从零开始），分割到该位置的字符前结束。。如果分割位置不存在，就报错。分割后，该方法返回分割位置后方的字符串，而原 Text 节点变成只包含分割位置前方的字符串。父元素的节点的 normalize 方法可以将两个毗邻的 Text 节点河北。</p>
-<h2 id="DocumentFragment-节点"><a href="#DocumentFragment-节点" class="headerlink" title="DocumentFragment 节点"></a>DocumentFragment 节点</h2><p>DocumentFragment 节点代表一个文档片段，本身就是一个完整的 DOM 树形结构。它没有父节点，parentNode 为 null，但是可以插入任意数量的子节点。它不属于当前文档。操作 DocumentFragment 节点要比直接操作 DOM 数快得多。</p>
-<p>它一般用于构建一个 DOM 结构，然后插入到当前文档。document.createDocumentFragment 方法以及浏览器原生的 DocumentFragment 构造函数，可以创建一个空的 DocumentFragment 节点。然后再使用其他 DOM 方法，向其添加子节点。</p>
-<p>DocumentFragment 节点本身不能被插入当前文档。当它作为 appendChild()、insertBefore()、replaceChild() 等方法的参数时，是它的所有子节点插入当前文档，而不是它自身。一旦 DocumentFragment 节点被添加进文档，它自身就变成了空节点（textContent 属性为空字符串），可以被再次使用。如果想要保存 DocumentFragment 节点的内容，可以使用 cloneNode 方法。</p>
-<p>DocumentFragment 反转一个指定节点的所有子节点的顺序</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> f = <span class="built_in">document</span>.createDocumentFragment();</span><br><span class="line">  <span class="keyword">while</span>(n.lastChild) f.appendChild(n.lastChild);</span><br><span class="line">  n.appendChild(f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>DocumentFragment 节点对象么有自己的属性和方法，全部继承自 Node 节点和 ParentNode 接口。也就是说 DocumentFragement 节点比 Node 节点多了四个属性：children、firstElementChild、lastElementChild、childElementCount。</p>
+    <p><img src="/images/url-view/tcp.png" alt></p>
+<p>第一步：根据域名进行 DNS 解析到 IP 地址</p>
+<p>第二步：根据 IP 地址向服务器发起 TCP 连接，与浏览器进行三次握手：</p>
+<ul>
+<li>主机向服务器发送一个建立连接的请求</li>
+<li>服务器接到请求后发送同意连接的信号</li>
+<li>主机到同意连接的信号后，再次向服务器发送了确认信号</li>
+</ul>
+<p>第三步：发送 HTTP 请求，请求报文包括三部分：请求行、请求头和请求正文</p>
+<p>第四步：服务器处理请求并返回 HTTP 响应报文，响应报文包括三部分：响应状态码、响应报头和响应报文。</p>
+<p>如果该资源浏览器访问过，而且该资源的 response header 的 cache-control 有效时间内，就不再访问服务器，而是直接从本地读取，如果没有 cache-control 而有 expires，而且本地时间在 expires 时间之前，也不再访问服务器，也是直接从本地读取。expires 和 cache-control，cache-control 优先级更高，所以先访问 cache-control，它俩是 HTTP 强缓存。</p>
+<p>如果 HTTP 强缓存都已经失效，则访问协商缓存，浏览器会携带缓存标识 Etag 和 Last-Modified 发送请求，如果 If-None-Match 值与浏览器携带的 Etag 值一致则返回 304，不用再请求服务器资源，缓存有效。如果失效，则看 Last-Modified-Sine 与浏览器携带的 Last-Modified 是否一致，如果一致，则返回 304 不再请求服务器资源。</p>
+<p>第五步：解析并渲染页面</p>
+<ul>
+<li>HTML 开始构建一个 DOM 树</li>
+<li>如果遇到的 DOM 节点是 JavaScript 代码，就会调用 JavaScript 引擎对 JavaScript 代码进行解释执行，此时由 JavaScript 引擎和 GUI 渲染线程的互斥，GUI 渲染线程就会被挂起，渲染过程停止；如果 JavaScript 代码的运行中对 DOM 树进行了修改，那么 DOM 的构建需要从新开始</li>
+<li>如果节点需要依赖其他资源，如（图片，CSS等），便会调用网络模块的资源加载器来加载它们，但它们是异步的，不会阻塞当前DOM树的构建</li>
+<li>如果遇到的是 JavaScript 资源 URL（没有标记异步），则需要停止当前 DOM 的构建，直到 JavaScript 的资源加载并被 JavaScript 引擎执行后才能继续构建 DOM</li>
+<li>对于 CSS，CSS 解释器会将 CSS 文件解释成内部表示结构，生成 CSS 规则树；</li>
+<li>然后合并 CSS 规则树和 DOM 树，生成渲染树</li>
+<li>最后对渲染树树进行布局和绘制</li>
+</ul>
+<p>第六步：通过四次挥手关闭 TCP：</p>
+<ul>
+<li>主机向服务器发送一个断开的请求</li>
+<li>服务器接到请求后发送确认收到请求的信号</li>
+<li>服务器向主机发送断开通知</li>
+<li>主机接到断开通知后断开连接并反馈一个确认信号，服务器收到取人信号后断开连接。</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p><a href="http://fex.baidu.com/blog/2014/05/what-happen/" target="_blank" rel="noopener">从输入 URL 到页面加载完成的过程中都发生了什么事情？</a><br><a href="https://blog.fundebug.com/2019/02/28/what-happens-from-url-to-webpage/" target="_blank" rel="noopener">经典面试题：从 URL 输入到页面展现到底发生什么？
+</a></p>
 
   </div>
   
@@ -81,7 +90,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/34/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/36/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/34/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="page-number" href="/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/36/">下一页&raquo;</a>
   </nav>
 
     </main>

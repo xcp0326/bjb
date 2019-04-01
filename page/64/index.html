@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Object 对象</h2>
+    <h2 class="title">Array 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-26 23:48:43</span>
+    <span class="post-time">2018-11-28 14:23:08</span>
     <span class="post-tags">
       
     </span>
@@ -51,44 +51,25 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>JavaScript 的所有其他对象都是继承自 Object 对象的，即所有对象都是 Object 的实例。</p>
-<p>Object 对象的原生方法分成两类：Object 本身的方法与 Object 的实例方法。</p>
-<p><strong>Object 对象本身的方法</strong> 就是定义在 Object 对象上的方法，又称为静态方法。</p>
-<p><strong>Object 的实例方法</strong> 就是定义在 Object.prototype 上的方法，又称为实例方法。</p>
-<h2 id="Object-函数"><a href="#Object-函数" class="headerlink" title="Object 函数"></a>Object 函数</h2><p>Object 本身也是一个函数，可以当作工具方法使用，将任意值转为对象。如果参数为空（或者 undefined 和 null），Object() 返回一个空对象。</p>
-<p>如果参数是一个原始类型的值，Object 方法将其转换为对应的包装对象的实例</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>(<span class="number">1</span>)</span><br><span class="line">obj <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">obj <span class="keyword">instanceof</span> <span class="built_in">Number</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>如果参数是一个对象，直接返回这个对象</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> value === <span class="built_in">Object</span>(value)</span><br><span class="line">&#125;</span><br><span class="line">isObject([]) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<h2 id="Object-构造函数"><a href="#Object-构造函数" class="headerlink" title="Object 构造函数"></a>Object 构造函数</h2><p>Object 不仅可以当作工具函数使用，还可以当作构造函数使用。</p>
-<p>传入参数的用法和 Object 函数式一样的，如果是对象则直接返回对象，如果是原始类型则返回该类型的包装对象。</p>
-<p>不够虽然用法相同，但是 Object(value) 与 new Object(value) 两者的语义是不同的，Object(value) 表示将 value 转换为对象，new Object(value) 则是表示新生成一个对象，它的值是 value。</p>
-<h2 id="Object-的静态方法"><a href="#Object-的静态方法" class="headerlink" title="Object 的静态方法"></a>Object 的静态方法</h2><h3 id="Object-keys-、Object-getOwnPropertyNames"><a href="#Object-keys-、Object-getOwnPropertyNames" class="headerlink" title="Object.keys()、Object.getOwnPropertyNames()"></a>Object.keys()、Object.getOwnPropertyNames()</h3><p>Object.keys 和 Object.getOwnerPropertyNames 方法都是用来遍历对象的属性的。</p>
-<p>Object.keys 方法遍历某个对象自身的可枚举的属性名，返回属性名的数组</p>
-<p>Object.getOwnerPropertyNames 方法则是遍历某个对象自身的属性名，包括不可枚举的属性名，返回这些属性名的数组。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.keys([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">// [ '0', '1' ]</span></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyNames([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">// [ '0', '1', 'length' ]</span></span><br></pre></td></tr></table></figure>
-<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><h4 id="对象属性模型相关方法"><a href="#对象属性模型相关方法" class="headerlink" title="对象属性模型相关方法"></a>对象属性模型相关方法</h4><p>Object.getOwnPropertyDescriptor()：获取某个属性的描述对象</p>
-<p>Object.defineProperty()：通过描述对象，定义某个属性</p>
-<p>Object.defineProperties()：通过描述对象，定义多个属性</p>
-<h4 id="控制对象状态的方法"><a href="#控制对象状态的方法" class="headerlink" title="控制对象状态的方法"></a>控制对象状态的方法</h4><p>Object.preventExtensions()： 防止对象扩展</p>
-<p>Object.isExtensible()：判断对象是否可以扩展</p>
-<p>Object.seal()：禁止对对象进行配置</p>
-<p>Object.isSealed()：判断一个对象是否可配置</p>
-<p>Object.freeze()：冻结一个对像</p>
-<p>Object.isFrozen()：判断一个对象是否被冻结</p>
-<h4 id="原型链想法方法"><a href="#原型链想法方法" class="headerlink" title="原型链想法方法"></a>原型链想法方法</h4><p>Object.create()：传入参数指定原型对象和属性，返回一个新对象</p>
-<p>object.getPrototypeOf()：获取对象的 Prototype 对象</p>
-<h2 id="Object-的实例方法"><a href="#Object-的实例方法" class="headerlink" title="Object 的实例方法"></a>Object 的实例方法</h2><h3 id="Object-prototype-valueOf"><a href="#Object-prototype-valueOf" class="headerlink" title="Object.prototype.valueOf()"></a>Object.prototype.valueOf()</h3><p>返回当前对象对应的值，默认情况下返回对象本身。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">obj.valueOf() === obj <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>valueOf 的主要用途是 JavaScript 自动类型转换时候会调用这个方法。</p>
-<h3 id="Object-prototype-toString"><a href="#Object-prototype-toString" class="headerlink" title="Object.prototype.toString()"></a>Object.prototype.toString()</h3><p>一般情况下，都是返回当前对象的字符串形式  “[object Object]”。数组、字符串、函数、Date 对象都有自己的 toString 方法，覆盖了 Object.prototype.toString() 方法，它们并不回返回 “[object Object]”</p>
-<p>toString 方法会返回对象的类型字符串，可以用来判断一个值的类型。值有自带的 toString 方法，所以这里通过 call 调用 Object.prototype.toString 方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">2</span>) <span class="comment">// "[object Number]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="string">''</span>) <span class="comment">// "[object String]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">true</span>) <span class="comment">// "[object Boolean]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">undefined</span>) <span class="comment">// "[object Undefined]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">null</span>) <span class="comment">// "[object Null]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="built_in">Math</span>) <span class="comment">// "[object Math]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(&#123;&#125;) <span class="comment">// "[object Object]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call([]) <span class="comment">// "[object Array]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="regexp">/[a-z]/</span>) <span class="comment">// "[object RegExp]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()) <span class="comment">// "[object Date]"</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="built_in">Date</span>) <span class="comment">// "[object Function]"</span></span><br></pre></td></tr></table></figure>
-<h3 id="Object-prototype-toLocaleString"><a href="#Object-prototype-toLocaleString" class="headerlink" title="Object.prototype.toLocaleString()"></a>Object.prototype.toLocaleString()</h3><p>返回当前对象对应的本地字符串形式。数组，数值，日期的实例对象重写了 toLocaleString 方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">date.toString()</span><br><span class="line"><span class="comment">// 'Mon Nov 26 2018 23:45:27 GMT+0800 (China Standard Time)'</span></span><br><span class="line">date.toLocaleString()</span><br><span class="line"><span class="comment">// '11/26/2018, 11:45:27 PM'</span></span><br></pre></td></tr></table></figure>
-<p>Object.prototype.hasOwnProperty() 判断某个属性是否为当前对象自身的属性</p>
-<p>Object.prototype.isPrototypeOf() 判断当前对象是否为另一个对象的原型</p>
-<p>Object.prototype.propertyIsEnumerable() 判断某个属性是否可枚举</p>
+<p>Array 是 JavaScript 的原生对象，同时也是一个构造函数，可以用它生成新的数组。可以省略前面的 new 命令。</p>
+<p>如果参数是一个正整数，返回数组的成员都是空位。虽然读取的时候返回都是 undefined，其实该位置上并没有任何值。虽然可以取到 length 属性，但取不到键值。</p>
+<p>Array.prototype.valueOf 方法返回数组本身，而 Array.prototype.toString 方法返回的是数组的字符串形式。</p>
+<p>Array.prototype.push 方法在数组末端添加一个或多个元素，并返回数组的长度，它会改变原数组</p>
+<p>Array.prototype.pop 方法删除数组最后一个元素，并返回该元素，它会改变原数组，对空数组使用 pop 方法，不报错会返回 undefined。pop 方法可以遍历并清空数组。</p>
+<p>Array.prototype.shift 方法删除数组第一个元素，并返回这个元素，它会改变原数组。shift 方法可以遍历并清空一个数组。</p>
+<p>Array.prototype.unshift 方法在数组起始位置添加一个或者多个元素，并返回添加新元素后的数组长度，它会改变原数组。</p>
+<p>Array.prototype.join 方法以指定参数作为分隔符，将所有数组成员连接成一个字符串返回。如果不提供参数，默认用逗号分隔。数组成员是 undefined、null 或者空位，会转成空字符串。通过 call 方法，join 方法也可以用字符串或类似数组的对象。</p>
+<p>Array.prototype.concat 方法合并多个数组，将新数组成员添加到原数组成员的后面，返回返回一个新的数组，原数组不变。<br>concat 也接受其他类型的值作为参数，添加到目标数组的尾部，比如字符串，对象，二维数组等。<br>如果数组成员包括对象，concat 方法返回当前数组的一个浅拷贝，也就是新数组拷贝的是对象的引用。</p>
+<p>Array.prototype.reverse 反转数组，返回反转后的数组，它会改变原数组。</p>
+<p>Array.prototype.slice 提取目标数组的一部分，返回一个新数组，原数组不变。<br>第一个参数是起始位置，默认为 0。第二个参数是终止位置（不包括该位置的元素本身），默认为数组长度。如果省略第二个参数，则一直返回到原数组的最后一项。<br>参数可以负数，表示倒数计时的位置。<br>如果第一个参数大于等于数组长度，或者第二个参数小于第一个参数，则返回空数组。<br>slice 的一个重要应用，是将类数组转为数组。</p>
+<p>Array.prototype.splice 用于删除原数组的一部分成员，可以同时在删除的位置添加新的数组成员，返回值是被删除的元素组成的数组，它会改变原数组。<br>splice 的第一个参数是删除的起始位置（从 0 开始），第二个参数是被删除的元素的个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。<br>如果第二个参数设为 0，则不删除元素。<br>如果提供了一个参数，则等同于将原数组拆分成两个数组。如果这个参数为 0，则会清空这个数组。</p>
+<p>Array.prototype.sort 默认按照各个字符（数字会被转换为字符串）的 Unicode 码点顺序原地排序数组，它会改变原数组。<br>sort 方法传入一个函数作为参数，调用这个函数，按照函数的返回值进行排序。如果返回值小于 0，第一个元素排在前面，如果大于 0，第一个元素排在后面。如果比较的是数字，函数返回升序是 a - b，降序为 b - a。String.prototype.localCompare<br>使用映射改善排序</p>
+<p>Array.prototype.map 方法执行指定的函数（map 第一个参数），函数按照指定的上下文（map 的第二个参数）调用，返回一个执行完后了的新数组。</p>
+<p>Array.prototype.filter 方法过滤出来符合参数函数的数组成员组成一个新的数组。</p>
+<p>Array.prototype.some，Array.prototype.every 类似断言，返回布尔值，表示判断数组成员是否符号条件。some 只要有一些事符合条件就是 true，every 是所有都要符合条件才能返回 true。</p>
+<p>Array.prototype.reduce，Array.prototype.reduceRight 方法依次处理数组的每个成员，最终累计为一个值。<br>四个参数分别为：<br>1、累计的变量，默认为数组的第一个成员<br>2、当前变量，默认为数组的第二个成员，如果累计的变量设置了初始值，当前变量就从数组的第一个成员开始<br>3、可选参数 - 前位置，从 0 开始<br>4、可选参数 - 原数组<br>如果是空数组，累计的变量初始值必须传，否则报错。<br>这两个方法是遍历数组的方法，所以实际上也还可以做一些遍历相关的操作。比如 找出字符长度最长的数组成员。</p>
+<p>Array.prototype.indexOf, Array.prototype.lastIndexOf 找出数组中从指定位置（可选第二个参数，默认为 0）找到给定元素（第一个参数）的位置，如果没有返回 -1。内部是用的严格相等来索引的，NaN 不等于自身，不能用来搜索 NaN。</p>
+<p>这些方法中，有 map 返回执行完 callback 后的一个新的数组，filter 返回符合某个条件的成员组成的新数组，sort 返回原地排序好了的数组，slice 切出来的新数组，splice 是执行了删除元素后的元素组成的数组（没有删除只有插入就返回空数组），reverse 反转后的数组，concat 合并后的新数组。因为它们返回的都是数组，可以对它们的返回值再接着进行其他方法操作，可以链式使用。</p>
 
   </div>
   
@@ -96,7 +77,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/63/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="page-number" href="/page/63/">63</a><span class="page-number current">64</span><a class="page-number" href="/page/65/">65</a><a class="page-number" href="/page/66/">66</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/65/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/63/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/62/">62</a><a class="page-number" href="/page/63/">63</a><span class="page-number current">64</span><a class="page-number" href="/page/65/">65</a><a class="page-number" href="/page/66/">66</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/65/">下一页&raquo;</a>
   </nav>
 
     </main>

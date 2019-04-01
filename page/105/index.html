@@ -38,37 +38,29 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">服务器迁移相关知识点</h2>
+    <h2 class="title">Mac 下安装 virtualenv</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-01-10 15:45:37</span>
+    <span class="post-time">2018-05-18 12:06:06</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器迁移/">服务器迁移</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/virtualenv/">virtualenv</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h3 id="服务器进程"><a href="#服务器进程" class="headerlink" title="服务器进程"></a>服务器进程</h3><ul>
-<li>pstree<ul>
-<li>tmux</li>
-<li>crontab</li>
-<li>nginx</li>
-<li>supervisor</li>
+    <h3 id="第一步-pip-运行安装："><a href="#第一步-pip-运行安装：" class="headerlink" title="第一步 pip 运行安装："></a>第一步 pip 运行安装：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>如果报错：<br>matplotlib 1.3.1 requires nose, which is not installed.<br>matplotlib 1.3.1 requires tornado, which is not installed.<br>如果不想安装 matplotlib，可以：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -H pip install --ignore-install matplotlib virtualenv</span><br><span class="line">sudo -H pip install --ignore-install matplotlib virtualenvwrapper</span><br></pre></td></tr></table></figure></p>
+<h3 id="第二步-找到virtaulenvwrapper-sh的位置"><a href="#第二步-找到virtaulenvwrapper-sh的位置" class="headerlink" title="第二步 找到virtaulenvwrapper.sh的位置"></a>第二步 找到virtaulenvwrapper.sh的位置</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">which virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+<h3 id="第三步-修改bash启动文件-bash-profile"><a href="#第三步-修改bash启动文件-bash-profile" class="headerlink" title="第三步 修改bash启动文件.bash_profile"></a>第三步 修改bash启动文件.bash_profile</h3><p>在.bash_profile的最后加入：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export WORKON_HOME=$HOME/.virtaulenvs</span><br><span class="line">source /user/local/bin/virtualenvwrapper.sh</span><br></pre></td></tr></table></figure></p>
+<h3 id="题外："><a href="#题外：" class="headerlink" title="题外："></a>题外：</h3><p>如果bash安装了oh my zsh，把上面俩行代码写入到 .zshrc</p>
+<ul>
+<li>.bash_profile 是用户登录会被读的</li>
+<li>.bashrc 是用户不登录也会被读的</li>
+<li>.zshrc 是用户登录、不登录都会被读的</li>
 </ul>
-</li>
-</ul>
-<h3 id="rsync-–rsync-path-’xxxx’-avz-file-ssh-server-path"><a href="#rsync-–rsync-path-’xxxx’-avz-file-ssh-server-path" class="headerlink" title="rsync –rsync-path=’xxxx’ -avz file ssh-server:/path/"></a>rsync –rsync-path=’xxxx’ -avz file ssh-server:/path/</h3><h3 id="aws"><a href="#aws" class="headerlink" title="aws"></a>aws</h3><ul>
-<li>安全组 ssh登录22端口没开</li>
-<li>ssh -vvv ssh log</li>
-</ul>
-<h3 id="bash-read-file"><a href="#bash-read-file" class="headerlink" title="bash read file"></a>bash read file</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for i in `cat file.txt`</span><br><span class="line">  do</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><ul>
-<li>mysqldump databases a &gt; a.sql</li>
-<li>mysql &lt; a.sql</li>
-<li>mysqldump –all-database &gt; all.sql</li>
-</ul>
+<h2 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h2><p><a href="https://www.binss.me/blog/install-virtualenv-and-virtualenvwrapper-on-mac/" target="_blank" rel="noopener">Mac 下安装 virtualenv</a><br><a href="https://ruby-china.org/topics/20381" target="_blank" rel="noopener">.bashrc、.bash_profile 和 .zshrc</a></p>
 
   </div>
   
@@ -76,7 +68,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/104/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/103/">103</a><a class="page-number" href="/page/104/">104</a><span class="page-number current">105</span><a class="page-number" href="/page/106/">106</a><a class="page-number" href="/page/107/">107</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/106/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/104/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/103/">103</a><a class="page-number" href="/page/104/">104</a><span class="page-number current">105</span><a class="page-number" href="/page/106/">106</a><a class="page-number" href="/page/107/">107</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/106/">下一页&raquo;</a>
   </nav>
 
     </main>

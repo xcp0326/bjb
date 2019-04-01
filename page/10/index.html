@@ -38,90 +38,91 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">this 关键字</h2>
+    <h2 class="title">理解函数式编程</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-03-04 12:44:24</span>
+    <span class="post-time">2019-03-07 12:45:38</span>
     <span class="post-tags">
       
     </span>
     
   </div>
   <div class="post-content">
-    <blockquote>
-<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'姓名：'</span> + <span class="keyword">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">person.describe(); <span class="comment">// "姓名：张三"</span></span><br></pre></td></tr></table></figure>
-<p>this.name 是在 describe 中调用，而 describe 方法所在的当前对象是 person，因此 this.name 就是 person.name。</p>
-<p>对象的属性是可以赋值给其他对象的，所以属性所在的当前对象是可变的，即 this 的指向是可变的。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> A = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'姓名：'</span>+ <span class="keyword">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> B = &#123;</span><br><span class="line">  name: <span class="string">'李四'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">B.describe = A.describe;</span><br><span class="line">B.describe()</span><br><span class="line"><span class="comment">// "姓名：李四"</span></span><br></pre></td></tr></table></figure>
-<p>A.describe 属性被赋值给了 B，于是 B.describe 就表示 describe 方法所在的当前对象 B，所有 this.name 指向的是 B.name</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'姓名：'</span>+ <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> A = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: f</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> B = &#123;</span><br><span class="line">  name: <span class="string">'李四'</span>,</span><br><span class="line">  describe: f</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">A.describe() <span class="comment">// "姓名：张三"</span></span><br><span class="line">B.describe() <span class="comment">// "姓名：李四"</span></span><br></pre></td></tr></table></figure>
-<p>只要函数赋值给另外一个变量，this 的指向就会被改变。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> A = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'姓名：'</span>+ <span class="keyword">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'李四'</span>;</span><br><span class="line"><span class="keyword">var</span> f = A.describe;</span><br><span class="line">f() <span class="comment">// "姓名：李四"</span></span><br></pre></td></tr></table></figure>
-<h3 id="为何会存在-this"><a href="#为何会存在-this" class="headerlink" title="为何会存在 this"></a>为何会存在 this</h3><p>JavaScript 语言之所以有 this 的设计，跟内存里面的数据结构有关系。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
-<p>上面的代码将一个对象赋值给变量 obj。JavaScript 引擎会先在内存里面，生成一个对象 <code>{foo:5}</code> ，然后把这个对象的内存地址赋值给 obj。也就是说，变量 obj 是一个地址，一个引用。后面如果要读取 <code>obj.foo</code>，引擎先从 obj 拿到 内存地址，然后再从该地址读出原始的对象，返回它的 foo 属性。</p>
-<p>原始的对象以字典结构保存，每一个属性名都对应一个属性描述对象。举例来说，上面例子的 foo 属性，实际上是一下面的形式保存：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  foo: &#123;</span><br><span class="line">    [[value]]: <span class="number">5</span>,</span><br><span class="line">    [[writable]]: <span class="literal">true</span>,</span><br><span class="line">    [[enumberable]]: <span class="literal">true</span>,</span><br><span class="line">    [[configurable]]: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>foo 属性的值保存在属性描述对象的 value 属性里面。</p>
-<p>如果属性的值是一个函数了？</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">foo</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;&#125;;</span><br></pre></td></tr></table></figure>
-<p>这时，引擎会将函数单独保存在内存中，然后将函数的内存地址赋值给 foo 属性的 value 属性。</p>
-<p>函数可以在不同的运行环境中执行，所以需要有一种机制，能够在函数体内部获得当前的运行环境 context。所以 this 就出现了，它的设计目的就是在函数体内部，指代函数当前的运行环境。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  f: f,</span><br><span class="line">  x: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">f() <span class="comment">// 1</span></span><br><span class="line">obj.f() <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>🤔 那和 python 的 self 一样吗？ <a href="https://docs.python.org/3/tutorial/classes.html" target="_blank" rel="noopener">Classes</a><br>self 出现在 class 中。一般 class 所有的实例方法的第一个参数都命名为 self，并指向实例化后 class 的实例。</p>
-</blockquote>
-<h3 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h3><ol>
-<li><p>指代全局环境</p>
-</li>
-<li><p>构造函数内部，指代实例化的对象</p>
-</li>
-<li><p>对象的方法内的 this 指代这个对象<br>但是，下面几种用法，会改变 this 的指向：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(obj.foo = obj.foo)() <span class="comment">// window</span></span><br><span class="line">(<span class="literal">false</span> || obj.foo)() <span class="comment">// window</span></span><br><span class="line">(<span class="number">1</span>, obj.foo)() <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
-<p>obj.foo 就是一个值。这个值真正调用的时候，运行环境已经不是 obj 了，而是全局环境，所以 this 不再指向 obj。</p>
-<p>可以这样理解，JavaScript 引擎内部，obj 和 obj.foo 储存在两个内存地址，称为地址一和地址而。<code>obj.foo()</code> 这样调用时，是从地址一调用地址二，因此地址二的运行环境是地址一，this 指向 obj。但是，上面三种情况，都是直接去除地址二进行调用，这样的话，运行环境就是全局环境，因此 this 指向全局环境。</p>
-</li>
+    <h3 id="面向对象的历史"><a href="#面向对象的历史" class="headerlink" title="面向对象的历史"></a>面向对象的历史</h3><p>1950 年 MIT 实验室 谈论 objects 和 oriented 等技术名词。ALGOL 语言。</p>
+<p>1960 年 Simula，类、对象、继承、动态绑定</p>
+<p>1970 受 Simula 启发 Smalltalk 出现，Lisp 又受到 Smalltalk 影响，也接纳面向对象思想，出现了 Flavors （mixin）、CommonLoops（多继承）、又导致了 Common Lisp 对象系统出现。可以看出来<strong>面向对象和函数式不是对立的</strong></p>
+<p>1981 年 Adele Goldberg 撰文将 Smalltalk 和面向对象编程推广给更多的人<br>1986 年 第一届 面向对象编程峰会，后来 C++、Object-C 出现</p>
+<p>1990 年 面向对象广泛接纳，甚至成为主流编程思想，尤其是用户编程领域。事件驱动编程在它的带领下也变得流行（Nodejs 就是事件驱动语言）<br>一些原本不支持面向对象的语言也引入面向对象（BASIC、Pascal），并引发了一些问题<br>一些从一开始就支持面向对象、也支持以前过程式编程的语言被发明出来，如 Python 和 Ruby<br>最重要的商业化面向对象语言是 Sun 公司开发的 Java 语言，以及微软开发的 C# 和 VB.NET</p>
+<p>从这些历史可以看出面向对象是一种思潮，并没有明确定义。比较公认的面向对象语言是 Smalltalk、C#、VB.NET。</p>
+<h3 id="面向对象语言的分类"><a href="#面向对象语言的分类" class="headerlink" title="面向对象语言的分类"></a>面向对象语言的分类</h3><ul>
+<li>纯面向对象语言：一切都是对象、包括数字、字符串也是对象，Python、Ruby、Scala、Smalltalk</li>
+<li>完全支持面向对象，也支持过程式，Java、C++、C#</li>
+<li>本来不支持，后来加上的，PHP、Perl</li>
+<li>看起来像面向对象，但没有完全使用面向对象的：JavaScript（基于原型模拟面向对象）、Lua</li>
+<li>其他</li>
+</ul>
+<p>设计模式是指对于某个广泛出现的问题提出适用性广、可复用的解决方法。</p>
+<p>面向对象缺点：复用性和模块化并不一定能达到预期目标、过份强调模型，忽略了计算和算法。</p>
+<h3 id="对象间的交互也就是消息传递"><a href="#对象间的交互也就是消息传递" class="headerlink" title="对象间的交互也就是消息传递"></a>对象间的交互也就是消息传递</h3><p>比如 person.cut(‘jj’) 是指：</p>
+<ul>
+<li>给 person 对象发送一个 cut 消息</li>
+<li>person 对象会响应这个消息</li>
+</ul>
+<p>然后我们用 smalltalk 翻译一下：</p>
+<figure class="highlight smalltalk"><table><tr><td class="code"><pre><span class="line">person cut: <span class="string">'jj'</span></span><br><span class="line">person cut: <span class="string">'jj'</span>; cut: <span class="string">'hands'</span></span><br></pre></td></tr></table></figure>
+<p>可以看出来第一句意思为 person 切 jj，第二句意思为 person 切 jj，剁 hands。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">person.cut(<span class="string">'jj'</span>)</span><br><span class="line">person.cut(<span class="string">'hands'</span>)</span><br></pre></td></tr></table></figure>
+<p>在 JavaScript 里 person.cut 是指 person 拥有了 cut。在 smalltalk 里是 person 说了一句 cut ‘jj’，说了两句话 cut jj、cut hands。你跟我说了一句话，然后我回复给你一句话。</p>
+<p>面向对象的核心就是对象与对象之间的交互（消息传递），如下图：</p>
+<p><img src="/images/smalltalk.png" alt></p>
+<p>总结为：</p>
+<ol>
+<li>对象维护自己的状态和生命周期</li>
+<li>每个对象独立</li>
+<li>对象和对象之间通过消息传递来工作</li>
 </ol>
-<p>严格模式下，修改对象的方法内的 this 指向，会报错。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> couner = &#123;</span><br><span class="line">  count: <span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line">counter.inc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  <span class="keyword">this</span>.count++</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> f = counter.inc;</span><br><span class="line">f();</span><br><span class="line"><span class="comment">// TypeError: Cannot read property 'count' of undefined</span></span><br></pre></td></tr></table></figure>
-<h3 id="绑定-this-的方法"><a href="#绑定-this-的方法" class="headerlink" title="绑定 this 的方法"></a>绑定 this 的方法</h3><h4 id="Function-prototype-call"><a href="#Function-prototype-call" class="headerlink" title="Function.prototype.call()"></a>Function.prototype.call()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">func.call(thisValue, arg1, arg2, ...)</span><br></pre></td></tr></table></figure>
-<p>call 方法的一个应用是调用对象的原生方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line">obj.hasOwnProperty(<span class="string">'toString'</span>); </span><br><span class="line">obj.hasOwnProperty = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">obj.hasOwnProperty(<span class="string">'toString'</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.hasOwnProperty.call(obj, <span class="string">'toString'</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<h4 id="Function-prototype-apply"><a href="#Function-prototype-apply" class="headerlink" title="Function.prototype.apply()"></a>Function.prototype.apply()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">func.apply(thisValue, [arg1, arg2, ...])</span><br></pre></td></tr></table></figure>
-<p>call 方法中原函数的参数需要一个一个添加，apply 中类数组形式传入。</p>
-<h5 id="找出数组中最大的元素"><a href="#找出数组中最大的元素" class="headerlink" title="找出数组中最大的元素"></a>找出数组中最大的元素</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">10</span>, <span class="number">2</span>,<span class="number">4</span>,<span class="number">15</span>,<span class="number">9</span>]</span><br><span class="line"><span class="built_in">Math</span>.max.apply(<span class="literal">null</span>, a) <span class="comment">// 15</span></span><br></pre></td></tr></table></figure>
-<h5 id="将数组的空元素变为-undefined"><a href="#将数组的空元素变为-undefined" class="headerlink" title="将数组的空元素变为 undefined"></a>将数组的空元素变为 undefined</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.apply(<span class="literal">null</span>, [<span class="string">'a'</span>,,<span class="string">'b'</span>]) <span class="comment">// ['a', undefined, 'b']</span></span><br></pre></td></tr></table></figure>
-<p>原理是，在 apply 的第二个参数接受的是一个类数组对象，调用的是内置方法 CreateListFromArrayLike 方法 <code>CreateListFromArrayLike(obj[, elementTypes])</code> 如果没有定义 elementTypes 时，会被认定为 Undefined、Null、Boolean、String、Symbol、Number、Object。在生成 list 时，调用 <code>Get(obj, indexName)</code>。我们这个例子返回的是 elementTypes 里面的 undefined 了。<a href="http://www.ecma-international.org/ecma-262/6.0/#sec-createlistfromarraylike" target="_blank" rel="noopener">CreateListFromArrayLike</a><br>然后 空元素与 undefined 差别是，数组的 forEach 方法会跳过空元素，但是不会跳过 undefined。</p>
-<h5 id="转换类似数组的对象"><a href="#转换类似数组的对象" class="headerlink" title="转换类似数组的对象"></a>转换类似数组的对象</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.slice.apply(&#123;<span class="number">0</span>: <span class="number">1</span>, <span class="attr">length</span>: <span class="number">1</span>&#125;) <span class="comment">// [1]</span></span><br><span class="line"><span class="built_in">Array</span>.prototype.slice.apply(&#123;<span class="number">0</span>: <span class="number">1</span>&#125;) <span class="comment">// []</span></span><br><span class="line"><span class="built_in">Array</span>.prototype.slice.apply(&#123;<span class="number">0</span>: <span class="number">1</span>, <span class="attr">length</span>: <span class="number">2</span>&#125;) <span class="comment">// [1, undefined]</span></span><br><span class="line"><span class="built_in">Array</span>.prototype.slice.apply(&#123;<span class="attr">length</span>: <span class="number">1</span>&#125;) <span class="comment">// [undefined]</span></span><br></pre></td></tr></table></figure>
-<h5 id="绑定回调函数的对象"><a href="#绑定回调函数的对象" class="headerlink" title="绑定回调函数的对象"></a>绑定回调函数的对象</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"></span><br><span class="line">o.f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span> === o);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  o.f.apply(o);</span><br><span class="line">  <span class="comment">// 或者 o.f.call(o);</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// jQuery 的写法</span></span><br><span class="line">$(<span class="string">'#button'</span>).on(<span class="string">'click'</span>, f);</span><br></pre></td></tr></table></figure>
-<p>点击按钮以后，控制台会显示为 true。由于 apply 方法（或者 call 方法）不仅绑定函数执行时所在对象，还会立即执行函数，因此不得不把绑定语句写在一个函数体内，更简洁的写法是采用下面介绍的 bind 方法。</p>
-<h4 id="Function-prototype-bind"><a href="#Function-prototype-bind" class="headerlink" title="Function.prototype.bind()"></a>Function.prototype.bind()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">d.getTime()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> print = d.getTime()</span><br><span class="line">print() <span class="comment">// Error....</span></span><br></pre></td></tr></table></figure>
-<p>改用 bind 方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> print = d.getTime.bind(d)</span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x * <span class="keyword">this</span>.m + y * <span class="keyword">this</span>.n</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  m: <span class="number">2</span>,</span><br><span class="line">  n: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> newAdd = add.bind(obj, <span class="number">5</span>)</span><br><span class="line">newAdd(<span class="number">5</span>) <span class="comment">// 20</span></span><br></pre></td></tr></table></figure>
-<p>上面的代码中，bind 方法除了绑定 this 对象，还将 add 函数的第一个参数 x 绑定成 5，然后返回一个新函数 newAdd，这个函数只要再接受一个参数 y 就能运行了。</p>
-<p>如果 bind 方法的第一个参数是 null 或 undefined，等于将 this 绑定到全局对象，函数运行时 this 指向顶层对象（浏览器为 window）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> plus5 = add.bind(<span class="literal">null</span>, <span class="number">5</span>)</span><br><span class="line">plus5(<span class="number">10</span>) <span class="comment">// 15</span></span><br></pre></td></tr></table></figure>
-<p>bind 方法每次返回一个新函数，所以在每次添加监听函数的时候，需要赋值给一个变量，好在接下来的时候取消监听。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> listener = o.m.bind(o)</span><br><span class="line">element.addEventListener(<span class="string">'click'</span>, listener)</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">element.removeEventListener(<span class="string">'click'</span>, listener)</span><br></pre></td></tr></table></figure>
-<p>回调函数中使用</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  times: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">  print: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.times.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj.print()</span><br><span class="line"><span class="comment">// 没有任何输出</span></span><br><span class="line">obj.print = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.times.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">  &#125;.bind(<span class="keyword">this</span>));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj.print()</span><br><span class="line"><span class="comment">// 张三</span></span><br><span class="line"><span class="comment">// 张三</span></span><br><span class="line"><span class="comment">// 张三</span></span><br></pre></td></tr></table></figure>
-<p>与 call 一起使用</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> slice = <span class="built_in">Function</span>.prototype.call.bind(</span><br><span class="line">  <span class="built_in">Array</span>.prototype.slice);</span><br><span class="line">slice([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="number">0</span>, <span class="number">1</span>) <span class="comment">// [1]</span></span><br></pre></td></tr></table></figure>
-<p>上面代码的含义就是，将 Array.prototype.slice 变成 Function.prototype.call 方法所在的对象，调用时就变成了 Array.prototype.slice.call。类似的写法还可用于其他数组方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> push = <span class="built_in">Function</span>.prototype.call.bind(</span><br><span class="line">  <span class="built_in">Array</span>.prototype.push);</span><br><span class="line"><span class="keyword">var</span> pop = <span class="built_in">Function</span>.prototype.call.bind(</span><br><span class="line">  <span class="built_in">Array</span>.prototype.pop);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span> ,<span class="number">2</span> ,<span class="number">3</span>];</span><br><span class="line">push(a, <span class="number">4</span>)</span><br><span class="line">a <span class="comment">// [1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line">pop(a)</span><br><span class="line">a <span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
-<p>如果再进一步，将 Function.prototype.call 方法绑定到 Function.prototype.bind 对象，就意味着 bind 的调用形式也可以被改写。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = &#123; <span class="attr">v</span>: <span class="number">123</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> bind = <span class="built_in">Function</span>.prototype.call.bind(</span><br><span class="line">  <span class="built_in">Function</span>.prototype.bind);</span><br><span class="line">bind(f, o)() <span class="comment">// 123</span></span><br></pre></td></tr></table></figure>
-
+<p>那 React Element 为什么会有自己的生命周期呢，因为它要维护自己的状态，如果你要对一个 Element 做一个什么操作，你应该通过参数给它传一个消息给它，这个参数其实就是这个 Element 的状态。</p>
+<p>Smalltalk 的名称由来，写代码就是和这些对象说话。</p>
+<h3 id="函数也能存储状态"><a href="#函数也能存储状态" class="headerlink" title="函数也能存储状态"></a>函数也能存储状态</h3><figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> money <span class="number">100</span>)</span><br><span class="line">(<span class="name">define</span> (<span class="name">take</span> n)</span><br><span class="line">  (<span class="name">set!</span> money (<span class="name">-money</span> n))</span><br><span class="line">  money)</span><br></pre></td></tr></table></figure>
+<p>set 是给 money 第二次赋值，define 是第一次赋值</p>
+<p>将 money 的操作定义一个局部变量</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name">define</span> taker</span><br><span class="line">  (<span class="name">let</span> (<span class="name">money</span> <span class="number">100</span>)</span><br><span class="line">       (<span class="name">lambda</span> (<span class="name">n</span>) </span><br><span class="line">               (<span class="name">set!</span> money (<span class="name">-money</span> n)) </span><br><span class="line">               money)))</span><br><span class="line"></span><br><span class="line">(taker 25) // 结果为 75</span><br><span class="line">(taker 25) // 结果为 50</span><br></pre></td></tr></table></figure>
+<p>翻译成 JavaScript </p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> taker = <span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> money = <span class="number">100</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">n</span> =&gt;</span> &#123;</span><br><span class="line">    money = money - n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>函数也是可以存储状态的，只要它可以赋值完全不用对象，也就是利用闭包存储状态。</p>
+<blockquote>
+<p><a href="https://www.zhihu.com/question/20565716" target="_blank" rel="noopener">对象是穷人的闭包，闭包是穷人的对象</a></p>
+<p>JavaScript 这样的语言，它是很容易实现闭包的，于是它就用用闭包来实现的封装，而像 c# 这样的语言，它是很难用函数的，于是它就用对象来封装。</p>
+</blockquote>
+<h3 id="函数实现消息传递类似的形式"><a href="#函数实现消息传递类似的形式" class="headerlink" title="函数实现消息传递类似的形式"></a>函数实现消息传递类似的形式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> makeAccount = <span class="function">(<span class="params">money</span>) =&gt;</span>  &#123;</span><br><span class="line">  <span class="keyword">let</span> take = <span class="function">(<span class="params">n</span>) =&gt;</span> &#123;</span><br><span class="line">    money = money - n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> save = <span class="function">(<span class="params">n</span>) =&gt;</span> &#123;</span><br><span class="line">    money = money + n</span><br><span class="line">    <span class="keyword">return</span> money</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> dispatch = <span class="function">(<span class="params">m</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">    	m === <span class="string">'take'</span> ? take :</span><br><span class="line">      m === <span class="string">'save'</span> ? save :</span><br><span class="line">      <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'不支持'</span>)</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dispatch</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> account = makeAccount(<span class="number">100</span>)</span><br><span class="line">account(<span class="string">'take'</span>)(<span class="number">25</span>) <span class="comment">// 75</span></span><br><span class="line">account(<span class="string">'take'</span>)(<span class="number">25</span>) <span class="comment">// 50</span></span><br></pre></td></tr></table></figure>
+<p>翻译成 lisp 调用</p>
+<figure class="highlight lisp"><table><tr><td class="code"><pre><span class="line">((<span class="name">account</span> 'take) <span class="number">25</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>函数式编程的面向对象编程是怎么样的 🤔️</p>
+</blockquote>
+<p>不使用赋值就是函数式，比如 Lisp 的代入式求值</p>
+<p><a href="https://codesandbox.io/s/6w88xjx7vw" target="_blank" rel="noopener">实现一个函数式分页 Demo</a> 一个数组生成一个新的数组，很像一个概念，那就是迭代… 之前 justjavac 分享过一个 PPT：“函数式编程就是垃圾”。因为第一个数组生成第二个数组，第一个数组就是垃圾了，再第二个数组生成第三个数组，第二个数组就不再用了就是垃圾了。这些数组都是存在内存里面的。</p>
+<h3 id="赋值的本质"><a href="#赋值的本质" class="headerlink" title="赋值的本质"></a>赋值的本质</h3><p>如果没有赋值，money 就只是一个符号是一个值的名字。如果有了赋值，money 是一个容器，它保存了不同的值，它本身是一个可变的状态。</p>
+<p>会带来的问题，如果代码里面出现了很多赋值，那么这种程序设计是命令式 / 指令式程序设计。</p>
+<p>命令式程序会遇到 「并发」（在 nodejs 里面就会出现并发）「克隆」就会特别麻烦。</p>
+<h3 id="函数式编程的特点"><a href="#函数式编程的特点" class="headerlink" title="函数式编程的特点"></a>函数式编程的特点</h3><ol>
+<li>数学 （公理化和可证明）</li>
+<li>更加强调程序可执行的结果而非过程</li>
+<li>函数式一等公民（函数可以作为参数的高阶函数）</li>
+<li>纯函数，拒绝副作用，不赋值，要是需要赋值，就留一个允许副作用的函数里面去处理，就是那个不是 1% 的函数编程</li>
+<li>不可变数据，因为不能赋值，每次都是新的值</li>
+<li>数据即代码，代码即数据</li>
+<li>引用透明</li>
+</ol>
+<p>函数式编程允许 1% 不是函数式编程，面向对象允许 1% 不是面向对象编程。</p>
+<h3 id="如何把上面取款程序改成函数式写法-❓"><a href="#如何把上面取款程序改成函数式写法-❓" class="headerlink" title="如何把上面取款程序改成函数式写法 ❓"></a>如何把上面取款程序改成函数式写法 ❓</h3>
   </div>
   
 </article>
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/9/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/11/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/9/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/11/">下一页&raquo;</a>
   </nav>
 
     </main>

@@ -38,13 +38,13 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">数组的本质</h2>
+    <h2 class="title">怎么声明一个函数</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-18 18:53:22</span>
+    <span class="post-time">2018-12-20 13:25:30</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arguments/">arguments</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
       
     </span>
     
@@ -54,13 +54,47 @@
     
   </div>
   <div class="post-content">
-    <h2 id="什么是数组"><a href="#什么是数组" class="headerlink" title="什么是数组"></a>什么是数组</h2><ul>
-<li>数组是一个有序的有 length 的 hash，它的 <code>__proto__</code> 指向 Array.prototype。</li>
-</ul>
-<h2 id="数组与对象"><a href="#数组与对象" class="headerlink" title="数组与对象"></a>数组与对象</h2><p>Array 与 Object 的差别，Array 的共有属性 <code>__proto__</code> 里面有 push 等方法，而且还包含 Object 的 <code>__proto__</code>。如果一个对象没有 Array 的共有属性 <code>__proto__</code> 里面的方法比如 push 方法，那么它就不是一个 Array。</p>
-<p>比如<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="number">0</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="number">1</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="number">3</span>,</span><br><span class="line">  length: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line">obj.push <span class="comment">// undefined.</span></span><br></pre></td></tr></table></figure></p>
-<p>这个 obj 就不是一个数组，它只是一个对象。</p>
-<h2 id="JavaScript-里面的伪数组"><a href="#JavaScript-里面的伪数组" class="headerlink" title="JavaScript 里面的伪数组"></a>JavaScript 里面的伪数组</h2><p>JavaScript 里面只有一个伪数组 arguments。arguments 表示传给函数的参数。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</span><br><span class="line">&#125;</span><br><span class="line">f()</span><br></pre></td></tr></table></figure></p>
+    <ol>
+<li>最简单的声明方法，具名函数</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span>(<span class="params">输入<span class="number">1</span>， 输入<span class="number">2.</span>..</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">undefined</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>function 是关键字，和 var 一样，var 是声明一个变量，funciton 是声明一个函数。变量和函数的差别是，变量有 7 种数据类型（string，number，null，undefined，boolean，symbol，object），而 function 声明一个函数，那么这个变量就只能是一个函数，也就是 object 数据类型，function 是特殊的 var，变量的特例。</p>
+<p>x 是函数的名字，名字可以用来 console.log(x) 输出这个函数，console.log 的参数只支持字符串，如果这个 x 不是字符串，console.log 会自动把 x 的值调用 toString 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span>(<span class="params">input1, input2</span>) </span>&#123;<span class="keyword">return</span> <span class="literal">undefined</span>&#125;</span><br><span class="line">x.toString() <span class="comment">// "function x(input1, input2) &#123;return undefined&#125;"</span></span><br><span class="line"><span class="built_in">console</span>.log(x) <span class="comment">// f x(input1, input2) &#123;return undefined&#125;</span></span><br></pre></td></tr></table></figure>
+<p>不要相信 Chrome 打印出来的东西</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"1"</span>) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>Chrome 打印出来的是数值 1，而应该是字符串“1”。console.log 永远返回 undefined。打印的并不是返回值。</p>
+<p>x 的返回值默认会带上 return undefined，如果没有 return 的话。因为一个函数必须要有一个终止语句，所以就算不写 return，函数也会自动带上 return undefined。</p>
+<ol start="2">
+<li>匿名函数</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params">input1, input2</span>) </span>&#123; <span class="keyword">return</span> <span class="literal">undefined</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>不能单独使用，必须赋给另外一个变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x</span><br><span class="line">x = <span class="function"><span class="keyword">function</span> (<span class="params">input1, input2</span>) </span>&#123; <span class="keyword">return</span> <span class="literal">undefined</span> &#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>具名函数赋值给一个变量</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="function"><span class="keyword">function</span> <span class="title">y</span>(<span class="params">input1, input2</span>) </span>&#123;<span class="keyword">return</span> <span class="literal">undefined</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>y 的作用域只在函数体内。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="function"><span class="keyword">function</span> <span class="title">y</span>(<span class="params">input1, input2</span>) </span>&#123;<span class="keyword">return</span> <span class="literal">undefined</span>&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'y'</span>) <span class="comment">// 会报错，找不到 y</span></span><br></pre></td></tr></table></figure>
+<p>第 3 种和第 1 种的语法一样，但是 y 的体现不一致，这也是 JavaScript 的垃圾之处。</p>
+<ol start="4">
+<li>window.Function 函数对象</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Funtion(<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'return x + y'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'return x'</span> + n + <span class="string">'y'</span>)</span><br><span class="line">f(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<p>所有的参数都是字符串，然后字符串是可以拼接的。</p>
+<ol start="5">
+<li>箭头函数</li>
+</ol>
+<p>箭头函数是匿名函数！</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123; <span class="keyword">return</span> x + y &#125;</span><br></pre></td></tr></table></figure>
+<p>如果花括号内只有一个语句，可以去掉花括号和 return</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
+<p>如果参数只有一个，则不需要小括号</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="params">x</span> =&gt;</span> x**<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>函数的名字的坑</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">f.name <span class="comment">// "f"</span></span><br><span class="line"><span class="keyword">var</span> f2 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">f2.name <span class="comment">// "f2"</span></span><br><span class="line"><span class="keyword">var</span> f3 = <span class="function"><span class="keyword">function</span> <span class="title">f4</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">f3.name <span class="comment">// "f4"</span></span><br><span class="line"><span class="keyword">var</span> f5 = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'return x+y'</span>)</span><br><span class="line">f5.name <span class="comment">// "anonymous"</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -68,7 +102,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/49/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/51/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/49/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/51/">下一页&raquo;</a>
   </nav>
 
     </main>
