@@ -38,20 +38,20 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">没有提交 git，vue 无法打包成功。[无法重现]</h2>
+    <h2 class="title">Git 笔记</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2017-12-14 14:33:45</span>
+    <span class="post-time">2017-12-19 23:22:30</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/build/">build</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rsync/">rsync</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vscode/">vscode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <p>遇到一个奇怪的问题<br>为了方便开发<br>我在本地开发 vue 时，用 rsync 一类的 vscode 插件同步代码到服务器了<br>再在服务上直接 npm run build<br>不知道为啥，执行的时候，rsync 同步过来的文件都没有被成功打包  </p>
-<p>[2017-12-16 更新]<br>汗了，又无法重现了…</p>
+    <h3 id="git-commit-时，文件名中文是乱码："><a href="#git-commit-时，文件名中文是乱码：" class="headerlink" title="git commit 时，文件名中文是乱码："></a>git commit 时，文件名中文是乱码：</h3><p>git config –global core.quotepath false<br>如果是true：输入路径名大于0x80的字符串，转义并用双引号印起来，否则不转义。<a href="https://www.git-scm.com/docs/git-config#git-config-corequotePath" target="_blank" rel="noopener">Git帮助文档查看详情</a></p>
+<h3 id="git-pull-时候冲突。"><a href="#git-pull-时候冲突。" class="headerlink" title="git pull 时候冲突。"></a>git pull 时候冲突。</h3><p>俩份代码的commit没有在同一条线上时，就会有这个冲突 fatal: refusing to merge unrelated histories<br>git pull origin master –allow-unrelated-histories</p>
 
   </div>
   
@@ -59,7 +59,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/110/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/109/">109</a><a class="page-number" href="/page/110/">110</a><span class="page-number current">111</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/112/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/110/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/109/">109</a><a class="page-number" href="/page/110/">110</a><span class="page-number current">111</span><a class="page-number" href="/page/112/">112</a><a class="page-number" href="/page/113/">113</a><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/112/">下一页&raquo;</a>
   </nav>
 
     </main>

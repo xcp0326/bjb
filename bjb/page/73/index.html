@@ -38,71 +38,99 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">布尔运算符</h2>
+    <h2 class="title">基础考题</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-22 11:01:08</span>
+    <span class="post-time">2018-11-22 18:35:18</span>
     <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <blockquote>
-<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
-</blockquote>
-<p>布尔运算符将表达式转为布尔值，一共包括四个运算符。</p>
-<ul>
-<li>取反运算符 <code>!</code></li>
-<li>与运算符 <code>&amp;&amp;</code></li>
-<li>或运算符 <code>||</code></li>
-<li>三元运算符 <code>?:</code></li>
-</ul>
-<h2 id="取反运算符"><a href="#取反运算符" class="headerlink" title="取反运算符 !"></a>取反运算符 !</h2><p>以下 6 个值取反后为 true，其他都是 false</p>
-<ul>
-<li>undefined</li>
-<li>null</li>
-<li>‘’</li>
-<li>false</li>
-<li>NaN</li>
-<li>0</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">!&#123;&#125; <span class="comment">// false</span></span><br><span class="line">![] <span class="comment">// false</span></span><br><span class="line">!<span class="string">'hhh'</span> <span class="comment">// false</span></span><br><span class="line">!<span class="literal">null</span> <span class="comment">// true</span></span><br><span class="line">!<span class="number">0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>对一个值连续做两次取反运算，等于将其转为对应的布尔值，与 Boolean 函数的作用相同。两次取反就是将一个值转为布尔值的简便写法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">!!x <span class="comment">// 即 Boolean(x)</span></span><br></pre></td></tr></table></figure>
-<h2 id="与运算符-amp-amp"><a href="#与运算符-amp-amp" class="headerlink" title="与运算符 &amp;&amp;"></a>与运算符 &amp;&amp;</h2><p>与运算符往往用于多个表达式求值</p>
-<ul>
-<li>如果第一个运算子的布尔值为 true，则返回第二个运算子的值</li>
-<li>如果第一个运算子的布尔值为 false，则返回第一个运算子的值，且不再对第二个运算子求值</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> &amp;&amp; <span class="string">''</span> <span class="comment">// ''</span></span><br><span class="line"><span class="string">'t'</span> &amp;&amp; <span class="string">'a'</span> <span class="comment">// 'a'</span></span><br><span class="line"><span class="string">'t'</span> &amp;&amp; (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"><span class="string">''</span> &amp;&amp; <span class="string">'f'</span> <span class="comment">// ''</span></span><br><span class="line"><span class="string">''</span> &amp;&amp; (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// ''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">(<span class="number">1</span> - <span class="number">1</span>) &amp;&amp; (x += <span class="number">1</span>) <span class="comment">// 0</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>这种跳过第二个运算子的机制，叫做“短路” short-cut。也可以用 if 结构来实现</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (i) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以用与运算简写为</span></span><br><span class="line">i &amp;&amp; doSomething()</span><br></pre></td></tr></table></figure>
-<p>但是简写的代码看不出目的，也不容易除错，所以建议谨慎使用</p>
-<p>与运算符可以多个连用，这时候返回第一个布尔值为 false 的表达式的值。如果所有表达式的值都为 true，那么返回最后一个表达式的值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> &amp;&amp; <span class="string">'foo'</span> &amp;&amp; <span class="number">0</span> &amp;&amp; <span class="literal">true</span> <span class="comment">// 0</span></span><br><span class="line"><span class="number">1</span> &amp;&amp; <span class="literal">true</span> &amp;&amp; <span class="number">9</span> <span class="comment">// 9</span></span><br></pre></td></tr></table></figure>
-<h2 id="或运算符"><a href="#或运算符" class="headerlink" title="或运算符 ||"></a>或运算符 ||</h2><p>或运算符也是用于多个表达式求值</p>
-<ul>
-<li>如果第一个运算子的布尔值是 true，则返回第一个运算子的值，且不再对第二个运算子求值</li>
-<li>如果第一个运算子的布尔值是 false，则返回第二个运算子的值</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> || <span class="string">''</span> <span class="comment">// 't'</span></span><br><span class="line"><span class="string">''</span> || (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="literal">true</span> || (x = <span class="number">2</span>) <span class="comment">// true</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>也是“短路”机制</p>
-<p>也可以多个连用，返回第一个布尔值为 true 的表达式，如果所有表达式都是 false，则返回最后一个表达式的值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">false</span> || <span class="number">0</span> || <span class="string">''</span> || <span class="number">4</span> || <span class="string">'foo'</span> || <span class="literal">true</span> <span class="comment">// 4</span></span><br><span class="line"><span class="literal">false</span> || <span class="number">0</span> || <span class="string">''</span> <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
-<p>或运算符常用于给一个变量设置默认值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">saveText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  text = text || <span class="string">''</span></span><br><span class="line">  <span class="comment">// xxx</span></span><br><span class="line">&#125;</span><br><span class="line">saveText(<span class="keyword">this</span>.text || <span class="string">''</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="三元条件运算符"><a href="#三元条件运算符" class="headerlink" title="三元条件运算符 ?:"></a>三元条件运算符 ?:</h2><p>三元条件运算符是由问好和冒号组成，分隔三个表达式。它是 JavaScript 语言的唯一一个需要三个运算子的运算符。如果第一个表达式的布尔值为 true，则返回第二个表达式的值，否则返回第三个表达式的值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> ? <span class="string">'hello'</span> : <span class="string">'world'</span> <span class="comment">// 'hello'</span></span><br><span class="line"><span class="string">''</span> ? <span class="string">'hello'</span> : <span class="string">'world'</span> <span class="comment">// 'world'</span></span><br></pre></td></tr></table></figure>
-<p>三元条件表达式与 if … else 语句具有相同的表达效果，前者可以表达的，后者也能表达。但是两者具有一个重大差别，if … else 是语句，没有返回值；三元条件表达式是表达式，具有返回值。所以在需要返回的值的场合，只能使用三元条件表达式，而不能用 if … else。</p>
-
+    <p>最近一直或者说又开始看阮一峰老师的《JavaScript 教程》，说起来我看了大概有三遍了，可是看完就忘，很多基础的东西在平常项目中用得也不多。</p>
+<p>鉴于我的记性这么地烂，就在博客里面开始记下笔记。</p>
+<p>可是 😂 我还是老是忘记呀，好不好。</p>
+<p>所以从网上收集基础考题来练手，保住我的记性！</p>
+<h2 id="题集"><a href="#题集" class="headerlink" title="题集"></a>题集</h2><p><a href="https://segmentfault.com/a/1190000008785931" target="_blank" rel="noopener">20个必会的JavaScript面试题</a><br><a href="https://github.com/dwqs/blog/issues/17" target="_blank" rel="noopener">你有必要知道的 25 个 JavaScript 面试题</a><br><a href="https://juejin.im/post/5b325c38e51d4558c7136818" target="_blank" rel="noopener">JS基础知识（覆盖JS基础面试题）</a><br><a href="https://blog.csdn.net/sunlijie1118/article/details/78825962" target="_blank" rel="noopener">js的6道基础题（笔试常考题）</a><br><a href="https://blog.csdn.net/xun527/article/details/78009044" target="_blank" rel="noopener">JavaScript试题练习题</a><br><a href="https://wenku.baidu.com/view/cc3ee4bbb8d528ea81c758f5f61fb7360b4c2be5.html?re=view" target="_blank" rel="noopener">JavaScript 基础阶段测笔试试题</a><br><a href="https://wenku.baidu.com/view/3528f6ec08a1284ac950432f.html" target="_blank" rel="noopener">Web基础考题(JavaScript-Part1)</a><br><a href="http://web.jobbole.com/86461/" target="_blank" rel="noopener">44个Javascript 变态题解析(上) </a><br><a href="http://www.voidcn.com/article/p-qvgglksg-bhp.html" target="_blank" rel="noopener">js基础试题</a><br><a href="https://leohxj.gitbooks.io/front-end-database/interview/interview-exercises-with-JavaScript.html" target="_blank" rel="noopener">JavaScript面试题</a></p>
+<h2 id="练习网站"><a href="#练习网站" class="headerlink" title="练习网站"></a>练习网站</h2><p>转自 <a href="http://www.lixuejiang.me/2016/11/01/JavaScript%E7%9A%84%E7%BB%83%E4%B9%A0%E7%BD%91%E7%AB%99%E6%94%B6%E9%9B%86/" target="_blank" rel="noopener">JavaScript练习网站收集</a></p>
+<p><a href="http://www.codewars.com/" target="_blank" rel="noopener">codewars</a></p>
+<p>  国外的一个练习网站，有JavaScript，也有Python，每种语言都有自己的道场（kata），每个用户都有不同的等级，刷题提高等级，也可以插卡别人优秀的解决方案。你会发现牛人无处不在。</p>
+<p><a href="http://javascript-puzzlers.herokuapp.com/" target="_blank" rel="noopener">javascript-puzzlers</a></p>
+<p>  44道题，看完你会怀疑你是否真的学过JavaScript😂<br>  另附作者的解题链接<a href="http://flyfy1.github.io/language/2014/02/23/js-tricks-from-js-puzzlers.html" target="_blank" rel="noopener">http://flyfy1.github.io/language/2014/02/23/js-tricks-from-js-puzzlers.html</a></p>
+<p><a href="https://freecodecamp.cn/" target="_blank" rel="noopener">https://freecodecamp.cn</a></p>
+<p><a href="http://www.lixuejiang.me/2016/11/01/JavaScript%E7%9A%84%E7%BB%83%E4%B9%A0%E7%BD%91%E7%AB%99%E6%94%B6%E9%9B%86/freecodecamp.com" target="_blank" rel="noopener">freecodecamp.com</a>的中文版，可以学习前端，后端，数据可视化等知识</p>
+<p><a href="http://es6katas.org/" target="_blank" rel="noopener">http://es6katas.org/</a><br>  一个用tdd学习es6的网站，学完之后对es6的各种特性会有深入的了解</p>
+<p><a href="https://www.nowcoder.com/ta/js-assessment" target="_blank" rel="noopener">https://www.nowcoder.com/ta/js-assessment</a><br>  牛客网的练习题</p>
+<p><a href="https://leetcode.com/" target="_blank" rel="noopener">https://leetcode.com/</a><br>  有名的oj系统，听说有人通过这个网站刷题进了google</p>
+<p><a href="https://nodeschool.io/zh-cn/#workshoppers" target="_blank" rel="noopener">nodeschool.io</a><br>  nodeschool,有很多js和es6以及web相关的教程</p>
+<p><a href="https://www.hackerrank.com/" target="_blank" rel="noopener">https://www.hackerrank.com</a><br>  一个英文的学习网站，类似oj的形式，有数据结构算法的课程，也有正则表达式等课程，质量还不错</p>
+<p><a href="http://superherojs.com/" target="_blank" rel="noopener">http://superherojs.com/</a></p>
+<h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><p>转自<a href="https://blog.xuld.net/js-test/" target="_blank" rel="noopener">JS 能力自测题</a></p>
+<ol>
+<li>1 + 1</li>
+<li>1 + 2 + “3” + 4 + 5</li>
+<li>1e2.toFixed(2)</li>
+<li>NaN != NaN</li>
+<li>1 / 0 &lt; 2 / 0</li>
+<li><code>[0][0]</code></li>
+<li><code>[0, 1][0, 1]</code></li>
+<li><code>[0, 1, 2][0, 1, 2]</code></li>
+<li>[] != []</li>
+<li>1 + { valueOf(){ return 1 } }</li>
+<li>“1” + { toString(){ return “1” } }</li>
+<li>parseInt(Infinity)</li>
+<li>null == null</li>
+<li>![]</li>
+<li>+[]</li>
+<li>“123”.split(“”)</li>
+<li>“xuld222”.substr(2,3)</li>
+<li>[] instanceof Array</li>
+<li>“” instanceof String</li>
+<li>“我C”.length</li>
+<li>[1, 2, 3, 4, 5, 6].splice(2,3)</li>
+<li>“asas”.replace(“s”,”a”)</li>
+<li>1 / 0</li>
+<li>0 || 2</li>
+<li>[] &amp;&amp; {}</li>
+<li>~~2.99999999</li>
+<li>84.01 + 0.2 == 84.21</li>
+<li>3 &gt; 2 &gt; 1</li>
+<li>null instanceof Object</li>
+<li>Object instanceof Function</li>
+<li>Function instanceof Object</li>
+<li>[1, 2, 3].slice.call([4, 5, 6], 1)</li>
+<li>typeof typeof true</li>
+<li>0 == “”</li>
+<li>0 == false</li>
+<li>[] == false</li>
+<li>1 - 2 - “3” - 4 - 5</li>
+<li>[1, 2, 3].reverse().map(t =&gt; t)</li>
+<li>new Date(“1990/12/6”).getMonth()</li>
+<li>“\r” == “\n”</li>
+<li>0xFF == 0xff</li>
+<li>“\u0009” == “\t”</li>
+<li>2 &amp; 3</li>
+<li>4 &lt;&lt; 3</li>
+<li>1 &amp;&amp; 2 || 3</li>
+<li>0 &amp;&amp; 1 || 2</li>
+<li>1 || 2 &amp;&amp; 3</li>
+<li>0 || 1 &amp;&amp; 2</li>
+<li><code>[0][0][0]</code></li>
+<li>[1, …[2]]</li>
+<li>(t =&gt; t + 1)(t =&gt; t + 1)</li>
+<li>[1, 2, 3].shift()</li>
+</ol>
+<h2 id="专项提升"><a href="#专项提升" class="headerlink" title="专项提升"></a><a href="https://blog.xuld.net/categories/guide/programming-skill/" target="_blank" rel="noopener">专项提升</a></h2><h2 id="2018-大厂高级前端面试题汇总"><a href="#2018-大厂高级前端面试题汇总" class="headerlink" title="2018 大厂高级前端面试题汇总"></a><a href="https://juejin.im/post/5bc92e9ce51d450e8e777136" target="_blank" rel="noopener">2018 大厂高级前端面试题汇总</a></h2>
   </div>
   
 </article>
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/72/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><a class="page-number" href="/page/75/">75</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/74/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/72/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><a class="page-number" href="/page/75/">75</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/74/">下一页&raquo;</a>
   </nav>
 
     </main>

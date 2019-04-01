@@ -38,35 +38,34 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">函数调用栈 call stack</h2>
+    <h2 class="title">DOM 概述</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-20 13:26:43</span>
+    <span class="post-time">2018-12-24 22:43:37</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/call-stack/">call stack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stack/">stack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
       
     </span>
     
-      <div class="article-category">分类：
-        <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-      </div>
-    
   </div>
   <div class="post-content">
-    <p>函数有一个 call stack 调用栈，这个 stack 和内存里面的栈 stack 没关系，call stack 是一种数据结构，它的特点就是先入后出。</p>
-<p>栈会记住每次的调用位置。</p>
-<p>调用函数时，等执行完后退出该函数，跳回栈记住的调用的位置，跳出该函数，再执行该位置后的其他逻辑。</p>
-<p>第一个例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">'a'</span>) <span class="keyword">return</span> <span class="string">'a'</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">'b'</span>) <span class="keyword">return</span> <span class="string">'b'</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log(<span class="string">'c'</span>) <span class="keyword">return</span> <span class="string">'c'</span>&#125;</span><br><span class="line">a.call()</span><br><span class="line">b.call()</span><br><span class="line">c.call()</span><br></pre></td></tr></table></figure>
-<p>a.call() 调用栈会记住这个位置，然后进入 a 函数，执行代码，发现有 console.log(‘a’) 的调用，栈把 console.log 的这个调用位置加入到栈里面以记住，console.log 执行完了，栈清除它的这个位置，然后继续执行 a 里面的代码，发现有个 return，说明 a 函数也执行完了，跳回栈 a 函数在调用栈中存的位置，清除 a 在栈中占用的位置，继续执行 a 后面的逻辑，即 b.call()，这时候，调用栈会记住 b 调用的这个位置，然后进入 b 函数，执行代码，发现有个 console.log(‘b’) 的调用，栈把 console.log 的这个调用位置加入到栈里面，console.log 执行完了，栈清除 console.log 在调用栈中存的位置，继续执行 b 后买呢的代码，发现有个 return，说明函数也执行完了，就跳回 b 函数在调用栈中存的位置，清除 b 在栈中占用的位置，继续执行 b 后面的逻辑，即 c.call()，这时候，调用栈会记住 c 调用的这个位置，然后进入 c 函数执行代码，发现有个 console.log(‘c’) 的调用，栈把 console.log 的这个调用位置加入到栈里面，console.log 执行完了，栈清除 console.log 在调用栈中存的位置，继续执行 console.log 后面的逻辑，发现有个 return，说明函数也执行完了，就跳回 c 函数所在的栈中记住的位置，清除 c 函数在栈中存的位置，继续执行 c 后面的代码，发现 c 后面没有代码了，调用栈的工作结束了。</p>
-<p>第二个例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'a1'</span>)</span><br><span class="line">  b.call()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'a2'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'a'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'b1'</span>)</span><br><span class="line">  c.call()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'b2'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'b'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'c1'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'c'</span></span><br><span class="line">&#125;</span><br><span class="line">a.call()</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'end'</span>)</span><br></pre></td></tr></table></figure>
-<p>首先是调用 a.call() 调用 a，执行 a 函数，调用栈记住 a.call() 的位置，引擎进入 a 代码执行里面的代码，发现有个 console.log 于是，调用栈记住 console.log 的位置，console.log 执行完，清除 console.log 占用的栈空间，继续执行 console.log 后面的代码，发现有个 b.call()，调用栈记住 b.call() 的位置，引擎进入 b 代码执行里面的代码，发现有个 console.log(‘b1’)，于是，调用栈记住 console.log 的位置，console.log 执行完，清除 console.log 占用的栈空间，继续执行 console.log 后面的代码，发现有个 c.call()，调用栈记住 c.call() 的位置，引擎进入 c 代码执行里面的代码，发现有个 console.log(‘c1’)，调用栈记住 console.log 的位置，console.log 执行完，清除 console.log 占用的栈空间，继续执行 console.log 后面的代码，发现是 return ‘c’，那么 c 函数执行完了，跳回调用栈中 c 的位置，清除栈中 c 的位置，继续执行 c.call() 后面的逻辑，执行 console.log，栈记住 console.log 的位置，执行完 console.log，退回 console.log 的位置，清除栈中 console.log 的位置，继续执行后面的逻辑，发现是 return ‘b’，那么 b 函数执行完了，跳回调用栈中 b 的位置，清除栈中 b 的位置，继续执行 a.call() 后面的逻辑，执行 console.log，栈记住 console.log 的位置，执行完 console.log，退回 console.log 的位置，清除栈中 console.log 的位置，继续执行后面的逻辑，发现是 return ‘a’，那么 a 函数执行完了，跳回调用栈中 a 的位置，继续执行 a.call() 后面的逻辑，并清除栈中 a 的位置，a.call() 后面是一个 console.log，调用栈会记住 console.log 的位置，console.log 执行完，清除栈中的 console.log 的位置，该位置后面没有代码了，调用栈的工作结束了。</p>
-<p>第三个例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (n === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> n + sum(n - <span class="number">1</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">sum.call(<span class="literal">undefined</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
-<p>sum.call(5) 调用栈记住该位置，<br>进入代码执行 sum 里面的逻辑，发现 n 不等于 1，执行 else 里面的代码，发现 return n + sum(n - 1)，有个 sum(n -1)，然后调用栈记住 sum(n -1) 的位置，其实就是 sum(4)<br>进入代码执行 sum 里面的逻辑，发现 n 不等于 1，执行 else 里面的代码，发现 return n + sum(n - 1)，有个 sum(n -1)，然后调用栈记住 sum(n -1) 的位置，其实就是 sum(3)<br>进入代码执行 sum 里面的逻辑，发现 n 不等于 1，执行 else 里面的代码，发现 return n + sum(n - 1)，有个 sum(n -1)，然后调用栈记住 sum(n -1) 的位置，其实就是 sum(2)<br>进入代码执行 sum 里面的逻辑，发现 n 不等于 1，执行 else 里面的代码，发现 return n + sum(n - 1)，有个 sum(n -1)，然后调用栈记住 sum(n -1) 的位置，其实就是 sum(1)<br>进入代码执行 sum 里面的逻辑，发现 n 等于 1，return 1，跳回调用栈记住 sum(n -1) 的位置，清空 sum(n - 1) 的位置，跳回 sum(n - 1)，清空sum(n - 1)<br>跳回 sum(n - 1)，清空sum(n - 1)<br>跳回 sum(n - 1)，清空sum(n - 1)<br>跳回 sum(5)，清空sum(5)<br>最后栈内没有调用了，没有其他代码了。<br>调用栈的工作结束了。</p>
-<p>什么叫 stack overflow 栈溢出，调用栈太多了，就会导致栈溢出。</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>DOM 是 JavaScript 操作网页的接口，它将网页转成一个 JavaScript 对象，从而可以用脚本进行各种操作。</p>
+<p>浏览器根据 DOM 模型，将 HTML 解析成一系列节点，再由这些节点组成一个树状结构 DOM tree。所有节点和最终的树状结构，都有规范的对外接口。</p>
+<p>DOM 只是一个接口规范，可以用各种语言实现。所以严格地说，DOM 不是 JavaScript 语法的一部分，但是 DOM 操作是 JavaScript 最常见的任务，离开 DOM，JavaScript 就无法控制网页。另一方面，JavaScript 也是最常用于 DOM 操作的语言。</p>
+<p>DOM 的最小组成单位是节点 node，DOM 树就是由各种不同类型的节点组成。每个节点可以看作是文档树的一片叶子。</p>
+<p>节点的类型有七种，他们都继承自浏览器提供的节点对象 Node，都有 共有属性 Node.prototype</p>
+<ul>
+<li>Document：整个文档树的顶层节点</li>
+<li>DocumentType：doctype 标签</li>
+<li>Element：标签节点</li>
+<li>Attribute：标签节点的属性</li>
+<li>Text：标签之间（比如空格）或标签包含的文本</li>
+<li>Comment：注释</li>
+<li>DocumentFragment：文档片段</li>
+</ul>
+<p>document 节点继承自 Document，代表整个文档树，它有一个子节点标签节点 html，也是 DOM 树的根节点 root node。</p>
 
   </div>
   
@@ -74,7 +73,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/45/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/47/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/45/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><a class="page-number" href="/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/47/">下一页&raquo;</a>
   </nav>
 
     </main>

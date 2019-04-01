@@ -38,47 +38,66 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">函数的本质</h2>
+    <h2 class="title">计算机是如果存储数据的</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-20 13:23:19</span>
+    <span class="post-time">2018-12-21 00:25:31</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unicode/">Unicode</a></li></ul>
       
     </span>
     
       <div class="article-category">分类：
-        <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+        <a class="article-category-link" href="/categories/计算机科学/">计算机科学</a>
       </div>
     
   </div>
   <div class="post-content">
-    <h2 id="函数怎么调用"><a href="#函数怎么调用" class="headerlink" title="函数怎么调用"></a>函数怎么调用</h2><p>如果是数据，就是直接用的。比如 n = 1，要用就直接写上 n 就可以了。而函数要用的话叫做 调用，英文 call 或者 invoke。那函数是怎么调用的了？比如</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x,y</span>) </span>&#123;<span class="keyword">return</span> x+y&#125;</span><br></pre></td></tr></table></figure>
-<p>函数 f 怎么调用了？</p>
-<h2 id="首先我们看，函数到底是什么？"><a href="#首先我们看，函数到底是什么？" class="headerlink" title="首先我们看，函数到底是什么？"></a>首先我们看，函数到底是什么？</h2><blockquote>
-<p>函数是一段可以反复调用的代码块</p>
+    <h2 id="内存如何存储-0-和-1-的"><a href="#内存如何存储-0-和-1-的" class="headerlink" title="内存如何存储 0 和 1 的"></a>内存如何存储 0 和 1 的</h2><p>计算机只能存储 0 和 1，那它是怎么存储 0 和 1 的了？</p>
+<p>每个微晶体管就是一个 BIT （BInary digiT），一个字节是 8 个 bit，就是一排晶体管（一排 8 个）</p>
+<blockquote>
+<p>🤔 <a href="https://www.quora.com/Why-is-a-byte-EXACTLY-8-bits" target="_blank" rel="noopener">Why is a byte EXACTLY 8 bits?</a></p>
+<p>“字节”是在 1950 年代创造的，用于指代 IBM 7030 Stretch 计算机中可寻址的内存存储单元。一个字节的大小是可变的，在指令中指定，拼写为“字节”是为了避免冲突缩写为位。</p>
+<p>早期的计算机并不是 8 位字节。以前也有过 4 位、6 位、 7 位字节，是基于它们使用的字符集以及硬件设计者的选择。</p>
+<p>后来受欢迎的 IBM System / 360 大型机使用了 8 位字节，这有助于提高 8 位字节的流行度。大约在同一时间，AT＆T开始引入 8 位编码，用于通过其线路以数字方式传输声音，这也使得 8 位数据传输大小便于通过 AT＆T 线路传输。</p>
+<p>因此，到20世纪70年代初，微型计算机首次被设计时，已有十年以 8 位块编码数据。因此，早期的微型计算机围绕 8 位数据设计，因此它们使用 8 位字节。</p>
+<p>出于某些原因，IBM 选择将 8 位字符用于其 System / 360。第一个是他们想要一个大致与他们之前编码兼容的字符代码（其历史可追溯到最初设计于1800年代后期的计算机前打卡系统），希望足够大，可以容纳他们觉得有必要处理的所有角色。所以他们选择了 8 位。</p>
+<p>还有主要商业计算架构的普及，也是有助于无处不在地接受 8 位字节大小的。</p>
 </blockquote>
-<p>比如，我们求三角形的面积，我们知道它的宽为 100、高为 200。三角形面积公式为 S = ah/2。所以结果为 100 x 200 / 2 = 10000。JavaScript 代码写下来：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">width = <span class="number">100</span></span><br><span class="line">height = <span class="number">200</span></span><br><span class="line"><span class="keyword">var</span> area = width * height / <span class="number">2</span></span><br><span class="line">area <span class="comment">// 10000</span></span><br></pre></td></tr></table></figure>
-<p>那上面的 <code>var area = width * height / 2</code> 以及返回 <code>area</code> 就是求三角形面积的两句话，那我们可以把这两句话写成一个函数，然后取一个名字。比如说：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> 求三角形面积(<span class="params">w,h</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> area = w * h / <span class="number">2</span></span><br><span class="line">  <span class="keyword">return</span> area</span><br><span class="line">&#125;</span><br><span class="line">求三角形面积(<span class="number">4</span>,<span class="number">3</span>) <span class="comment">// 6</span></span><br><span class="line">求三角形面积(<span class="number">5</span>,<span class="number">3</span>) <span class="comment">// 7.5</span></span><br></pre></td></tr></table></figure>
-<p>求三角形面积 这个函数就可以反复调用。</p>
-<h2 id="函数在内存中是怎么存的？"><a href="#函数在内存中是怎么存的？" class="headerlink" title="函数在内存中是怎么存的？"></a>函数在内存中是怎么存的？</h2><p>函数在内存里面是存的函数 toString 值。实际上是一个字符串。</p>
-<p><code>function f(x,y){return x+y}</code> 改用更明确的形式 <code>var f = new Function(&#39;x&#39;, &#39;y&#39;, &#39;return x+y&#39;)</code></p>
-<p>在栈中存入 f，值为 ADDR 77，然后在堆中有一个 ADDR 77 的值，它里面对应存了函数的参数，比如 <code>params：[&#39;x&#39;, &#39;y&#39;]</code>，然后还有函数体 <code>fbody:&#39;return x+y&#39;</code>，然后就是函数的共有属性 <code>__proto__</code>。而 <code>__proto__</code> 里面有个方法叫 call，call 调用 <code>fbody</code>。</p>
-<p><img src="/Users/sunyanhui/dp/hexo/dsphoebe/source/images/function/memory.png" alt="memory"></p>
-<p>这个调用的过程：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> f = &#123;&#125;</span><br><span class="line">f.name = f</span><br><span class="line">f.params = [<span class="string">'x'</span>, <span class="string">'y'</span>]</span><br><span class="line">f.fbody = <span class="string">'console.log(1)'</span></span><br><span class="line">f.call = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.eval(f.body)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">f.call() </span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>函数是一个对象，因为函数的调用过程，其实就是 eval 它的函数体的过程。</p>
-<p>eval 的参数是字符串，eval 执行它的参数。</p>
-<p>所以可以总结为：可以执行代码的对象叫做函数。</p>
-<h2 id="硬核玩家函数调用"><a href="#硬核玩家函数调用" class="headerlink" title="硬核玩家函数调用"></a>硬核玩家函数调用</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x,y</span>) </span>&#123;<span class="keyword">return</span> x+y&#125;</span><br><span class="line">f.call(<span class="literal">undefined</span>, <span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-<h2 id="知识体系回顾"><a href="#知识体系回顾" class="headerlink" title="知识体系回顾"></a>知识体系回顾</h2><p>JavaScript 有 7 种数据类型：number，string，boolean，null，undefined，symbol，object</p>
-<p>最复杂的就是 object 它是复杂对象，它能包含其他数据类型。</p>
-<p>比如一个普通对象 {name: ‘frank’}，它有个 toString 方法，继承自它的 <code>__proto__</code> ，<code>__proto__</code>指向 Object.prototype。还有一个 Array.prototype 的原型，比如我们有个数组 [1,2,3]，它有个<code>__proto__</code> ，它是指向 Array.prototype，它有 push，pop 等方法。然后有个 Function.prototype 的原型，比如我们有个函数 <code>var f = function(){}</code>，它有个<code>__proto__</code>，它指向 Function.prototype，它里面有 bind、call、apply 方法。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>,<span class="number">2</span> <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">var</span> a = (<span class="number">1</span>,<span class="number">2</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>先选中竖排 8 个点，计算机把这一竖排充满电，但并不代表这个电池有电，然后横排开始向 8 个点输送电量，先第一横排，如果是 1 就给竖排第一个电池充电，如果是 0 就给竖排第一个电池充电。然后看第二横排，如果是 1 就给竖排第一个电池充电，如果是 0 就给竖排第一个电池充电。依此类推，直到这个竖排的电池充完电。读取时，如果电量大于 50% 就是 1， 如果小于 50% 就是 0。</p>
+<p>电池的电量会自动消耗，电池怎么长久存，计算机的电池耗电很快，充电大概几纳秒，充完几毫秒就耗完了。计算机通过刷新来重新充电。cpu 的多少 hz，就是说没秒能重多少次电。</p>
+<h2 id="如何存储数字"><a href="#如何存储数字" class="headerlink" title="如何存储数字"></a>如何存储数字</h2><p>可以存二进制了，那十进制怎么存？那就把十进制转成二进制来存。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">37</span>(<span class="number">10</span>) = <span class="number">3</span>*<span class="number">10</span>^<span class="number">1</span> + <span class="number">7</span>*<span class="number">10</span>^<span class="number">0</span></span><br><span class="line">			 = n1*<span class="number">2</span>^? + n2*<span class="number">2</span>^?</span><br><span class="line">  		 = <span class="number">32</span> + <span class="number">4</span> + <span class="number">1</span></span><br><span class="line">		   = <span class="number">1</span> * <span class="number">2</span>^<span class="number">5</span> <span class="number">0</span> <span class="number">0</span> + <span class="number">1</span>*<span class="number">2</span>^<span class="number">2</span> + <span class="number">0</span> + <span class="number">1</span>*<span class="number">2</span>^<span class="number">0</span></span><br><span class="line">			 = <span class="number">100101</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>负数用补码存储</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0.75</span>(<span class="number">10</span>) = <span class="number">7</span>*<span class="number">1</span>/<span class="number">10</span> + <span class="number">5</span>*<span class="number">1</span>/<span class="number">10</span>^<span class="number">2</span></span><br><span class="line">				 = n1*<span class="number">1</span>/<span class="number">2</span> + n2*<span class="number">1</span>/<span class="number">4</span> + ..</span><br><span class="line">         = <span class="number">0.5</span> + <span class="number">0.25</span></span><br><span class="line">			   = <span class="number">1</span>*<span class="number">1</span>/<span class="number">2</span> + <span class="number">1</span>*<span class="number">1</span>/<span class="number">4</span></span><br><span class="line">				 = <span class="number">0.11</span>(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>小数用浮点数存储</p>
+<p>为了方便书写，一般会将二进制存为十六进制。</p>
+<h2 id="如何存储字符"><a href="#如何存储字符" class="headerlink" title="如何存储字符"></a>如何存储字符</h2><p>将每个字符编号，ASCII 美国信息交换标准代码。</p>
+<p>在计算机中，1 个字节对应 8 位二进制数，而每位二进制数有 0，1 两种状态，因此 1 个字节可以组合成 256（2<sup>8</sup>）种状态。如果这 256 种状态每一个对应一个符号，就能通过 1 个字节的数据表示 256 个字符。</p>
+<p>上世纪 60 年代，美国制定了一套编码，ASCII（发音 /ˈæski/）码，全称为 American Standard Code for Information Interchange 美国信息交换标准代码。 </p>
+<p>ASCII 码一共定义了 128 个字符的编码，比如空格 SPACE 的二进制形式为 0010 0000，大写字母 A 的二进制形式为 0100 0000。这 128 个字符，其中包括 32 个不能打印出来的控制符号，都只使用了 8 位二进制数中的 后 7 位，最前面的一位统一规定位 0。</p>
+<p>如果存储 a，对应 ASCII 表中的 97 对应的二进制。</p>
+<p>a -&gt; 97<sub>10</sub> -&gt; 0110 0001<sub>2</sub> -&gt; 61<sub>16</sub></p>
+<p>如果存储 1，1 是字符 1，不是数字 1，对应 ASCII 表中的 49，修改为对应的二进制。</p>
+<p>1 -&gt; 49<sub>10</sub> -&gt; 0011 0001<sub>2</sub> -&gt; 31<sub>16</sub></p>
+<h2 id="如何存储中文"><a href="#如何存储中文" class="headerlink" title="如何存储中文"></a>如何存储中文</h2><p>中国国家标准局发布一个标准 扩充了一下 ASCII，增加 6763 个汉字，682 个字符：GB 2312。GB Guo Biao 国标。2^16 双字节存中文。</p>
+<p>后来为了存储生僻字、繁体字、日语等。微软推出 GBK 字符集。GBK Guo Biao Kuo 国标扩。</p>
+<p>国标又推出一个 GB 18030。</p>
+<h2 id="如何存储所有字符"><a href="#如何存储所有字符" class="headerlink" title="如何存储所有字符"></a>如何存储所有字符</h2><p>将全球字符编号：Unicode 字符集。包含所有文字，比如日韩、藏文、盲文、绘文字、颜文字。</p>
+<p>到 2016 年 6 月，Unicode 表已经有 128237 个字符。2^32 四个字节存所有字符。</p>
+<h2 id="如何将Unicode-存到计算机"><a href="#如何将Unicode-存到计算机" class="headerlink" title="如何将Unicode 存到计算机"></a>如何将Unicode 存到计算机</h2><p>a -&gt; 00000000 0000000 0000000 01100001<sub>2</sub> = 0061<sub>16</sub></p>
+<p>你 -&gt; 0000000 0000000 01001111 01100000 = 4F60<sub>1</sub></p>
+<p>32 位存储占用的存储空间太多，所以后来又有了 UTF-8 编码方式：</p>
+<p>a -&gt; 01100001</p>
+<p>你 -&gt; 11100100 10111101 10100000</p>
+<p>第一个字节的前 4 位 1110，第二个字节的前 2 位 10，第三个字节的前 2 位 10。</p>
+<p>UTF-8：<br>32 位 Unicode ：00000000 00000000 00000000 011111111<br>转为 UTF-8 ：0xxxxxxx<br>对应十六进制 0000007F 以下值</p>
+<p>32 位 Unicode ：00000000 00000000 00000111 111111111<br>转为 UTF-8 ：110xxxxx 10xxxxxx<br>对应十六进制 000007FF 以下值</p>
+<p>32 位 Unicode ：00000000 00000000 11111111 111111111<br>转为 UTF-8 ：1110xxxx 10xxxxxx 10xxxxxx<br>对应十六进制 0000FFFF 以下值</p>
+<p>32 位 Unicode ：00000000 00011111 11111111 111111111<br>转为 UTF-8 ：11110xxx 10xxxxxx 10xxxxxx 10xxxxxx<br>对应十六进制 0000FFFF 以下值</p>
+<p>可以看到 第一个字节的前面几位的1 加上 0 ，后面字节的第 1，2 位的 10 都用来表示字节位数标识，其他剩余的位数存有效二进制数值。</p>
+<h2 id="字符集历史问题"><a href="#字符集历史问题" class="headerlink" title="字符集历史问题"></a>字符集历史问题</h2><p>JavaScript 是 95 年发布的。它用的也是 Unicode，只是是 Unicode 的早起版本 UCS-2，UCS-2 是后来合并到 Unicode 的。缺点是只能表示两个字节。无法表示 \uFFFF 之后的字符。F 表示 4 个位，FFFF 表示 2 个字节。</p>
 
   </div>
   
@@ -86,7 +105,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/47/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="page-number" href="/page/47/">47</a><span class="page-number current">48</span><a class="page-number" href="/page/49/">49</a><a class="page-number" href="/page/50/">50</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/49/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/47/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="page-number" href="/page/47/">47</a><span class="page-number current">48</span><a class="page-number" href="/page/49/">49</a><a class="page-number" href="/page/50/">50</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/49/">下一页&raquo;</a>
   </nav>
 
     </main>

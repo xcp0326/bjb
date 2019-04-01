@@ -38,28 +38,36 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">rsync 同步</h2>
+    <h2 class="title">服务器迁移相关知识点</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-01-02 15:49:05</span>
+    <span class="post-time">2018-01-10 15:45:37</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rsync/">rsync</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/权限/">权限</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器迁移/">服务器迁移</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <ul>
-<li>-v 显示 rsync 运行的日志</li>
-<li>–rsync-path 指定远程机器上要运行的程序以启动远程 rsync 进程<ul>
-<li>所以把 nginx 配置挪到aa服务器的 rsync 命令是：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rsync -v --rsync-path=&quot;sudo rsync&quot; file.conf aa:/etc/nginx/sites-available/</span><br></pre></td></tr></table></figure>
-</li>
+    <h3 id="服务器进程"><a href="#服务器进程" class="headerlink" title="服务器进程"></a>服务器进程</h3><ul>
+<li>pstree<ul>
+<li>tmux</li>
+<li>crontab</li>
+<li>nginx</li>
+<li>supervisor</li>
 </ul>
 </li>
 </ul>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
-<li><a href="http://www.cnblogs.com/f-ck-need-u/p/7221713.html" target="_blank" rel="noopener">Rsync 中文手册</a></li>
+<h3 id="rsync-–rsync-path-’xxxx’-avz-file-ssh-server-path"><a href="#rsync-–rsync-path-’xxxx’-avz-file-ssh-server-path" class="headerlink" title="rsync –rsync-path=’xxxx’ -avz file ssh-server:/path/"></a>rsync –rsync-path=’xxxx’ -avz file ssh-server:/path/</h3><h3 id="aws"><a href="#aws" class="headerlink" title="aws"></a>aws</h3><ul>
+<li>安全组 ssh登录22端口没开</li>
+<li>ssh -vvv ssh log</li>
+</ul>
+<h3 id="bash-read-file"><a href="#bash-read-file" class="headerlink" title="bash read file"></a>bash read file</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for i in `cat file.txt`</span><br><span class="line">  do</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><ul>
+<li>mysqldump databases a &gt; a.sql</li>
+<li>mysql &lt; a.sql</li>
+<li>mysqldump –all-database &gt; all.sql</li>
 </ul>
 
   </div>
@@ -68,7 +76,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/106/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/105/">105</a><a class="page-number" href="/page/106/">106</a><span class="page-number current">107</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/108/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/106/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/105/">105</a><a class="page-number" href="/page/106/">106</a><span class="page-number current">107</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/108/">下一页&raquo;</a>
   </nav>
 
     </main>

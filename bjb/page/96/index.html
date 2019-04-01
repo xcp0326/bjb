@@ -38,117 +38,44 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">CSS 常见布局总结</h2>
+    <h2 class="title">块状元素的宽高如何确定</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-10-18 15:48:20</span>
+    <span class="post-time">2018-11-01 12:24:59</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFC/">BFC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flex/">Flex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Grid/">Grid</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/双倍-margin/">双倍 margin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多行居中/">多行居中</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文本溢出问题/">文本溢出问题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文档流/">文档流</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h2 id="布局分类"><a href="#布局分类" class="headerlink" title="布局分类"></a>布局分类</h2><ol>
-<li>文档流布局：正常文档流布局，内嵌元素从左到右，块级元素从上到下的流动布局。</li>
-<li>浮动布局：将 float 属性 设置为 left / right，使块级元素脱离文档流，浮动起来，实现多列布局。</li>
-<li>Flex 弹性布局：需要给容器元素以及项目元素设置 CSS，感觉不是一两句话能描述清楚，看这里 <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener">Flex 完全指南</a></li>
-<li>定位布局：主要是用 position 的两个属性 absolute / relative 实现，也会导致脱离文档流，在不知道父级确切高度的情况下，不要用定位布局。</li>
-<li>Grid 网格布局：同 Flex 一样，对容器和项目元素设置来实现各种多列多行布局，看这里 <a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener">Grid 完全指南</a></li>
-</ol>
-<h2 id="常见布局场景"><a href="#常见布局场景" class="headerlink" title="常见布局场景"></a>常见布局场景</h2><ol>
-<li>左右布局</li>
-<li>左中右布局</li>
-<li>水平居中</li>
-<li>垂直居中</li>
-</ol>
-<h2 id="左右布局"><a href="#左右布局" class="headerlink" title="左右布局"></a>左右布局</h2><p>对于内嵌元素，其文档流方向本来就是从左到右的，所以不用任何 CSS 辅助，就是左右布局了。</p>
-<p>对于块级元素，其文档流方向是从上到下的，那么怎么实现左右布局了，有下面几个方法：浮动，定位，flex 弹性布局，grid 网格布局。</p>
-<h3 id="浮动实现左右布局"><a href="#浮动实现左右布局" class="headerlink" title="浮动实现左右布局"></a>浮动实现左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="NOYbaL" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="float - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/NOYbaL/" target="_blank" rel="noopener">float - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+    <p>块状元素的宽度很好确定，就是父级的宽度，那父级的宽度了，如果没有设置 <code>width</code>，那么就是浏览器的窗口的宽度了。如果是 <code>float</code> 或者定位或者 <code>flex</code> 元素，就是内部容所占的宽度。那高度了，高度的情况复杂点，比如如果块状元素内部是文本。</p>
+<h2 id="内部是单行文本"><a href="#内部是单行文本" class="headerlink" title="内部是单行文本"></a>内部是单行文本</h2><p>单行文字高度由字体的行高决定。字体设计师会在字体文件里写一个建议行高，所以如果开发者没有设置 <code>line-height</code>，则这个块状元素内部的元素行高就是字体设计师定的建议行高。</p>
+<p>因为 HTML 会把文本之间的空格，包括 enter 回车（不是<code>&lt;br /&gt;</code>），多个 space 空格都合并显示为 一个空格。所以 HTML 回车实现的换行文本其实就是单行文本。这时候的高度同上，也是由字体的行高决定的。</p>
+<p>多个空格会被合并成一个空格，在 HTML 里面，我们实现多个空格用<code>&amp;nbsp;</code> 全称 no break space 来实现。虽然可以用 <code>&amp;nbsp;</code> 来实现多个空格，但是它是用来排版的，不要用来它来实现布局。</p>
+<p>比如，咱们常见的表单<code>&lt;label&gt;</code>内的文本两端对齐布局。因为空格的宽度也是由字体的设计师们定义的，有的字体可能是对应 2 个字符，这个时候咱们可能可以通过 <code>&amp;nbsp;</code> 来实现对齐，可是有的字体可能是 2.2 个字符，那就无法用 <code>&amp;nbsp;</code> 实现了。</p>
+<p>这种需求咱们可以这样实现对齐：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="zmQqxm" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="两行不同个数字体左右对齐" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/zmQqxm/" target="_blank" rel="noopener">两行不同个数字体左右对齐</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-<p>优点：兼容不支持 flex 和 grid 的老版本浏览器</p>
-<p>缺点：需要在父级清除浮动，否则会影响接下来的文档流。</p>
-<h3 id="定位实现左右布局"><a href="#定位实现左右布局" class="headerlink" title="定位实现左右布局"></a>定位实现左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ReMoML" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="position - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ReMoML/" target="_blank" rel="noopener">position - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<p>如果给元素定义 <code>display:inline-block;</code> 或者 <code>display:inline;</code> 那么该元素之间的所有形式的空格都也只会显示为一个空格。</p>
+<p>内嵌文本之间的空格会被合并成一个空格，而内嵌文本的之外的空格会直接被 HTML 忽略。</p>
+<h2 id="内部是多行文本"><a href="#内部是多行文本" class="headerlink" title="内部是多行文本"></a>内部是多行文本</h2><p>如果内联文本很多时，文本就会出现到第二行。整个文本显示为从左到右，从上到下的排列方式。这种流动的方式就称为文档流，英文 Normal Flow。</p>
+<p>如果在文档流中遇到太长的字符时，会因为过长而另启一行，而且可能太长而导致超出块状元素的宽度。限制它超出可以在合适的位置加上连字符 <code>-</code>，或者定义它的样式为 <code>word-break: break-all;</code>，意思为按照块状元素的宽度切断字符。</p>
+<p>如果文本过多，文本会溢出，经常的需求是截断文本并用省略号结尾显示。</p>
+<p>单行文本溢出时切断并省略号结尾：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="MPdyVP" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="单行文本溢出" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/MPdyVP/" target="_blank" rel="noopener">单行文本溢出</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-<p>优点：兼容不支持 flex 和 grid 的老版本浏览器</p>
-<p>缺点：子级容器 absolute 已经脱离了文档流导致父级的容器的高度为 0，最好知道并设置父级的高度，以防后面的文档流上移。</p>
-<h3 id="Flex-弹性左右布局"><a href="#Flex-弹性左右布局" class="headerlink" title="Flex 弹性左右布局"></a>Flex 弹性左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="aRYBjN" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="flex - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/aRYBjN/" target="_blank" rel="noopener">flex - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<p>实现多行文本溢出切断并省略号结尾：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="EdzKoz" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="多行文本超出部分变成省略号" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/EdzKoz/" target="_blank" rel="noopener">多行文本超出部分变成省略号</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-<p>优点：非常简单，直接通过父级 CSS 设置，子级只需设置宽高，就可以完成一个左右布局</p>
-<p>缺点：有低版本浏览器兼容性问题</p>
-<h3 id="Grid-网格布局"><a href="#Grid-网格布局" class="headerlink" title="Grid 网格布局"></a>Grid 网格布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="qJoqJR" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="grid - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/qJoqJR/" target="_blank" rel="noopener">grid - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-<p>优点：比 Flex 更加简单，直接通过父级 CSS 设置就可以完成一个左右布局</p>
-<p>缺点：有低版本浏览器兼容性问题</p>
-<h2 id="左中右布局"><a href="#左中右布局" class="headerlink" title="左中右布局"></a>左中右布局</h2><p>同上面左右布局，只是列分成了三列。这里实现下 Grid 网格布局的 三列布局，超级简单：</p>
-<p></p><p data-height="265" data-theme-id="light" data-slug-hash="Lgdbay" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="grid - three columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/Lgdbay/" target="_blank" rel="noopener">grid - three columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-<p>跟左右布局的两列相比，只是在 grid-template-columns 里面的属性值 从 50% 50% 修改成了 30% 30% 30%。超级简单，有没有。</p>
-<h2 id="水平居中"><a href="#水平居中" class="headerlink" title="水平居中"></a>水平居中</h2><p>内嵌元素居中，就是在其最亲的块级父辈设置 text-align: center; 就可以了。</p>
-<p>块级元素，如果知道确定的宽度百分比或者具体 px的话，定义 margin-left，margin-right 分别为 auto，就可以实现水平居中。</p>
-<p>其他方式：</p>
-<h3 id="定位一-（left-50-margin-负一半宽度）"><a href="#定位一-（left-50-margin-负一半宽度）" class="headerlink" title="定位一 （left 50% margin 负一半宽度）"></a>定位一 （left 50% margin 负一半宽度）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="KGoaOa" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal - left , margin" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/KGoaOa/" target="_blank" rel="noopener">Horizontal - left , margin</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="定位二（left-50-transform-translateX-50-）"><a href="#定位二（left-50-transform-translateX-50-）" class="headerlink" title="定位二（left 50% transform translateX -50%）"></a>定位二（left 50% transform translateX -50%）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ePMvYe" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal - left, transform" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ePMvYe/" target="_blank" rel="noopener">Horizontal - left, transform</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="Flex-（给容器定义-justify-content-center，子级居中"><a href="#Flex-（给容器定义-justify-content-center，子级居中" class="headerlink" title="Flex （给容器定义 justify-content: center，子级居中)"></a>Flex （给容器定义 justify-content: center，子级居中)</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="qJorbQ" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal center - flex" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/qJorbQ/" target="_blank" rel="noopener">Horizontal center - flex</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="Grid-（justify-self-center-）"><a href="#Grid-（justify-self-center-）" class="headerlink" title="Grid （justify-self: center;）"></a>Grid （justify-self: center;）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="rqdyLd" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="horizontal center - grid" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/rqdyLd/" target="_blank" rel="noopener">horizontal center - grid</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-
-
-<h2 id="垂直居中"><a href="#垂直居中" class="headerlink" title="垂直居中"></a>垂直居中</h2><p>内嵌元素居中，一般情况下如果字体设计师设计的字体正常的话，将 height 和 line-height 设置一致就是垂直居中的。</p>
-<p>块级元素的话基本和水平居中的块级方案一样：</p>
-<h3 id="定位一（top-50-margin-负一半高度）"><a href="#定位一（top-50-margin-负一半高度）" class="headerlink" title="定位一（top: 50% margin 负一半高度）"></a>定位一（top: 50% margin 负一半高度）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="dgmvpL" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Vertical center - top, margin" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/dgmvpL/" target="_blank" rel="noopener">Vertical center - top, margin</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="定位二（top-50-transform-translateY-50-）"><a href="#定位二（top-50-transform-translateY-50-）" class="headerlink" title="定位二（top 50% transform translateY -50%）"></a>定位二（top 50% transform translateY -50%）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ReMppw" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - top, transform" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ReMppw/" target="_blank" rel="noopener">vertical center - top, transform</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="Flex-（给容器定义-align-items-center-实现垂直居中）"><a href="#Flex-（给容器定义-align-items-center-实现垂直居中）" class="headerlink" title="Flex （给容器定义 align-items center 实现垂直居中）"></a>Flex （给容器定义 align-items center 实现垂直居中）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="WazpEj" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - flex" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/WazpEj/" target="_blank" rel="noopener">vertical center - flex</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h3 id="Gird（align-self-center）"><a href="#Gird（align-self-center）" class="headerlink" title="Gird（align-self center）"></a>Gird（align-self center）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="KGoWRZ" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - grid" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/KGoWRZ/" target="_blank" rel="noopener">vertical center - grid</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="BFC-块级格式上下文-Block-Format-Context"><a href="#BFC-块级格式上下文-Block-Format-Context" class="headerlink" title="BFC 块级格式上下文 Block Format Context"></a>BFC 块级格式上下文 Block Format Context</h2><p>BFC 是 形成一个独立区域，此区域的子元素不会受到此区域外部的元素 CSS 的影响。</p>
-<h3 id="形成-BFC-区域的条件："><a href="#形成-BFC-区域的条件：" class="headerlink" title="形成 BFC 区域的条件："></a>形成 BFC 区域的条件：</h3><ul>
-<li>根元素 （HTML 元素），最大的 BFC，它也不可能存在外部的元素。😄 就跟全局闭包一样。</li>
-<li>float left、float right</li>
-<li>overflow scorll、overflow hidden、overflow auto</li>
-<li>position absolute、position fixed、position sticky 难道不是？</li>
-<li>display inline-block、table-cell（是 th，td 的默认的 display 样式）、table（是 table 的默认的 display 样式）、table-row（是 tr 的默认的 display 样式）、table-row-group（是 tbody 的默认的 display 样式）、table-header-group（是 thead 的默认的 display 样式）、table-footer-group（是 tfoot 的默认的 display 样式）、inline-table、flow-root、flex、inline-flex、grid、inline-grid</li>
-<li><strong>contain layout、content、strict</strong> 没用过</li>
-<li>column-count 或 column-width 不为 auto，column-count 不为 1</li>
-<li>column-span 为 all</li>
-</ul>
-<h3 id="常见场景-作用"><a href="#常见场景-作用" class="headerlink" title="常见场景/作用"></a>常见场景/作用</h3><p>因为是创建一个独立的不会被外部影响，也不影响内部子元素的区域。所以 两个 div 的 margin 叠加时，给其中一个 div 外部包一个 BFC 可以清除叠加。所以清除浮动对文档流的影响时，也是在浮动元素外部包一个 BFC 就可以清除浮动的影响。</p>
+<h2 id="内部文本垂直居中"><a href="#内部文本垂直居中" class="headerlink" title="内部文本垂直居中"></a>内部文本垂直居中</h2><p>设置相同的 <code>padding-top</code> 和 <code>padding-bottom</code> 值来撑开块状元素的高度，实现多行和单行文本都能自适应垂直居中。前提是块状元素的高度不是固定的。</p>
+<h2 id="内部是块状元素"><a href="#内部是块状元素" class="headerlink" title="内部是块状元素"></a>内部是块状元素</h2><p>如果内部块状元素设置了 <code>margin-top</code> 或 <code>margin-bottom</code>，他们会被合并到外部元素的 <code>margin-top</code>，<code>margin-bottom</code>。如果没有给外部块状元素设置 <code>padding-top</code>，<code>padding-bottom</code>，<code>border-top</code>，<code>border-bottom</code>，<code>overflow</code> 等。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果内部是文本，则高度等于内部文本行高总和；如果内部是块状元素，则由所有内部块状元素的高度 加上所有内部块状元素的 <code>padding-top</code>，<code>padding-bottom</code>，<code>border-top</code>，<code>border-bottom</code>，以及他们没被合并到父级块状元素的 <code>margin-top</code> 和 <code>margin-bottom</code>的总和。</p>
+<h2 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h2><p><a href="https://zhuanlan.zhihu.com/p/25808995" target="_blank" rel="noopener">深入理解 CSS：字体度量、line-height 和 vertical-align</a></p>
 
   </div>
   
@@ -156,7 +83,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/95/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/94/">94</a><a class="page-number" href="/page/95/">95</a><span class="page-number current">96</span><a class="page-number" href="/page/97/">97</a><a class="page-number" href="/page/98/">98</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/97/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/95/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/94/">94</a><a class="page-number" href="/page/95/">95</a><span class="page-number current">96</span><a class="page-number" href="/page/97/">97</a><a class="page-number" href="/page/98/">98</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/97/">下一页&raquo;</a>
   </nav>
 
     </main>

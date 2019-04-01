@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">NodeList 接口，HTMLCollection 接口</h2>
+    <h2 class="title">属性的操作</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-24 23:50:27</span>
+    <span class="post-time">2018-12-27 12:54:11</span>
     <span class="post-tags">
       
     </span>
@@ -51,16 +51,17 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>NodeList 是 Node 对象的伪数组</p>
-<p>HTMLCollection 是标签节点的伪数组</p>
-<p>Node.childNodes 属性返回 NodeList，也只有这个属性的返回的 NodeList 是动态集合</p>
-<p>document.querySelectorAll() 节点搜索方法返回 NodeList</p>
-<p>NodeList 有 forEach 方法和 length 属性，但是么有数组的 push 等方法</p>
-<p>NodeList 的 item 方法，参数为整数值，表示成员的位置，返回该位置的成员。这个方法等价于 <code>NodeList[&lt;int&gt;]</code></p>
-<p>keys、values、entries 三个方法分别返回一个键名遍历器、一个键值遍历器、一个包含键名和键值的遍历器。遍历器对象可以通过 for…of 循环遍历获取每一个成员的信息。</p>
-<p>HTMLCollection 没有 forEach 方法，只能使用 for 循环。它主要是一些 Document 对象的集合属性：document.links、document.forms、document.images 等。如果节点有 id 或 name 属性，可以用 id 或者 name 来引用节点元素。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;img id="pic" src="http://example.com/foo.jpg"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pic = <span class="built_in">document</span>.getElementById(<span class="string">'pic'</span>);</span><br><span class="line"><span class="built_in">document</span>.images.pic === pic <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>namedItem() 参数为 id 属性或 name 属性的值，返回对应的标签节点，如果么有返回 null。</p>
+<p>HTML 标签包括标签名和若干个键值对，这个键值对就称为属性 attribute。属性本身是一个对象 Attr 对象。一般通过元素节点对象 HTMLElement 对象来操作它。</p>
+<p>属性可读可写 不可删除，delete 运算符在这里不会生效</p>
+<p>HTML 标签的属性名对大小不敏感。</p>
+<p>有些 HTML 属性名是 JavaScript 的保留字，转为 JavaScript 属性时，必须要改名，比如这两个：</p>
+<ul>
+<li>for 属性改名为 htmlFor</li>
+<li>class 属性名改为 className</li>
+</ul>
+<p>原来 React 也是因为这里的啦。</p>
+<p>HTML 属性一般都是字符串，但是 JavaScript 属性会自动转换类型。比如将字符串 true 转换为布尔值，将 onClick 的值转换为一个函数，将 style 属性转为一个 CSSStyleDeclaration 对象。因此可以对这些属性赋予各种类型的值。</p>
+<p>getAttribute() 只返回字符串</p>
 
   </div>
   
@@ -68,7 +69,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/39/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/41/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/39/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/38/">38</a><a class="page-number" href="/page/39/">39</a><span class="page-number current">40</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/41/">下一页&raquo;</a>
   </nav>
 
     </main>

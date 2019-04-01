@@ -38,38 +38,34 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">比较 cookie，localStorage 和 sessionStorage</h2>
+    <h2 class="title">linux 命令行图片翻转</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2017-12-17 00:00:00</span>
+    <span class="post-time">2017-12-20 12:40:00</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cookie/">cookie</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html5/">html5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/localStroage/">localStroage</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sessionStorage/">sessionStorage</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/imagemagick/">imagemagick</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片/">图片</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>cookie, sessionStorage, localStroage都是存储在客户端本地机器上的数据。设置完后，可整站调用，是真正意义上的“全局变量”。</p>
-<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>由于HTTP无法记录状态，服务器端用cookie来记录用户状态的，由服务器端生成。<br>通过HTTP把值存储在用户本地机器上，下次服务器端再访问的时候，通过HTTP的请求头带着cookie来确认是不是同一个用户。  </p>
-<p>最初是服务器端动态开发web的时候，是服务器端操作。  </p>
-<p>有了AJAX后，AJAX请求接口的时候，AJAX通过xhrFields.withCredentials: true，在request.header里带cookie值给服务器端已确认是同一个用户。  </p>
-<p>cookie也可以在前端生成，直接document.cookie=”key=value;key2=value2;….domain=..path=..expired=…”，是键值对组成的字符串。cookie的设置，读取都是操作字符串，一般大家操作都会自己再重新定义setcookie，getcookie，removecookie等基础方法来操作document.cookie字符串。或者找类似的小框架比如 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie/Simple_document.cookie_framework" target="_blank" rel="noopener">cookie操作简易库</a>。  </p>
-<p>cookie的存储量最多只能4kb，最多存储的键值对各个浏览器不同，最多的也只有50个。</p>
-<h3 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h3><p>sessionStorage和localStorage都是H5新出来的，用来替换document.cookie的，与HTTP头无关系。<br>能存储5mb的数据。<br>有对应的webapi操作数据：</p>
+    <p>胖达的网站里面的图片都是我本地直接 rysnc iPhone 手机里的照片到阿里云的。<br>结果好多图片都是横着的。</p>
+<p>好，找到这个：<br>ImageMagick 图片翻转<br>convert example.jpg -rotate 90 example-rotated.jpg</p>
+<p><a href="https://linux.cn/article-21-1.html" target="_blank" rel="noopener">Linux图片软件</a>安装了 gpicview，这个软件应该是在 Linux GUI 里面用的。<br><a href="http://blog.csdn.net/get_set/article/details/51276609" target="_blank" rel="noopener">移除 apt-get remove –purge gpicview</a></p>
+<p>最后居然还是 ImageMagick</p>
+<p>安排 ImageMagick 问题：</p>
 <ul>
-<li>storge.setItem(key, value) // 设置storage</li>
-<li>storage.getItem(key) // 获取storage</li>
-<li>storage.removeItem(key) // 删除key的storage</li>
-<li>storage.clear() // 清除storage</li>
+<li>display.im6: unable to open X server `’ @ error/display.c/DisplayImageCommand/428. 没找到解决的办法</li>
 </ul>
-<h4 id="localStorage"><a href="#localStorage" class="headerlink" title="localStorage"></a>localStorage</h4><p>localStorage是永久保存的，除非覆盖/清除</p>
-<h4 id="sessionStorage"><a href="#sessionStorage" class="headerlink" title="sessionStorage"></a>sessionStorage</h4><p>sessionStorage，session这个词，大概就能知道它的时效性了。它在关闭会话或者浏览器就会被清除</p>
-<h5 id="sessionStorage场景？"><a href="#sessionStorage场景？" class="headerlink" title="sessionStorage场景？"></a>sessionStorage场景？</h5><p>调查问卷</p>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
-<li><a href="http://blog.csdn.net/lijing198997/article/details/9378047" target="_blank" rel="noopener">HTTP cookies 详解</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/cookie" target="_blank" rel="noopener">Document.cookie</a></li>
-<li><a href="http://jerryzou.com/posts/cookie-and-web-storage/" target="_blank" rel="noopener">详说 cookie, LocalStorage 与 SessionStorage</a></li>
+<p>转移另一个方案：<br>虽然图片翻转了，可是 hexo 里面的图片样式的设置也是个麻烦的事。iPhone 直接 rsync 的图片也有点大了，每次请求都好慢。（还是想再研究下ImageMagick的其他方法，也许能找到合适的。）<br>转战本地修饰好了，改好宽高，压缩了大小，美化了照片再上传。</p>
+<p>2017-12-21 updated<br>照片是在太大了，随便都是几兆。压缩下</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://blog.csdn.net/zrools/article/details/51347471" target="_blank" rel="noopener">Linux下图像压缩、格式转换、缩放、旋转</a></li>
+<li><a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">ImageMagick</a></li>
+<li><a href="https://www.computerhope.com/issues/ch001720.htm" target="_blank" rel="noopener">How can I open an image file from the Linux terminal?</a></li>
+<li><a href="http://www.jianshu.com/p/05bdcbe320f6" target="_blank" rel="noopener">mac 命令行批量处理照片</a></li>
 </ul>
 
   </div>
@@ -78,7 +74,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/109/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="page-number current">110</span><a class="page-number" href="/page/111/">111</a><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/111/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/109/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="page-number current">110</span><a class="page-number" href="/page/111/">111</a><a class="page-number" href="/page/112/">112</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/111/">下一页&raquo;</a>
   </nav>
 
     </main>

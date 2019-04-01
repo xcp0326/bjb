@@ -38,86 +38,117 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">译文：被神化的和真实的 HTML 可替代标签</h2>
+    <h2 class="title">CSS 常见布局总结</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-10-15 00:00:00</span>
+    <span class="post-time">2018-10-18 15:48:20</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/">HTML</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/可替代标签/">可替代标签</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFC/">BFC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flex/">Flex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Grid/">Grid</a></li></ul>
       
     </span>
     
-      <div class="article-category">分类：
-        <a class="article-category-link" href="/categories/译文/">译文</a>
-      </div>
-    
   </div>
   <div class="post-content">
-    <blockquote>
-<p>原文链接：<a href="https://www.sitepoint.com/replaced-elements-html-myths-realities/" target="_blank" rel="noopener">Replaced Elements in HTML: Myths and Realities</a></p>
-<p>作者：Adrian Sandu</p>
-</blockquote>
-<p>一些 HTML 元素经常会让前端开发者们头痛，像 iframes，applets，embedded 对象以及表单元素。他们的显示是那么难以控制，而且每个浏览器每个系统显示都不一样。</p>
-<p><img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1501638545replaced-myths.png" alt="Replaced Element Myths"></p>
-<p>以致很多的框架和库都做了替代品，从 jQueryUI 到 Bootstrap 等等。但是你有没有想过为什么这些元素的行为是这样的了？有人会说这就是 W3C 说的「可替代标签」。真的是这么回事吗？</p>
-<h2 id="什么是可替代标签"><a href="#什么是可替代标签" class="headerlink" title="什么是可替代标签"></a>什么是可替代标签</h2><p><a href="https://drafts.csswg.org/css2/conform.html" target="_blank" rel="noopener">W3C 标准</a>是这么说的：</p>
-<blockquote>
-<p>内容超出 CSS 格式模型范围的元素，就像 一个图片，内嵌文档，或者 applet。例如，HTML img 标签的内容由其 src 属性指定的图像替换。可替代标签通常具有内在尺寸：固有宽度，固有高度，和固有比率。例如，位图图像是以绝对单位指定的固定的宽度和固定的高度（显然可以从中确定内在比率）。另一方面，其他文档可能根本就没有内在尺寸，比如 一个空白 HTML 文档。</p>
-<p>如果认为这些尺寸可能会将敏感信息泄漏给第三方，则用户代理可以认为可替代标签没有任何内在尺寸。例如，如果 HTML 文档根据用户的银行余额更改内部大小，则用户代理可能希望表现为该资源没有内在尺寸。</p>
-<p>CSS 渲染模型中不考虑可替代标签的内容。</p>
-</blockquote>
-<p>至此，在我们深入标准之前，我们得到一个词：内在尺寸</p>
-<h2 id="什么是内在尺寸"><a href="#什么是内在尺寸" class="headerlink" title="什么是内在尺寸"></a>什么是内在尺寸</h2><p>在 <a href="https://www.w3.org/TR/css3-images/#sizing-terms" target="_blank" rel="noopener">CSS3 的图像标准</a>中这样说的：</p>
-<blockquote>
-<p>术语【内在尺寸】是指固有高度，固有宽度和固有纵横比（宽度和高度之间的比率）的集合，对于给定对象，每个可以存在或不存在。这些内在尺寸代表物体本身的优选或自然尺寸；也就是说，它们不是使用对象的上下文的函数。CSS 没有定义如何获取内在尺寸。</p>
-<p>位图是具有所有三个内在唯独的对象的示例。设计用于扩展位图的 SVG 图像可能只具有固有宽高比；也可以仅使用固有宽度或高度创建 SVG 图像。在标准中定义的 CSS 渐变是完全没有内在尺寸的对象的示例。另一个例子是嵌入式文档，例如 HTML 中的 &lt;iframe&gt; 元素。一个对象不能只有两个内在尺寸，因为任何两个维度都是能自动定义出第三个维度。</p>
-</blockquote>
-<p>总结下来：</p>
-<ul>
-<li>图像具有所有三个尺寸：宽度，高度，宽高比</li>
-<li>SVG 图像可能只有宽高比。由于可以缩放，隐藏宽度和高度不固定</li>
-<li>使用 iframe 元素插入的空 HTML 页面没有内在尺寸</li>
+    <h2 id="布局分类"><a href="#布局分类" class="headerlink" title="布局分类"></a>布局分类</h2><ol>
+<li>文档流布局：正常文档流布局，内嵌元素从左到右，块级元素从上到下的流动布局。</li>
+<li>浮动布局：将 float 属性 设置为 left / right，使块级元素脱离文档流，浮动起来，实现多列布局。</li>
+<li>Flex 弹性布局：需要给容器元素以及项目元素设置 CSS，感觉不是一两句话能描述清楚，看这里 <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener">Flex 完全指南</a></li>
+<li>定位布局：主要是用 position 的两个属性 absolute / relative 实现，也会导致脱离文档流，在不知道父级确切高度的情况下，不要用定位布局。</li>
+<li>Grid 网格布局：同 Flex 一样，对容器和项目元素设置来实现各种多列多行布局，看这里 <a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener">Grid 完全指南</a></li>
+</ol>
+<h2 id="常见布局场景"><a href="#常见布局场景" class="headerlink" title="常见布局场景"></a>常见布局场景</h2><ol>
+<li>左右布局</li>
+<li>左中右布局</li>
+<li>水平居中</li>
+<li>垂直居中</li>
+</ol>
+<h2 id="左右布局"><a href="#左右布局" class="headerlink" title="左右布局"></a>左右布局</h2><p>对于内嵌元素，其文档流方向本来就是从左到右的，所以不用任何 CSS 辅助，就是左右布局了。</p>
+<p>对于块级元素，其文档流方向是从上到下的，那么怎么实现左右布局了，有下面几个方法：浮动，定位，flex 弹性布局，grid 网格布局。</p>
+<h3 id="浮动实现左右布局"><a href="#浮动实现左右布局" class="headerlink" title="浮动实现左右布局"></a>浮动实现左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="NOYbaL" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="float - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/NOYbaL/" target="_blank" rel="noopener">float - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>优点：兼容不支持 flex 和 grid 的老版本浏览器</p>
+<p>缺点：需要在父级清除浮动，否则会影响接下来的文档流。</p>
+<h3 id="定位实现左右布局"><a href="#定位实现左右布局" class="headerlink" title="定位实现左右布局"></a>定位实现左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ReMoML" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="position - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ReMoML/" target="_blank" rel="noopener">position - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>优点：兼容不支持 flex 和 grid 的老版本浏览器</p>
+<p>缺点：子级容器 absolute 已经脱离了文档流导致父级的容器的高度为 0，最好知道并设置父级的高度，以防后面的文档流上移。</p>
+<h3 id="Flex-弹性左右布局"><a href="#Flex-弹性左右布局" class="headerlink" title="Flex 弹性左右布局"></a>Flex 弹性左右布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="aRYBjN" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="flex - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/aRYBjN/" target="_blank" rel="noopener">flex - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>优点：非常简单，直接通过父级 CSS 设置，子级只需设置宽高，就可以完成一个左右布局</p>
+<p>缺点：有低版本浏览器兼容性问题</p>
+<h3 id="Grid-网格布局"><a href="#Grid-网格布局" class="headerlink" title="Grid 网格布局"></a>Grid 网格布局</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="qJoqJR" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="grid - two columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/qJoqJR/" target="_blank" rel="noopener">grid - two columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>优点：比 Flex 更加简单，直接通过父级 CSS 设置就可以完成一个左右布局</p>
+<p>缺点：有低版本浏览器兼容性问题</p>
+<h2 id="左中右布局"><a href="#左中右布局" class="headerlink" title="左中右布局"></a>左中右布局</h2><p>同上面左右布局，只是列分成了三列。这里实现下 Grid 网格布局的 三列布局，超级简单：</p>
+<p></p><p data-height="265" data-theme-id="light" data-slug-hash="Lgdbay" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="grid - three columns" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/Lgdbay/" target="_blank" rel="noopener">grid - three columns</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>跟左右布局的两列相比，只是在 grid-template-columns 里面的属性值 从 50% 50% 修改成了 30% 30% 30%。超级简单，有没有。</p>
+<h2 id="水平居中"><a href="#水平居中" class="headerlink" title="水平居中"></a>水平居中</h2><p>内嵌元素居中，就是在其最亲的块级父辈设置 text-align: center; 就可以了。</p>
+<p>块级元素，如果知道确定的宽度百分比或者具体 px的话，定义 margin-left，margin-right 分别为 auto，就可以实现水平居中。</p>
+<p>其他方式：</p>
+<h3 id="定位一-（left-50-margin-负一半宽度）"><a href="#定位一-（left-50-margin-负一半宽度）" class="headerlink" title="定位一 （left 50% margin 负一半宽度）"></a>定位一 （left 50% margin 负一半宽度）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="KGoaOa" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal - left , margin" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/KGoaOa/" target="_blank" rel="noopener">Horizontal - left , margin</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="定位二（left-50-transform-translateX-50-）"><a href="#定位二（left-50-transform-translateX-50-）" class="headerlink" title="定位二（left 50% transform translateX -50%）"></a>定位二（left 50% transform translateX -50%）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ePMvYe" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal - left, transform" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ePMvYe/" target="_blank" rel="noopener">Horizontal - left, transform</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="Flex-（给容器定义-justify-content-center，子级居中"><a href="#Flex-（给容器定义-justify-content-center，子级居中" class="headerlink" title="Flex （给容器定义 justify-content: center，子级居中)"></a>Flex （给容器定义 justify-content: center，子级居中)</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="qJorbQ" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Horizontal center - flex" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/qJorbQ/" target="_blank" rel="noopener">Horizontal center - flex</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="Grid-（justify-self-center-）"><a href="#Grid-（justify-self-center-）" class="headerlink" title="Grid （justify-self: center;）"></a>Grid （justify-self: center;）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="rqdyLd" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="horizontal center - grid" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/rqdyLd/" target="_blank" rel="noopener">horizontal center - grid</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+
+
+<h2 id="垂直居中"><a href="#垂直居中" class="headerlink" title="垂直居中"></a>垂直居中</h2><p>内嵌元素居中，一般情况下如果字体设计师设计的字体正常的话，将 height 和 line-height 设置一致就是垂直居中的。</p>
+<p>块级元素的话基本和水平居中的块级方案一样：</p>
+<h3 id="定位一（top-50-margin-负一半高度）"><a href="#定位一（top-50-margin-负一半高度）" class="headerlink" title="定位一（top: 50% margin 负一半高度）"></a>定位一（top: 50% margin 负一半高度）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="dgmvpL" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="Vertical center - top, margin" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/dgmvpL/" target="_blank" rel="noopener">Vertical center - top, margin</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="定位二（top-50-transform-translateY-50-）"><a href="#定位二（top-50-transform-translateY-50-）" class="headerlink" title="定位二（top 50% transform translateY -50%）"></a>定位二（top 50% transform translateY -50%）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="ReMppw" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - top, transform" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/ReMppw/" target="_blank" rel="noopener">vertical center - top, transform</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="Flex-（给容器定义-align-items-center-实现垂直居中）"><a href="#Flex-（给容器定义-align-items-center-实现垂直居中）" class="headerlink" title="Flex （给容器定义 align-items center 实现垂直居中）"></a>Flex （给容器定义 align-items center 实现垂直居中）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="WazpEj" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - flex" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/WazpEj/" target="_blank" rel="noopener">vertical center - flex</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h3 id="Gird（align-self-center）"><a href="#Gird（align-self-center）" class="headerlink" title="Gird（align-self center）"></a>Gird（align-self center）</h3><p></p><p data-height="265" data-theme-id="light" data-slug-hash="KGoWRZ" data-default-tab="css,result" data-user="dsphoebe" data-pen-title="vertical center - grid" class="codepen">See the Pen <a href="https://codepen.io/dsphoebe/pen/KGoWRZ/" target="_blank" rel="noopener">vertical center - grid</a> by dsphoebe (<a href="https://codepen.io/dsphoebe" target="_blank" rel="noopener">@dsphoebe</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="BFC-块级格式上下文-Block-Format-Context"><a href="#BFC-块级格式上下文-Block-Format-Context" class="headerlink" title="BFC 块级格式上下文 Block Format Context"></a>BFC 块级格式上下文 Block Format Context</h2><p>BFC 是 形成一个独立区域，此区域的子元素不会受到此区域外部的元素 CSS 的影响。</p>
+<h3 id="形成-BFC-区域的条件："><a href="#形成-BFC-区域的条件：" class="headerlink" title="形成 BFC 区域的条件："></a>形成 BFC 区域的条件：</h3><ul>
+<li>根元素 （HTML 元素），最大的 BFC，它也不可能存在外部的元素。😄 就跟全局闭包一样。</li>
+<li>float left、float right</li>
+<li>overflow scorll、overflow hidden、overflow auto</li>
+<li>position absolute、position fixed、position sticky 难道不是？</li>
+<li>display inline-block、table-cell（是 th，td 的默认的 display 样式）、table（是 table 的默认的 display 样式）、table-row（是 tr 的默认的 display 样式）、table-row-group（是 tbody 的默认的 display 样式）、table-header-group（是 thead 的默认的 display 样式）、table-footer-group（是 tfoot 的默认的 display 样式）、inline-table、flow-root、flex、inline-flex、grid、inline-grid</li>
+<li><strong>contain layout、content、strict</strong> 没用过</li>
+<li>column-count 或 column-width 不为 auto，column-count 不为 1</li>
+<li>column-span 为 all</li>
 </ul>
-<p>将对象放置在页面中时，它会向文档传达内在尺寸并适当显示。</p>
-<h2 id="实际项目中的可替代标签"><a href="#实际项目中的可替代标签" class="headerlink" title="实际项目中的可替代标签"></a>实际项目中的可替代标签</h2><p>我们先看下 <a href="https://html.spec.whatwg.org/multipage/rendering.html" target="_blank" rel="noopener">HTML 标准中的渲染的相关描述</a>，可以看出一些 HTML 元素一直是可替代标签，而有其他一些却只有在特定情况下才是可替代标签。</p>
-<p>在 <a href="https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements" target="_blank" rel="noopener">14.4 小节</a>给出了我们正确理解每个案例所需的所有信息。</p>
-<h3 id="嵌入内容"><a href="#嵌入内容" class="headerlink" title="嵌入内容"></a>嵌入内容</h3><p>将另一个资源导入文档的任何元素，或者来自插入到文档中的另一个资源的内容。这些外部资源，默认就具有符合定义要求的内在尺寸。</p>
-<p>这一类元素主要是：embed，iframe，video。这些元素一直都是可替代标签，因为它们是将外部内容导入到文档中。</p>
-<p>特定情况下才是可替代标签：</p>
-<ul>
-<li>applet - 只有作为插件时才会被当作可替代标签</li>
-<li>audio - 仅在“暴露用户界面元素”时才会被作为可替代标签，在满屏幕的时候。</li>
-<li>object - 在表示为图像，插件或者嵌套浏览上下文（类似 iframe）时，将其视为可替代标签</li>
-<li>canvas - 在表示嵌入内容时将其视为可替代标签。也就是说，它包含元素的位图（如果有），或者包含与元素具有相同内在尺寸的透明黑色位图时。</li>
-</ul>
-<p>这些上述元素将被视为可替代标签的唯一情况（几乎涵盖了使用这些元素的所有情况）。更多详情查看<a href="https://html.spec.whatwg.org/multipage/rendering.html" target="_blank" rel="noopener">HTML 标准中的渲染的相关描述</a></p>
-<h3 id="images"><a href="#images" class="headerlink" title="images"></a>images</h3><p>img 元素被视为具有内在尺寸的可替代标签。还有 input 的 type 为 image 时也是。</p>
-<p>有些稍微复杂的情况：当图片无法在页面中渲染出来的时候，浏览器期望它将呈现的丢失图像必须视为可替代标签，它的内容是元素表示的文本（也可以添加图标）&lt;input type=”image”&gt; 将显示为普通按钮。</p>
-<h3 id="可替代标签的默认大小"><a href="#可替代标签的默认大小" class="headerlink" title="可替代标签的默认大小"></a>可替代标签的默认大小</h3><p>这是我们收集的有关内在尺寸的信息变得有用的地方。我们已经确定可替代标签的宽度和高度属性来自它们带入页面的内容的内在尺寸。如果无法计算这些尺寸（例如 iframe 加载空白的 HTML 页面的情况），则浏览器必须回退到<a href="https://www.w3.org/TR/CSS21/visudet.html" target="_blank" rel="noopener">默认规则</a> <a href="https://www.w3.org/TR/CSS21/visudet.html#Computing_widths_and_margins" target="_blank" rel="noopener">以下</a>：</p>
-<blockquote>
-<p>否则，如果 width 的计算值为 auto，但不满足上述任何条件，则 width 的使用值将变为 300px。如果 300px 太宽而不适合设备，用户代理应使用比例为 2:1 的最大矩形的宽度，而不是适合设备。</p>
-</blockquote>
-<p><a href="https://www.w3.org/TR/CSS21/visudet.html#Computing_heights_and_margins" target="_blank" rel="noopener">以下</a></p>
-<blockquote>
-<p>否则，如果 height 的计算值为 auto，但不满足上述任何条件，则 height 的使用值必须设置为最大矩形的高度，该矩形的比例为 2:1，高度不大于 150px，宽度不大于设备宽度。</p>
-</blockquote>
-<p>总结一下：</p>
-<ul>
-<li>如果对象有明确的宽，高，以及宽高比，则可替代标签的默认大小就是它们</li>
-<li>如果对象只有宽高比，则在保持上述比例的同时对宽和高使用 auto</li>
-<li>如果宽，高，宽高比都不可用：<ul>
-<li>如果视窗大于 300px，则使用宽度 300px，高度 150px</li>
-<li>如果视窗小于 300px，则宽度和高度都使用 auto，比例为 2:1</li>
-</ul>
-</li>
-</ul>
-<h3 id="最后总结的可替代标签为："><a href="#最后总结的可替代标签为：" class="headerlink" title="最后总结的可替代标签为："></a>最后总结的可替代标签为：</h3><ul>
-<li>嵌入内容：embed，iframe 和 video 一直是可替换元素</li>
-<li>嵌入内容：在特定情况下是可替代标签 applet，audio，object，canvas</li>
-<li>图像：img 和 input type=”image” 在正确加载或浏览器期望最终呈现时被视为可替代标签</li>
-</ul>
-<h2 id="其他的-Form-控件"><a href="#其他的-Form-控件" class="headerlink" title="其他的 Form 控件"></a>其他的 Form 控件</h2><p>都不是可替代标签。</p>
+<h3 id="常见场景-作用"><a href="#常见场景-作用" class="headerlink" title="常见场景/作用"></a>常见场景/作用</h3><p>因为是创建一个独立的不会被外部影响，也不影响内部子元素的区域。所以 两个 div 的 margin 叠加时，给其中一个 div 外部包一个 BFC 可以清除叠加。所以清除浮动对文档流的影响时，也是在浮动元素外部包一个 BFC 就可以清除浮动的影响。</p>
 
   </div>
   
@@ -125,7 +156,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/97/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/96/">96</a><a class="page-number" href="/page/97/">97</a><span class="page-number current">98</span><a class="page-number" href="/page/99/">99</a><a class="page-number" href="/page/100/">100</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/99/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/97/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/96/">96</a><a class="page-number" href="/page/97/">97</a><span class="page-number current">98</span><a class="page-number" href="/page/99/">99</a><a class="page-number" href="/page/100/">100</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/99/">下一页&raquo;</a>
   </nav>
 
     </main>

@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Array 对象</h2>
+    <h2 class="title">包装对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-28 14:23:08</span>
+    <span class="post-time">2018-11-29 10:32:04</span>
     <span class="post-tags">
       
     </span>
@@ -51,25 +51,20 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>Array 是 JavaScript 的原生对象，同时也是一个构造函数，可以用它生成新的数组。可以省略前面的 new 命令。</p>
-<p>如果参数是一个正整数，返回数组的成员都是空位。虽然读取的时候返回都是 undefined，其实该位置上并没有任何值。虽然可以取到 length 属性，但取不到键值。</p>
-<p>Array.prototype.valueOf 方法返回数组本身，而 Array.prototype.toString 方法返回的是数组的字符串形式。</p>
-<p>Array.prototype.push 方法在数组末端添加一个或多个元素，并返回数组的长度，它会改变原数组</p>
-<p>Array.prototype.pop 方法删除数组最后一个元素，并返回该元素，它会改变原数组，对空数组使用 pop 方法，不报错会返回 undefined。pop 方法可以遍历并清空数组。</p>
-<p>Array.prototype.shift 方法删除数组第一个元素，并返回这个元素，它会改变原数组。shift 方法可以遍历并清空一个数组。</p>
-<p>Array.prototype.unshift 方法在数组起始位置添加一个或者多个元素，并返回添加新元素后的数组长度，它会改变原数组。</p>
-<p>Array.prototype.join 方法以指定参数作为分隔符，将所有数组成员连接成一个字符串返回。如果不提供参数，默认用逗号分隔。数组成员是 undefined、null 或者空位，会转成空字符串。通过 call 方法，join 方法也可以用字符串或类似数组的对象。</p>
-<p>Array.prototype.concat 方法合并多个数组，将新数组成员添加到原数组成员的后面，返回返回一个新的数组，原数组不变。<br>concat 也接受其他类型的值作为参数，添加到目标数组的尾部，比如字符串，对象，二维数组等。<br>如果数组成员包括对象，concat 方法返回当前数组的一个浅拷贝，也就是新数组拷贝的是对象的引用。</p>
-<p>Array.prototype.reverse 反转数组，返回反转后的数组，它会改变原数组。</p>
-<p>Array.prototype.slice 提取目标数组的一部分，返回一个新数组，原数组不变。<br>第一个参数是起始位置，默认为 0。第二个参数是终止位置（不包括该位置的元素本身），默认为数组长度。如果省略第二个参数，则一直返回到原数组的最后一项。<br>参数可以负数，表示倒数计时的位置。<br>如果第一个参数大于等于数组长度，或者第二个参数小于第一个参数，则返回空数组。<br>slice 的一个重要应用，是将类数组转为数组。</p>
-<p>Array.prototype.splice 用于删除原数组的一部分成员，可以同时在删除的位置添加新的数组成员，返回值是被删除的元素组成的数组，它会改变原数组。<br>splice 的第一个参数是删除的起始位置（从 0 开始），第二个参数是被删除的元素的个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。<br>如果第二个参数设为 0，则不删除元素。<br>如果提供了一个参数，则等同于将原数组拆分成两个数组。如果这个参数为 0，则会清空这个数组。</p>
-<p>Array.prototype.sort 默认按照各个字符（数字会被转换为字符串）的 Unicode 码点顺序原地排序数组，它会改变原数组。<br>sort 方法传入一个函数作为参数，调用这个函数，按照函数的返回值进行排序。如果返回值小于 0，第一个元素排在前面，如果大于 0，第一个元素排在后面。如果比较的是数字，函数返回升序是 a - b，降序为 b - a。String.prototype.localCompare<br>使用映射改善排序</p>
-<p>Array.prototype.map 方法执行指定的函数（map 第一个参数），函数按照指定的上下文（map 的第二个参数）调用，返回一个执行完后了的新数组。</p>
-<p>Array.prototype.filter 方法过滤出来符合参数函数的数组成员组成一个新的数组。</p>
-<p>Array.prototype.some，Array.prototype.every 类似断言，返回布尔值，表示判断数组成员是否符号条件。some 只要有一些事符合条件就是 true，every 是所有都要符合条件才能返回 true。</p>
-<p>Array.prototype.reduce，Array.prototype.reduceRight 方法依次处理数组的每个成员，最终累计为一个值。<br>四个参数分别为：<br>1、累计的变量，默认为数组的第一个成员<br>2、当前变量，默认为数组的第二个成员，如果累计的变量设置了初始值，当前变量就从数组的第一个成员开始<br>3、可选参数 - 前位置，从 0 开始<br>4、可选参数 - 原数组<br>如果是空数组，累计的变量初始值必须传，否则报错。<br>这两个方法是遍历数组的方法，所以实际上也还可以做一些遍历相关的操作。比如 找出字符长度最长的数组成员。</p>
-<p>Array.prototype.indexOf, Array.prototype.lastIndexOf 找出数组中从指定位置（可选第二个参数，默认为 0）找到给定元素（第一个参数）的位置，如果没有返回 -1。内部是用的严格相等来索引的，NaN 不等于自身，不能用来搜索 NaN。</p>
-<p>这些方法中，有 map 返回执行完 callback 后的一个新的数组，filter 返回符合某个条件的成员组成的新数组，sort 返回原地排序好了的数组，slice 切出来的新数组，splice 是执行了删除元素后的元素组成的数组（没有删除只有插入就返回空数组），reverse 反转后的数组，concat 合并后的新数组。因为它们返回的都是数组，可以对它们的返回值再接着进行其他方法操作，可以链式使用。</p>
+<h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>对象是 JavaScript 语言最主要的数据类型，三种原始类型的值 — 数值、字符串、布尔值。在一定条件下，也会自动转为对象，也就是原始类型的“包装对象”。</p>
+<p>所谓包装对象，就是分别于数值、布尔值、字符串相对应的 Number、Boolean、String 三个原生对象。这三个原生对象可以把原始类型的值变成（包装成）对象。</p>
+<p>包装对象的最大目的，首先是使得 JavaScript 的对象涵盖了所有的值，其次使得原始类型的值可以方便地调用某些方法。</p>
+<p>Number、String 和 Boolean 如果不作为构造函数调用（即调用的时候不加 new），常常用于将任意类型的值转为数值、字符串和布尔值。</p>
+<p>总结一下，这三个对象作为构造函数使用时，可以将原始类型的值转为对象；作为普通函数调用时，可以将任意类型的值转为原始类型的值。</p>
+<h2 id="2-实例方法"><a href="#2-实例方法" class="headerlink" title="2. 实例方法"></a>2. 实例方法</h2><p>三种包装对象各自提供了许多实例方法。其中它们都有 2 个从 Object 对象继承的方法 valueOf、toString</p>
+<h3 id="2-1-valueOf"><a href="#2-1-valueOf" class="headerlink" title="2.1 valueOf"></a>2.1 valueOf</h3><p>返回包装对象实例对应的原始类型值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">123</span>).valueOf()  <span class="comment">// 123</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'abc'</span>).valueOf() <span class="comment">// "abc"</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">true</span>).valueOf() <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-2-toString"><a href="#2-2-toString" class="headerlink" title="2.2 toString"></a>2.2 toString</h3><p>返回对应的字符串形式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">123</span>).toString() <span class="comment">// "123"</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'abc'</span>).toString() <span class="comment">// "abc"</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">true</span>).toString() <span class="comment">// "true"</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-原始类型与实例对象的自动转换"><a href="#3-原始类型与实例对象的自动转换" class="headerlink" title="3. 原始类型与实例对象的自动转换"></a>3. 原始类型与实例对象的自动转换</h2><p>原始类型的值，可以自动当作包装对象调用，即调用包装对象的属性和方法。这时，JavaScript 引擎会自动将原始类型的值转为包装对象实例，在执行完后立刻销毁实例。比如 字符串可以调用 length 属性，返回字符串的长度。再调用字符串的属性时，实际是调用一个新生成的对象，而不是上一次调用时生成的那个对象。</p>
+<h2 id="4-自定义方法"><a href="#4-自定义方法" class="headerlink" title="4. 自定义方法"></a>4. 自定义方法</h2><p>在包装对象的原型上添加自定义方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">String</span>.prototype.double = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.valueOf() + <span class="keyword">this</span>.valueOf();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="string">'abc'</span>.double()</span><br><span class="line"><span class="comment">// abcabc</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Number</span>.prototype.double = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.valueOf() + <span class="keyword">this</span>.valueOf();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">(<span class="number">123</span>).double()</span><br><span class="line"><span class="comment">// 246</span></span><br></pre></td></tr></table></figure>
+<p>上面代码 123 外面必须要加上圆括号，否则后面的点运算符（.）会被解释成小数点。</p>
 
   </div>
   
@@ -77,7 +72,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/page/61/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="page-number" href="/page/61/">61</a><span class="page-number current">62</span><a class="page-number" href="/page/63/">63</a><a class="page-number" href="/page/64/">64</a><span class="space">&hellip;</span><a class="page-number" href="/page/112/">112</a><a class="extend next" rel="next" href="/page/63/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/61/">&laquo;上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><a class="page-number" href="/page/61/">61</a><span class="page-number current">62</span><a class="page-number" href="/page/63/">63</a><a class="page-number" href="/page/64/">64</a><span class="space">&hellip;</span><a class="page-number" href="/page/114/">114</a><a class="extend next" rel="next" href="/page/63/">下一页&raquo;</a>
   </nav>
 
     </main>
