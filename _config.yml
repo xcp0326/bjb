@@ -3,19 +3,19 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: FE NOTEBOOK 🚀
-pc_title: FE NOTEBOOK 🚀
-tabtitle: FE NOTEBOOK 🚀
+title: FE 笔记本 🚀
+pc_title: FE 笔记本 🚀
+tabtitle: FE 笔记本 🚀
 subtitle: 「 学海无涯，没空撩妹！」
 description:
-author: Phoebe Sun
+author: xcp0326
 language: zh-CN
 timezone: Asia/Hong_Kong
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://bjb.dsphoebe.com
-root: /
+# url: http://bjb.dsphoebe.com
+root: /bjb/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -85,7 +85,7 @@ theme: dsphoebe
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:dsphoebe/bjb.git
+  repo: git@xcp0326:xcp0326/bjb.git
   branch: gh-pages
 
 plugins:
