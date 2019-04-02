@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">表单事件</h2>
+    <h2 class="title">键盘事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-19 13:24:08</span>
+    <span class="post-time">2019-02-18 17:57:44</span>
     <span class="post-tags">
       
     </span>
@@ -51,40 +51,44 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h3 id="input-事件"><a href="#input-事件" class="headerlink" title="input 事件"></a>input 事件</h3><p>input 事件是当 input 元素、select 元素、textarea 元素的值发生变化时触发。对于复选框<code>&lt;input type=&quot;checkbox&quot;&gt;</code>或者<code>&lt;input type=&quot;radio&quot;&gt;</code> 单选框，用户改变选项时，也会触发这个事件。</p>
-<p>另外对于打开了 contenteditable 属性的元素，只要值发生变化，也会触发 input 事件。</p>
-<p>input 事件的一个特点，就是会连续触发，比如用户没按下一次按键，就会触发一次 input 事件。</p>
-<p>input 事件继承自 InputEvent 接口</p>
-<p>input 事件跟 change 事件很像，不同之处在于 iput 事件在元素的值发生变化后立即发生，而 change 事件时在元素失去焦点的时候触发，此时内容可能已经发生了多次变化了。也就是说，如果有连续变化，input 事件会触发多次，而 change 事件只在失去焦点时触发一次。</p>
-<h3 id="select-事件"><a href="#select-事件" class="headerlink" title="select 事件"></a>select 事件</h3><p>当 input 元素、textarea 元素里面选中文本时触发。选中的文本可以通过 event.target 元素的 selectDirection、selectionEnd、selectionStart 和 value 属性拿到。</p>
-<h3 id="change-事件"><a href="#change-事件" class="headerlink" title="change 事件"></a>change 事件</h3><p>当 input 元素、textarea 元素、select 元素的值发生变化时触发。它与 input 事件的最大不同，就是不会连续触发，只有当全部修改完成时才会触发，另一个方面 input 事件必然伴随 change 事件：</p>
+<p>键盘事件是由用户击打键盘触发，主要有 keydown、keypress、keyup 三个事件，都继承了 keyboardEvent 接口</p>
+<p>keypress：按下有值的键时才触发，即按下 Ctrl、Alt、Shift、Meta 这种无值的键，这个事件不会触发。对于有值的键，按下时先触发 keydown 事件，再触发 keypress。</p>
+<p>如果一直按键不松开，就会连续触发 keydown、keypress、keydown、keypress ….. 直到松开键触发 keyup</p>
+<h3 id="KeyboardEvent-接口"><a href="#KeyboardEvent-接口" class="headerlink" title="KeyboardEvent 接口"></a>KeyboardEvent 接口</h3><p>也继承自 Event 接口，自己的实例属性和方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> KeyboardEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 可选，对应有：</p>
 <ul>
-<li>激活单选框或者复选框时触发</li>
-<li>用户提交时触发。比如，从下拉列表 select 完成选择，在日期或文件输入框完成选择</li>
-<li>当文本框或者 textarea 元素的值发生改变，并且丧失焦点时触发</li>
+<li>key：表示按下的键，默认为空字符串</li>
+<li>code：表示按下键的字符串形式，默认为空</li>
+<li>location：整数，当前按下的键的位置，默认为 0</li>
+<li>ctrlKey / shiftKey / altKey / metaKey：是否按下 Ctrl / shift / alt / meta 键</li>
+<li>repeat：是否重复按键</li>
 </ul>
-<p>对 select 元素来说，input 和 change 事件基本是等价的。</p>
-<h3 id="invalid-事件"><a href="#invalid-事件" class="headerlink" title="invalid 事件"></a>invalid 事件</h3><p>用户提交表单时，如果表单元素的值不满足校验条件，就会触发 invalid 事件。</p>
-<h3 id="reset-事件、submit-事件"><a href="#reset-事件、submit-事件" class="headerlink" title="reset 事件、submit 事件"></a>reset 事件、submit 事件</h3><p>这两个事件发生在 form 表单元素上，而不是发生在表单成员上。</p>
-<p>reset 事件当表单重置（所有表单成员变回默认值）时触发</p>
-<p>submit 事件当表单数据向服务器提交时触发。注意，submit 事件的发生对象时 form 元素，而不是 button 元素。</p>
-<h3 id="InputEvent-接口"><a href="#InputEvent-接口" class="headerlink" title="InputEvent 接口"></a>InputEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> InputEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 配置项：</p>
+<h3 id="KeyboardEvent-metaKey"><a href="#KeyboardEvent-metaKey" class="headerlink" title="KeyboardEvent.metaKey"></a>KeyboardEvent.metaKey</h3><p>是否按下 meta 键（Mac 系统的 command 键，Windows 系统的 win 键）</p>
+<h3 id="KeyboardEvent-code"><a href="#KeyboardEvent-code" class="headerlink" title="KeyboardEvent.code"></a>KeyboardEvent.code</h3><p>表示当前按下的键的字符串形式，<a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values" target="_blank" rel="noopener">查看所有键对应的 code 的文档</a>，这里列常见：</p>
 <ul>
-<li>inputType：表示发生变更的类型</li>
-<li>data：表示插入的字符串。如果没有插入的字符串（比如删除操作），则返回 null 或空字符串</li>
-<li>dataTransfer：返回一个 DataTransfer 对象实例，该属性通常只在输入框接受富文本输入时有效。</li>
+<li>数字键 0 - 9：digital0 - digital9</li>
+<li>字母键 A - z：KeyA - KeyZ</li>
+<li>功能键 F1 - F12：F1 - F12</li>
+<li>方向键： ArrowDown、ArrowUp、ArrowLeft、ArrowRight</li>
+<li>Alt 键：AltLeft、AltRight</li>
+<li>Shift 键：ShiftLeft、ShiftRight</li>
+<li>Ctrl 键：ControlLeft、ControlRight</li>
 </ul>
-<h4 id="InputEvent-data"><a href="#InputEvent-data" class="headerlink" title="InputEvent.data"></a>InputEvent.data</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="text" id="myInput"&gt;</span></span><br><span class="line"><span class="keyword">var</span> input = <span class="built_in">document</span>.getElementById(<span class="string">'myInput'</span>);</span><br><span class="line">input.addEventListener(<span class="string">'input'</span>, myFunction, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果在输入框内输入 abc，控制台会先输出 a，再在下一行输出 b，再在下一行输出 c，然后选中 abc，一次性将它们删除，控制台会输出 null 或一个空字符串。</p>
-<h4 id="InputEvent-inputType"><a href="#InputEvent-inputType" class="headerlink" title="InputEvent.inputType"></a>InputEvent.inputType</h4><p>常见字符串变更类型如下，完整查看<a href="https://w3c.github.io/input-events/index.html#dom-inputevent-inputtype" target="_blank" rel="noopener">文档</a></p>
+<h3 id="KeyboradEvent-key"><a href="#KeyboradEvent-key" class="headerlink" title="KeyboradEvent.key"></a>KeyboradEvent.key</h3><p>返回按下的键名</p>
 <ul>
-<li>手动插入文本：insertText</li>
-<li>粘贴插入文本：insertFromPaste</li>
-<li>向后删除：deleteContentBackward</li>
-<li>向前删除：deleteContentForward</li>
+<li>可打印字符，返回这个字符</li>
+<li>不可打印字符，返回预定义的键值，Backspace、Tab、Enter 等</li>
+<li>同时按下控制键和符号键，返回符号键，ctrl + a 返回 a、shift + a 返回 A</li>
+<li>无法识别的键名 返回 Unidentified</li>
 </ul>
-<h4 id="InputEvent-dataTransfer"><a href="#InputEvent-dataTransfer" class="headerlink" title="InputEvent.dataTransfer"></a>InputEvent.dataTransfer</h4><p>返回一个 DataTransfer 实例，只在文本框接受粘贴内容 insertFromPaste 或拖拽内容 insertFromDrop 时才有效</p>
+<h3 id="KeyboradEvent-location"><a href="#KeyboradEvent-location" class="headerlink" title="KeyboradEvent.location"></a>KeyboradEvent.location</h3><ul>
+<li>0 键盘主区域</li>
+<li>1 键盘左侧</li>
+<li>2 键盘右侧</li>
+<li>3 数字小键盘</li>
+</ul>
+<h3 id="KeyboardEvent-getModifierState"><a href="#KeyboardEvent-getModifierState" class="headerlink" title="KeyboardEvent.getModifierState()"></a>KeyboardEvent.getModifierState()</h3><p>是否按下或激活指定的功能键</p>
 
   </div>
   
@@ -92,12 +96,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/21/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/20/">20</a><a class="page-number" href="/bjb/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/23/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/21/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/20/">20</a><a class="page-number" href="/bjb/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/23/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>

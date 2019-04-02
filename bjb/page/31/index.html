@@ -38,89 +38,30 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">什么是 AJAX</h2>
+    <h2 class="title">属性的操作</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-01-15 16:29:55</span>
+    <span class="post-time">2018-12-27 12:54:11</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/AJAX/">AJAX</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h3 id="如何发请求"><a href="#如何发请求" class="headerlink" title="如何发请求"></a>如何发请求</h3><ul>
-<li>form 通过 action 发请求，不过会新开一个页面</li>
-<li>a 标签可以通过 href 发请求，不过会刷新页面或者新开一个页面</li>
-<li>img 标签可以通过 src 发请求，不过会返回一个图片</li>
-<li>link 标签可以通过 href 发请求，不过只能以 CSS 展示结果</li>
-<li>script 标签可以通过 src 发请求，通过 SRJ （Server Render JavaScript）的方式实现 JSONP，不过会返回一个 script。</li>
-</ul>
-<h3 id="AJAX-是异步的-JavaScript-和-XML"><a href="#AJAX-是异步的-JavaScript-和-XML" class="headerlink" title="AJAX 是异步的 JavaScript 和 XML"></a>AJAX 是异步的 JavaScript 和 XML</h3><p>使用 XMLHttpRequest 发请求，服务器返回 XML 格式的字符串，JavaScript 解析 XML 并更新局部页面。</p>
-<p>XMLHttpRequest 的 onreadystatechange 方法，readyState、status、responseText 属性</p>
-<h3 id="从-XML-到-JSON"><a href="#从-XML-到-JSON" class="headerlink" title="从 XML 到 JSON"></a>从 XML 到 JSON</h3><p>从 XML 到 道格拉斯·克罗克福特（出书《JavaScript 语言精粹》）发明的数据交换语言 JSON。JSON 是抄袭 JS，但是是一门新语言，而它的作者还出了一本书专门说 JS 的不好的地方，😂 他与 JS 之父从没一起出场过。</p>
-<p>JSON vs JS</p>
-<ol>
-<li>JSON 没有抄袭 function 和 undefined</li>
-<li>JSON 字符首尾必须是双引号</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>JS</th>
-<th>JSON</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>undefined</td>
-<td>没有</td>
-</tr>
-<tr>
-<td>null</td>
-<td>null</td>
-</tr>
-<tr>
-<td>[‘a’, ‘b’]</td>
-<td>[“a”,”b”]</td>
-</tr>
-<tr>
-<td>function fn() {}</td>
-<td>没有</td>
-</tr>
-<tr>
-<td>‘frank’</td>
-<td>“frank”</td>
-</tr>
-<tr>
-<td>var a = {}; a.self = a;</td>
-<td>搞不定，JSON 没有变量，无法实现引用</td>
-</tr>
-<tr>
-<td><code>{__proto__}</code></td>
-<td>没有原型</td>
-</tr>
-</tbody>
-</table>
-<p>HTTP response 第 4 部分永远都是字符串，AJAX 一般返回符合 JSON 对象语法的字符串。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">			<span class="keyword">var</span> data = xhr.responseText</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(data))</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'成功'</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (xhr.status &gt;= <span class="number">400</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'失败'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 一个异步的 GET 请求</span></span><br><span class="line">xhr.open(<span class="string">'get'</span>, <span class="string">'/xxx'</span>)</span><br><span class="line">xhr.send()</span><br></pre></td></tr></table></figure>
-<h3 id="AJAX-的同源策略与-CORS-跨域"><a href="#AJAX-的同源策略与-CORS-跨域" class="headerlink" title="AJAX 的同源策略与 CORS 跨域"></a>AJAX 的同源策略与 CORS 跨域</h3><p>form 发请求可以跨域，因为是跳转到其他页面，它是不会修改页面里面的内容。但是 AJAX 不可以！因为 AJAX 不会跳转，它是可以修改页面里面的元素的。</p>
-<p>同源策略：协议 + 域名 + 端口 一模一样才允许发 AJAX 请求</p>
-<p>设置 Access-Cross-Allow-Origin 为其他域名，就可以让其他域名访问当前服务器的数据。</p>
-<p>Cross Origin Resource Sharing 跨站资源共享 CORS</p>
-<h3 id="JS-操作请求与响应"><a href="#JS-操作请求与响应" class="headerlink" title="JS 操作请求与响应"></a>JS 操作请求与响应</h3><p>JS 可以设置任意请求的 header</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>HTML 标签包括标签名和若干个键值对，这个键值对就称为属性 attribute。属性本身是一个对象 Attr 对象。一般通过元素节点对象 HTMLElement 对象来操作它。</p>
+<p>属性可读可写 不可删除，delete 运算符在这里不会生效</p>
+<p>HTML 标签的属性名对大小不敏感。</p>
+<p>有些 HTML 属性名是 JavaScript 的保留字，转为 JavaScript 属性时，必须要改名，比如这两个：</p>
 <ul>
-<li>设置请求 header 的第一部分 xhr.open(‘GET’, ‘/xxx’)</li>
-<li>设置请求 header 的第二部分 xhr.setHeader(‘content-type’, ‘x-www-form-urlencoded’)</li>
-<li>设置请求 header 的第四部分 xhr.send(‘a=1&amp;b=2’)</li>
+<li>for 属性改名为 htmlFor</li>
+<li>class 属性名改为 className</li>
 </ul>
-<p>JS 可以获取任意响应 header</p>
-<ul>
-<li>获取响应 header 的第一部分 xhr.status / xhr.statusText</li>
-<li>获取响应 header 的第二部分 xhr.getResponseHeader() / xhr.getAllResponseHeaders()</li>
-<li>获取响应 header 的第四部分 xhr.responseText</li>
-</ul>
+<p>原来 React 也是因为这里的啦。</p>
+<p>HTML 属性一般都是字符串，但是 JavaScript 属性会自动转换类型。比如将字符串 true 转换为布尔值，将 onClick 的值转换为一个函数，将 style 属性转为一个 CSSStyleDeclaration 对象。因此可以对这些属性赋予各种类型的值。</p>
+<p>getAttribute() 只返回字符串</p>
 
   </div>
   
@@ -128,12 +69,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/30/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/29/">29</a><a class="page-number" href="/bjb/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/bjb/page/32/">32</a><a class="page-number" href="/bjb/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/32/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/30/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/29/">29</a><a class="page-number" href="/bjb/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/bjb/page/32/">32</a><a class="page-number" href="/bjb/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/32/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>

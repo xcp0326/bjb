@@ -38,102 +38,109 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">DOM 知识点总结篇</h2>
+    <h2 class="title">Node 接口</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-28 19:23:45</span>
+    <span class="post-time">2018-12-24 23:36:09</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/DOM/">DOM</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h2 id="什么是-DOM"><a href="#什么是-DOM" class="headerlink" title="什么是 DOM"></a>什么是 DOM</h2><p>一个 HTML 文档，初始代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span> <span class="comment">&lt;!-- 告诉浏览器请用 HTML5 来解析以下代码 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"zh-Hans"</span>&gt;</span> <span class="comment">&lt;!-- zh-Hans, s 是 simple 表示中文简体 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>🤔 如果 DOCTYPE 是 XML 了？</p>
-<p>我记得 RSS 就是 XML 格式的，<a href="https://www.xml.com/pub/a/2002/12/18/dive-into-xml.html" target="_blank" rel="noopener">What Is RSS</a></p>
-<p><a href="https://www.xml.com/pub/a/w3j/s3.walsh.html" target="_blank" rel="noopener">A Guide to XML</a> / What Do XML Documents Look Like?<br>所以 XML 文档大概长这样，它的 DOCTYPE 是 <code>&lt;?XML version=xxx..?&gt;</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">&gt; <span class="meta">&lt;?XML version="1.0"?&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;<span class="name">oldjoke</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">burns</span>&gt;</span>Say <span class="tag">&lt;<span class="name">quote</span>&gt;</span>goodnight</span><br><span class="line">&gt;     <span class="tag">&lt;/<span class="name">quote</span>&gt;</span>, Gracie.<span class="tag">&lt;/<span class="name">burns</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">allen</span>&gt;</span><span class="tag">&lt;<span class="name">quote</span>&gt;</span>Goodnight, Gracie.</span><br><span class="line">&gt;     <span class="tag">&lt;/<span class="name">quote</span>&gt;</span><span class="tag">&lt;/<span class="name">allen</span>&gt;</span></span><br><span class="line">&gt;   <span class="tag">&lt;<span class="name">applause</span>/&gt;</span></span><br><span class="line">&gt; <span class="tag">&lt;/<span class="name">oldjoke</span>&gt;</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>HTML5 规范里，html、head、body 三个标签都是可以省略的，属性值无所谓单双引号。</p>
-<p>HTML 文档，在 DOM 中对应字母 D，即 Document。<br>然后它在内存中存储的 HTML 文档的数据，对应 DOM 中的 O，即  Object，这个 Object 存在堆中，按照一个树型结构，通过构造函数构造出对象，将 DOM 存储在内存中。<br>Document 和 Object 之间的对应关系是用一个树型结构的模型来表示，这个模型叫做 Model。<br>它们三者组成了 Document Object Model 简称 DOM，读作 [dʌm]。</p>
-<p>以下 DOM 树</p>
-<p><img src="/images/dom/tree.png" alt="DOM tree"></p>
-<p>DOM 树中的每个节点都是 Node 类型。<br>节点类型主要有：document节点、标签节点、文本节点、注释节点</p>
+<p>所有的 DOM 节点都继承自 Node 接口，所有的 DOM 节点都共有 DOM.prototype 下的方法和属性。</p>
+<p>nodeType</p>
 <ul>
-<li>标签节点是由 Element 构造函数构造</li>
-<li>文本节点是由 Text 构造函数构造</li>
-<li>document 节点是由 Document 构造函数构造，它代表了整个文档。<code>document</code> 可以获取整个文档，<code>document.documentElement</code> 则获取是 html 节点，即根节点。</li>
-<li>所有节点构造函数（Element、Text、Comment、Document构造函数）都继承自 Node 构造函数，而 Node 构造函数又继承自 JavaScript 里的 Object.prototype。节点们都有 Node 的实例属性和方法，比如 Node.prototype.nodeName。节点们都有 Object 的实例属性和方法，比如 Object.prototype.toString 方法。</li>
+<li>文档节点：9</li>
+<li>元素节点：1</li>
+<li>属性节点：2</li>
+<li>文本节点：3</li>
+<li>文档片段节点：11</li>
+<li>文档类型节点：10</li>
+<li>注释节点：8</li>
 </ul>
-<p><img src="/images/dom/node-tree.jpg" alt="Node constructor tree"></p>
-<h2 id="DOM-操作"><a href="#DOM-操作" class="headerlink" title="DOM 操作"></a>DOM 操作</h2><p>DOM 将 HTML 页面与 JavaScript 连接起来，它提供了一系列 API 来操作 HTML 代码，操作 DOM 节点。DOM 最开始设计不是给 HTML 用的，而是给 XML 用的，所以有很多 API 用起来就是很奇怪。</p>
+<p>nodeName</p>
 <ul>
-<li>获取节点：node.querySelector、node.querySelectorAll。通过节点关系获取节点：parentNode、children、nextSibling、nextElemntSibling 等</li>
-<li>修改节点的属性：节点类型 标签/文本，节点名称 div/#text，节点内部文本 textContent，标签节点的样式 className、classList 等</li>
-<li>删除节点：removeChild、删除标签节点 remove</li>
-<li>创建节点：创建标签节点 document.createElement(‘div’)、创建文本节点 document.createTextNode(‘xx’)。</li>
+<li>文档节点：#document</li>
+<li>元素节点：大写标签名，除了 SVG 是小写标签名，因为是后来添加的。</li>
+<li>属性节点：属性的名称</li>
+<li>文本节点：#text</li>
+<li>文档片段节点：#document-fragment</li>
+<li>文档类型节点：文档的类型</li>
+<li>注释节点：#comment</li>
 </ul>
-<h2 id="常用-Node-类型的属性及方法"><a href="#常用-Node-类型的属性及方法" class="headerlink" title="常用 Node 类型的属性及方法"></a>常用 Node 类型的属性及方法</h2><p>所有节点都继承自 Node 类型，也就是所有节点都有以下这些属性和方法：</p>
-<ul>
-<li><p>确定一个节点的类型</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="built_in">document</span>.querySelector(<span class="string">'p'</span>)</span><br><span class="line">p.nodeName <span class="comment">// "P"</span></span><br><span class="line">p.nodeType <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">document</span>.nodeName <span class="comment">// "#document"</span></span><br></pre></td></tr></table></figure>
-<p>nodeName 返回节点的名字。如果是文本节点返回的是 <code>#text</code>、如果是文档节点返回的是 <code>#document</code>、而如果是标签节点则返回这个标签的大写，比如 p 标签则返回 <code>P</code>，有一个元素标签例外，那就是 SVG 标签，它返回的是小写的 svg。</p>
-</li>
-</ul>
-<p>  nodeType 返回的节点类型对应的数值。1 表示的是标签节点，即 Element 类型的节点；3 则表示是文本节点； 9 表示文档节点；11 表示 DocumentFragment。当时设计 nodeType 用数值表示，是为了省内存。</p>
-<ul>
-<li><p>获取节点内的文本 textContext</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="built_in">document</span>.createElement(<span class="string">'p'</span>)</span><br><span class="line"><span class="keyword">const</span> tn = <span class="built_in">document</span>.createTextNode(<span class="string">'panda'</span>)</span><br><span class="line">p.appendChild(tn)</span><br><span class="line"><span class="built_in">document</span>.body.append(p)</span><br><span class="line">tn.innerText <span class="comment">// undefined</span></span><br><span class="line">tn.innerHTML <span class="comment">// undefined</span></span><br><span class="line">tn.textContent <span class="comment">// "panda"</span></span><br><span class="line">p.innerText <span class="comment">// "panda"</span></span><br><span class="line">p.innerHTML <span class="comment">// "panda"</span></span><br><span class="line">p.textContent <span class="comment">// "panda"</span></span><br></pre></td></tr></table></figure>
-<p>标签节点有个 innerHTML 和 innerText，如果文本节点访问 innerHTML、innerText 会返回 undefined。innerText 返回节点下所有的文本包括其后代节点。IE 发布 innerText ~ ，FF、opera 发布的 textContent，会获取 script、style 的文本。innerText 会触发重排。</p>
-</li>
-<li><p>获取兄弟节点、子节点、父节点</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> main = <span class="built_in">document</span>.querySelector(<span class="string">'main'</span>)</span><br><span class="line">main.nextSibling</span><br><span class="line">main.nextElementSibling</span><br><span class="line">main.previousSibling</span><br><span class="line">main.childNodes <span class="comment">// 返回一个动态的 NodeList 伪数组</span></span><br><span class="line">main.children <span class="comment">// 返回一个动态的 HTMLCollection 标签集合伪数组</span></span><br><span class="line">main.firstChild</span><br><span class="line">main.lastChild</span><br><span class="line">main.parentNode</span><br><span class="line">main.parentElement</span><br></pre></td></tr></table></figure>
-<p>注意 NodeList 伪数组只能使用数字索引节点，而 HTMLCollection 对象则可以用 id 属性或者 name 属性来索引标签节点。</p>
-</li>
-<li><p>node.hasChildNodes() 返回是否有子节点，也可以用 node.firstChild 为空来判断，也可以用 node.childNodes &amp;&amp; node.childNodes.length 为否来判断。</p>
-</li>
-<li><p>node.cloneNode(deep) 默认 deep 为 true，表示深度克隆，会克隆该 node 的所有后代节点，否则浅克隆只克隆当前 node。</p>
-</li>
-<li><p>node.contains(otherNode) 返回 node 是否包含 otherNode。</p>
-</li>
-<li><p>node.isEqualNode(otherNode) 如果 node 和 otherNode 的 nodeType、子节点、属性等一致返回 true，否则 false</p>
-</li>
-<li><p>node.normalize() 规范化 node 和 node 后代节点。规范化后不存在空的文本节点，或者两个相邻的文本节点。</p>
-</li>
-<li><p>输入 id 的值可以快速获取 id 为这个值的节点。比如有一段 HTML：<code>&lt;div id=&quot;myHoneyPanda&quot;&gt;balabala...&lt;/div&gt;</code> 然后可以在 JavaScript 里面输入 <code>myHoneyPanda</code> 获取这个节点。</p>
-</li>
-</ul>
-<h2 id="常见的-document-属性和方法"><a href="#常见的-document-属性和方法" class="headerlink" title="常见的 document 属性和方法"></a>常见的 document 属性和方法</h2><p>document 继承自 Document 类型。表示一个 HTML 的文档。</p>
-<ul>
-<li>document.documentElement 返回 html 节点</li>
-<li>document.activeElment 指向获得焦点的那个节点，相当于 Chrome devtool 里面的 <code>$0-$9</code> ？ </li>
-<li>获取文档下的指定标签的集合，可以抓包下载美图~<ul>
-<li>document.images </li>
-<li>document.links</li>
-</ul>
-</li>
-<li>获取文档信息<ul>
-<li>document.location 返回 Location 对象，document.documentURI 返回当前文档的路径，document.URL 返回当前文档的 URL</li>
-<li>document.readyState 返回当前文档加载状态</li>
-<li>document.cookie cookie 设置/获取</li>
-<li>document.domain 域名</li>
-<li>document.defaultView 返回一个 window 对象</li>
-</ul>
-</li>
-<li>document.querySelectorAll 获取到的标签伪数组不是动态的。</li>
-</ul>
-<h2 id="常见-Element-节点的属性和方法"><a href="#常见-Element-节点的属性和方法" class="headerlink" title="常见 Element 节点的属性和方法"></a>常见 Element 节点的属性和方法</h2><ul>
-<li>document.documentElement.scrollHeight 获取整个页面的高度</li>
-<li>document.documentElement.clientHeight 获取整个浏览器视口的高度</li>
-<li>Element.clientHeight/clientLeft 返回节点的不包括 border、margin 的高度/左边框的宽度</li>
-<li>Element.scrollHeight/scrollLeft 经过浏览器视口变化，返回节点的不包括 border、margin 的高度/滚动条离视口左边的距离</li>
-<li>Element.offsetHeight/offsetLeft 经过浏览器视口变化，返回节点所占的整个页面左上角 距离 右下角的宽度和高度，并且左上角是包括 padding 和 border 的 / 距离父节点的左侧的距离。</li>
-<li>Element.getBoundingClientRect().left、Element.getBoundingClientRect().top</li>
-</ul>
+<p>nodeValue：节点的文本值，所以只有文本节点、注释节点、属性节点才有 nodeValue 值。其他类型的节点都返回 null。</p>
+<p>textContext：返回当前节点及其后代节点的文本内容。它会自动对 HTML 标签转义。文本节点、注释节点、属性节点的值和 nodeValue 一样。文档节点和文档类型节点的 textContent 属性为 null。读取整个文档的内容为 document.document.textContent.</p>
+<p>baseURI：只读，一般由当前网页的 URL window.location 决定，可以使用<code>&lt;base&gt;</code>标签修改。用来计算网页上的相对路径的 URL。</p>
+<p>nextSibling：当前节点的下一个节点，如果没有返回 null，用来遍历所有子节点：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> parent = <span class="built_in">document</span>.querySelector(<span class="string">'.el'</span>)</span><br><span class="line"><span class="keyword">const</span> el = parent.firstChild</span><br><span class="line"><span class="keyword">while</span>(el !== <span class="literal">null</span>) &#123;</span><br><span class="line">  el = el.nextSibling</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>prevSibling：当前节点的上一个节点，如果没有就返回 null，同 nextSibling 原理，也可以用来遍历所有子节点。</p>
+<p>parentNode：对于一个节点来说，它的父节点可能是三种类型：元素节点、文档节点、文档片段节点。</p>
+<p>childNodes：返回节点的子节点 NodeList 伪数组动态集合</p>
+<p>isConnected：返回节点是否在文档之中</p>
+<p>appendChild()：插入一个节点，并作为当前节点最后一个节点，相当于生的最后一个儿子。返回这个节点。如果参数是 DocumentFragment 节点，那么插入的是 DocumentFragment 的所有子节点，而不是 DocumentFragment 节点本身。返回值是一个空的 DocumentFragment 节点。</p>
+<p>hasChildNodes()：遍历当前节点的所有后代节点：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DOMComb</span>(<span class="params">parent, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (parent.hasChildNodes()) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> node = parent.firstChild; node; node = node.nextSibling) &#123;</span><br><span class="line">      DOMComb(node, callback)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  callback(parent)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DOMComb(<span class="built_in">document</span>.body, <span class="built_in">console</span>.log)</span><br></pre></td></tr></table></figure>
+<p>cloneNode()：参数表示是否深度 clone，返回克隆的新节点。只克隆 DOM 里面带的属性，如果有 id 或者 name 属性，需要修改 clone 出来的节点的 id 和 name 属性。</p>
+<p>insertBefore()：将第一个参数插入当前节点内的某个子节点即第二个参数前，返回新节点。如果第二个参数为 null，则是将节点插入到当前节点内部的最后的位置，也就是 appendChild 一样了。node 节点插入到 nnode 节点后：<code>parent.insertBefore(node, nnode.nextSibling)</code>。同 appendChild 方法，如果参数是 DocumentFragment 节点，那么插入的是 DocumentFragment 的所有子节点，而不是 DocumentFragment 节点本身。返回值是一个空的 DocumentFragment 节点。</p>
+<p>replaceChild：第一个参数节点替换第二个参数节点，返回第二个参数节点</p>
+<p>contains()：返回节点是否在当前文档中。确定参数节点为当前节点，参数节点是否为当前节点的子节点，参数节点是否为当前节点的后代节点。</p>
+<p>compareDocumentPosition()：用法和 contains 一样，返回一个 6 bit 位的二进制值，表示参数节点与当前节点的关系</p>
+<table>
+<thead>
+<tr>
+<th>二进制值</th>
+<th>十进制值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>000000</td>
+<td>0</td>
+<td>两个节点相同</td>
+</tr>
+<tr>
+<td>000001</td>
+<td>1</td>
+<td>两个节点不在同一个文档（即有一个节点不在当前文档）</td>
+</tr>
+<tr>
+<td>000010</td>
+<td>2</td>
+<td>参数节点在当前节点的前面</td>
+</tr>
+<tr>
+<td>000100</td>
+<td>4</td>
+<td>参数节点在当前节点的后面</td>
+</tr>
+<tr>
+<td>001000</td>
+<td>8</td>
+<td>参数节点包含当前节点</td>
+</tr>
+<tr>
+<td>010000</td>
+<td>16</td>
+<td>当前节点包含参数节点</td>
+</tr>
+<tr>
+<td>100000</td>
+<td>32</td>
+<td>浏览器内部使用</td>
+</tr>
+</tbody>
+</table>
+<p>通过掩码进行运算，简称某个特定位置的标签嵌套是否合乎规范：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> head = <span class="built_in">document</span>.head;</span><br><span class="line"><span class="keyword">var</span> body = <span class="built_in">document</span>.body;</span><br><span class="line"><span class="keyword">if</span> (head.compareDocumentPosition(body) &amp; <span class="number">4</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'文档结构正确'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'&lt;body&gt; 不能在 &lt;head&gt; 前面'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>isEqualNode() 节点与参数节点是否相等</p>
+<p>isSameNode() 节点与参数节点是否为同一个节点</p>
+<p>normalize() 去除节点文本节点之间的多余空格</p>
+<p>getRootNode() 返回所在文档的根节点 <code>document</code>，与 <code>ownerDocument</code> 属性的作用相同。它可以在 document 节点自身，这一点与 document.ownerDocument 不同。</p>
 
   </div>
   
@@ -141,12 +148,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/35/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/37/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/35/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/37/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>

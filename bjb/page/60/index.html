@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Number 对象</h2>
+    <h2 class="title">字符串</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-29 11:32:41</span>
+    <span class="post-time">2018-11-20 16:20:17</span>
     <span class="post-tags">
       
     </span>
@@ -51,28 +51,65 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>Number 对象是数值对应的包装对象，可以作为构造函数也可以作为工具函数使用。</p>
-<p>作为构造函数，它用于生成一个数值的包装对象。</p>
-<p>作为工具函数，它用于把任何类型的值转为数值。</p>
-<h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><p>Number.POSITIVE_INFINITY 正无限 指向 Infinity</p>
-<p>Number.NAGETIVE_INFINITY 负无限 指向 -Infinity</p>
-<p>Number.NaN 表示非数值，指向 NaN</p>
-<p>Number.MIN_VALUE 表示最小的正数（即最接近 0 的正数，在 64 位符点数体系中为 5e-324），相应的最接近 0 的负数位 -Number.MIN_VALUE</p>
-<p>Number.MAX_VALUE 表示最大的正数 在 64 位浮点数体系中为 1.7976313486231574e+308</p>
-<p>Number.MAX_SAFE_INTEGER 表示能够精确表示的最大整数，即 9007199254730991</p>
-<p>Number.MIN_SAFE_INTEGER 表示能够精确表示的最小整数，即 -9007199254740991</p>
-<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>Number 有 4 个实例方法，都跟将数值转换成指定格式有关。这 4 个实例方法是 ES5 的 Number 实例方法，ES6 新加了几个。</p>
-<h3 id="Number-prototype-toString"><a href="#Number-prototype-toString" class="headerlink" title="Number.prototype.toString()"></a>Number.prototype.toString()</h3><p>将数值转为字符串形式。</p>
-<p>可以传入一个参数，表示输出的进制。默认为 十进制。进制数为 2 - 36</p>
-<p>可以方括号预算法调用 toString 方法：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">10</span>[toString](<span class="number">2</span>) <span class="comment">// "1010"</span></span><br></pre></td></tr></table></figure>
-<p>toString 方法是将十进制的数转换为其他进制的字符串。</p>
-<p>parseInt 可以将其他进制的字符串转换为十进制的整数。</p>
-<h3 id="Number-prototype-toFixed"><a href="#Number-prototype-toFixed" class="headerlink" title="Number.prototype.toFixed()"></a>Number.prototype.toFixed()</h3><p>先将数值转换为指定位数的小数，然后返回这个小数的字符串形式。toFixed 方法的参数为小数位数，有效范围是 0 到 20，超出范围将抛出 RangeError 错误。</p>
-<h3 id="Number-prototype-toExponential"><a href="#Number-prototype-toExponential" class="headerlink" title="Number.prototype.toExponential()"></a>Number.prototype.toExponential()</h3><p>将数值转换为科学计数法表示的字符串，可以传入一个参数作为小数点的有效位数，范围为 0 到 20，超出范围将抛出 RangeError 错误。</p>
-<h3 id="Number-prototype-toPrecision"><a href="#Number-prototype-toPrecision" class="headerlink" title="Number.prototype.toPrecision()"></a>Number.prototype.toPrecision()</h3><p>用于将数字转为指定位数的有效数字。toFixed 是指定小数的位数，toPrecision 是指定整个数字返回的位数。有效范围是 1 到 21，超出范围会抛出 RangeError 错误。</p>
-<p>toPrecision 用于四舍五入时不太可靠，跟浮点数不是精确存储有关。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="number">12.35</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.3"</span></span><br><span class="line">(<span class="number">12.25</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.3"</span></span><br><span class="line">(<span class="number">12.15</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.2"</span></span><br><span class="line">(<span class="number">12.45</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.4"</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p>单引号或者双引号中的 0 个或者多个字符就是字符串</p>
+<p>单引号里面再用单引号需要用反斜杆转义，或者将其中一对引号改成双引号</p>
+<p>双引号里面再用双引号需要用反斜杆转义，或者将其中一对引号改成单引号</p>
+<p>单双引号引号包含的字符串默认是单行，要分成多行，需要在行尾加反斜杆，否则会报错，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> errorStr = <span class="string">'</span></span><br><span class="line"><span class="string">a</span></span><br><span class="line"><span class="string">b</span></span><br><span class="line"><span class="string">c'</span></span><br><span class="line"><span class="comment">// SyntaxError: Unexpected token ILLEGAL</span></span><br></pre></td></tr></table></figure>
+<p>加了反斜杠以后，原来写在一行的字符串，可以分成多行书写。但是，输出的时候还是单行，效果与写在同一行完全一样。注意，反斜杠的后面必须是换行符，而不能有其他字符（比如空格），否则会报错。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">'</span></span><br><span class="line"><span class="string">a \</span></span><br><span class="line"><span class="string">b \</span></span><br><span class="line"><span class="string">c</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">str <span class="comment">// 'abc'</span></span><br></pre></td></tr></table></figure>
+<p>可以用 + 连接多个单行字符串</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">'a'</span></span><br><span class="line">+ <span class="string">'b'</span></span><br><span class="line">+ <span class="string">'c'</span></span><br><span class="line">str <span class="comment">// 'abc'</span></span><br></pre></td></tr></table></figure>
+<p>输出多行字符串，奇淫怪技啊.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">/*</span></span><br><span class="line"><span class="comment">line 1</span></span><br><span class="line"><span class="comment">line 2</span></span><br><span class="line"><span class="comment">line 3</span></span><br><span class="line"><span class="comment">*/</span>&#125;).toString().split(<span class="string">'\n'</span>).slice(<span class="number">1</span>, <span class="number">-1</span>).join(<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+<p>或者用 ES 6 的模版字符串</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">`a</span></span><br><span class="line"><span class="string">b</span></span><br><span class="line"><span class="string">c`</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-转义"><a href="#1-2-转义" class="headerlink" title="1.2 转义"></a>1.2 转义</h3><ul>
+<li><code>\0</code> null <code>\u0000</code></li>
+<li><code>\b</code> 后退键 <code>\u0008</code></li>
+<li><code>\f</code> 换页符 <code>\u000C</code></li>
+<li><code>\n</code> 换行符  <code>\u000A</code></li>
+<li><code>\r</code> 回车符 <code>\u000D</code></li>
+<li><code>\t</code> 制表符  <code>\u0009</code></li>
+<li><code>\v</code> 垂直制表符 <code>\u000B</code></li>
+<li><code>\&#39;</code> 单引号 <code>\u0027</code></li>
+<li><code>\&quot;</code> 双引号 <code>\u0022</code></li>
+<li><code>\\</code> 反斜杆  <code>\u005C</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'1\t2'</span>) <span class="comment">// 1	2</span></span><br></pre></td></tr></table></figure>
+<p>反斜杆后跟 3 个八进制数，代表一个字符。八进制数对应该字符的 Unicode 码点，比如 <code>\251</code> 表示版权符号。这种方法只能输出 265 种字符</p>
+<p>反斜杆后跟 x 再接着 2 个十六进制数，也代表一个字符。十六进制数对应的是这个字符的 Unicode 码点，比如 <code>\xA9</code> 表示版权符号。这种也只能显示 256 种字符。</p>
+<p>反斜杆后跟 u 再接着 4 个十六进制数，代表一个字符。十六进制是对应的这个字符的 Unicode 码点，比如 <code>\u00A9</code> 表示版权符号。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'\251'</span> <span class="comment">// "©"</span></span><br><span class="line"><span class="string">'\xA9'</span> <span class="comment">// "©"</span></span><br><span class="line"><span class="string">'\u00A9'</span> <span class="comment">// "©"</span></span><br></pre></td></tr></table></figure>
+<p>正常字符前面使用反斜杆，反斜杆会被忽略。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'\a'</span> <span class="comment">// "a"</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-3-字符串与数组"><a href="#1-3-字符串与数组" class="headerlink" title="1.3 字符串与数组"></a>1.3 字符串与数组</h3><p>字符串可以视为字符串数组，可以且只可以像数组一样读取字符串数组里面值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="string">'12345'</span></span><br><span class="line">a.length <span class="comment">// 5</span></span><br><span class="line">a[<span class="number">0</span>] <span class="comment">// 1</span></span><br><span class="line">a[<span class="number">8</span>] <span class="comment">// undefined</span></span><br><span class="line">a[<span class="string">'x'</span>] <span class="comment">// undefined</span></span><br><span class="line">a[<span class="number">-1</span>] <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-字符集"><a href="#2-字符集" class="headerlink" title="2. 字符集"></a>2. 字符集</h2><p>JavaScript 使用 Unicode 字符集。JavaScript 引擎内部，所有字符都用的 Unicode 表示。</p>
+<p>JavaScript 不仅可以用 Unicode 存储字符，还可以只用在程序中 Unicode 码点表示字符，比如 <code>\u00A9</code> 代表版权符号。</p>
+<p>解析代码时，JavaScript 会自动识别一个字符时字面量还是 Unicode，输出字面量给用户</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> f\u006F\u006F = <span class="string">'abc'</span></span><br><span class="line">foo <span class="comment">// 'abc'</span></span><br></pre></td></tr></table></figure>
+<p>每个字符在 JavaScript 内部都是以 16 位（即 2 个字节）的 UTF-16 格式存储的。也就是说 JavaScript 的单位字符长度固定为 16 位长度，即 2 个字节。</p>
+<p>UTF-16 有两种长度：</p>
+<ul>
+<li>对于码点在 U+0000 到 U+FFFF 之间的字符，长度为 16 位，即 2 个字节</li>
+<li>对于码点在 U+10000 到 U+10FFFF 之间的字符，长度为 32 位，即 4 个字节，而且前两个字节在 0xD800 到 0xDBFF 之间，后两个字节在 0xDC00 到 0xDFFF 之间。码点 U+1D306 对应的字符为<code>𝌆</code>，它的 UTF-16 字符是 0xD834 0xDF06</li>
+</ul>
+<p>JavaScript 对 UTF-16 的支持是不完整的，由于历史原因，只支持两字节的字符，不支持四字节的字符。这是因为 JavaScript 第一版发布的时候，Unicode 的码点只编到 U+FFFF，因此两字符足够表示了。后来，Unicode 纳入的字符越来越多，出现了四字节的编码。但是，JavaScript 的标准此时已经定型了，统一将字符长度限制在两字节，导致无法识别四字节的字符。<code>𝌆</code>浏览器会正确识别为一个字符，而 JavaScript 却无法识别，会认为这是两个字符。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'𝌆'</span>.length <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>总结一下，对于码点在 U+10000 到 U+10FFFF 之间的字符，JavaScript 总是认为它们是两个字符。处理的时候，必须考虑到这一点，也就是说 JavaScript 返回的字符串的长度可能是不对的。</p>
+<h2 id="3-Base64-转码"><a href="#3-Base64-转码" class="headerlink" title="3. Base64 转码"></a>3. Base64 转码</h2><p>有时，文本里面包含一些不可打印的符号，比如 ASCII 码 0 到 31 的符号都无法打印出来，这时可以使用 Base64 编码将它们转成可以打印的字符。另一个场景时，有时候需要以文本格式传递二进制数据，那么也可以使用 Base64 编码。</p>
+<p>所谓 Base64 编码就是一种编码方法，可以将任意值转成 0～9、A～Z、a～z、+ 和 / 这 64 个字符组成的可打印字符。使用它的主要目的不是为了加密，而是为了不出现特殊字符，简化程序的处理。</p>
+<p>JavaScript 原生提供的 Base64 的两个方法：</p>
+<ul>
+<li>btoa 任意值转为 Base64 编码</li>
+<li>atob Base64 编码转为原来的值</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">'hahaha'</span></span><br><span class="line">base64Str = btoa(str) <span class="comment">// "aGFoYWhh"</span></span><br><span class="line">atob(base64Str) <span class="comment">// "hahaha"</span></span><br></pre></td></tr></table></figure>
+<p>这两个方法不适合非 ASCII 码的字符，会报错</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">btoa(<span class="string">'胖达'</span>) <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+<p>要将非 ASCII 码字符转为 Base64 编码，必须中间加一个转码环节，再使用这两个方法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> base64encode = <span class="function"><span class="params">str</span> =&gt;</span> btoa(<span class="built_in">encodeURIComponent</span>(str))</span><br><span class="line"><span class="keyword">const</span> base64Decode = <span class="function"><span class="params">str</span> =&gt;</span> <span class="built_in">decodeURIComponent</span>(atob(str))</span><br><span class="line">base64encode(<span class="string">'胖达'</span>) <span class="comment">// "JUU4JTgzJTk2JUU4JUJFJUJF"</span></span><br><span class="line">base64Decode(<span class="string">'JUU4JTgzJTk2JUU4JUJFJUJF'</span>) <span class="comment">// 胖达</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -80,12 +117,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/59/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/58/">58</a><a class="page-number" href="/bjb/page/59/">59</a><span class="page-number current">60</span><a class="page-number" href="/bjb/page/61/">61</a><a class="page-number" href="/bjb/page/62/">62</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/61/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/59/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/58/">58</a><a class="page-number" href="/bjb/page/59/">59</a><span class="page-number current">60</span><a class="page-number" href="/bjb/page/61/">61</a><a class="page-number" href="/bjb/page/62/">62</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/61/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>
