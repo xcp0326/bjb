@@ -38,57 +38,168 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">HTTP 强缓存与协商缓存</h2>
+    <h2 class="title">Document 节点</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-01-07 14:11:54</span>
+    <span class="post-time">2018-12-25 11:40:06</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/HTTP/">HTTP</a></li></ul>
       
     </span>
     
   </div>
   <div class="post-content">
-    <h3 id="HTTP-报文"><a href="#HTTP-报文" class="headerlink" title="HTTP 报文"></a>HTTP 报文</h3><p>HTTP 缓存机制是根据 HTTP 报文的缓存标识定义的。而HTTP 报文分为 HTTP 请求报文 和 HTTP 响应报文。</p>
-<p>HTTP 请求报文格式为：</p>
-<p>1 请求行<br>2 通用头信息<br>2 请求头<br>2 实体头<br>3<br>4 请求报文体</p>
-<p>HTTP 响应报文对应为：</p>
-<p>1 状态行<br>2 通用信息头<br>2 响应头<br>2 实体头<br>3<br>4 响应报文体</p>
-<p>通用信息头一般包含：Cache-Control、Connection、Date<br>实体头是实体信息的实体头域常见的有：Connection、Keep-Alive、Contect-Type、Etag、Expires、Last-Modified、extension-header、Content-Encoding、Content-Range</p>
-<h3 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h3><p>强缓存：向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程。</p>
-<p>强缓存是根据客户的保留的服务器端的 response header 中的字段：expires、cache-control 来控制的。</p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>document 节点对象代表整个文档，window.document 属性指向这个对象。只要浏览器开始载入 HTML 文档，该对象就存在了，可以直接使用。</p>
+<p>iframe 框架里面的网页，使用 iframe 节点的 contentDocument 属性获取 document 节点</p>
+<p>AJAX 操作返回的文档，使用 XMLHttpRequest 对象的 responseXML 属性获取 document 节点</p>
+<p>document 对象继承了 EventTarget 接口、Node 接口、ParentNode 接口。以及一些自己的属性和方法。</p>
+<p>快捷属性</p>
 <ul>
-<li>cache-control 是过期的一个时间长度，expires 是过期的时间点。cache-control 的优先级高于 expires。在无法确定客户端时间是否与服务器端时间同步的情况下，cache-control 相比 expires 是更好的选择，所以如果同时存在时，只有 cache-control 会生效。</li>
-<li>Expires 是 HTTP/1.0 控制网页缓存的字段，其值为服务器返回请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于 expires 值，则直接返回缓存结果。</li>
+<li>document.defaultView 返回 document 所属的 window 对象，如果当前文档不属性 window 对象，就返回 null。</li>
+<li>document.doctype document 对象的第一个子节点是 document.doctype，第二个是 html 标签节点</li>
+<li>document.documentElement 返回当前文档的根节点 root。通常是 document 节点的第二个节点，紧跟在 document.doctype 节点后面。HTML 网页的该属性，一般就是 html 标签节点</li>
+<li>document.head 指向 head 标签节点、document.body 指向 body 标签节点。如果改写它们的值，相当于移除所有子节点</li>
+<li>document.scrollingElement 当前文档整体滚动时，到底是哪个元素在滚动。标准模式下，这个属性返回文档的根元素 document.documentElement 即 html 标签元素。兼容模式下，返回的是 body 标签元素，如果该元素不存在返回 null。</li>
+<li>Document.activeElement 返回当前焦点的 DOM 元素。通常这个属性返回的是 input、textarea、select 等表单元素，如果当前没有焦点元素，则返回 body 标签元素或者 null。</li>
+<li>document.fullscreenElement 返回当前以全屏状态展示的 DOM 元素。如果不是全屏，返回 null。确定视频是否打开全屏：<code>document.fullscreenElement.nodeName === &#39;video&#39;</code> 返回 true 则是全屏。</li>
 </ul>
-<p>Cache-Control 是在 HTTP/1.1 用于控制网页缓存的字段，常见值：</p>
+<p>节点集合属性</p>
+<p>document.links、document.forms、document.images、document.embeds、document.plugins、document.scripts、document.styleSheets 返回的都是 HTMLCollection 实例，所以都可以通过 id 或者 name 索引到对应的成员。</p>
+<p>文档静态信息属性</p>
 <ul>
-<li>public：所有内容都缓存 客户端和代理服务器都可缓存（一般都是设置为这个）</li>
-<li>private：所有内容都缓存 客户端可缓存，默认值</li>
-<li>no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定</li>
-<li>no-store：所有内容都不缓存，既不强制缓存也不协商缓存</li>
-<li>max-age=xxx：缓存在 xxx 秒后失效</li>
+<li>document.documentURI 继承自 Document 接口 可用于所有文档、 document.URL 继承自 HTMLDocument 接口，只能用于 HTML 文档。那对前端来说其实是一样的。</li>
+<li>document.domain 当前文档域名，不包含协议和端口。只有在次级域名菜可以修改这个值，设置完后会导致端口被改为 null。</li>
+<li>document.location</li>
+<li>document.lastModified</li>
+<li>document.title、document.characterSet</li>
+<li>document.referrer 与 HTTP 头信息的 Referer 字段一致</li>
+<li>document.dir 表示文字方向 rtl、ltr</li>
+<li>document.compatMode 浏览器处理文档的模式，可能的值为 BackCompat 向后兼容模式和 CSS1Compat 严格模式。一般网页设置了明确的 DTD，document.compatMode 的值都为 CSS1Compat。</li>
 </ul>
-<p>缓存失效时间计算公式：expirationTime = responseTime + freshnessLifetime - currentAge</p>
-<h3 id="强缓存下的内存缓存与硬盘缓存"><a href="#强缓存下的内存缓存与硬盘缓存" class="headerlink" title="强缓存下的内存缓存与硬盘缓存"></a>强缓存下的内存缓存与硬盘缓存</h3><p>内存缓存：内存缓存会将变异解析后的文件，直接存入该进程的内存中，占据该进程一定的内存资源，以方便下次运行使用时的快速读取，但一旦关闭该进程，该缓存就没有了。</p>
-<p>硬盘缓存：是直接写入硬盘文件中的，读取缓存需要对该缓存存放的硬盘文件进行 I/O 操作，然后重新解析该缓存内容，读取复杂，速度显然会比内存缓存慢</p>
-<p>在浏览器中，浏览器会在 JS 和图片等文件解析执行后直接存入内存缓存中，当刷新页面时只需直接从内存缓存中读取，而 CSS 文件则会存入硬盘文件中，所以每次渲染页面都需要从硬盘缓存中读取。</p>
-<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p>协商缓存：在强制缓存失效后，浏览器携带缓存标识向服务器发送请求，由服务器根据缓存标识决定是否使用缓存的过程。</p>
-<p>协商缓存的标识 response header 中的字段：Last-Modified / If-Modified-Since、Etag / If-None-Match 来控制的。</p>
-<p>Etag / If-None-Match 的优先级高于 Last-Modified / If-Modified-Since。</p>
-<p>Last-Modifed 是服务器响应请求时，返回该资源文件在服务器最后被修改的时间</p>
-<p>Etag 是服务器响应请求时，返回当前资源文件的一个唯一标识（有服务器生成），客服端再次发起请求时，If-None-Match 携带上次请求返回的唯一标识 Etag 值，If-None-Match 与该资源在服务器的 Etag 值做比较，一致则返回 304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码 200</p>
-<h3 id="小总结"><a href="#小总结" class="headerlink" title="小总结"></a>小总结</h3><p>协商缓存需要配合强缓存使用，你看前面这个截图中，除了Last-Modified这个header，还有强缓存的相关header，因为如果不启用强缓存的话，协商缓存根本没有意义。</p>
-<p>强制缓存不会发请求到服务器，而协商缓存会发请求到服务器，所以说它两都不会从服务器加载资源数据。</p>
-<h3 id="浏览器缓存过程"><a href="#浏览器缓存过程" class="headerlink" title="浏览器缓存过程"></a>浏览器缓存过程</h3><p>浏览器第一次加载资源，服务器返回 200，浏览器将资源文件从服务器上请求下载下来，并把 response header 及该请求的资源一并缓存；也就是说缓存命中的请求返回的 response header 并不是来自服务器，而是来自之前的缓存的 response header；</p>
-<p>浏览器再次请求这个资源的时候，会先从缓存中旋转这个资源的 response header，比较当前时间和上一次返回 200 的时间差，如果没有超过 cache-control 设置的 max-age，则没有过期，命中强制缓存，不发请求直接从本地缓存读取该文件（如果浏览器不支持 HTTP 1.1，则用 expires 设置的时间点判断是否过期）；如果过期，则向服务器发送 header 带有 If-None-Match 和 If-Modified-Since 的请求；</p>
-<p>服务器收到请求后，优先根据 Etag 的值判断被请求的文件有没有被修改，Etag 与 If-None-Match 的值一致则表示没有修改，命中协商缓存，返回 304。如果不一致则有改动，直接返回新的资源文件带上新的 Etag 的 response header 并返回 500。</p>
-<p>如果服务器收到的请求没有 Etag 值，则将 If-Modified-Since 和被请求文件的最后修改时间进行比较，一致则命中协商缓存，返回 304；不一致则返回新的 last-Modified 的 response header 和文件并返回 200</p>
-<h3 id="用户行为对浏览器缓存的控制"><a href="#用户行为对浏览器缓存的控制" class="headerlink" title="用户行为对浏览器缓存的控制"></a>用户行为对浏览器缓存的控制</h3><ul>
-<li>地址栏访问，链接跳转是正常的用户行为，都会触发浏览器缓存机制</li>
-<li>F5 刷新，浏览器会设置 max-age=0，跳过强缓存判断，进行协商缓存判断</li>
-<li>ctrl + F5 刷新，跳过强缓存和协商缓存，直接从服务器下载资源</li>
+<p>文档状态属性</p>
+<ul>
+<li><p>document.hidden 窗口最小化、浏览器切换 tab 时返回 true，是 Page Visibility API 引入的，一般配合这个 API 使用</p>
+</li>
+<li><p>document.visibilityState 返回文档的可见状态，可以在页面加载时，防止加载某些资源；或者页面不可见时，停掉一些页面功能。</p>
+<ul>
+<li>visible 页面可见或者部分可见</li>
+<li>hidden 页面不可见</li>
+<li>prerender 页面正在渲染，对用户来说不可见</li>
+<li>unloaed 页面从内存卸载</li>
+</ul>
+</li>
+<li><p>document.readyState 返回文档当前的加载状态，loading 加载 HTML 代码阶段（尚未完成解析）、interactive 加载外部资源阶段、complete 加载完成。</p>
+<p>这个属性变化的过程如下：</p>
+<ol>
+<li>浏览器开始解析 HTML 文档，document.readyState 属性等于 loading</li>
+<li>浏览器遇到 HTML 文档中的 script 标签元素，并且没有 async 或者 defer 属性，就暂停解析，开始执行脚本，这时 document.readyState 属性还是等于 loading</li>
+<li>HTML 文档解析完成，document.readyState 属性变成 interactive</li>
+<li>浏览器等待图片、样式表、字体文件等外部资源加载完成，一旦全部加载完成，document.readyState 属性变成 complete。</li>
+</ol>
+</li>
+<li><p>document.cookie</p>
+</li>
+<li><p>document.designMode 控制当前文档是否可编辑，默认为 off，如果设置为 on，用户可以编辑整个文档的内容。</p>
+<blockquote>
+<p> 有意思，什么场景 🤔 </p>
+<p>on 的时候，可以调用 document.execCommaned() 方法来控制文本。</p>
+</blockquote>
+</li>
+<li><p>document.implementation 返回一个 DOMImplementation 对象，有三个方法，主要用于创建独立于当前文档的新的 Document 对象。</p>
+<ul>
+<li>DOMImplementation.createDocument()：创建一个 XML 文档</li>
+<li>DOMImplementation.createHTMLDocument()：创建一个 HTML 文档</li>
+<li>DOMImplementation.createDocumentType()：创建一个 DocumentType 对象</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> doc = <span class="built_in">document</span>.implementation.createHTMLDocument(<span class="string">'Title'</span>);</span><br><span class="line"><span class="keyword">var</span> p = doc.createElement(<span class="string">'p'</span>);</span><br><span class="line">p.innerHTML = <span class="string">'hello world'</span>;</span><br><span class="line">doc.body.appendChild(p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换当前文档为新建的 doc 文档。有意思啊。</span></span><br><span class="line"><span class="built_in">document</span>.replaceChild(</span><br><span class="line">  doc.documentElement,</span><br><span class="line">  <span class="built_in">document</span>.documentElement</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>方法</p>
+<ul>
+<li><p>document.open()、document.close() </p>
+</li>
+<li><p>document.write()、document.writeLn()</p>
+</li>
+<li><p>document.querySelector()、document.querySelectorAll() 参数为 CSS 选择器</p>
+</li>
+<li><p>document.getElementsByTagName() 返回符合条件的标签节点，返回一个 HTMLCollection 实例，如果参数是<code>*</code>则返回所有 HTML 元素</p>
+</li>
+<li><p>document.getElementsByClassName() 参数如果是多个 class，用空格隔开，则返回同时具有多个 className 的标签节点</p>
+</li>
+<li><p>document.getElementsByName() 返回具有某个 name 属性的标签节点的 NodeList 实例</p>
+</li>
+<li><p>document.getElementById() 返回 id 为参数的标签元素，效率比 document.querySelector() 高得多</p>
+</li>
+<li><p>document.elementFromPoint()、document.elementsFromPoint() 返回页面指定 x、y 值的最上层的元素节点、元素节点的数组</p>
+</li>
+<li><p>document.caretPositionFromPoint() 返回一个 CaretPosition 对象，包含了指定坐标点在节点对像内部的位置信息。CaretPosition 对象就是光标插入点的概念，用于确定光标点在文本对象内部的具体位置。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> range = <span class="built_in">document</span>.caretPositionFromPoint(clientX, clientY);</span><br></pre></td></tr></table></figure>
+<p>range 是指定坐标点的 CaretPosition 对象。该对象有两个属性：</p>
+<ul>
+<li>CaretPosition.offsetNode：该位置的节点对象</li>
+<li>CaretPosition.offset：该位置在 offsetNode 对象内部，与起始位置相距的字符数</li>
+</ul>
+</li>
+<li><p>document.createElement()</p>
+</li>
+<li><p>document.createTextNode() 传入的参数如果有标签节点会被转义，不对引号转义，不能用来对 HTML 属性赋值</p>
+</li>
+<li><p>document.createAttribute()</p>
+</li>
+<li><p>document.createComment()</p>
+</li>
+<li><p>document.createDocumentFragment() DocumentFragment 是存在于内存的 DOM 片段，不属于当前文档，常常用来生成一段较复杂的 DOM 结构，然后再插入当前文档。这样做的好处在于，因为 DocumentFragment 不属于当前文档，对它的任何改动，都不回引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现。</p>
+</li>
+<li><p>document.createEvent() 创建一个事件对象 Event 实例，可以被 element.dispatchEvent 方法使用，触发指定事件。参数为事件类型：UIEvents、MouseEvents、MutationEvents、HTMLEvents 等</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> event = <span class="built_in">document</span>.createEvent(<span class="string">'Event'</span>);</span><br><span class="line">event.initEvent(<span class="string">'build'</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'build'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.type); <span class="comment">// "build"</span></span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.dispatchEvent(event);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>document.addEventListener()、document.removeEventListener()、document.dispatchEvent() 用于处理 document 节点事件。都继承自 EventTarget 接口</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 触发事件</span></span><br><span class="line"><span class="keyword">var</span> event = <span class="keyword">new</span> Event(<span class="string">'click'</span>);</span><br><span class="line"><span class="built_in">document</span>.dispatchEvent(event);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>document.hasFocus() 当前文档之中是否有元素被激活或获得焦点。有焦点的文档必定被激活，但是被激活的文档未必有焦点。比如，用户点击按钮，从当前窗口跳出一个新窗口，该新窗口就是激活的，但是不拥有焦点。</p>
+</li>
+<li><p>document.adoptNode() 将参数节点及其子节点从原来所在文档或者 DocumentFragment 移除，让它归属当前 document 对象，返回插入后的新节点。插入的节点对象的 ownerDocument 属性会变成当前的 document 对象，而 parentNode 属性为 null（因为只有插入到文档树后才有 parentNode）。document.adoptNode 方法只是改变节点的归属，并没有将这个节点插入到文档树，所以如果要插入文档树，还要用 appendChild 或者 insertBefore 方法将新节点插入到当前文档树。</p>
+</li>
+<li><p>document.importNode() 方法则是从原来所在文档或者 DocumentFragment 里面，拷贝某个节点及其子节点，让它归属当前 document 对象。拷贝的节点对象的 ownerDocument 属性会变成当前的 document 对象，而 parentNode 属性为 null（因为只有插入到文档树后才有 parentNode）。第一个参数为节点，第二个参数为是否是深拷贝。</p>
+</li>
+<li><p>document.createNodeIterator() 返回一个子节点遍历器。第一个参数为要遍历的根节点，第二个参数为所要遍历的节点类型。几种主要的节点类型写法如下：</p>
+<ul>
+<li>所有节点：NodeFilter.SHOW_ALL</li>
+<li>元素节点：NodeFilter.SHOW_ELEMENT</li>
+<li>文本节点：NodeFilter.SHOW_TEXT</li>
+<li>评论节点：NodeFilter.SHOW_COMMENT</li>
+</ul>
+<p>document.createNodeIterator 方法返回一个遍历器对象（NodeFilter 实例）。该实例的 nextNode() 方法和 previousNode() 方法，可以用来遍历所有子节点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nodeIterator = <span class="built_in">document</span>.createNodeIterator(<span class="built_in">document</span>.body);</span><br><span class="line"><span class="keyword">var</span> pars = [];</span><br><span class="line"><span class="keyword">var</span> currentNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (currentNode = nodeIterator.nextNode()) &#123;</span><br><span class="line">  pars.push(currentNode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>nextNode 方法先返回遍历器内部指针所在的节点，然后会将指针移向下一个节点<br>previousNode 方法先将指针移向上一个节点，然后返回该节点</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nodeIterator = <span class="built_in">document</span>.createNodeIterator(</span><br><span class="line">	<span class="built_in">document</span>.body,</span><br><span class="line">  NodeFilter.SHOW_ELEMENT</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> currentNode = nodeIterator.nextNode()</span><br><span class="line"><span class="keyword">var</span> previousNode = nodeIterator.previousNode()</span><br><span class="line"></span><br><span class="line"><span class="comment">// nextNode 方法先返回遍历器内部指针所在的节点，然后会将指针移向下一个节点</span></span><br><span class="line"><span class="comment">// previousNode 方法先将指针移向上一个节点，然后返回该节点</span></span><br><span class="line"><span class="comment">// 此时 currentNode === previousNode</span></span><br><span class="line">currentNode === previousNode <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>遍历器返回的第一个节点是传入的参数节点。</p>
+</li>
+<li><p>document.createTreeWalker() 返回一个 DOM 的子树遍历器。与 document.createNodeIterator 方法基本类似，区别在于它返回的是 TreeWalker 实例，而后者是返回的 NodeIterator 实例。另外返回的遍历器不包含参数节点。</p>
+</li>
+<li><p>document.execCommand()、document.queryCommandSupported()、document.queryCommandEnabled() 如果 document.designMode 为 on，即整个文档用户都可编辑，如果标签节点的 contenteditable 为 true，即这个标签可编辑。这两种情况下，可以使用 document.execCommand() 方法，改变内容的样式，比如 document.execCommand(‘bold’) 会使得字体加粗。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.execCommand(command, showDefaultUI, input)</span><br></pre></td></tr></table></figure>
+<p>该方法接受三个参数：</p>
+<ul>
+<li><p>command：字符串，表示要实施的样式</p>
+</li>
+<li><p>showDefaultUI：布尔值，表示是否使用用户默认的界面，建议设置为 false</p>
+</li>
+<li><p>input：字符串，表示该样式的辅助内容，比如生成超级连接时，这个参数就是所要链接的网址。如果第二个参数为 true，那么浏览器会弹出提示框，要求用户在提示框内输入该参数。但是不是所有浏览器都支持这么做，为了兼容性，还是需要自己部署获取这个参数比较好。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="built_in">window</span>.prompt(<span class="string">'请输入网址'</span>)</span><br><span class="line"><span class="keyword">if</span> (url) &#123;</span><br><span class="line">  <span class="built_in">document</span>.execCommand(<span class="string">'createLink'</span>, <span class="literal">false</span>, url)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>document.execCommand() 的返回值是一个布尔值。如果为 false，表示这个方法无法生效。</p>
+<p>这个方法大部分情况下，只对选中的内容生效。如果有多个内容可编辑区域，那么只对当前焦点所在的元素生效。</p>
+<p>document.execCommand() 方法可以执行的样式改变有很多种，下面是其中的一些：bold、insertLineBreak、selectAll、createLink、insertOrderedList、subscript、delete、insertUnorderedList、superscript、formatBlock、insertParagraph、undo、forwardDelete、insertText、unlink、insertImage、italic、unselect、insertHTML、redo。</p>
+</li>
+</ul>
+<p>  document.queryCommandEnabled() 方法返回一个布尔值，表示浏览器是否允许使用这个方法。</p>
+<p>  document.queryCommandSupported() 方法返回一个布尔值，表示当前是否可用某种样式改变。比如，加粗只有存在文本选中时才可用，如果没有选中文本，就不可用。</p>
+<ul>
+<li>document.getSelection() 这个方法指向 window.getSelection() 方法。</li>
 </ul>
 
   </div>
@@ -97,12 +208,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/32/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/34/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/32/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/34/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>

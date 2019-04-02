@@ -38,51 +38,29 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">一个页面从输入 URL 到页面加载显示完成，这个过程中都发生了什么？</h2>
+    <h2 class="title">NodeList 接口，HTMLCollection 接口</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-01-07 11:51:20</span>
+    <span class="post-time">2018-12-24 23:50:27</span>
     <span class="post-tags">
       
     </span>
     
-      <div class="article-category">分类：
-        <a class="article-category-link" href="/bjb/categories/面试题/">面试题</a>
-      </div>
-    
   </div>
   <div class="post-content">
-    <p><img src="/images/url-view/tcp.png" alt></p>
-<p>第一步：根据域名进行 DNS 解析到 IP 地址</p>
-<p>第二步：根据 IP 地址向服务器发起 TCP 连接，与浏览器进行三次握手：</p>
-<ul>
-<li>主机向服务器发送一个建立连接的请求</li>
-<li>服务器接到请求后发送同意连接的信号</li>
-<li>主机到同意连接的信号后，再次向服务器发送了确认信号</li>
-</ul>
-<p>第三步：发送 HTTP 请求，请求报文包括三部分：请求行、请求头和请求正文</p>
-<p>第四步：服务器处理请求并返回 HTTP 响应报文，响应报文包括三部分：响应状态码、响应报头和响应报文。</p>
-<p>如果该资源浏览器访问过，而且该资源的 response header 的 cache-control 有效时间内，就不再访问服务器，而是直接从本地读取，如果没有 cache-control 而有 expires，而且本地时间在 expires 时间之前，也不再访问服务器，也是直接从本地读取。expires 和 cache-control，cache-control 优先级更高，所以先访问 cache-control，它俩是 HTTP 强缓存。</p>
-<p>如果 HTTP 强缓存都已经失效，则访问协商缓存，浏览器会携带缓存标识 Etag 和 Last-Modified 发送请求，如果 If-None-Match 值与浏览器携带的 Etag 值一致则返回 304，不用再请求服务器资源，缓存有效。如果失效，则看 Last-Modified-Sine 与浏览器携带的 Last-Modified 是否一致，如果一致，则返回 304 不再请求服务器资源。</p>
-<p>第五步：解析并渲染页面</p>
-<ul>
-<li>HTML 开始构建一个 DOM 树</li>
-<li>如果遇到的 DOM 节点是 JavaScript 代码，就会调用 JavaScript 引擎对 JavaScript 代码进行解释执行，此时由 JavaScript 引擎和 GUI 渲染线程的互斥，GUI 渲染线程就会被挂起，渲染过程停止；如果 JavaScript 代码的运行中对 DOM 树进行了修改，那么 DOM 的构建需要从新开始</li>
-<li>如果节点需要依赖其他资源，如（图片，CSS等），便会调用网络模块的资源加载器来加载它们，但它们是异步的，不会阻塞当前DOM树的构建</li>
-<li>如果遇到的是 JavaScript 资源 URL（没有标记异步），则需要停止当前 DOM 的构建，直到 JavaScript 的资源加载并被 JavaScript 引擎执行后才能继续构建 DOM</li>
-<li>对于 CSS，CSS 解释器会将 CSS 文件解释成内部表示结构，生成 CSS 规则树；</li>
-<li>然后合并 CSS 规则树和 DOM 树，生成渲染树</li>
-<li>最后对渲染树树进行布局和绘制</li>
-</ul>
-<p>第六步：通过四次挥手关闭 TCP：</p>
-<ul>
-<li>主机向服务器发送一个断开的请求</li>
-<li>服务器接到请求后发送确认收到请求的信号</li>
-<li>服务器向主机发送断开通知</li>
-<li>主机接到断开通知后断开连接并反馈一个确认信号，服务器收到取人信号后断开连接。</li>
-</ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p><a href="http://fex.baidu.com/blog/2014/05/what-happen/" target="_blank" rel="noopener">从输入 URL 到页面加载完成的过程中都发生了什么事情？</a><br><a href="https://blog.fundebug.com/2019/02/28/what-happens-from-url-to-webpage/" target="_blank" rel="noopener">经典面试题：从 URL 输入到页面展现到底发生什么？
-</a></p>
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>NodeList 是 Node 对象的伪数组</p>
+<p>HTMLCollection 是标签节点的伪数组</p>
+<p>Node.childNodes 属性返回 NodeList，也只有这个属性的返回的 NodeList 是动态集合</p>
+<p>document.querySelectorAll() 节点搜索方法返回 NodeList</p>
+<p>NodeList 有 forEach 方法和 length 属性，但是么有数组的 push 等方法</p>
+<p>NodeList 的 item 方法，参数为整数值，表示成员的位置，返回该位置的成员。这个方法等价于 <code>NodeList[&lt;int&gt;]</code></p>
+<p>keys、values、entries 三个方法分别返回一个键名遍历器、一个键值遍历器、一个包含键名和键值的遍历器。遍历器对象可以通过 for…of 循环遍历获取每一个成员的信息。</p>
+<p>HTMLCollection 没有 forEach 方法，只能使用 for 循环。它主要是一些 Document 对象的集合属性：document.links、document.forms、document.images 等。如果节点有 id 或 name 属性，可以用 id 或者 name 来引用节点元素。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;img id="pic" src="http://example.com/foo.jpg"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pic = <span class="built_in">document</span>.getElementById(<span class="string">'pic'</span>);</span><br><span class="line"><span class="built_in">document</span>.images.pic === pic <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>namedItem() 参数为 id 属性或 name 属性的值，返回对应的标签节点，如果么有返回 null。</p>
 
   </div>
   
@@ -90,12 +68,12 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/34/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/33/">33</a><a class="page-number" href="/bjb/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/bjb/page/36/">36</a><a class="page-number" href="/bjb/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/114/">114</a><a class="extend next" rel="next" href="/bjb/page/36/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/34/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/33/">33</a><a class="page-number" href="/bjb/page/34/">34</a><span class="page-number current">35</span><a class="page-number" href="/bjb/page/36/">36</a><a class="page-number" href="/bjb/page/37/">37</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/36/">下一页&raquo;</a>
   </nav>
 
     </main>
     <footer>
-  <p>&copy; 2019 bjb.dsphoebe.com <wbr> <a href="http://www.miitbeian.gov.cn/">京ICP备15048606号-1</a></p>
+  <p>&copy; 2019 xcp0326</p>
 </footer>
   </body>
 </html>
