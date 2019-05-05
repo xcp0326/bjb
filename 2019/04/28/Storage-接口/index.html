@@ -1,0 +1,79 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Storage 接口 | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Storage 接口</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-04-28 15:35:58</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<ul>
+<li>Storage.setItem()</li>
+<li>Storage.getItem()</li>
+<li>Storage.removeItem()</li>
+<li>Storage.clear()</li>
+<li>Storage.key() 接受一个从 0 开始的整数作为参数，返回该位置对应的键值。</li>
+</ul>
+<h4 id="Storage-事件"><a href="#Storage-事件" class="headerlink" title="Storage 事件"></a>Storage 事件</h4><p>Storage 接口储存的数据发送变化时，会触发 storage 事件，可以指定这个事件的监听函数。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'storage'</span>, onStorageChange);</span><br></pre></td></tr></table></figure></p>
+<p>onStorageChange 接受一个 event 实例对象作为参数。这个实例对象继承了 StorageEvent 接口，有几个特有的属性，都是只读属性。</p>
+<ul>
+<li>StorageEvent.key 表示发生变动的键名</li>
+<li>StorageEvent.newValue 表示新的键值</li>
+<li>StorageEvent.oldValue 表示旧的键值</li>
+<li>StorageEvent.storageArea 返回当前域名存储的所有键值对</li>
+<li>StorageEvent.url 原始触发 storage 事件的网页的网址</li>
+</ul>
+<p>不在导致数据变化的当前页面触发，而是在同一个域名的其他窗口触发。</p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

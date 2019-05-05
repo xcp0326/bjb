@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">XMLHttpRequest 对象</h2>
+    <h2 class="title">History 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-03-20 13:28:40</span>
+    <span class="post-time">2019-04-29 11:08:32</span>
     <span class="post-tags">
       
     </span>
@@ -51,76 +51,14 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>1999 年，微软发布 IE5，引入新功能，它允许 JavaScript 向服务器发起 HTTP 请求。2004 年 Google 发布 Gmail，2005 年 发布 Google Map，这个功能才发广泛重视。</p>
-<p>后来这个功能被人命名为 AJAX，Asynchronous JavaScript And XML。通过 JavaScript 发起 HTTP 请求，服务器返回 XML 文档，XML 文档里面带了需要的数据，然后把数据更新到网页的对应部分，这样不用刷新整个网页。</p>
-<p>后来 AJAX 就是指 JavaScript 发起 HTTP 请求。</p>
-<p>W3C 于 2006 把 AJAX 纳入标准。</p>
-<p>一个 AJAX 请求的整个过程是：</p>
-<ol>
-<li>创建一个 XMLHttpRequest 实例</li>
-<li>发出 HTTP 请求</li>
-<li>接收服务器传回的数据</li>
-<li>更新网页数据</li>
-</ol>
-<p>XMLHttpRequest 对象是 AJAX 的主要接口，用于浏览器于服务器之间的通信。尽管名字有 XML 和 Http，其实它还可以使用多种协议 比如 file 或 ftp。（<a href="https://www.w3.org/TR/XMLHttpRequest/#introduction" target="_blank" rel="noopener">但在标准中并没有说</a>），可以发送任何格式的数据。</p>
-<p>AJAX 只能向同源网址（协议、域名、端口都相同）发请求，跨域会报错。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.status === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(xhr.reponseText)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(xhr.statusText)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">xhr.onerror = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(xhr.statusText)</span><br><span class="line">&#125;</span><br><span class="line">xhr.open(<span class="string">'GET'</span>, <span class="string">'/endpoint'</span>, <span class="literal">true</span>);</span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure>
-<p><strong>xhr.readyState</strong> 返回实例的当前状态一个整数</p>
 <ul>
-<li>0 表示 XMLHttpRequest 实例已经生成，实例的 open() 方法还没被调用</li>
-<li>1 表示 open 方法已经调用，但 send 方法还没调用，这时可以调用实例的 setRequestHeader() 方法，设定 HTTP 请求的头信息</li>
-<li>2 表示 send 方法已经调用，服务器返回的头信息和状态码已经收到</li>
-<li>3 表示正在接收服务器的数据体 body 部分，这时，如果实例的 reponseType 属性是 text 类型或者空字符串，reponseText 属性就会包含已经收到的部分信息</li>
-<li>4 表示服务器返回数据已经接收，或者本次接收失败</li>
+<li>window.history.pushState(state, title, url)</li>
+<li>window.history.replaceState(state, title, url)</li>
 </ul>
-<p>AJAX 通信过程中，每当实例对象发生状态变化，它的 readyState 属性的值就会改变。这个值每一次变化，都会触发 readyStateChange 事件</p>
-<p><strong>xhr.onreadystatechange</strong> 指 xhr.readyState 属性改变时执行 xhr.onreadystatechange 监听函数。对应的是 readystatechange 事件。</p>
-<p>如果调用了实例的 abort 方法，终止请求，也会触发 readyState 属性变化而执行 xhr.onreadystatechange</p>
-<p><strong>xhr.response</strong> 表示服务器返回的数据体（即 HTTP 回应的 body 部分），可以是任何数据类型，具体类型由 xhr.reponseText （只读）决定。如果请求没成功或者数据不完整，返回 null。如果 reponseType 是 text 类型或空字符串，在请求没结束之前（readyState 等于 3 的阶段），reponse 属性包含服务器已经返回的部分数据。<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseType" target="_blank" rel="noopener">text 类型是指包含在 DOMString 对象中的文本。DOMString 是一个 UTF-16 字符串。JavaScript 的字符串就是 UTF-16 字符串，所以 DOMString 直接映射的 String，DOMString 就是 String</a></p>
-<p><strong>xhr.reponseType</strong> 表示服务器返回数据的类型。可以在调用 open 方法之后，send 方法之前设置它的值，告诉浏览器返回指定类型的数据。如果设置为空字符串，就等于默认值 text 类型，也就是普通的字符串。</p>
-<ul>
-<li>‘’：等同于 text 类型，表示服务器返回文本数据</li>
-<li>arraybuffer：ArrayBuffer 对象，表示服务器返回二进制数组。ArrayBuffer 在 WebGL 中的应用及了解 WebGL，强烈推荐：<a href="http://taobaofed.org/blog/2015/12/21/webgl-handbook/" target="_blank" rel="noopener">WebGL 技术储备指南</a></li>
-<li>blob：Blob 对象，binary large object，表示服务器返回的是二进制大对象。</li>
-<li>document：返回一个可以检查和解析的 XML 或者 HTML 的 Document 对象</li>
-<li>json：JSON 对象</li>
-<li>text：字符串</li>
-</ul>
-<p>xhr.reponseType 更详细介绍：<a href="https://www.zhangxinxu.com/wordpress/2013/10/understand-domstring-document-formdata-blob-file-arraybuffer/" target="_blank" rel="noopener">理解DOMString、Document、FormData、Blob、File、ArrayBuffer数据类型</a></p>
-<p><strong>xhr.reponseText</strong> 返回服务器接收到的字符串，只有在 HTTP 请求完成接收后 xhr.status 为 200，它才会包含完整的数据。</p>
-<p><strong>xhr.reponseXML</strong> xhr.reponseType 设置为 document，HTTP 响应的 Content-Type 头信息是 text/xml 或者 application/xml，就可以通过 xhr.reponseXML 接收到服务器端发送来的 XML 或者 HTML 文档对象。如果 HTTP 相应的 Content-Type 头信息不是 application/xml 或 text/xml，但是还是要获取 xhr.reponseXML 的话，可以手动调用下 xhr.overrideMiMeType 方法，强制执行 XML 解析。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.open(<span class="string">'GET'</span>, <span class="string">'/server'</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">xhr.responseType = <span class="string">'document'</span>;</span><br><span class="line"><span class="comment">// 强制执行 XML 解析</span></span><br><span class="line">xhr.overrideMimeType(<span class="string">'text/xml'</span>);</span><br><span class="line"></span><br><span class="line">xhr.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span> &amp;&amp; xhr.status === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(xhr.responseXML);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">xhr.send(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
-<p><strong>xhr.reponseURL</strong> 返回发送数据的服务器地址。它不一定和 xhr open 方法里面的指定的 URL 相同。如果服务端发生跳转，返回的是最后实际返回数据的网址。并且不会包括 hash 部分。</p>
-<p><strong>xhr.status</strong> 返回服务器响应的 HTTP 状态码。</p>
-<ul>
-<li>200 OK 访问正常</li>
-<li>301 Moved Permanently 永久移动</li>
-<li>302 Moved temporarily 临时移动</li>
-<li>304 Not Modified 未修改</li>
-<li>307 Temporary Redirect 临时重定向</li>
-<li>401 Unauthorized 未授权</li>
-<li>403 Forbidden 禁止访问</li>
-<li>404 Not Found 未发现指定资源</li>
-<li>500 Internal Server Error 服务器发生错误</li>
-</ul>
-<p>基本上，只有 2xx 和 304 的状态码，表示服务器返回是正常状态。也就是 200 到 300 间以及 304 表示资源接收正常</p>
-<p><strong>xhr.statusText</strong> 返回一个字符串，表示服务器发生的状态提示。包含整个状态信息。在请求发送前 也就是 open 方法之前，它的返回值是空字符串；如果服务器没有返回状态，它的值是默认值 OK。</p>
-<p><strong>xhr.timeout、xhr.ontimeout</strong> 毫秒级别的超时时间、超时事件的监听函数</p>
-<p><strong>xhr 的其他事件监听函数</strong>：xhr.onloadstart、xhr.onprogress、xhr.onabort、xhr.onerror、xhr.ontimeout、xhr.onloadend。</p>
-<p>发生网络错误时，onerror 并不能获取错误信息。onpressgress 函数的事件对象参数，有三个属性：loaded 已经传输的数据量、total 数据总量、lengthComputable 返回是否可以计算加载进度</p>
-<p><strong>xhr.withCredentials</strong> 在跨域时，是否把用户信息（Cookie 和认证的 HTTP 头信息）包含在请求中。</p>
-<p>如果需要跨域 AJAX 请求发送 Cookie，服务器端必须显式返回 Access-Control-Allow-Credentials 头信息，然后设置 withCredentials 为 true。</p>
-<p>就算 withCredentials 设置为了 true，但是脚本依然是无法读取跨域的 Cookie 的。它只是针对 AJAX 对 HTTP 头信息的设置。</p>
-<p><strong>xhr.upload</strong> 发送文件以后，通过 xhr.upload 属性可以得到一个对象，通过监听这个对象的事件得知上传的进展。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upload</span>(<span class="params">blobOrFile</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">  xhr.open(<span class="string">'POST'</span>, <span class="string">'/server'</span>, <span class="literal">true</span>);</span><br><span class="line">  xhr.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> progressBar = <span class="built_in">document</span>.querySelector(<span class="string">'progress'</span>);</span><br><span class="line">  xhr.upload.onprogress = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.lengthComputable) &#123;</span><br><span class="line">      progressBar.value = (e.loaded / e.total) * <span class="number">100</span>;</span><br><span class="line">      <span class="comment">// 兼容不支持 &lt;progress&gt; 元素的老式浏览器</span></span><br><span class="line">      progressBar.textContent = progressBar.value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  xhr.send(blobOrFile);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">upload(<span class="keyword">new</span> Blob([<span class="string">'hello world'</span>], &#123;<span class="attr">type</span>: <span class="string">'text/plain'</span>&#125;));</span><br></pre></td></tr></table></figure>
-<p><strong>xhr.open()</strong> 5 个参数：method、url、async 是否异步默认为 true、user 用于认证的用户名、password 用于认证的密码。如果对使用过 xhr open 方法的 AJAX 请求，再次使用 xhr.open()，等同于调用 abort()，终止请求。</p>
-<p><strong>xhr.send()</strong> 实际发出 HTTP 请求，参数是可选的，对应请求的类型 ArrayBufferView、Blob、Document、String、FormData。</p>
-<p><strong>xhr.setRequestHeader()</strong> 设置浏览器发送的 HTTP 请求头信息。必须在 open 方法之后，send 方法之前调用。多次设置同一个头信息，会合并成一个单一的值发送。</p>
-<p><strong>xhr.overrideMimeType()</strong> 指定 MIME 类型，覆盖服务器返回的真正的 MIME 类型。必须在 send 之前调用</p>
-<p><strong>xhr.getResponseHeader()</strong> 如果没收到服务器回应或者指定字段不存在，返回 null，该方法参数不区分大小写。</p>
-<p><strong>xhr.getAllResponseHeader()</strong> </p>
-<p><strong>Navigator.sendBeacon()</strong> 用户卸载网页的时候，异步向服务器发数据。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;body onload="analytics('start')" onunload="analytics('end')"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">analytics</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!navigator.sendBeacon) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> URL = <span class="string">'http://example.com/analytics'</span>;</span><br><span class="line">  <span class="keyword">var</span> data = <span class="string">'state='</span> + state + <span class="string">'&amp;location='</span> + <span class="built_in">window</span>.location;</span><br><span class="line">  navigator.sendBeacon(URL, data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>state: 一个与添加的记录相关联的状态对象，主要用于 popstate 事件。该事件触发时，该对象会传入回调函数。也就是说，浏览器会将这个对象<br>序列化以后保留在本地，重新载入这个页面的时候，可以拿到这个对象。如果不需要这个对象，此处可以填 null。如果设置了这个对象，使用了这个方法后，<br>可以通过 history.state 获取当前 history 的状态对象。</p>
+<p>不能插入跨域的网址，会报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上，因为这个方法不会导致页面跳转。</p>
+<h4 id="popstate-事件"><a href="#popstate-事件" class="headerlink" title="popstate 事件"></a>popstate 事件</h4><p>同一个文档的浏览历史出现变化时，就会触发 popstate 事件。仅仅调用 pushState 方法或者 replaceState 方法，并不会触发该事件，只有用户点击<br>浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用 history.back()、history.forward()、history.go() 方法时才会触发。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'location: '</span> + <span class="built_in">document</span>.location);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'state: '</span> + <span class="built_in">JSON</span>.stringify(event.state)); <span class="comment">// event.state 就是 pushState 和 replaceState 方法设置的 state</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -128,7 +66,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="page-number current">2</span><a class="page-number" href="/bjb/page/3/">3</a><a class="page-number" href="/bjb/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/3/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="page-number current">2</span><a class="page-number" href="/bjb/page/3/">3</a><a class="page-number" href="/bjb/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/3/">下一页&raquo;</a>
   </nav>
 
     </main>

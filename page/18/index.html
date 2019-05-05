@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">拖拉事件</h2>
+    <h2 class="title">实例对象与 new 命令</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-20 17:37:13</span>
+    <span class="post-time">2019-02-28 11:34:39</span>
     <span class="post-tags">
       
     </span>
@@ -51,97 +51,60 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>拖拉指的是，用户在某个对象上按下鼠标不放，拖动它到另一个位置，然后释放鼠标键，将该对象放在那里。</p>
-<p>拖拉的对象有好几种，包括元素节点、图片、链接、选中的文字等。在网页中，除了元素节点默认不可以拖拉，其他（图片、链接、选中的文字）都是可以直接拖拉的。为了让元素节点可拖拉，可以将该节点的 draggable 设置为 true</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">draggable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  可拖拉的 div</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>一旦元素节点的 draggable 属性设为 true，就无法再用鼠标选中该节点内部的文字或子节点了。</p>
-<p>当元素节点或选中的文本被拖拉时，就会持续触发拖拉事件，包括以下一些事件。</p>
+<p>面向对象编程（Object Oritented Programming，缩写 OOP）是目前主流的编程范式。它将真实世界各种复杂的关系，抽象为一个个对象，然后由对象之间的分工与合作，完成对真实世界的模拟。</p>
+<p>每个对象都是功能中心，具有明确分工，可以完成接受信息、处理数据、发出信息等任务。对象可以复用，通过继承机制还可以定制。因此，面向对象编程具有灵活、代码可复用、高度模块化等特点，容易维护和开发，比起由一系列函数或指令组成的传统的过程式编程（procedural programming），更适合多人合作的大型软件项目。</p>
+<p>那么，“对象”（object）到底是什么？我们从两个层次来理解。</p>
+<p>（1）对象是单个实物的抽象。</p>
+<p>一本书、一辆汽车、一个人都可以是对象，一个数据库、一张网页、一个与远程服务器的连接也可以是对象。当实物被抽象成对象，实物之间的关系就变成了对象之间的关系，从而就可以模拟现实情况，针对对象进行编程。</p>
+<p>（2）对象是一个容器，封装了属性（property）和方法（method）。</p>
+<p>属性是对象的状态，方法是对象的行为（完成某项任务）。比如，我们可以把动物抽象成 animal 对象，使用属性记录具体是哪一种动物，使用方法表示动物的某种行为（奔跑、捕猎、休息等等）。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>面向对象编程的第一步，就是要生成对象。前面说过，对象是单个实物的抽象。通常需要一个模板，表示某一个类实物的共同特征，然后对象根据这个模板生成。</p>
+<p>典型的面向对象编程语言（比如 C++ 和 Java），都有类（class）这个概念。所谓类就是对象的模板，对象就是类的实例。但是 JavaScript 语言的对象体系，不是基于类的，而是基于构造函数和原型链的。</p>
+<p>JavaScript 语言使用构造函数作为对象的模板。所谓构造函数，就是专门用来生成实例对象的函数。它就是对象的模板，描述实例对象的基本结构。一个构造函数，可以生成多个实例对象，这些实例对象都有相同的结构。</p>
+<p>构造函数就是一个普通函数，但是有它自己的特征和用法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = <span class="number">1000</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Vehicle 就是构造函数。为了与普通函数区别，构造函数名字的第一个字母要大写。</p>
+<p>构造函数的特点有两个：</p>
 <ul>
-<li>drag：拖拉过程中，在被拖拉的节点上持续触发（相隔几百毫秒）</li>
-<li>dragstart：用户开始拖拉时，在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。通常应该在这个事件的监听函数中，指定拖拉的数据。</li>
-<li>dragend：拖拉结束时（释放鼠标键或按下 ESC 键）在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。它与 dragstart 事件，在同一个节点上触发。不管拖拉是否跨窗口，或中途被取消，dragend 事件总是会触发的。</li>
-<li>dragenter：拖拉进入当前节点时，在当前节点上触发一次，该事件的 target 属性是当前节点。通常应该在这个事件的监听函数中，指定是否允许在当前节点放下（ drop ）拖拉的数据。如果当前节点没有该事件的监听函数，或者监听函数不执行任何操作，就意味着不允许在当前节点放下数据。在视觉上显示拖拉进入当前节点，也是在这个事件的监听函数中设置。</li>
-<li>dragover：拖拉到当前节点上方时，在当前节点上持续触发（相隔几百毫秒），该事件的 target 属性时当前节点。该事件与 dragenter 事件的区别是，dragenter 事件在进入该节点时触发，然后只要没有离开这个节点，dragover 事件会持续触发。</li>
-<li>dragleave：拖拉操作离开当前节点范围时，在当前节点上触发，该事件的 target 属性是当前节点。如果要在视觉上显示拖拉离开操作当前节点，就在这个事件的监听函数中设置。</li>
-<li>drop：被拖拉的节点或选中的文本，释放到目标节点时，在目标节点上触发。注意，如果当前节点不允许 drop，解释在该节点上放松开鼠标键，也不回触发该事件。如果用户按下 ESC，取消这个操作，也不回触发该事件。该事件的监听函数负责去除拖拉数据，并进行相关处理。</li>
+<li>函数体内部使用了 this 关键字，代表了所要生成的对象实例</li>
+<li>生成对象的时候，必须使用 new 命令。</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* HTML 代码如下</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;</span></span><br><span class="line"><span class="comment">   &lt;div id="draggable" draggable="true"&gt;</span></span><br><span class="line"><span class="comment">     该节点可拖拉</span></span><br><span class="line"><span class="comment">   &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 被拖拉节点</span></span><br><span class="line"><span class="keyword">var</span> dragged;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 保存被拖拉节点</span></span><br><span class="line">  dragged = event.target;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色变透明</span></span><br><span class="line">  event.target.style.opacity = <span class="number">0.5</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragend'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色恢复正常</span></span><br><span class="line">  event.target.style.opacity = <span class="string">''</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止拖拉效果被重置，允许被拖拉的节点放入目标节点</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragenter'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色变紫色</span></span><br><span class="line">  <span class="comment">// 由于该事件会冒泡，所以要过滤节点</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">'purple'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragleave'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色恢复原样</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止事件默认行为（比如某些元素节点上可以打开链接），</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    <span class="comment">// 恢复目标节点背景色</span></span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">    <span class="comment">// 将被拖拉节点插入目标节点</span></span><br><span class="line">    dragged.parentNode.removeChild(dragged);</span><br><span class="line">    event.target.appendChild( dragged );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>文件从操作系统拖拉到浏览器，不会触发 dragstart 和 dragend 事件</p>
-</li>
-<li><p>dragenter 和 dragover 事件的监听函数，用来取出拖拉的数据（即允许放下被拖拉的元素）。由于网页的大部分区域不适合作为放下拖拉元素的目标节点，所以这两个事件的默认设置为当前节点不允许接受被拖拉的元素。如果想要在目标节点上放下的数据，首先必须阻止这两个事件的默认行为。</p>
-</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"return false"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"evnet.preventDefault()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>如果不取消拖拉事件或者阻止默认行为，就不能在 div 节点上放下被拖拉的节点。</p>
-<h3 id="DragEvent-接口"><a href="#DragEvent-接口" class="headerlink" title="DragEvent 接口"></a>DragEvent 接口</h3><p>拖拉事件都继承了 DragEvent 接口，这个接口又继承了 MouseEvent 接口和 Event 接口。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dragEvt = <span class="keyword">new</span> DragEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 除了可以设置 MouseEvent 接口和 Event 接口的配置属性外，还可以设置 dataTransfer 属性，dataTansfer 要么是一个 DataTransfer 接口的实例，要么是一个 null。</p>
-<p>DataTransfer 的实例对象用来读写拖拉事件中传输的数据</p>
-<h3 id="DataTransfer-接口"><a href="#DataTransfer-接口" class="headerlink" title="DataTransfer 接口"></a>DataTransfer 接口</h3><p>所有拖拉事件的实例都有一个 DragEvent.dataTransfer 属性，用来读写需要传递的数据。这个属性的值是一个 DataTransfer 接口的实例。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dataTrans = <span class="keyword">new</span> DataTransfer();</span><br></pre></td></tr></table></figure>
-<p>DataTransfer() 构造函数不接受参数</p>
-<p>拖拉的数据分成两方面：数据的种类（又称格式）和数据的值。数据的种类是一个 MIME 字符串（比如 text/plain、image/jpeg），数据的值是一个字符串。一般来说，如果拖拉一段文本，则数据默认就是那段文本；如果拖拉一个链接，则数据默认就是链接的 URL。</p>
-<p>拖拉事件开始时，开发者可以提供数据类型和数据值。拖拉过程中，开发者通过 dragenter 和 dragover 事件的监听函数，检查数据类型，以确定是否允许放下（drop）被拖拉的对象。比如，在只允许放下链接的区域，检查拖拉的数据类型是否为 text/uri-list。</p>
-<p>发生 drop 事件时，监听函数取出拖拉的数据，对其进行处理。</p>
-<h4 id="DataTransfer-dropEffect"><a href="#DataTransfer-dropEffect" class="headerlink" title="DataTransfer.dropEffect"></a>DataTransfer.dropEffect</h4><p>用来设置放下（drop）被拖拉节点时的效果，会影响到拖拉经过相关区域时鼠标的形状。它可能取下面的值。</p>
-<ul>
-<li>copy：复制被拖拉的节点</li>
-<li>move：移动被拖拉的节点</li>
-<li>link：创建指向被拖拉的节点的链接</li>
-<li>none：无法放下被拖拉的节点</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  e.stopPropagation();</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'copy'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>被拖拉元素一旦被 drop，接受的区域就会复制该节点</p>
-<p>dropEffect 属性一般在 dragenter 和 dragover 事件的监听函数中设置，对于 dragstart、drag、dragleave 这三个事件不起作用。因为该属性只接受被拖拉的节点的区域有效，对被拖拉的节点本身无效。进入目标区域后，拖拉行为会初始化成设定的效果。</p>
-<h4 id="DataTransfer-effectAllowed"><a href="#DataTransfer-effectAllowed" class="headerlink" title="DataTransfer.effectAllowed"></a>DataTransfer.effectAllowed</h4><p>设置本次拖拉中允许的效果。</p>
-<ul>
-<li>copy：复制被拖拉的节点</li>
-<li>move：移动被拖拉的节点</li>
-<li>link：创建指向被拖拉节点的链接</li>
-<li>copyLink：允许 copy 或 link</li>
-<li>copyMove：允许 copy 或 move</li>
-<li>linkMove：允许 link 或 move</li>
-<li>all：允许所有效果</li>
-<li>none：无法放下被拖拉的节点</li>
-<li>uninitialized：默认值，等同于 all</li>
-</ul>
-<p>如果某种效果是不允许的，用户就无法在目标节点中达成这种效果。</p>
-<p>这个属性与 dropEffect 属性是同一件事的两个方面。前者设置被拖拉的节点允许的效果，后者设置接受拖拉的区域的效果，它们往往配合使用。</p>
-<p>dragstart 事件的监听函数，可以用来设置这个属性。其他事件的监听函数里面设置这个属性无效。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.effectAllowed = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>只要 dropEffect 属性和 effectAllowed 属性之中，有一个为 none，就无法在目标节点上完成 drop 操作。</p>
-<h4 id="DataTransfer-files"><a href="#DataTransfer-files" class="headerlink" title="DataTransfer.files"></a>DataTransfer.files</h4><p>是一个 FileList 对象，包含一组本地文件，可以用来在拖拉操作中传送。如果本次拖拉不涉及文件，则该属性为空的 FileList 对象。</p>
-<p>用 FileReader 对象读取文件内容</p>
-<h4 id="DataTransfer-types"><a href="#DataTransfer-types" class="headerlink" title="DataTransfer.types"></a>DataTransfer.types</h4><p>只读数组，每个成员是一个字符串，里面是拖拉的数据格式（通常是 MIME 值）。比如，如果拖拉的是文字，对应的成员就是 text/plain。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">contains</span>(<span class="params">list, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; list.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list[i] === value) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doDragOver</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 只有当被拖拉的节点是一个链接时，才允许在当前节点放下</span></span><br><span class="line">  <span class="keyword">var</span> isLink = contains(event.dataTransfer.types, <span class="string">'text/uri-list'</span>);</span><br><span class="line">  <span class="keyword">if</span> (isLink) event.preentDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="DataTransfer-items"><a href="#DataTransfer-items" class="headerlink" title="DataTransfer.items"></a>DataTransfer.items</h4><p>返回一个类似数组的只读对象 DataTransferItemList 实例，每个成员就是本次拖拉的一个对象 DataTransferItem 实例。如果本次拖拉不包含对象，则返回一个空对象。</p>
-<p>DataTransferItemList 实例具有以下的属性和方法</p>
-<ul>
-<li>length：返回成员的数量</li>
-<li>add(data, type)：增加一个指定内容和类型（比如 text/html 和 text/plain）的字符串作为成员</li>
-<li>add(file)：add 方法的另一种用法，增加一个文件作为成员</li>
-<li>remove(index)：移除指定位置的成员</li>
-<li>clear()：移除所有的成员</li>
-</ul>
-<p>DataTransferItem 实例具有以下的属性和方法</p>
-<ul>
-<li>kind：返回成员的种类（string 还是 file）</li>
-<li>type：返回成员的类型（通常是 MIME 值）</li>
-<li>getAsFile()：如果被拖拉的文件，返回该文件，否则返回 null</li>
-<li>getAsString(callback)：如果被拖拉的是字符串，将该字符传入指定的回调函数处理。该方法是异步的，所以需要传入回调函数</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (e.dataTransfer.items != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.dataTransfer.items.length; i++) &#123;</span><br><span class="line">			<span class="keyword">var</span> item = e.dataTransfer.items[i];</span><br><span class="line">      <span class="built_in">console</span>.log(item.kind + <span class="string">':'</span> + item.type)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h4 id="DataTransfer-setData"><a href="#DataTransfer-setData" class="headerlink" title="DataTransfer.setData()"></a>DataTransfer.setData()</h4><p>用来设置拖拉事件所带有的数据。该方法没有返回值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/plain'</span>, <span class="string">'Text to drag'</span>);</span><br></pre></td></tr></table></figure>
-<p>所以 QQ 邮箱 / 知乎里面的链接 拖拽到地址栏的时候，就是通过它来修改的 URL</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/uri-list'</span>, <span class="string">'http://www.zhihu.com/ex'</span>)</span><br></pre></td></tr></table></figure>
-<p>只有某个部署了特定代码的节点，才可能 drop（读取到）这个数据</p>
-<h4 id="DataTransfer-getData"><a href="#DataTransfer-getData" class="headerlink" title="DataTransfer.getData()"></a>DataTransfer.getData()</h4><p>通常只有 drop 事件触发后，才能取出数据</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onDrop</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> data = e.dataTransfer.getData(<span class="string">'text/uri-list'</span>);</span><br><span class="line">  event.target.textContent = data;</span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="DataTransfer-clearData"><a href="#DataTransfer-clearData" class="headerlink" title="DataTransfer.clearData()"></a>DataTransfer.clearData()</h4><p>在 dragstart 事件监听函数中清除除了 Files 类型的数据。（不能移除拖拉的文件）</p>
-<h4 id="DataTransfer-setDragImage"><a href="#DataTransfer-setDragImage" class="headerlink" title="DataTransfer.setDragImage()"></a>DataTransfer.setDragImage()</h4><p>拖动过程中 （在 dragstart 事件触发后），浏览器会显示一张图片跟随鼠标一起移动，表示被推动的节点。这种图片是自动创建的，通常显示为被拖动节点的外观。</p>
-<p>它接受三个参数。第一个是 img 节点或者 canvas 节点，如果省略或为 null，则使用被拖动的节点的外观；第二个和第三个参数为鼠标相对于该图片左上角的横坐标和右坐标。<a href="http://js.jirengu.com/jozav" target="_blank" rel="noopener">一个 demo</a></p>
+<h3 id="new-命令"><a href="#new-命令" class="headerlink" title="new 命令"></a>new 命令</h3><p>new 命令的作用，就是执行构造函数，返回一个实例对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = <span class="number">1000</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> Vehicle();</span><br><span class="line">v.price = <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+<p>通过 new 命令，让构造函数 Vehicle 生成一个实例对象，保存在变量 v 中。这个新生成的实例对象，从构造函数 Vehicle 得到了 price 属性。new 命令执行时，构造函数内部 this，就代表了新生成的实例对象，this.price 表示实例对象有一个 price 属性，值为 1000。</p>
+<p>使用 new 命令时，根据需要，构造函数也可以接受参数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span> (<span class="params">p</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = p;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> Vehicle(<span class="number">500</span>);</span><br></pre></td></tr></table></figure>
+<p>new 命令本身就可以执行构造函数，所以后面的构造函数可以带括号，也可以不带括号。下面两行代码是等价的，但是为了表示这里是函数调用，推荐使用括号。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> Vehicle()</span><br><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> Vehicle <span class="comment">// 不推荐</span></span><br></pre></td></tr></table></figure>
+<p>如果忘记了 new 命令，直接调用构造函数，构造函数会变成普通函数，并不会生成实例对象。如下代码，this 这时代表全局对象，将造成一些意想不到的结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = <span class="number">1000</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> v = Vehicle()</span><br><span class="line">v <span class="comment">// undefined</span></span><br><span class="line">price <span class="comment">// 1000 此时 Vehicle 的 this 指向的是全局对象</span></span><br></pre></td></tr></table></figure>
+<p>可以在构造函数体内第一行加上 use strict 给构造函数使用严格模式，这个时候如果忘记了 new，引擎会报错。</p>
+<p>或者… 在构造函数内部判断是否使用 new 命令，如果发现没有使用，则直接返回一个实例对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Fubar</span>(<span class="params">foo, bar</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> instance <span class="keyword">of</span> Fubar)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Fubar(foo, bar);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._foo = foo;</span><br><span class="line">  <span class="keyword">this</span>._bar = bar;</span><br><span class="line">&#125;</span><br><span class="line">Fubar(<span class="number">1</span>, <span class="number">2</span>)._foo <span class="comment">// 1</span></span><br><span class="line">(<span class="keyword">new</span> Fubar(<span class="number">1</span>, <span class="number">2</span>))._foo <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>这样就不管加没加 new 命令，都会得到同样的结果了。</p>
+<h4 id="new-命令的原理"><a href="#new-命令的原理" class="headerlink" title="new 命令的原理"></a>new 命令的原理</h4><p>使用 new 命令时，它后面的函数依次执行下面的步骤：</p>
+<ol>
+<li>创建一个空对象，作为将要返回的对象实例</li>
+<li>将这个空对象的原型，指向构造函数的 prototype 属性</li>
+<li>将这个空对象赋值给函数内部的 this 关键字</li>
+<li>开始执行构造函数内部的代码</li>
+</ol>
+<p>也就是说，构造函数内部，this 指的是一个新生成的空对象，所有针对 this 的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（this 对象），将其“构造”为需要的样子。</p>
+<p>如果构造函数内部有 return 语句，而且 return 后面跟着一个对象，new 命令会返回 return 语句指定的对象；否则不管 return 语句，返回 this 对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1000</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">new</span> Vehicle()) === <span class="number">1000</span></span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>return 返回 1000，new 命令直接忽略掉了这个 return 语句，返回构造后的 this 对象。</p>
+<p>但是，如果是 return 语句返回的是一个跟 this 无关的新对象，new 命令会返回这个新对象，而不是 this 对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> Vehicle = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123; <span class="attr">price</span>: <span class="number">2000</span> &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">new</span> Vehicle()).price</span><br><span class="line"><span class="comment">// 2000</span></span><br></pre></td></tr></table></figure>
+<p>如果是普通函数（内部没有 this 关键字的函数）使用 new 命令，则会返回一个空对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">functino a() &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'a'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> aa = <span class="keyword">new</span> a()</span><br><span class="line">aa <span class="comment">// &#123;&#125;</span></span><br><span class="line"><span class="keyword">typeof</span> aa <span class="comment">// "object"</span></span><br></pre></td></tr></table></figure>
+<p>new 命令简化的内部流程，可以用下面的代码表示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_new</span>(<span class="params">constructor, params</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>);</span><br><span class="line">  <span class="keyword">var</span> <span class="keyword">constructor</span> = args.shift();</span><br><span class="line">  var context = Object.create(<span class="keyword">constructor</span>.prototype);</span><br><span class="line">  var result = <span class="keyword">constructor</span>.apply(context, args);</span><br><span class="line">	return (typeof result === 'object' &amp;&amp; result !== null) ? result : context;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 实例</span><br><span class="line">var actor = _new(Person, '张三', 28)</span><br></pre></td></tr></table></figure>
+<h4 id="new-target"><a href="#new-target" class="headerlink" title="new.target"></a>new.target</h4><p>函数内部可以使用 new.target 属性。如果当前函数是 new 命令调用，new.target 指向当前函数，否则为 undefined。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">new</span>.target ==== f)</span><br><span class="line">&#125;</span><br><span class="line">f() <span class="comment">// false</span></span><br><span class="line"><span class="keyword">new</span> f() <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>使用这个属性，可以判断函数调用的时候，是否使用 new 命令</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">new</span>.target) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'请使用 new 命令调用！'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line">f() <span class="comment">// Uncaught Error: 请使用 new 命令调用！</span></span><br></pre></td></tr></table></figure>
+<h3 id="Object-create-创建实例对象"><a href="#Object-create-创建实例对象" class="headerlink" title="Object.create() 创建实例对象"></a>Object.create() 创建实例对象</h3><p>构造函数作为模板，可以生成实例对象。但是，有时拿不到构造函数，知恩感拿到一个现有的对象。我们希望以这个现有的对象作为模板，生成新的实例丢下，这时就可以使用 Object.create 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  age: <span class="number">38</span>,</span><br><span class="line">  greeting: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hi! I\'m'</span> + <span class="keyword">this</span>.name + <span class="string">'.'</span>)</span><br><span class="line">  &#125; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = <span class="built_in">Object</span>.create(person1)</span><br><span class="line">person2.name <span class="comment">// 张三</span></span><br><span class="line">person2.greeting() <span class="comment">// Hi! I'm 张三</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -149,7 +112,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/17/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/16/">16</a><a class="page-number" href="/bjb/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/bjb/page/19/">19</a><a class="page-number" href="/bjb/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/19/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/17/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/16/">16</a><a class="page-number" href="/bjb/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/bjb/page/19/">19</a><a class="page-number" href="/bjb/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/19/">下一页&raquo;</a>
   </nav>
 
     </main>

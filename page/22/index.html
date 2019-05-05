@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">键盘事件</h2>
+    <h2 class="title">拖拉事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-18 17:57:44</span>
+    <span class="post-time">2019-02-20 17:37:13</span>
     <span class="post-tags">
       
     </span>
@@ -51,44 +51,97 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>键盘事件是由用户击打键盘触发，主要有 keydown、keypress、keyup 三个事件，都继承了 keyboardEvent 接口</p>
-<p>keypress：按下有值的键时才触发，即按下 Ctrl、Alt、Shift、Meta 这种无值的键，这个事件不会触发。对于有值的键，按下时先触发 keydown 事件，再触发 keypress。</p>
-<p>如果一直按键不松开，就会连续触发 keydown、keypress、keydown、keypress ….. 直到松开键触发 keyup</p>
-<h3 id="KeyboardEvent-接口"><a href="#KeyboardEvent-接口" class="headerlink" title="KeyboardEvent 接口"></a>KeyboardEvent 接口</h3><p>也继承自 Event 接口，自己的实例属性和方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> KeyboardEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 可选，对应有：</p>
+<p>拖拉指的是，用户在某个对象上按下鼠标不放，拖动它到另一个位置，然后释放鼠标键，将该对象放在那里。</p>
+<p>拖拉的对象有好几种，包括元素节点、图片、链接、选中的文字等。在网页中，除了元素节点默认不可以拖拉，其他（图片、链接、选中的文字）都是可以直接拖拉的。为了让元素节点可拖拉，可以将该节点的 draggable 设置为 true</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">draggable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  可拖拉的 div</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一旦元素节点的 draggable 属性设为 true，就无法再用鼠标选中该节点内部的文字或子节点了。</p>
+<p>当元素节点或选中的文本被拖拉时，就会持续触发拖拉事件，包括以下一些事件。</p>
 <ul>
-<li>key：表示按下的键，默认为空字符串</li>
-<li>code：表示按下键的字符串形式，默认为空</li>
-<li>location：整数，当前按下的键的位置，默认为 0</li>
-<li>ctrlKey / shiftKey / altKey / metaKey：是否按下 Ctrl / shift / alt / meta 键</li>
-<li>repeat：是否重复按键</li>
+<li>drag：拖拉过程中，在被拖拉的节点上持续触发（相隔几百毫秒）</li>
+<li>dragstart：用户开始拖拉时，在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。通常应该在这个事件的监听函数中，指定拖拉的数据。</li>
+<li>dragend：拖拉结束时（释放鼠标键或按下 ESC 键）在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。它与 dragstart 事件，在同一个节点上触发。不管拖拉是否跨窗口，或中途被取消，dragend 事件总是会触发的。</li>
+<li>dragenter：拖拉进入当前节点时，在当前节点上触发一次，该事件的 target 属性是当前节点。通常应该在这个事件的监听函数中，指定是否允许在当前节点放下（ drop ）拖拉的数据。如果当前节点没有该事件的监听函数，或者监听函数不执行任何操作，就意味着不允许在当前节点放下数据。在视觉上显示拖拉进入当前节点，也是在这个事件的监听函数中设置。</li>
+<li>dragover：拖拉到当前节点上方时，在当前节点上持续触发（相隔几百毫秒），该事件的 target 属性时当前节点。该事件与 dragenter 事件的区别是，dragenter 事件在进入该节点时触发，然后只要没有离开这个节点，dragover 事件会持续触发。</li>
+<li>dragleave：拖拉操作离开当前节点范围时，在当前节点上触发，该事件的 target 属性是当前节点。如果要在视觉上显示拖拉离开操作当前节点，就在这个事件的监听函数中设置。</li>
+<li>drop：被拖拉的节点或选中的文本，释放到目标节点时，在目标节点上触发。注意，如果当前节点不允许 drop，解释在该节点上放松开鼠标键，也不回触发该事件。如果用户按下 ESC，取消这个操作，也不回触发该事件。该事件的监听函数负责去除拖拉数据，并进行相关处理。</li>
 </ul>
-<h3 id="KeyboardEvent-metaKey"><a href="#KeyboardEvent-metaKey" class="headerlink" title="KeyboardEvent.metaKey"></a>KeyboardEvent.metaKey</h3><p>是否按下 meta 键（Mac 系统的 command 键，Windows 系统的 win 键）</p>
-<h3 id="KeyboardEvent-code"><a href="#KeyboardEvent-code" class="headerlink" title="KeyboardEvent.code"></a>KeyboardEvent.code</h3><p>表示当前按下的键的字符串形式，<a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values" target="_blank" rel="noopener">查看所有键对应的 code 的文档</a>，这里列常见：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* HTML 代码如下</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;</span></span><br><span class="line"><span class="comment">   &lt;div id="draggable" draggable="true"&gt;</span></span><br><span class="line"><span class="comment">     该节点可拖拉</span></span><br><span class="line"><span class="comment">   &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 被拖拉节点</span></span><br><span class="line"><span class="keyword">var</span> dragged;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 保存被拖拉节点</span></span><br><span class="line">  dragged = event.target;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色变透明</span></span><br><span class="line">  event.target.style.opacity = <span class="number">0.5</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragend'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色恢复正常</span></span><br><span class="line">  event.target.style.opacity = <span class="string">''</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止拖拉效果被重置，允许被拖拉的节点放入目标节点</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragenter'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色变紫色</span></span><br><span class="line">  <span class="comment">// 由于该事件会冒泡，所以要过滤节点</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">'purple'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragleave'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色恢复原样</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止事件默认行为（比如某些元素节点上可以打开链接），</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    <span class="comment">// 恢复目标节点背景色</span></span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">    <span class="comment">// 将被拖拉节点插入目标节点</span></span><br><span class="line">    dragged.parentNode.removeChild(dragged);</span><br><span class="line">    event.target.appendChild( dragged );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
 <ul>
-<li>数字键 0 - 9：digital0 - digital9</li>
-<li>字母键 A - z：KeyA - KeyZ</li>
-<li>功能键 F1 - F12：F1 - F12</li>
-<li>方向键： ArrowDown、ArrowUp、ArrowLeft、ArrowRight</li>
-<li>Alt 键：AltLeft、AltRight</li>
-<li>Shift 键：ShiftLeft、ShiftRight</li>
-<li>Ctrl 键：ControlLeft、ControlRight</li>
+<li><p>文件从操作系统拖拉到浏览器，不会触发 dragstart 和 dragend 事件</p>
+</li>
+<li><p>dragenter 和 dragover 事件的监听函数，用来取出拖拉的数据（即允许放下被拖拉的元素）。由于网页的大部分区域不适合作为放下拖拉元素的目标节点，所以这两个事件的默认设置为当前节点不允许接受被拖拉的元素。如果想要在目标节点上放下的数据，首先必须阻止这两个事件的默认行为。</p>
+</li>
 </ul>
-<h3 id="KeyboradEvent-key"><a href="#KeyboradEvent-key" class="headerlink" title="KeyboradEvent.key"></a>KeyboradEvent.key</h3><p>返回按下的键名</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"return false"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"evnet.preventDefault()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果不取消拖拉事件或者阻止默认行为，就不能在 div 节点上放下被拖拉的节点。</p>
+<h3 id="DragEvent-接口"><a href="#DragEvent-接口" class="headerlink" title="DragEvent 接口"></a>DragEvent 接口</h3><p>拖拉事件都继承了 DragEvent 接口，这个接口又继承了 MouseEvent 接口和 Event 接口。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dragEvt = <span class="keyword">new</span> DragEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 除了可以设置 MouseEvent 接口和 Event 接口的配置属性外，还可以设置 dataTransfer 属性，dataTansfer 要么是一个 DataTransfer 接口的实例，要么是一个 null。</p>
+<p>DataTransfer 的实例对象用来读写拖拉事件中传输的数据</p>
+<h3 id="DataTransfer-接口"><a href="#DataTransfer-接口" class="headerlink" title="DataTransfer 接口"></a>DataTransfer 接口</h3><p>所有拖拉事件的实例都有一个 DragEvent.dataTransfer 属性，用来读写需要传递的数据。这个属性的值是一个 DataTransfer 接口的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dataTrans = <span class="keyword">new</span> DataTransfer();</span><br></pre></td></tr></table></figure>
+<p>DataTransfer() 构造函数不接受参数</p>
+<p>拖拉的数据分成两方面：数据的种类（又称格式）和数据的值。数据的种类是一个 MIME 字符串（比如 text/plain、image/jpeg），数据的值是一个字符串。一般来说，如果拖拉一段文本，则数据默认就是那段文本；如果拖拉一个链接，则数据默认就是链接的 URL。</p>
+<p>拖拉事件开始时，开发者可以提供数据类型和数据值。拖拉过程中，开发者通过 dragenter 和 dragover 事件的监听函数，检查数据类型，以确定是否允许放下（drop）被拖拉的对象。比如，在只允许放下链接的区域，检查拖拉的数据类型是否为 text/uri-list。</p>
+<p>发生 drop 事件时，监听函数取出拖拉的数据，对其进行处理。</p>
+<h4 id="DataTransfer-dropEffect"><a href="#DataTransfer-dropEffect" class="headerlink" title="DataTransfer.dropEffect"></a>DataTransfer.dropEffect</h4><p>用来设置放下（drop）被拖拉节点时的效果，会影响到拖拉经过相关区域时鼠标的形状。它可能取下面的值。</p>
 <ul>
-<li>可打印字符，返回这个字符</li>
-<li>不可打印字符，返回预定义的键值，Backspace、Tab、Enter 等</li>
-<li>同时按下控制键和符号键，返回符号键，ctrl + a 返回 a、shift + a 返回 A</li>
-<li>无法识别的键名 返回 Unidentified</li>
+<li>copy：复制被拖拉的节点</li>
+<li>move：移动被拖拉的节点</li>
+<li>link：创建指向被拖拉的节点的链接</li>
+<li>none：无法放下被拖拉的节点</li>
 </ul>
-<h3 id="KeyboradEvent-location"><a href="#KeyboradEvent-location" class="headerlink" title="KeyboradEvent.location"></a>KeyboradEvent.location</h3><ul>
-<li>0 键盘主区域</li>
-<li>1 键盘左侧</li>
-<li>2 键盘右侧</li>
-<li>3 数字小键盘</li>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  e.stopPropagation();</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'copy'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>被拖拉元素一旦被 drop，接受的区域就会复制该节点</p>
+<p>dropEffect 属性一般在 dragenter 和 dragover 事件的监听函数中设置，对于 dragstart、drag、dragleave 这三个事件不起作用。因为该属性只接受被拖拉的节点的区域有效，对被拖拉的节点本身无效。进入目标区域后，拖拉行为会初始化成设定的效果。</p>
+<h4 id="DataTransfer-effectAllowed"><a href="#DataTransfer-effectAllowed" class="headerlink" title="DataTransfer.effectAllowed"></a>DataTransfer.effectAllowed</h4><p>设置本次拖拉中允许的效果。</p>
+<ul>
+<li>copy：复制被拖拉的节点</li>
+<li>move：移动被拖拉的节点</li>
+<li>link：创建指向被拖拉节点的链接</li>
+<li>copyLink：允许 copy 或 link</li>
+<li>copyMove：允许 copy 或 move</li>
+<li>linkMove：允许 link 或 move</li>
+<li>all：允许所有效果</li>
+<li>none：无法放下被拖拉的节点</li>
+<li>uninitialized：默认值，等同于 all</li>
 </ul>
-<h3 id="KeyboardEvent-getModifierState"><a href="#KeyboardEvent-getModifierState" class="headerlink" title="KeyboardEvent.getModifierState()"></a>KeyboardEvent.getModifierState()</h3><p>是否按下或激活指定的功能键</p>
+<p>如果某种效果是不允许的，用户就无法在目标节点中达成这种效果。</p>
+<p>这个属性与 dropEffect 属性是同一件事的两个方面。前者设置被拖拉的节点允许的效果，后者设置接受拖拉的区域的效果，它们往往配合使用。</p>
+<p>dragstart 事件的监听函数，可以用来设置这个属性。其他事件的监听函数里面设置这个属性无效。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.effectAllowed = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>只要 dropEffect 属性和 effectAllowed 属性之中，有一个为 none，就无法在目标节点上完成 drop 操作。</p>
+<h4 id="DataTransfer-files"><a href="#DataTransfer-files" class="headerlink" title="DataTransfer.files"></a>DataTransfer.files</h4><p>是一个 FileList 对象，包含一组本地文件，可以用来在拖拉操作中传送。如果本次拖拉不涉及文件，则该属性为空的 FileList 对象。</p>
+<p>用 FileReader 对象读取文件内容</p>
+<h4 id="DataTransfer-types"><a href="#DataTransfer-types" class="headerlink" title="DataTransfer.types"></a>DataTransfer.types</h4><p>只读数组，每个成员是一个字符串，里面是拖拉的数据格式（通常是 MIME 值）。比如，如果拖拉的是文字，对应的成员就是 text/plain。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">contains</span>(<span class="params">list, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; list.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list[i] === value) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doDragOver</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 只有当被拖拉的节点是一个链接时，才允许在当前节点放下</span></span><br><span class="line">  <span class="keyword">var</span> isLink = contains(event.dataTransfer.types, <span class="string">'text/uri-list'</span>);</span><br><span class="line">  <span class="keyword">if</span> (isLink) event.preentDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-items"><a href="#DataTransfer-items" class="headerlink" title="DataTransfer.items"></a>DataTransfer.items</h4><p>返回一个类似数组的只读对象 DataTransferItemList 实例，每个成员就是本次拖拉的一个对象 DataTransferItem 实例。如果本次拖拉不包含对象，则返回一个空对象。</p>
+<p>DataTransferItemList 实例具有以下的属性和方法</p>
+<ul>
+<li>length：返回成员的数量</li>
+<li>add(data, type)：增加一个指定内容和类型（比如 text/html 和 text/plain）的字符串作为成员</li>
+<li>add(file)：add 方法的另一种用法，增加一个文件作为成员</li>
+<li>remove(index)：移除指定位置的成员</li>
+<li>clear()：移除所有的成员</li>
+</ul>
+<p>DataTransferItem 实例具有以下的属性和方法</p>
+<ul>
+<li>kind：返回成员的种类（string 还是 file）</li>
+<li>type：返回成员的类型（通常是 MIME 值）</li>
+<li>getAsFile()：如果被拖拉的文件，返回该文件，否则返回 null</li>
+<li>getAsString(callback)：如果被拖拉的是字符串，将该字符传入指定的回调函数处理。该方法是异步的，所以需要传入回调函数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (e.dataTransfer.items != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.dataTransfer.items.length; i++) &#123;</span><br><span class="line">			<span class="keyword">var</span> item = e.dataTransfer.items[i];</span><br><span class="line">      <span class="built_in">console</span>.log(item.kind + <span class="string">':'</span> + item.type)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-setData"><a href="#DataTransfer-setData" class="headerlink" title="DataTransfer.setData()"></a>DataTransfer.setData()</h4><p>用来设置拖拉事件所带有的数据。该方法没有返回值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/plain'</span>, <span class="string">'Text to drag'</span>);</span><br></pre></td></tr></table></figure>
+<p>所以 QQ 邮箱 / 知乎里面的链接 拖拽到地址栏的时候，就是通过它来修改的 URL</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/uri-list'</span>, <span class="string">'http://www.zhihu.com/ex'</span>)</span><br></pre></td></tr></table></figure>
+<p>只有某个部署了特定代码的节点，才可能 drop（读取到）这个数据</p>
+<h4 id="DataTransfer-getData"><a href="#DataTransfer-getData" class="headerlink" title="DataTransfer.getData()"></a>DataTransfer.getData()</h4><p>通常只有 drop 事件触发后，才能取出数据</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onDrop</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> data = e.dataTransfer.getData(<span class="string">'text/uri-list'</span>);</span><br><span class="line">  event.target.textContent = data;</span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-clearData"><a href="#DataTransfer-clearData" class="headerlink" title="DataTransfer.clearData()"></a>DataTransfer.clearData()</h4><p>在 dragstart 事件监听函数中清除除了 Files 类型的数据。（不能移除拖拉的文件）</p>
+<h4 id="DataTransfer-setDragImage"><a href="#DataTransfer-setDragImage" class="headerlink" title="DataTransfer.setDragImage()"></a>DataTransfer.setDragImage()</h4><p>拖动过程中 （在 dragstart 事件触发后），浏览器会显示一张图片跟随鼠标一起移动，表示被推动的节点。这种图片是自动创建的，通常显示为被拖动节点的外观。</p>
+<p>它接受三个参数。第一个是 img 节点或者 canvas 节点，如果省略或为 null，则使用被拖动的节点的外观；第二个和第三个参数为鼠标相对于该图片左上角的横坐标和右坐标。<a href="http://js.jirengu.com/jozav" target="_blank" rel="noopener">一个 demo</a></p>
 
   </div>
   
@@ -96,7 +149,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/21/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/20/">20</a><a class="page-number" href="/bjb/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/23/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/21/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/20/">20</a><a class="page-number" href="/bjb/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/23/">下一页&raquo;</a>
   </nav>
 
     </main>

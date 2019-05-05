@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">属性描述对象</h2>
+    <h2 class="title">Number 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-27 18:37:42</span>
+    <span class="post-time">2018-11-29 11:32:41</span>
     <span class="post-tags">
       
     </span>
@@ -51,45 +51,28 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>JavaScript 提供了一个内部数据结构，用来描述对象的属性，控制它的行为，比如该属性是否可写、是否可遍历。这个内部数据结构称为“属性描述对象”（attributes object）。每个属性都有自己对应的属性描述对象，保存该属性的一些元信息。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	value: <span class="literal">undefined</span>,</span><br><span class="line">  writable: <span class="literal">true</span>,</span><br><span class="line">  enumerable: <span class="literal">true</span>, <span class="comment">// 如果是 false，for...in 与 Object.keys() 将忽略这个值</span></span><br><span class="line">  configurable: <span class="literal">true</span>, <span class="comment">// 控制除了 value 以外的属性描述对象的可写性</span></span><br><span class="line">  <span class="keyword">get</span>: undefined,// 该属性的取值函数，默认 undefined</span><br><span class="line">  <span class="keyword">set</span>: undefined // 该属性的存值函数，默认 undefined</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Object.getOwnPropertyDescriptor(obj, property) 获取对象的自身某个属性的属性描写对象。</p>
-<p>Object.defineProperty(obj, property, attributesObject) 定义或修改对象 obj 的某个属性 property 的属性描写对象 attributesObject，返回定义或修改后的对象 obj。</p>
-<p>不允许同时设置 value 和 get，就是 undefined 都不行，不允许同时设置 writable 和 get。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'p'</span>, &#123;</span><br><span class="line">  value: <span class="literal">undefined</span>,</span><br><span class="line">  <span class="keyword">get</span>: undefined</span><br><span class="line">&#125;);</span><br><span class="line">// TypeError: Invalid property.</span><br><span class="line">// A property cannot both have accessors and be writable or have a value</span><br><span class="line"></span><br><span class="line">Object.defineProperty(obj, 'p', &#123;</span><br><span class="line">  writable: <span class="literal">false</span>,</span><br><span class="line">  <span class="keyword">get</span>: undefined</span><br><span class="line">&#125;);</span><br><span class="line">// TypeError: Invalid property descriptor.</span><br><span class="line">// Cannot both specify accessors and a value or writable attribute</span><br></pre></td></tr></table></figure>
-<p>Object.defineProperty 和 Object.defineProperties 参数里面的属性描述对象 writable、configurable、enumerable 属性的默认值都是 false。</p>
-<h2 id="元属性"><a href="#元属性" class="headerlink" title="元属性"></a>元属性</h2><p>元属性是控制对象属性的属性。</p>
-<h3 id="writable"><a href="#writable" class="headerlink" title="writable"></a>writable</h3><p>writable 是指 value 可否修改，返回一个布尔值。</p>
-<p>正常模式下，如果 writable 为 false，修改对象的属性值时，会默默失败，不会有报错。严格模式下会报错。</p>
-<p>如果原型对象的某个属性的 writable 是 false，它的子对象会继承这个元属性，子对象将无法自定义这个属性。不过可以通过覆盖属性描述对象，绕过这个限制。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> proto = <span class="built_in">Object</span>.defineProperty(&#123;&#125;, <span class="string">'foo'</span>, &#123;</span><br><span class="line">  value: <span class="string">'a'</span>,</span><br><span class="line">  writable: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.create(proto);</span><br><span class="line">obj.foo = <span class="string">'b'</span>;</span><br><span class="line">obj.foo <span class="comment">// "a" 子对象无法修改 foo 值，因为 foo 值在 proto 对象里面设置了 writable 为 false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'foo'</span>, &#123;</span><br><span class="line">  value: <span class="string">'b'</span></span><br><span class="line">&#125;);</span><br><span class="line">obj.foo <span class="comment">// "b" 再定义一个子对象 obj 的属性描述对象把 proto 的属性描述对象覆盖了，又可以修改 foo 值了...</span></span><br></pre></td></tr></table></figure>
-<h3 id="enumrable"><a href="#enumrable" class="headerlink" title="enumrable"></a>enumrable</h3><p>enumerable 是指 value 是否可遍历的，返回一个布尔值。</p>
-<p>早期版本的 JavaScript，for…in 是基于 in 运算符的。我们知道，in 运算符不管某个属性是对象自身的还是继承的，都会返回 true。后来引入可遍历性这个概念，只有可以遍历的属性才能被 for…in 循环遍历到，同时还规定了 toString 这一类实例对象继承的原生属性都是不可遍历的。</p>
-<p>如果一个属性的 enumrable 为 false，for…in 循环，Object.keys 方法，JSON.stringify 方法都不会渠道该属性。</p>
-<p>可以用 enumrable 来设置秘密属性。不是真正的私有属性，还是可以直接获取到它的值的。</p>
-<p> for…in 循环包括继承来的属性，Object.keys 方法不包括继承来的属性。如果需要获取对象自身的所有属性，包括不可遍历的属性，可以使用 Object.getOwnPropertyNames 方法。</p>
-<p>JSON.stringify 方法会排除 enumrable 为 false 的属性，有时可以利用这一点。如果对象的 JSON 格式输出要排除某些属性，就可以直接设置 enumerable 为 false。</p>
-<h3 id="configurable"><a href="#configurable" class="headerlink" title="configurable"></a>configurable</h3><p>configurable 是指属性描述对象是否可以修改。也就是说 configurable 为 false时，value、writable、enumrable 和 configurable 就都不可以修改啦。修改时会报错。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.defineProperty(&#123;&#125;, <span class="string">'p'</span>, &#123;</span><br><span class="line">  value: <span class="number">1</span>,</span><br><span class="line">  writable: <span class="literal">false</span>,</span><br><span class="line">  enumerable: <span class="literal">false</span>,</span><br><span class="line">  configurable: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'p'</span>, &#123;<span class="attr">value</span>: <span class="number">2</span>&#125;)</span><br><span class="line"><span class="comment">// TypeError: Cannot redefine property: p</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'p'</span>, &#123;<span class="attr">writable</span>: <span class="literal">true</span>&#125;)</span><br><span class="line"><span class="comment">// TypeError: Cannot redefine property: p</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'p'</span>, &#123;<span class="attr">enumerable</span>: <span class="literal">true</span>&#125;)</span><br><span class="line"><span class="comment">// TypeError: Cannot redefine property: p</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">'p'</span>, &#123;<span class="attr">configurable</span>: <span class="literal">true</span>&#125;)</span><br><span class="line"><span class="comment">// TypeError: Cannot redefine property: p</span></span><br></pre></td></tr></table></figure>
-<p>writable 如果是 false，就不能改为 true 了。</p>
-<p>writable 和 configurable 只要有一个为 true，就可以修改 value。</p>
-<p>writable 为 false，configurable 为 true，直接赋值属性值不成功但也不报错。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o2 = <span class="built_in">Object</span>.defineProperty(&#123;&#125;, <span class="string">'p'</span>, &#123;</span><br><span class="line">  value: <span class="number">1</span>,</span><br><span class="line">  writable: <span class="literal">false</span>,</span><br><span class="line">  configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o2, <span class="string">'p'</span>, &#123;<span class="attr">value</span>: <span class="number">2</span>&#125;)</span><br><span class="line">o2.p <span class="comment">// 2</span></span><br><span class="line">o2.p = <span class="number">5</span>;</span><br><span class="line">o2.p <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-<p>configurable 控制属性是否可以被删除。</p>
-<h2 id="存取器"><a href="#存取器" class="headerlink" title="存取器"></a>存取器</h2><p>除了直接定义外，属性还可以用存取器 accessor 定义。其中存取函数称为 setter，使用属性描述对象的 set 属性；取值函数称为 getter，使用属性描述对象的 get 属性。</p>
-<p>一旦对目标属性定义了存取器，那么存取的时候，都将执行对应的函数。利用这个功能，可以实现许多高级特性，比如某个属性禁止赋值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="keyword">get</span> p() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'getter'</span>;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">set</span> p(value) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setter: '</span> + value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>get 函数不接受任何参数，而 set 函数只接受一个参数，即属性的值。</p>
-<h2 id="对象的拷贝"><a href="#对象的拷贝" class="headerlink" title="对象的拷贝"></a>对象的拷贝</h2><p>传统的拷贝，如果遇到存取器定义的属性，会只拷贝值，可以通过 Object.defineProperty 方法来拷贝属性</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> extend = <span class="function"><span class="keyword">function</span>(<span class="params">to, from</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> property <span class="keyword">in</span> <span class="keyword">from</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">from</span>.hasOwnProperty(property)) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(</span><br><span class="line">    	to,</span><br><span class="line">      property,</span><br><span class="line">      <span class="built_in">Object</span>.getOwnPropertyDescriptor(<span class="keyword">from</span>, property)</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> to;</span><br><span class="line">&#125; </span><br><span class="line">extend(&#123;&#125;, &#123; <span class="keyword">get</span> a()&#123; <span class="keyword">return</span> <span class="number">1</span> &#125; &#125;)</span><br><span class="line"><span class="comment">// &#123; get a()&#123; return 1 &#125; &#125;)</span></span><br><span class="line"><span class="comment">// 🤔 看来 Vue 会这么来拷贝吧？</span></span><br></pre></td></tr></table></figure>
-<p>上面代码中，hasOwnProperty 那一行用来过滤掉继承的属性，否则可能会报错，因为Object.getOwnPropertyDescriptor 读不到继承属性的属性描述对象。</p>
-<h2 id="控制对象的状态"><a href="#控制对象的状态" class="headerlink" title="控制对象的状态"></a>控制对象的状态</h2><p>有时需要冻结对象的读写状态，防止对象被改变。JavaScript 提供三种冻结方法，最弱的一种是 Object.preventExtensions，其次是 Object.seal，最强的是 Object.freeze。</p>
-<p>Object.preventExtensions 方法可以使得一个对象无法再添加新的属性。Object.isExtensible 方法可以检测一个对象是否使用了 Object.preventExtensions 方法。也就是检查一个对象是否可以添加对象。</p>
-<p>Object.seal 方法使得一个对象既无法添加新属性，也无法删除旧的属性。实质是把属性描述对象的 configurable 属性设置为了 false。但是修改对象的某个属性值，则是由属性的 writable 决定的。Object.isSealed 方法则是检查一个对象是否使用了 Object.sealed。如果 Object.isSealed 是返回 true，则 Object.isExtensible 是 false 的。</p>
-<p>Object.freeze 方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得对象变成一个常量了。正常模式下，修改、删除、添加可以操作但是不会成功也不会报错，而严格模式下会报错。Object.isFrozen 方法是验证对象是否被冻结，如果 Object.isFrozen 方法返回 true，则 Object.isSealed 也是返回 true，Object.isExtensible 返回 false。</p>
-<p>但是这三个方法锁定对象的可写性有一个漏洞：可以通过改变原型对象来为对象增加属性。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="built_in">Object</span>.preventExtensions(obj);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> proto = <span class="built_in">Object</span>.getPrototypeOf(obj);</span><br><span class="line">proto.t = <span class="string">'hello'</span>;</span><br><span class="line">obj.t</span><br><span class="line"><span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
-<p>一种解决方案是把原型也冻结，不过如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。const 声明一个对象为常量后，虽然不能修改它引用的位置，但是它的值你是可以修改的，也就是这个理了。</p>
+<p>Number 对象是数值对应的包装对象，可以作为构造函数也可以作为工具函数使用。</p>
+<p>作为构造函数，它用于生成一个数值的包装对象。</p>
+<p>作为工具函数，它用于把任何类型的值转为数值。</p>
+<h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><p>Number.POSITIVE_INFINITY 正无限 指向 Infinity</p>
+<p>Number.NAGETIVE_INFINITY 负无限 指向 -Infinity</p>
+<p>Number.NaN 表示非数值，指向 NaN</p>
+<p>Number.MIN_VALUE 表示最小的正数（即最接近 0 的正数，在 64 位符点数体系中为 5e-324），相应的最接近 0 的负数位 -Number.MIN_VALUE</p>
+<p>Number.MAX_VALUE 表示最大的正数 在 64 位浮点数体系中为 1.7976313486231574e+308</p>
+<p>Number.MAX_SAFE_INTEGER 表示能够精确表示的最大整数，即 9007199254730991</p>
+<p>Number.MIN_SAFE_INTEGER 表示能够精确表示的最小整数，即 -9007199254740991</p>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>Number 有 4 个实例方法，都跟将数值转换成指定格式有关。这 4 个实例方法是 ES5 的 Number 实例方法，ES6 新加了几个。</p>
+<h3 id="Number-prototype-toString"><a href="#Number-prototype-toString" class="headerlink" title="Number.prototype.toString()"></a>Number.prototype.toString()</h3><p>将数值转为字符串形式。</p>
+<p>可以传入一个参数，表示输出的进制。默认为 十进制。进制数为 2 - 36</p>
+<p>可以方括号预算法调用 toString 方法：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">10</span>[toString](<span class="number">2</span>) <span class="comment">// "1010"</span></span><br></pre></td></tr></table></figure>
+<p>toString 方法是将十进制的数转换为其他进制的字符串。</p>
+<p>parseInt 可以将其他进制的字符串转换为十进制的整数。</p>
+<h3 id="Number-prototype-toFixed"><a href="#Number-prototype-toFixed" class="headerlink" title="Number.prototype.toFixed()"></a>Number.prototype.toFixed()</h3><p>先将数值转换为指定位数的小数，然后返回这个小数的字符串形式。toFixed 方法的参数为小数位数，有效范围是 0 到 20，超出范围将抛出 RangeError 错误。</p>
+<h3 id="Number-prototype-toExponential"><a href="#Number-prototype-toExponential" class="headerlink" title="Number.prototype.toExponential()"></a>Number.prototype.toExponential()</h3><p>将数值转换为科学计数法表示的字符串，可以传入一个参数作为小数点的有效位数，范围为 0 到 20，超出范围将抛出 RangeError 错误。</p>
+<h3 id="Number-prototype-toPrecision"><a href="#Number-prototype-toPrecision" class="headerlink" title="Number.prototype.toPrecision()"></a>Number.prototype.toPrecision()</h3><p>用于将数字转为指定位数的有效数字。toFixed 是指定小数的位数，toPrecision 是指定整个数字返回的位数。有效范围是 1 到 21，超出范围会抛出 RangeError 错误。</p>
+<p>toPrecision 用于四舍五入时不太可靠，跟浮点数不是精确存储有关。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="number">12.35</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.3"</span></span><br><span class="line">(<span class="number">12.25</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.3"</span></span><br><span class="line">(<span class="number">12.15</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.2"</span></span><br><span class="line">(<span class="number">12.45</span>).toPrecision(<span class="number">3</span>) <span class="comment">// "12.4"</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -97,7 +80,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/45/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/44/">44</a><a class="page-number" href="/bjb/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/bjb/page/47/">47</a><a class="page-number" href="/bjb/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/47/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/45/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/44/">44</a><a class="page-number" href="/bjb/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/bjb/page/47/">47</a><a class="page-number" href="/bjb/page/48/">48</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/47/">下一页&raquo;</a>
   </nav>
 
     </main>

@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>History 对象 | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">History 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-04-29 11:08:32</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<ul>
+<li>window.history.pushState(state, title, url)</li>
+<li>window.history.replaceState(state, title, url)</li>
+</ul>
+<p>state: 一个与添加的记录相关联的状态对象，主要用于 popstate 事件。该事件触发时，该对象会传入回调函数。也就是说，浏览器会将这个对象<br>序列化以后保留在本地，重新载入这个页面的时候，可以拿到这个对象。如果不需要这个对象，此处可以填 null。如果设置了这个对象，使用了这个方法后，<br>可以通过 history.state 获取当前 history 的状态对象。</p>
+<p>不能插入跨域的网址，会报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上，因为这个方法不会导致页面跳转。</p>
+<h4 id="popstate-事件"><a href="#popstate-事件" class="headerlink" title="popstate 事件"></a>popstate 事件</h4><p>同一个文档的浏览历史出现变化时，就会触发 popstate 事件。仅仅调用 pushState 方法或者 replaceState 方法，并不会触发该事件，只有用户点击<br>浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用 history.back()、history.forward()、history.go() 方法时才会触发。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'location: '</span> + <span class="built_in">document</span>.location);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'state: '</span> + <span class="built_in">JSON</span>.stringify(event.state)); <span class="comment">// event.state 就是 pushState 和 replaceState 方法设置的 state</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

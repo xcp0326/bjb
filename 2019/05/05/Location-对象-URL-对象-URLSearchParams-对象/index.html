@@ -1,0 +1,137 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Location 对象 URL 对象 URLSearchParams 对象 | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Location 对象 URL 对象 URLSearchParams 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-05-05 16:02:54</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>window.location 和 document.location 都可以拿到 Location 对象。</p>
+<ul>
+<li>location.href：<code>http://user:passwd@www.example.com:4097/path/a.html?x=111#part1</code></li>
+<li>location.protocol</li>
+<li>location.host：主机，包括冒号和端口号。例如：<code>www.example.com:4097</code></li>
+<li>location.hostname：主机名，不包括冒号和端口号。例如：<code>www.example.com</code></li>
+<li>location.search</li>
+<li>location.hash</li>
+<li>location.username</li>
+<li>location.password</li>
+<li><p>location.origin 只读。URL 的协议、主机名和端口号。例如：<code>http://user:passwd@www.example.com:4097</code></p>
+</li>
+<li><p>location.assign() vs location.href：跳转到参数所在的 URL</p>
+</li>
+<li>location.replace(<code>&lt;URL&gt;</code>) vs history.replaceState(state, title, url)</li>
+<li>location.reload()</li>
+</ul>
+<h3 id="URL-的编码和解码"><a href="#URL-的编码和解码" class="headerlink" title="URL 的编码和解码"></a>URL 的编码和解码</h3><blockquote>
+<p>URL vs URI：<br>URL 是 URI 的一个实现。<br>URI 是统一资源标识符，URL 是统一资源定位符，URN 统一资源名称。<br>URI 包含 URN 和 URL。</p>
+</blockquote>
+<ul>
+<li>URL 元字符：分号，逗号，斜杆，问号，冒号，at，<code>&amp;</code>，等号，加号，美元符号，井号</li>
+<li>语义字符：a-z、A-Z、0-9、连词字、下划线、点、感叹号、波浪线、星号、单引号、圆括号</li>
+</ul>
+<p>其他都必须转移，规则是根据操作系统的默认编码，将每个字节转为百分号加上对应的十六进制，如果十六进制包含字母，字母大写。</p>
+<blockquote>
+<p>查看操作系统的编码的命令是 locale</p>
+<p><img src="/images/system-locale.png" alt></p>
+</blockquote>
+<ul>
+<li>encodeURI(<code>URL</code>)  / decodeURL(<code>URL</code>) ：转义 / 解码元字符和语义字符之外的字符</li>
+<li>encodeURLComponent(<code>URL|URL 的组成部分</code>) / decodeURLComponent(<code>URL|URL 的组成部分</code>)：转义 / 解码语义字符之外的字符</li>
+</ul>
+<h3 id="URL-对象"><a href="#URL-对象" class="headerlink" title="URL 对象"></a>URL 对象</h3><p>URL 对象是浏览器的原生对象，可以用来构造、解析和编码 URL。通过 window.URL 可以拿到这个对象。</p>
+<p><code>&lt;a&gt;</code> 和 <code>&lt;area&gt;</code> 上有这个接口。它们的 DOM 节点对象可以使用 URL 的实例属性和方法。</p>
+<blockquote>
+<p>DOM 节点 vs Element：Element 只是节点中的一种类型，DOM 节点除了 Element（元素节点），还有文本节点，注释节点，文档节点等等。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span><br><span class="line">a.href = <span class="string">'http://example.com/?foo=1'</span>;</span><br><span class="line"></span><br><span class="line">a.hostname <span class="comment">// "example.com"</span></span><br><span class="line">a.search <span class="comment">// "?foo=1"</span></span><br></pre></td></tr></table></figure>
+<h3 id="URL-对象是一个构造函数"><a href="#URL-对象是一个构造函数" class="headerlink" title="URL 对象是一个构造函数"></a>URL 对象是一个构造函数</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> url = <span class="keyword">new</span> URL(urlString, [baseURLString])</span><br><span class="line"><span class="keyword">const</span> url = <span class="keyword">new</span> URL(urlString, baseURLobject)</span><br></pre></td></tr></table></figure>
+<p>urlString 为 <code>..</code>，则表示上层路径：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> url3 = <span class="keyword">new</span> URL(<span class="string">'..'</span>, <span class="string">'http://example.com/a/b.html'</span>)</span><br><span class="line">url3.href</span><br><span class="line"><span class="comment">// "http://example.com/"</span></span><br></pre></td></tr></table></figure>
+<h3 id="URL-的静态方法"><a href="#URL-的静态方法" class="headerlink" title="URL 的静态方法"></a>URL 的静态方法</h3><ul>
+<li><strong>URL.createObjectURL()</strong> 用来为上传/下载的文件、流媒体文件生成一个 URL 字符串。这个字符串代表了 File 对象或 Blob 对象的 URL。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;div id="display"/&gt;</span></span><br><span class="line"><span class="comment">// &lt;input</span></span><br><span class="line"><span class="comment">//   type="file"</span></span><br><span class="line"><span class="comment">//   id="fileElem"</span></span><br><span class="line"><span class="comment">//   multiple</span></span><br><span class="line"><span class="comment">//   accept="image/*"</span></span><br><span class="line"><span class="comment">//   onchange="handleFiles(this.files)"</span></span><br><span class="line"><span class="comment">//  &gt;</span></span><br><span class="line"><span class="keyword">const</span> div = <span class="built_in">document</span>.getElementById(<span class="string">'display'</span>)</span><br><span class="line"><span class="keyword">const</span> handleFiles = <span class="function"><span class="params">files</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>)</span><br><span class="line">    img.src = <span class="built_in">window</span>.URL.createObjectURL(files[i])</span><br><span class="line">    div.appendChild(img)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法生成的 URL 就像下面这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">blob:http:<span class="comment">//localhost/c745ef73-ece9-46da-8f66-ebes574789b1</span></span><br></pre></td></tr></table></figure>
+<p>由于每次使用 URL.createObjectURL 都会在内存中生存一个 URL 实例。如果不再需要改方法生成的 URL 字符串，可以使用 URL.revokeObjectURL 方法释放掉所占的内存。</p>
+<ul>
+<li><strong>URL.revokeObjectURL</strong> </li>
+</ul>
+<p>所以上面 handleFiles 可以优化为：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> handleFiles = <span class="function"><span class="params">files</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>)</span><br><span class="line">    img.src = <span class="built_in">window</span>.URL.createObjectURL(files[i])</span><br><span class="line">    div.appendChild(img)</span><br><span class="line">    img.onload = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">window</span>.URL.revokeObjectURL(<span class="keyword">this</span>.src)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="URLSearchParam-对象"><a href="#URLSearchParam-对象" class="headerlink" title="URLSearchParam 对象"></a>URLSearchParam 对象</h3><p>浏览器原生对象，用来构造、解析、处理 URL 的查询字符串。</p>
+<p>它是一个构造函数，参数可以是参训字符串，也可以是查询字符串的数组或对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 方法一：传入字符串</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(<span class="string">'?foo=1&amp;bar=2'</span>);</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(<span class="built_in">document</span>.location.search);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法二：传入数组</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams([[<span class="string">'foo'</span>, <span class="number">1</span>], [<span class="string">'bar'</span>, <span class="number">2</span>]]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法三：传入对象</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(&#123;<span class="string">'foo'</span> : <span class="number">1</span> , <span class="string">'bar'</span> : <span class="number">2</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>浏览器向服务器发送表单数据时，可以直接使用<code>URLSearchParams</code>实例作为表单数据。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> params = <span class="keyword">new</span> URLSearchParams(&#123;<span class="attr">foo</span>: <span class="number">1</span>, <span class="attr">bar</span>: <span class="number">2</span>&#125;);</span><br><span class="line">fetch(<span class="string">'https://example.com/api'</span>, &#123;</span><br><span class="line">  method: <span class="string">'POST'</span>,</span><br><span class="line">  body: params</span><br><span class="line">&#125;).then(...)</span><br></pre></td></tr></table></figure>
+<p>URL 实例的<code>searchParams</code>属性就是一个<code>URLSearchParams</code>实例，所以可以使用<code>URLSearchParams</code>接口的<code>get</code>方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="keyword">new</span> URL(<span class="built_in">window</span>.location);</span><br><span class="line"><span class="keyword">var</span> foo = url.searchParams.get(<span class="string">'foo'</span>) || <span class="string">'somedefault'</span>;</span><br></pre></td></tr></table></figure>
+<p>DOM 的<code>a</code>元素节点的<code>searchParams</code>属性，就是一个<code>URLSearchParams</code>实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span><br><span class="line">a.href = <span class="string">'https://example.com?filter=api'</span>;</span><br><span class="line">a.searchParams.get(<span class="string">'filter'</span>) <span class="comment">// "api"</span></span><br></pre></td></tr></table></figure>
+<p><code>URLSearchParams</code>实例有遍历器接口，可以用<code>for...of</code>循环遍历</p>
+<ul>
+<li>URLSearchParams.toString()：返回实例的字符串形式</li>
+<li>URLSearchParams.append(key, value)：追加查询参数。不过不会识别是否有同名查询参数</li>
+<li>URLSearchParams.delete(key)：删除键名为 key 的查询参数</li>
+<li>URLSearchParams.has(key)</li>
+<li>URLSearchParams.set(key, value)：设置 key 的查询参数的值为 value</li>
+<li>URLSearchParams.get(‘key’)</li>
+<li>URLSearchParams.getAll(‘key’)</li>
+<li>URLSearchParams.sort()：对查询字符串的键按照 Unicode 码点进行排序</li>
+<li>URLSearchParams.keys()、URLSearchParams.values()、URLSearchParams.entries() 返回遍历器</li>
+</ul>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

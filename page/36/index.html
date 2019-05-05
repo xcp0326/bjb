@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Node 接口</h2>
+    <h2 class="title">Element 节点</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-24 23:36:09</span>
+    <span class="post-time">2018-12-27 12:31:17</span>
     <span class="post-tags">
       
     </span>
@@ -51,96 +51,62 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>所有的 DOM 节点都继承自 Node 接口，所有的 DOM 节点都共有 DOM.prototype 下的方法和属性。</p>
-<p>nodeType</p>
+<p>不同的 HTML 对象对应的标签节点不一样，浏览器使用了不同的构造函数，生成不同的标签节点。比如标签 a 的节点对象是由 HTMLAnchorElement 构造生成，button 标签的节点对象由 HTMLButtonElement 构造生成。因此，元素节点不是一种对象，而是一组对象，这些对象除了继承 Element 的属性和方法，还有各自的构造函数的属性和方法。</p>
+<p>特性属性</p>
 <ul>
-<li>文档节点：9</li>
-<li>元素节点：1</li>
-<li>属性节点：2</li>
-<li>文本节点：3</li>
-<li>文档片段节点：11</li>
-<li>文档类型节点：10</li>
-<li>注释节点：8</li>
+<li>Element.id</li>
+<li>Element.tagName 除了 svg 标签其他标签都是返回大写的标签名，与 nodeName 属性的值相等</li>
+<li>Element.dir 读写当前标签的文字方向：ltr 或者 rtl。并不是所有 Element 都有这个值，亲测 svg 是 undefined，div、p、span 标签的都是空</li>
+<li>Element.accessKey 标签设置快捷键</li>
+<li>Element.draggable</li>
+<li>Element.lang</li>
+<li>Element.tabIndex 按 Tab 键遍历 tabIndex 为正整数的标签，从大到小，如果值一样按出现顺序，然后遍历 0、属性为非法值或者没有 tabIndex 属性的标签，按照它们出现顺序。</li>
+<li>Element.title 鼠标悬浮时弹出的文字提示框的文案</li>
 </ul>
-<p>nodeName</p>
+<p>状态属性</p>
 <ul>
-<li>文档节点：#document</li>
-<li>元素节点：大写标签名，除了 SVG 是小写标签名，因为是后来添加的。</li>
-<li>属性节点：属性的名称</li>
-<li>文本节点：#text</li>
-<li>文档片段节点：#document-fragment</li>
-<li>文档类型节点：文档的类型</li>
-<li>注释节点：#comment</li>
+<li>Element.hidden 优先级低于 CSS 指定的 display</li>
+<li>Element.contentEditable、Element.isContentEditable：前者设置或者返回一个字符串 true/false/inherit，后者表示是否设置了 contentEditable，返回布尔值。</li>
 </ul>
-<p>nodeValue：节点的文本值，所以只有文本节点、注释节点、属性节点才有 nodeValue 值。其他类型的节点都返回 null。</p>
-<p>textContext：返回当前节点及其后代节点的文本内容。它会自动对 HTML 标签转义。文本节点、注释节点、属性节点的值和 nodeValue 一样。文档节点和文档类型节点的 textContent 属性为 null。读取整个文档的内容为 document.document.textContent.</p>
-<p>baseURI：只读，一般由当前网页的 URL window.location 决定，可以使用<code>&lt;base&gt;</code>标签修改。用来计算网页上的相对路径的 URL。</p>
-<p>nextSibling：当前节点的下一个节点，如果没有返回 null，用来遍历所有子节点：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> parent = <span class="built_in">document</span>.querySelector(<span class="string">'.el'</span>)</span><br><span class="line"><span class="keyword">const</span> el = parent.firstChild</span><br><span class="line"><span class="keyword">while</span>(el !== <span class="literal">null</span>) &#123;</span><br><span class="line">  el = el.nextSibling</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>prevSibling：当前节点的上一个节点，如果没有就返回 null，同 nextSibling 原理，也可以用来遍历所有子节点。</p>
-<p>parentNode：对于一个节点来说，它的父节点可能是三种类型：元素节点、文档节点、文档片段节点。</p>
-<p>childNodes：返回节点的子节点 NodeList 伪数组动态集合</p>
-<p>isConnected：返回节点是否在文档之中</p>
-<p>appendChild()：插入一个节点，并作为当前节点最后一个节点，相当于生的最后一个儿子。返回这个节点。如果参数是 DocumentFragment 节点，那么插入的是 DocumentFragment 的所有子节点，而不是 DocumentFragment 节点本身。返回值是一个空的 DocumentFragment 节点。</p>
-<p>hasChildNodes()：遍历当前节点的所有后代节点：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DOMComb</span>(<span class="params">parent, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (parent.hasChildNodes()) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> node = parent.firstChild; node; node = node.nextSibling) &#123;</span><br><span class="line">      DOMComb(node, callback)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  callback(parent)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DOMComb(<span class="built_in">document</span>.body, <span class="built_in">console</span>.log)</span><br></pre></td></tr></table></figure>
-<p>cloneNode()：参数表示是否深度 clone，返回克隆的新节点。只克隆 DOM 里面带的属性，如果有 id 或者 name 属性，需要修改 clone 出来的节点的 id 和 name 属性。</p>
-<p>insertBefore()：将第一个参数插入当前节点内的某个子节点即第二个参数前，返回新节点。如果第二个参数为 null，则是将节点插入到当前节点内部的最后的位置，也就是 appendChild 一样了。node 节点插入到 nnode 节点后：<code>parent.insertBefore(node, nnode.nextSibling)</code>。同 appendChild 方法，如果参数是 DocumentFragment 节点，那么插入的是 DocumentFragment 的所有子节点，而不是 DocumentFragment 节点本身。返回值是一个空的 DocumentFragment 节点。</p>
-<p>replaceChild：第一个参数节点替换第二个参数节点，返回第二个参数节点</p>
-<p>contains()：返回节点是否在当前文档中。确定参数节点为当前节点，参数节点是否为当前节点的子节点，参数节点是否为当前节点的后代节点。</p>
-<p>compareDocumentPosition()：用法和 contains 一样，返回一个 6 bit 位的二进制值，表示参数节点与当前节点的关系</p>
-<table>
-<thead>
-<tr>
-<th>二进制值</th>
-<th>十进制值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>000000</td>
-<td>0</td>
-<td>两个节点相同</td>
-</tr>
-<tr>
-<td>000001</td>
-<td>1</td>
-<td>两个节点不在同一个文档（即有一个节点不在当前文档）</td>
-</tr>
-<tr>
-<td>000010</td>
-<td>2</td>
-<td>参数节点在当前节点的前面</td>
-</tr>
-<tr>
-<td>000100</td>
-<td>4</td>
-<td>参数节点在当前节点的后面</td>
-</tr>
-<tr>
-<td>001000</td>
-<td>8</td>
-<td>参数节点包含当前节点</td>
-</tr>
-<tr>
-<td>010000</td>
-<td>16</td>
-<td>当前节点包含参数节点</td>
-</tr>
-<tr>
-<td>100000</td>
-<td>32</td>
-<td>浏览器内部使用</td>
-</tr>
-</tbody>
-</table>
-<p>通过掩码进行运算，简称某个特定位置的标签嵌套是否合乎规范：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> head = <span class="built_in">document</span>.head;</span><br><span class="line"><span class="keyword">var</span> body = <span class="built_in">document</span>.body;</span><br><span class="line"><span class="keyword">if</span> (head.compareDocumentPosition(body) &amp; <span class="number">4</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'文档结构正确'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'&lt;body&gt; 不能在 &lt;head&gt; 前面'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>isEqualNode() 节点与参数节点是否相等</p>
-<p>isSameNode() 节点与参数节点是否为同一个节点</p>
-<p>normalize() 去除节点文本节点之间的多余空格</p>
-<p>getRootNode() 返回所在文档的根节点 <code>document</code>，与 <code>ownerDocument</code> 属性的作用相同。它可以在 document 节点自身，这一点与 document.ownerDocument 不同。</p>
+<p>Element.attributes 返回标签属性值的伪数组</p>
+<p>Element.className、Element.classList：className 返回标签的所有 class 的字符串。classList 返回一个包含所有 class 的伪数组，这个伪数组还有方法可以控制标签的 class 们：add(classStr1, classStr2, …)、remove(classStr1, classStr2, …)、contains(classStr1, classStr2, …)、toggle(classStr) 返回 false 表示标签已经清空 classStr，否则表示添加上了 classStr、item(indexNum)、toString()</p>
+<p>Element.dataset 返回标签所有 data-xxx 属性的对象。xxx 只能包含英文字母、数字、连词线、点、冒号和下划线。如果 xxx 内是用连词线后跟字母，则 dataset 获取的时候，需要删除连词线并大写连词线后的字母后的字符串作为 dataset 的属性来获取。</p>
+<p>Element.innerHTML 设为空，清空标签下的所有节点。读取属性值的时候，文本节点包含 &amp;、&lt;、&gt; 都会被转成实体形式。如果想得到原文，可以用 Element.textContent。而写入的时候，如果插入的文本包含 HTML 标签，会被解析成为节点对象。如果文本中有 script 标签，虽然可以生成 script 节点，但是插入的代码不会执行。但是以下 alert 还是会被执行。因此为了安全考虑，如果插入文本使用 textContent 代替 innerHTML</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"&lt;img src=x onerror=alert(1)&gt;"</span>;</span><br><span class="line">el.innerHTML = name;</span><br></pre></td></tr></table></figure>
+<p>Element.outerHTML 返回一个有父节点的当前标签及其当前标签下的所有子标签，没有父节点会报错</p>
+<p>Element.clientHeight、Element.clientWidth 块级标签的 CSS 高度/宽度，如果没有则返回实际高度/宽度，包括 padding 部分，但不包括 border、margin 部分。小数会四舍五入为整数。</p>
+<p>Element.clientLeft、Element.clientTop 块级标签左边框 left border 的宽度、上边框 top border 的高度</p>
+<p>Element.scrollHeight、Element.scrollWidth 元素的总高度 包括溢出超出部分。document.documentElement.scrollHeight 获取整个网页的内容高度。</p>
+<p>Element.offsetParent offset 的相对元素</p>
+<p>Element.offsetHeight、Element.offsetWidth 包括 padding、border。额，Mac Chrome 亲测只是单纯的高度和宽度，并不包括 padding、border。</p>
+<p>Element.offsetLeft、Element.offsetTop 包括 margin 值</p>
+<p>Element.style</p>
+<p>Element.children、Element.childElementCount</p>
+<p>Element.firstElementChild、Element.lastElementChild</p>
+<p>Element.nextElementSibling、Element.previousSibling</p>
+<p>属性相关方法</p>
+<ul>
+<li>Element.getAttribute()、Element.getAttributeNames()、Element.setAttribute()、Element.hasAttribute()、Element.hasAttributes()、Element.removeAttribute() </li>
+<li>Element.getAttributeName()</li>
+<li>Element.querySelector()</li>
+<li>Element.querySelectorAll()</li>
+<li>Element.getElementsByClassName()</li>
+<li>Element.getElementsByTagName()</li>
+<li>Element.closest() 参数是 CSS 选择器，返回匹配该选择器、最接近当前节点的一个祖先节点（包括当前节点本身），没有返回 null。</li>
+<li>Element.matches() 返回当前节点是否匹配给定的 CSS 选择器</li>
+</ul>
+<p>事件相关方法</p>
+<ul>
+<li>Element.addEventListener() 添加监听事件、Element.removeEventListener() 移除监听事件、Event.dispatchEvent() 触发事件</li>
+<li>Element.scrolllntoView() 浏览器滚动到当前标签</li>
+<li>Element.getBoundingClientRect() 返回一个包含当前标签的 CSS 盒模型的所有信息的 rect 对象 x：元素左上角相对于视口的横坐标、y：元素左上角相对于视口的纵坐标、height、width、top、bottom。元素相对于视口的位置，是随着页面滚动变化的，因此表示位置的四个属性值，都不是固定不变的。如果想得到绝对的值，可以将 left 属性加上 window.scrollX，top 属性加上 window.scrollY。rect 对象里的值都是把 border 计算进去了的。也就是说，都是从边框外缘的各个点来计算。因此，width 和 height 包括了元素本身 + padding + border。rect 对象里的属性都是继承自原型的属性，所以 Object.keys(rect) 是一个空数组。</li>
+<li>Element.getClientRects()  返回标签节点在页面上形成的所有矩形的伪数组，伪数组内都有 bottom、height、left、right、top、width 6 个属性，表示矩形相对于视口的四个坐标以及本身的高度和宽度。块状标签只有一个矩形，而内嵌标签，如果是多行文本就会有多个矩形。</li>
+<li>Element.insertAdjacentElement() 在相对于当前标签节点的指定位置，插入一个新的节点，返回被插入的节点，如果插入失败，返回 null。接收两个参数，第一个参数表示插入元素的位置：beforebegin 表示当前元素之前、afterbegin 表示当前元素内部的第一个子节点前面、beforeend 表示元素内部的最后一个子节点后面、afterend 表示当前元素之后。beforebegin 和 afterend 这两个值，只有在当前节点有父节点时才会生效，如果没有父节点插入会失败，返回 null。</li>
+<li>Element.insertAdjacentHTML()、Element.insertAdjacentText() 前者是插入一段 HTML 字符串 到指定的位置，第一个参数是指定位置，位置参数与 insertAdjacentElement 一致。后者插入的是文本节点。</li>
+<li>Element.remove() 继承自 ChildNode 接口，用于将当前节点从它的父节点移除。</li>
+<li>Element.focus()、Element.blur() 接受一个对象作为参数，参数对象的 preventScroll 属性是一个布尔值，指定是否将当前元素停留在原始位置，而不是滚动到可见区域。意思就是可以实现获取焦点并滚动到焦点所在的位置。</li>
+<li>Element.click() 模拟鼠标点击，也就是触发 click 事件。</li>
+</ul>
 
   </div>
   
@@ -148,7 +114,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/35/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/37/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/35/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/34/">34</a><a class="page-number" href="/bjb/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/37/">下一页&raquo;</a>
   </nav>
 
     </main>

@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Object 对象的相关方法</h2>
+    <h2 class="title">GlobalEventHandlers 接口</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-03-06 14:31:34</span>
+    <span class="post-time">2019-03-07 17:19:20</span>
     <span class="post-tags">
       
     </span>
@@ -51,37 +51,43 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h3 id="Object-getPrototypeOf"><a href="#Object-getPrototypeOf" class="headerlink" title="Object.getPrototypeOf()"></a>Object.getPrototypeOf()</h3><p>返回参数对象的原型。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> F()</span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(f) === F.prototype <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(&#123;&#125;) === <span class="built_in">Object</span>.prototype</span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="built_in">Object</span>.prototype) === <span class="literal">null</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(f) === <span class="built_in">Function</span>.prototype</span><br></pre></td></tr></table></figure>
-<h3 id="Object-setPrototypeOf"><a href="#Object-setPrototypeOf" class="headerlink" title="Object.setPrototypeOf()"></a>Object.setPrototypeOf()</h3><p>为参数对象设置原型，返回该参数对象。接受两个参数，第一个是现有对象，第二个是原型对象。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;</span><br><span class="line"><span class="keyword">var</span> b = &#123;<span class="attr">x</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(a, b)</span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(a) === b <span class="comment">// true</span></span><br><span class="line">a.x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>用 Object.setPrototypeOf 方法模拟 new 命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.foo = <span class="string">'bar'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> F();</span><br><span class="line"><span class="comment">// 等同于 ⬇️</span></span><br><span class="line"><span class="comment">// 将一个空对象的原型设为构造函数的 prototype 属性</span></span><br><span class="line"><span class="keyword">var</span> f = <span class="built_in">Object</span>.setPrototypeOf(&#123;&#125;, F.prototype)</span><br><span class="line"><span class="comment">// 将构造函数内部的 this 绑定到这个空对象</span></span><br><span class="line">F.call(f)</span><br></pre></td></tr></table></figure>
-<h3 id="Object-create"><a href="#Object-create" class="headerlink" title="Object.create()"></a>Object.create()</h3><p>返回以参数对象为原型的一个实例对象。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">'F'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> F()</span><br><span class="line"><span class="keyword">var</span> ff = <span class="built_in">Object</span>.create(f)</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line"><span class="keyword">var</span> ee = <span class="built_in">Object</span>.setPrototypeOf(&#123;&#125;, f)</span><br><span class="line">ff.constructor === F <span class="comment">// true</span></span><br><span class="line">ff <span class="keyword">instanceof</span> F <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>Object.create 可以用下面的代码代替</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Object</span>.create !== <span class="string">'function'</span>) &#123;</span><br><span class="line">  <span class="built_in">Object</span>.create = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    F.prototype = obj</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面三种方式生成的新对象是等价的：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = <span class="built_in">Object</span>.create(&#123;&#125;)</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype)</span><br><span class="line"><span class="keyword">var</span> obj3 = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br></pre></td></tr></table></figure>
-<p>如果想要生成一个不具备定义在 Object.prototype 上属性（比如没有 toString 和 valueOf 方法）的对象，可以将 Object.create 的参数设为 null。</p>
-<p>Object.create 第二个参数是一个属性描写对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。</p>
-<h3 id="Object-prototype-isPrototypeOf"><a href="#Object-prototype-isPrototypeOf" class="headerlink" title="Object.prototype.isPrototypeOf()"></a>Object.prototype.isPrototypeOf()</h3><p>判断该对象是否为参数对象的原型</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;&#125;</span><br><span class="line"><span class="keyword">var</span> o2 = <span class="built_in">Object</span>.create(o1)</span><br><span class="line"><span class="keyword">var</span> o3 = <span class="built_in">Object</span>.create(o2)</span><br><span class="line"></span><br><span class="line">o2.isPrototypeOf(o3)</span><br></pre></td></tr></table></figure>
-<p>o1 和 o2 都是 o3 的原型。这表明只要实例对象处在参数对象的原型链上，isPrototypeOf 方法都返回 true。</p>
-<h3 id="Object-prototype-proto"><a href="#Object-prototype-proto" class="headerlink" title="Object.prototype.__proto__"></a><code>Object.prototype.__proto__</code></h3><p>实例对象的 <code>__proto__</code> 属性返回该对象的原型。只有浏览器才需要部署，其他环境没有这个属性。它是一个内部属性，要尽量少用，而用 Object.getPrototypeOf() 和 Object.setPrototypeOf() 进行原型对象的读写操作。</p>
-<h3 id="Object-getOwnPropertyNames"><a href="#Object-getOwnPropertyNames" class="headerlink" title="Object.getOwnPropertyNames()"></a>Object.getOwnPropertyNames()</h3><p>返回对象非继承的自身的属性的键名们</p>
-<p>Object.keys 只获取可以遍历的键名们</p>
-<h3 id="Object-prototype-hasOwnProperty"><a href="#Object-prototype-hasOwnProperty" class="headerlink" title="Object.prototype.hasOwnProperty()"></a>Object.prototype.hasOwnProperty()</h3><p>唯一一个处理对象属性时，不会遍历原型链的方法</p>
-<h3 id="in-运算符和-for…in-循环"><a href="#in-运算符和-for…in-循环" class="headerlink" title="in 运算符和 for…in 循环"></a>in 运算符和 for…in 循环</h3><p>in 对象是否有某个属性，不区分是否时在原型链上</p>
-<p>for…in 获得对象的所有可遍历属性，自身和继承的。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inheritedPropertyNames</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> props = &#123;&#125;</span><br><span class="line">  <span class="keyword">while</span>(obj) &#123;</span><br><span class="line">    <span class="built_in">Object</span>.getOwnPropertyNames(obj).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">      props[p] = <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    obj = <span class="built_in">Object</span>.getPrototypeOf(obj)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.getOwnPropertyNames(props)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="对象的拷贝"><a href="#对象的拷贝" class="headerlink" title="对象的拷贝"></a>对象的拷贝</h3><ul>
-<li>确保拷贝后的对象，与原对象具有相同的原型</li>
-<li>确保拷贝后的对象，与原对象具有同样的实例属性</li>
+<p>指定事件的回调函数，推荐使用的方法是元素的 addEventListener 方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'click'</span>, clickHandler, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p>除此之外，还有一种方法可以直接指定事件的回调函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.onclick = clickHandler</span><br></pre></td></tr></table></figure>
+<p>这个接口是有 GlobalEventHandlers 提供的。它的优点是使用比较方便，缺点是只能为每个事件指定一个回调函数，而且无法指定事件触发的阶段（捕获阶段还是冒泡阶段）</p>
+<p>HTMLElement、Document 和 Window 都继承了这个接口，也就是说所有的 HTML 元素、document 对象、window 对象上都可以使用 GlobalEventHandlers 接口提供的属性。</p>
+<h3 id="onabort"><a href="#onabort" class="headerlink" title="onabort"></a>onabort</h3><h3 id="onerror"><a href="#onerror" class="headerlink" title="onerror"></a>onerror</h3><p>error 事件发生时，就会调用 onerror 属性指定的回调函数。</p>
+<p>error 事件分成两种：</p>
+<ul>
+<li><p>一种是 JavaScript 的运行时错误，这会传到 window 对象，触发 window.onerror</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.onerror = <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">	message, <span class="regexp">//</span> 错误信息字符串</span></span></span><br><span class="line"><span class="function"><span class="params">  source, <span class="regexp">//</span> 报错脚本的 URL</span></span></span><br><span class="line"><span class="function"><span class="params">  lineno, <span class="regexp">//</span> 报错的行号，整数</span></span></span><br><span class="line"><span class="function"><span class="params">  colno, <span class="regexp">//</span> 报错的列号，整数</span></span></span><br><span class="line"><span class="function"><span class="params">  error <span class="regexp">//</span> 错误对象</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>资源加载错误，比如 <code>&lt;img&gt;</code> 或者 <code>&lt;script&gt;</code> 加载的资源出现加载错误。这时 Error 对象会传到对象的元素，导致该元素的 onerror 属性开始执行，一般来说，资源加载错误并不会触发 window.onerror</p>
+</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copyObject</span>(<span class="params">orig</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> copy = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.getPrototypeOf(orig))</span><br><span class="line">  copyOwnPropertiesFrom(copy, orig)</span><br><span class="line">  <span class="keyword">return</span> copy</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copyOwnPropertiesFrom</span>(<span class="params">target, source</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">Object</span></span><br><span class="line">  	.getOwnPropertyNames(source)</span><br><span class="line">    .forEach(<span class="function"><span class="keyword">function</span>(<span class="params">propKey</span>) </span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> desc = <span class="built_in">Object</span>.getOwnPropertyDescriptor(source, propKey);</span><br><span class="line">    	<span class="built_in">Object</span>.defineProperty(target, propKey, desc)</span><br><span class="line">  	&#125;)</span><br><span class="line">  <span class="keyword">return</span> target;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>或者 ES2017 Object.getOwnPropertyDescriptors</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copyObject</span>(<span class="params">orig</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.create(</span><br><span class="line">    <span class="built_in">Object</span>.getPrototypeOf(orig),</span><br><span class="line">    <span class="built_in">Object</span>.getOwnPropertyDescriptors(orig)</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="onload、onloadstart"><a href="#onload、onloadstart" class="headerlink" title="onload、onloadstart"></a>onload、onloadstart</h3><p>元素完成加载时 触发 load 事件，执行 onload。加载开始时触发 loadstart 事件，执行 onloadstart。</p>
+<h3 id="onfocus、onblur"><a href="#onfocus、onblur" class="headerlink" title="onfocus、onblur"></a>onfocus、onblur</h3><p>onfocus 在非输入类元素下，须有 tabindex 属性才能触发</p>
+<h3 id="oncontextmenu、onshow"><a href="#oncontextmenu、onshow" class="headerlink" title="oncontextmenu、onshow"></a>oncontextmenu、onshow</h3><p>oncontextmenu 返回 false 等与禁止了右键菜单，而元素的右键菜单显示时会触发 onshow 监听函数</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>拖动的事件属性分成两类：一类与被拖动元素相关，另一类与接收被拖动元素的容器元素相关。</p>
+<p>被拖动元素的事件属性。</p>
+<ul>
+<li>ondragstart：拖动开始</li>
+<li>ondrag：拖动过程中，每隔几百毫秒触发一次</li>
+<li>ondragend：拖动结束</li>
+</ul>
+<p>接收被拖动元素的容器元素的事件属性。</p>
+<ul>
+<li>ondragenter：被拖动元素进入容器元素。</li>
+<li>ondragleave：被拖动元素离开容器元素。</li>
+<li>ondragover：被拖动元素在容器元素上方，每隔几百毫秒触发一次。</li>
+<li>ondrop：松开鼠标后，被拖动元素放入容器元素。</li>
+</ul>
+<p><code>&lt;dialog&gt;</code>对话框元素的事件属性。</p>
+<ul>
+<li>oncancel</li>
+<li>onclose</li>
+</ul>
 
   </div>
   
@@ -89,7 +95,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/10/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/9/">9</a><a class="page-number" href="/bjb/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/bjb/page/12/">12</a><a class="page-number" href="/bjb/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/66/">66</a><a class="extend next" rel="next" href="/bjb/page/12/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/10/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/9/">9</a><a class="page-number" href="/bjb/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/bjb/page/12/">12</a><a class="page-number" href="/bjb/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/12/">下一页&raquo;</a>
   </nav>
 
     </main>
