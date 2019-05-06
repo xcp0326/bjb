@@ -38,11 +38,13 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Date 对象</h2>
+    <h2 class="title">RegExp 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-04 15:24:10</span>
+    <span class="post-time">2018-12-20 22:08:36</span>
     <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/正则/">正则</a></li></ul>
       
     </span>
     
@@ -51,109 +53,136 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>Date 对象是 JavaScript 原生的时间库。它以国际标准时间（UTC） 1970 年 1 月 1 日 00:00:00 作为时间的零点，可以表示的时间范围是前后各 1 亿天（单位为毫秒）</p>
-<h2 id="普通函数的用法"><a href="#普通函数的用法" class="headerlink" title="普通函数的用法"></a>普通函数的用法</h2><p>Date 对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。即使带有参数，Date 作为普通函数返回的依然是当前时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:36 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="built_in">Date</span>(<span class="number">2010</span>, <span class="number">10</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:43 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 2018-12-04T05:38:16.321Z</span></span><br></pre></td></tr></table></figure>
-<h2 id="构造函数的用法"><a href="#构造函数的用法" class="headerlink" title="构造函数的用法"></a>构造函数的用法</h2><p>Date 还可以当作构造函数使用。对它使用 new 命令，会返回一个 Date 对象的实例。如果不参数，实例代表的就是当前时间。</p>
-<p>Date 实例有一个独特的地方。其他对象求值的时候，都默认调用 .valueOf 方法，但是 Date 实例求值的时候，默认调用的是 toString 方法。这导致对 Date 实例求值，返回的是一个字符串，代表该实例对应的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 然而并不是</span></span><br><span class="line"><span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// Node 下返回的格式并不是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// 2018-12-04T05:40:27.815Z</span></span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line">today.toString()</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// "Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)"</span></span><br><span class="line"></span><br><span class="line">today == today.toString() <span class="comment">// true</span></span><br><span class="line">today === today.toString() <span class="comment">// false 🤔</span></span><br><span class="line"></span><br><span class="line">today.valueOf()</span><br><span class="line"><span class="comment">// 1543902027815</span></span><br></pre></td></tr></table></figure>
-<p>作为构造函数时，Date 对象可以接受多种格式的参数，返回一个该参数对应的实例。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数为时间零点开始计算的毫秒数</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">1378218728000</span>)</span><br><span class="line"><span class="comment">// Tue Sep 03 2013 22:32:08 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为日期字符串</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"><span class="comment">// Sun Jan 06 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为多个整数，</span></span><br><span class="line"><span class="comment">// 代表年、月、日、小时、分钟、秒、毫秒</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第一：参数可以是负数，代表 1970 年元旦之前的时间</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">-1378218728000</span>)</span><br><span class="line"><span class="comment">// Fri Apr 30 1926 17:27:52 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第二：只要能被 Date.parse 方法解析的字符串，都可以被当作参数</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-2-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013/2/15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'02/15/2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-FEB-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15 Feb 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15, Feberuary, 2013'</span>)</span><br><span class="line"><span class="comment">// Fri Feb 15 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第三：参数为年、月、日等多个整数时，年和月不能省略，其他参数可以省略。如果只传入了年参数，Date 会将其解释为毫秒数。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>)</span><br><span class="line"><span class="comment">// Thu Jan 01 1970 08:00:02 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>最后 各个参数的取值范围</p>
+<p>正则表达式 regular expression 是一种表达文本模式（即字符串结构）的方法，有点像字符串的模板，常常用来按照“给定模式”匹配文本。</p>
+<p>新建正则表达式有两种方法。一种是使用字面量，以斜杆表示开始和结束。另一种是使用 RegExp 构造函数。这两种写法是等价的。他们的主要差别是，字面量方法在<strong>引擎编译代码时新建正则表达式</strong>，而构造函数是在<strong>运行时新建正则表达式</strong>，所以前者的效率更高，而且便利直观。</p>
+<h2 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h2><p>3 个只读的修饰符是否设置的属性：RegExp.prototyp.ignoreCase、 RegExp.prototype.global、RegExp.prototype.multiline。</p>
+<p>RegExp.prototype.lastIndex：返回一个整数，表示下一次开始搜索的位置。该属性可读写，但是只在进行连续搜索时才有意义。</p>
+<p>RegExp.prototype.source 返回正则表达式的字符串形式，不包括反斜杆，该属性只读。</p>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>RegExp.prototype.test 返回一个布尔值，表示当前模式是否匹配参数字符串。如果正则表达式带了 g 修饰符，则每一次 test 方法都从上一次结束的位置开始向后匹配。带有 g 修饰符时，可以通过正则实例对象的 lastIndex 属性指定开始搜索的位置。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/x/g</span></span><br><span class="line"><span class="keyword">var</span> s = <span class="string">'_x_x'</span></span><br><span class="line"></span><br><span class="line">r.lastIndex = <span class="number">4</span> <span class="comment">// 从第 5 个位置开始搜索</span></span><br><span class="line">r.test(s) <span class="comment">// 这个位置是空的，所以返回 false</span></span><br></pre></td></tr></table></figure>
+<p>注意 带有 g 修饰符时，正则表达式内部会记住上一次的 lastIndex 属性，这时不应该更换要匹配的字符串，否则会有一些难以察觉的错误。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/bb/g</span>;</span><br><span class="line">r.test(<span class="string">'bb'</span>) <span class="comment">// true</span></span><br><span class="line">r.test(<span class="string">'-bb-'</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>如果正则构造函数模式时是一个空字符串，则匹配所有字符串。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">''</span>).test(<span class="string">'abc'</span>) <span class="comment">// true</span></span><br><span class="line">/<span class="string">''</span>/.test(<span class="string">'abc'</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>RegExp.prototype.exec 用来返回匹配结构。如果发现匹配，就返回一个数组，成员是匹配成功的子字符串，否则返回 null</p>
+<p>如果正则表达式包含圆括号，即含有“组匹配”，则返回的数组会包括多个成员。第一个成员是整个匹配成功的结果，后面的成员就是圆括号对应的匹配成功的组。也就是说，第二个成员对应第一个括号，第三个成员对应第二个括号，以此类推。整个数组的 length 属性等于组匹配的数量再加 1。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'_x_x'</span></span><br><span class="line"><span class="keyword">var</span> r = <span class="regexp">/_(x)/</span></span><br><span class="line">r.exec(s) <span class="comment">// ['_x', 'x']</span></span><br></pre></td></tr></table></figure>
+<p>exec 方法的返回数组还包含两个属性：</p>
 <ul>
-<li>年：使用四位数年份，比如 2000。如果写成两位数或个位数，则加上 1900，比如 1 代表 1901 年。如果是负数，则表示公元前</li>
-<li>月：0 表示 一月，依次类推，11 表示 12 月</li>
-<li>日：1 到 31</li>
-<li>小时：0 到 23</li>
-<li>分钟：0 到 59</li>
-<li>秒：0 到 59</li>
-<li>毫秒：0 到 999</li>
+<li>input：整个原字符串</li>
+<li>index：整个模式匹配成功的开始位置（从 0 开始计数）</li>
 </ul>
-<p>注意，月份从 0 开始计算，但是，天数从 1 开始计算。另外，除了日期的默认值为 1，小时、分、秒和毫秒都是 0。</p>
-<p>这些参数如果超出正常范围，会被自动折算。比如月为 15，就折算为下一年的 4 月</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">15</span>)</span><br><span class="line"><span class="comment">// Tue Apr 01 2014 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Mon Dec 31 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>参数可以是负数，表示扣去的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sat Dec 01 2012 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sun Dec 30 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<h2 id="日期的运算"><a href="#日期的运算" class="headerlink" title="日期的运算"></a>日期的运算</h2><p>类型自动转换，Date 实例如果转为数值，则等于对应的毫秒数；如果转为字符串，则等于对应的日期字符串。所以，两个日期实例对象进行减法运算时，返回的是他们间隔的毫秒数；进行加法运算时，返回的是两个字符串连接而成的字符串。</p>
-<h2 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h2><p>Date.now 返回当前时间距离时间零点 （1970 年 1 月 1 日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以 1000。</p>
-<p>Date.parse 方法用来解析日期字符串，返回该时间距离零点的毫秒数。日期字符串应该符合 RFC 2822 和 ISO 8061 这两个标准，即 YYYY-MM-DDTHH:mm:ss.sssZ 格式，其中最后的 Z 表示时区。但是，其他格式也可以被解析。如果解析失败返回 NaN</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Aug 9, 1995'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'January 26, 2011 13:51:50'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 GMT'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 +0430'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10T14:48:00'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'xxx'</span>) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<p>Date.UTC 方法接受年、月、日等变量作为参数，返回该时间距离时间零点的毫秒数。Date.UTC 方法的参数，会被解析成为 UTC 时间（世界标准时间），Date 构造函数的参数会被解释为当前时区的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>,<span class="number">12</span>,<span class="number">12</span>)</span><br><span class="line"><span class="comment">// 2014-01-11T16:00:00.000Z</span></span><br><span class="line"><span class="keyword">var</span> dateUTC = <span class="built_in">Date</span>.UTC(<span class="number">2013</span>, <span class="number">12</span>, <span class="number">12</span>)</span><br><span class="line"><span class="comment">// 1389484800000</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(dateUTC)</span><br><span class="line"><span class="comment">// 2014-01-12T00:00:00.000Z</span></span><br></pre></td></tr></table></figure>
-<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>Date 的实例方法，有几十个自己的方法，除了 valueOf 和 toString，可以分为以下三类：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r = <span class="regexp">/a(b+)a/</span></span><br><span class="line"><span class="keyword">var</span> arr = r.exec(<span class="string">'_abbba_aba_'</span>)</span><br><span class="line"></span><br><span class="line">arr <span class="comment">// ["abbba", "aba"]</span></span><br><span class="line"></span><br><span class="line">arr.index <span class="comment">// 1</span></span><br><span class="line">arr.input <span class="comment">// "_abbba_aba_"</span></span><br></pre></td></tr></table></figure>
+<p>如果正则表达式加上 g 修饰符，则可以使用多次 exec 方法，下一次搜索的位置从上一次匹配成功结束的位置开始。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> reg = <span class="regexp">/a/g</span></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'abc_abc_abc'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r1 = reg.exec(str) <span class="comment">// ["a", index: 0, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 0</span></span><br><span class="line">reg.lastIndex <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r2 = reg.exec(str) <span class="comment">// ["a", index: 4, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 4</span></span><br><span class="line">reg.lastIndex <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r3 = reg.exec(str) <span class="comment">// ["a", index: 8, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r1.index <span class="comment">// 8</span></span><br><span class="line">reg.lastIndex <span class="comment">// 9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r4 = reg.exec(str) <span class="comment">// ["a", index: 8, input: "abc_abc_abc", groups: undefined]</span></span><br><span class="line">r4 <span class="comment">// null</span></span><br><span class="line">reg.lastIndex <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p>正则实例对象的 lastIndex 属性重置为 0，lastIndex 不仅可读，还可写。设置了 g 修饰符的时候，只要手动设置了 lastIndex 的值，就会从指定位置开始匹配。</p>
+<h2 id="字符串的正则方法"><a href="#字符串的正则方法" class="headerlink" title="字符串的正则方法"></a>字符串的正则方法</h2><p>String.prototype.match：返回一个数组，成员是所有匹配的子字符串。如果没有匹配值返回 null。如果正则表达式带了 g 修饰符，会一次性返回所有匹配成功的结果，也因此 lastIndex 是无效的。</p>
+<p>String.prototype.search：按照给定的正则表达式或者字符串搜索，返回一个整数，表示匹配开始的位置。如果没有就返回 -1。如果参数不传或者空字符串，返回 0。String.prototype.indexOf，String.prototype.lastIndexOf 也是搜索子字符串，不过参数必须是字符串，不支持正则。可用来消除首尾两端空格。</p>
+<p>String.prototype.replace：按照给定的正则表达式替换，返回替换后的字符串。</p>
+<p>第二个参数可以用美元符号：</p>
 <ul>
-<li>to 类：从 Date 对象返回一个字符串，表示指定的时间</li>
-<li>get 类：获取 Date 对象的日期和时间</li>
-<li>set 类：设置 Date 对象的日期和时间</li>
+<li><code>$&amp;</code> 匹配的子字符串</li>
+<li><code>$`</code> 匹配结果前面的文本</li>
+<li><code>$&#39;</code> 匹配结果后面的文本</li>
+<li><code>$n</code> 匹配成功的第 n 组内容，n 是从 1 开始的自然数</li>
+<li><code>$$</code> 指代美元符号 $</li>
 </ul>
-<h3 id="Date-prototype-valueOf"><a href="#Date-prototype-valueOf" class="headerlink" title="Date.prototype.valueOf"></a>Date.prototype.valueOf</h3><p>valueOf 返回实例对象距离时间零点对应的毫秒数，该方法等同于 getTime 方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">d.valueOf() <span class="comment">// 1543905441996 </span></span><br><span class="line">d.getTime() <span class="comment">// 1543905441996</span></span><br></pre></td></tr></table></figure>
-<h3 id="to-类方法"><a href="#to-类方法" class="headerlink" title="to 类方法"></a>to 类方法</h3><p>Date.prototype.toString 返回一个完整的日期字符串。toString 是默认的调用方法，所以如果直接读取 Date 实例，就相当于调用这个方法。</p>
-<p>Date.prototype.toUTCString 返回对应的 UTC 时间，也就是比北京时间晚 8 个小时</p>
-<p>Date.prototype.toISOString 返回对应时间的 ISO8601 格式 YYYY-MM-DDTHH:mm:ss.sssZ，而且时间都是 UTC 时区的时间。</p>
-<p>Date.prototype.toJSON 返回一个符合 JSON 格式的 ISO 日期字符串，与 toISOString 方法的返回结果完全相同。</p>
-<p>Date.prototype.toDateString 返回日期字符串，不含日期、分、秒</p>
-<p>Date.prototype.toTimeString 返回时间字符串，不含年、月、日</p>
-<p><strong>本地时间</strong></p>
-<p>有三种方法可以将 Date 实例转为表示本地时间的字符串</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'hello world'</span>.replace(<span class="regexp">/(\w+)\s(\w+)/</span>, <span class="string">'$2 $1'</span>)</span><br><span class="line"><span class="comment">// "world hello"</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abc'</span>.replace(<span class="string">'b'</span>, <span class="string">'[$`-$&amp;-$\']'</span>)</span><br><span class="line"><span class="comment">// "a[a-b-c]c"</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数可以是函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'The quick brown fox jumped over the lazy dog.'</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/quick|brown|lazy/ig</span>;</span><br><span class="line"></span><br><span class="line">a.replace(pattern, <span class="function"><span class="keyword">function</span> <span class="title">replacer</span>(<span class="params">match</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> match.toUpperCase();</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// The QUICK BROWN fox jumped over the LAZY dog.</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数函数可以接受多个参数。其中，第一个参数是捕捉到的内容，第二个参数开始是捕捉到的组匹配（有多少个组匹配，就有多少个对应的参数）。最后面还有 2 个参数，对应匹配到的子字符串在原字符串中的偏移量，最后一个参数是被匹配的原字符串。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replacer</span>(<span class="params">match, p1, p2, p3, offset, string</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// p1 is nondigits, p2 digits, and p3 non-alphanumerics</span></span><br><span class="line">  <span class="keyword">return</span> [p1, p2, p3].join(<span class="string">' - '</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> newString = <span class="string">'abc12345#$*%'</span>.replace(<span class="regexp">/([^\d]*)(\d*)([^\w]*)/</span>, replacer);</span><br><span class="line"><span class="built_in">console</span>.log(newString);  <span class="comment">// abc - 12345 - #$*%</span></span><br></pre></td></tr></table></figure>
+<p>String.prototype.split：按照给定的正则进行字符串分割，返回一个数组，包含分给后的各个成员。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'aaa**a*'</span>.split(<span class="regexp">/a*/</span>)</span><br><span class="line"><span class="comment">// ["", "*", "*", "*"]</span></span><br></pre></td></tr></table></figure>
+<p>第一个分隔符是<code>aaa</code>，第二个分隔符是0个<code>a</code>（即空字符），第三个分隔符是<code>a</code>，所以将字符串分成四个部分。</p>
+<p>如果正则表达式带有括号，则括号匹配的部分也会作为数组成员返回。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'aaa*a*'</span>.split(<span class="regexp">/(a*)/</span>)</span><br><span class="line"><span class="comment">// [ '', 'aaa', '*', 'a', '*' ]</span></span><br></pre></td></tr></table></figure>
+<h2 id="匹配规则"><a href="#匹配规则" class="headerlink" title="匹配规则"></a>匹配规则</h2><p>某个字符只表示它字面的含义，就叫做字面量字符</p>
+<p>元字符：</p>
 <ul>
-<li>Date.prototype.toLocalString 完整的本地时间</li>
-<li>Date.prototype.toLocalDateString 本地日期</li>
-<li>Date.prototype.toLocalTimeString 本地时间</li>
+<li>点字符.，点字符匹配除了回车符、换行符、行分隔符和段落分隔符以外的所有字符。大于 0xFFFF 的字符，点字符不能正确匹配，会认为是两个字符。</li>
+<li>位置字符：^ 表示字符串开始位置，<code>$</code> 表示字符串结束的位置</li>
+<li>选择符 |</li>
 </ul>
-<p>三种方法都可以传入两个参数，第一个参数指定所用的语言的字符串，第二个参数指定返回字符串的格式</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间格式</span></span><br><span class="line"><span class="comment">// 下面的设置是，星期和月份为完整文字，年份和日期为数字</span></span><br><span class="line">d.toLocaleDateString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  weekday: <span class="string">'long'</span>,</span><br><span class="line">  year: <span class="string">'numeric'</span>,</span><br><span class="line">  month: <span class="string">'long'</span>,</span><br><span class="line">  day: <span class="string">'numeric'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "Tuesday, January 1, 2013"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定时区</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'UTC'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'short'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "4:00:00 PM UTC"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'Asia/Shanghai'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'long'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM China Standard Time"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小时周期为12还是24</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "00:00:00"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM"</span></span><br></pre></td></tr></table></figure>
-<h2 id="get-方法"><a href="#get-方法" class="headerlink" title="get 方法"></a>get 方法</h2><p>Date 对象提供了一系列的 get 方法，用来获取实例对象的某个方面的值</p>
+<p>转义字符，在 RegExp 构造正则时，转义需要使用两个斜杆，因为字符串内部会先转义一次。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'1\+1'</span>)).test(<span class="string">'1+1'</span>)</span><br><span class="line"><span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'1\\+1'</span>)).test(<span class="string">'1+1'</span>)</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>不能打印的特殊字符：</p>
 <ul>
-<li>getTime 返回实例距离零点的毫秒数，等同于 valueOf</li>
-<li>getDate 返回实例对象对应月的几号 从 1 开始。</li>
-<li>getDay 返回星期几，星期日为 0，星期一为 1</li>
-<li><del>getYear 返回距离 1900 的年数，比如 2018 年距离 1900 是 118</del> 标准已经废弃，替换为 getFullYear</li>
-<li>getFullYear 返回四位的年份</li>
-<li>getMonth 返回月份，0 表示 1 月，11 表示 12 月</li>
-<li>getHours 返回小时 0 - 23</li>
-<li>getMilliseconds 返回毫秒数 0 - 999</li>
-<li>getMinutes 返回分钟 0 - 59</li>
-<li>getSeconds 返回秒 0 - 59</li>
-<li>getTimezoneOffset 返回当前时间与 UTC 的时间的差异，以分钟表示，返回结果考虑到了夏令时因素</li>
+<li><code>\cx</code> 表示 <code>ctrl-[x]</code> 其中 x 时 A - Z 之间的任意一个英文字母，用来匹配控制字符</li>
+<li><code>[\b]</code> 匹配退格键 U+0008</li>
+<li><code>\n</code> 换行符</li>
+<li><code>\r</code> 回车符</li>
+<li><code>\t</code> 制表符 tab U+0009</li>
+<li><code>\v</code> 垂直制表符 U+000B</li>
+<li><code>\f</code> 换页符 U+000C</li>
+<li><code>\0</code> null 字符 U+0000</li>
+<li><code>\xhh</code> 匹配一个两位十六进制表示的字符 （\x00 - \xFF）</li>
+<li><code>\uhhhh</code>  匹配一个四位十六进制表示的 Unicode 字符 （\u0000 - \uFFFF）</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getMonth() <span class="comment">// 0</span></span><br><span class="line">d.getFullYear() <span class="comment">// 2013</span></span><br><span class="line">d.getTimezoneOffset() <span class="comment">// -480</span></span><br></pre></td></tr></table></figure>
-<p>最后一行返回 -480，即 UTC 时间减去当前时间，单位为分钟。-480 表示 UTC 比当前时间少了 480 分钟，即当前时区比 UTC 早 8 小时。</p>
-<p>计算本年度还剩下多少天</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leftDays</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">var</span> endYear = <span class="keyword">new</span> <span class="built_in">Date</span>(today.getFullYear(), <span class="number">11</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">999</span>)</span><br><span class="line">  <span class="keyword">var</span> msPerDay = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.round((endYear.getTime() - today.getTime()) / msPerDay)</span><br><span class="line">&#125;</span><br><span class="line">leftDays() <span class="comment">// 27 😱</span></span><br></pre></td></tr></table></figure>
-<p>Date 对象还提供了这些方法对应的 UTC 版本，用来返回 UTC 时间。</p>
+<p>脱字符 ^：</p>
+<p>脱字符只有在字符类的第一个位置才有特殊含义，否则就是字面含义。</p>
+<p>如果方括号内的第一个字符是 [^]，则表示除了字符类之中的字符，其他字符都可以匹配。<br>如果方括号内没有其他字符，即只有[^]，就表示匹配一切字符，其中包括换行符。相比点号作为元字符是不包括换行符的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'Please yes\nmake my day!'</span>;</span><br><span class="line"></span><br><span class="line">s.match(<span class="regexp">/yes.*day/</span>) <span class="comment">// null</span></span><br><span class="line">s.match(<span class="regexp">/yes[^]*day/</span>) <span class="comment">// [ 'yes\nmake my day']</span></span><br></pre></td></tr></table></figure>
+<p>连字符 - ：</p>
+<p>某些情况下，对于连续序列的字符，连字符 - 用来提供简写形式，表示字符的连续范围。比如 [a-d] 表示 [abcd]。<br>[1-31] 不代表 1 到 31，只表示 1 - 3 之间的数值。<br>可以用来指定 Unicode 字符的范围。</p>
+<p>[A-z] 表面上看是选中大写 A 到小写 z 之间的 52 个字母，但是由于在 ASCII 编码之中，大写字母与小写字母之间还有其他字符，结果可能会匹配出错。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/[A-z]/.test(<span class="string">'\\'</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>预定义模式：几个常见模式的简写方式</p>
 <ul>
-<li>getUTCDate</li>
-<li>getUTCFullYear</li>
-<li>getUTCMonth</li>
-<li>getUTCDay</li>
-<li>getUTCHours</li>
-<li>getUTCMinuts</li>
-<li>getUTCSeconds</li>
-<li>getUTCMilliseconds</li>
+<li><code>\d</code> : 匹配 0 - 9 之间的任一数值</li>
+<li><code>\D</code>： 匹配 0 - 9以外的字符</li>
+<li><code>\w</code>： 匹配任意字母、数字、下划线</li>
+<li><code>\W</code>： 除了字母、数字、下划线以外的字符</li>
+<li><code>\s</code>：匹配空格（包括换行符、制表符、空格符等）</li>
+<li><code>\S</code>：匹配除了空格以外的字符</li>
+<li><code>\b</code>：匹配词的边界</li>
+<li><code>\B</code>：匹配非词的边界，即在词的内部匹配</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getUTCDate() <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
-<h2 id="set-类方法"><a href="#set-类方法" class="headerlink" title="set 类方法"></a>set 类方法</h2><p>Date 对象提供了一系列 set 方法，用来设置实例对象的各个方面</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// \s 的例子</span></span><br><span class="line">/\s\w*<span class="regexp">/.exec('hello world') /</span><span class="regexp">/ [" world"]</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ \b 的例子</span></span><br><span class="line"><span class="regexp">/</span>\bworld/.test(<span class="string">'hello world'</span>) <span class="comment">// true</span></span><br><span class="line">/\bworld/.test(<span class="string">'hello-world'</span>) <span class="comment">// true</span></span><br><span class="line">/\bworld/.test(<span class="string">'helloworld'</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// \B 的例子</span></span><br><span class="line">/\Bworld/.test(<span class="string">'hello-world'</span>) <span class="comment">// false</span></span><br><span class="line">/\Bworld/.test(<span class="string">'helloworld'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>通常，正则表达式遇到换行符 \n 就会停止匹配。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">"&lt;b&gt;Hello&lt;/b&gt;\n&lt;i&gt;world!&lt;/i&gt;"</span>;</span><br><span class="line"></span><br><span class="line">/.*<span class="regexp">/.exec(html)[0]</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ "&lt;b&gt;Hello&lt;/</span>b&gt;<span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p>因为点字符不匹配换行符，所以没能匹配到整个 HTML 语句。</p>
+<p>改用 <code>\s</code> 字符类，就可以了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">"&lt;b&gt;Hello&lt;/b&gt;\n&lt;i&gt;world!&lt;/i&gt;"</span>;</span><br><span class="line"></span><br><span class="line">/[\S\s]*<span class="regexp">/.exec(html)[0]</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ "&lt;b&gt;Hello&lt;/</span>b&gt;\n&lt;i&gt;world!<span class="xml"><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p><code>[\S\s]</code> 指代一切字符！<code>[\D\d]</code> 和 [\W\w] 也能达到这个效果。</p>
+<p>重复类 <code>{m, n}</code>: 精确匹配不少于 n 次，不多余 m 次。</p>
+<p>量词符：</p>
 <ul>
-<li>setDate(date) 返回改变后的毫秒时间戳</li>
-<li><del>setYear</del> 标准已经废弃，替换为 setFullYear</li>
-<li>setFullYear(year[, mon, date]) 设置四位年份</li>
-<li>setHours(hour[, min, sec, ms])</li>
-<li>setMilliseconds(ms)：0 - 999 之间的值，如果超出会直接自动折算到年、月、日、分、秒上</li>
-<li>setMinutes(min[, sec, ms])</li>
-<li>setMonth(month[, date])</li>
-<li>setSeconds(sec[, ms])</li>
-<li>setTime(milliseconds)</li>
+<li><code>?</code> 表示某个模式出现 0 或 1 次，等同于{0, 1}</li>
+<li><code>*</code> 表示某个模式出现 0 次或多次，等同于 {0,}</li>
+<li><code>+</code> 表示某个模式出现 1 次或多次，等同于 {1,}</li>
 </ul>
-<p>没有 setDay 方法，因为星期几时计算出来的，而不是设置的。</p>
-<p>set 方法的参数都是会自动折算的，如果超出应该的数，会向下一个年/月/日/时/分/秒顺延，如果参数是负数，表示上个年/月/日/时/分/秒减去对应数。</p>
-<p>set 方法除了 setTime 和 setYear，都有对应的 UTC 版本，设置对应 UTC 时区的时间。</p>
+<p>贪婪模式：</p>
+<p>量词符默认情况下都是最大可能匹配，即匹配直到下一个字符不满足匹配位止。这被称为贪婪模式。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">'aaa'</span>;</span><br><span class="line">s.match(<span class="regexp">/a+/</span>) <span class="comment">// ["aaa"]</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，模式是<code>/a+/</code>，表示匹配1个<code>a</code>或多个<code>a</code>，那么到底会匹配几个<code>a</code>呢？因为默认是贪婪模式，会一直匹配到字符<code>a</code>不出现为止，所以匹配结果是3个<code>a</code>。</p>
+<p>如果想将贪婪模式改为非贪婪模式，可以给量词符后面加一个问号</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab+/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab+?/</span>) <span class="comment">// ["ab"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab*b/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab*?b/</span>) <span class="comment">// ["ab"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab?b/</span>) <span class="comment">// ["abb"]</span></span><br><span class="line"><span class="string">'abb'</span>.match(<span class="regexp">/ab??b/</span>) <span class="comment">// ["ab"]</span></span><br></pre></td></tr></table></figure>
+<p>修饰符：</p>
+<p>g 修饰符可以多次调用 test 方法。exec 也可以多次调用。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> regex = <span class="regexp">/b/g</span>;</span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'abba'</span>;</span><br><span class="line"></span><br><span class="line">regex.test(str); <span class="comment">// true</span></span><br><span class="line">regex.test(str); <span class="comment">// true</span></span><br><span class="line">regex.test(str); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>i 修饰符：不区分大小写</p>
+<p>m 修饰符：表示多行模式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/^b/m.test(<span class="string">'a\nb'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>加上<code>m</code>修饰符以后，<code>^</code>和<code>$</code>还会匹配行首和行尾，即<code>^</code>和<code>$</code>会识别换行符（<code>\n</code>）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/world$/.test(<span class="string">'hello world\n'</span>) <span class="comment">// false</span></span><br><span class="line">/world$/m.test(<span class="string">'hello world\n'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>组匹配：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m = <span class="string">'abcabc'</span>.match(<span class="regexp">/(.)b(.)/</span>);</span><br><span class="line">m</span><br><span class="line"><span class="comment">// ['abc', 'a', 'c']</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，正则表达式<code>/(.)b(.)/</code>一共使用两个括号，第一个括号捕获<code>a</code>，第二个括号捕获<code>c</code>。</p>
+<p>注意，使用组匹配时，不宜同时使用<code>g</code>修饰符，否则<code>match</code>方法不会捕获分组的内容。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m = <span class="string">'abcabc'</span>.match(<span class="regexp">/(.)b(.)/g</span>);</span><br><span class="line">m <span class="comment">// ['abc', 'abc']</span></span><br></pre></td></tr></table></figure>
+<p>使用正则表达式的<code>exec</code>方法，配合循环，才能读到每一轮匹配的组捕获。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'abcabc'</span>;</span><br><span class="line"><span class="keyword">var</span> reg = <span class="regexp">/(.)b(.)/g</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> result = reg.exec(str);</span><br><span class="line">  <span class="keyword">if</span> (!result) <span class="keyword">break</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ["abc", "a", "c"]</span></span><br><span class="line"><span class="comment">// ["abc", "a", "c"]</span></span><br></pre></td></tr></table></figure>
+<p>组匹配非常有用，下面是一个匹配网页标签的例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> html = <span class="string">'&lt;b class="hello"&gt;Hello&lt;/b&gt;&lt;i&gt;world&lt;/i&gt;'</span>;</span><br><span class="line"><span class="keyword">var</span> tag = <span class="regexp">/&lt;(\w+)([^&gt;]*)&gt;(.*?)&lt;\/\1&gt;/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> match = tag.exec(html);</span><br><span class="line"></span><br><span class="line">match[<span class="number">1</span>] <span class="comment">// "b"</span></span><br><span class="line">match[<span class="number">2</span>] <span class="comment">// " class="hello""</span></span><br><span class="line">match[<span class="number">3</span>] <span class="comment">// "Hello"</span></span><br><span class="line"></span><br><span class="line">match = tag.exec(html);</span><br><span class="line"></span><br><span class="line">match[<span class="number">1</span>] <span class="comment">// "i"</span></span><br><span class="line">match[<span class="number">2</span>] <span class="comment">// ""</span></span><br><span class="line">match[<span class="number">3</span>] <span class="comment">// "world"</span></span><br></pre></td></tr></table></figure>
+<p>非捕获组：<code>(?:x)</code> 表示非捕获组，表示不返回该组匹配的内容，即匹配的结果中不计入这个括号。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 正常匹配</span></span><br><span class="line"><span class="keyword">var</span> url = <span class="regexp">/(http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/</span>;</span><br><span class="line"></span><br><span class="line">url.exec(<span class="string">'http://google.com/'</span>);</span><br><span class="line"><span class="comment">// ["http://google.com/", "http", "google.com", "/"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非捕获组匹配</span></span><br><span class="line"><span class="keyword">var</span> url = <span class="regexp">/(?:http|ftp):\/\/([^/\r\n]+)(\/[^\r\n]*)?/</span>;</span><br><span class="line"></span><br><span class="line">url.exec(<span class="string">'http://google.com/'</span>);</span><br><span class="line"><span class="comment">// ["http://google.com/", "google.com", "/"]</span></span><br></pre></td></tr></table></figure>
+<p>先行断言：<code>x(?=y)</code> 称为先行断言，x 值有在 y 前面才匹配，y 不计入返回结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配 c 前面的 b</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">'abc'</span>.match(<span class="regexp">/b(?=c)/</span>);</span><br><span class="line">m <span class="comment">// ["b"]</span></span><br></pre></td></tr></table></figure>
+<p>先行否定断言：<code>x(?!y)</code>， x 只有不在 y 前面才匹配，y 不计入返回结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配不在小数点前面的数值</span></span><br><span class="line">/\d+(?!\.)/.exec(<span class="string">'3.14'</span>)</span><br><span class="line"><span class="comment">// ["14"]</span></span><br></pre></td></tr></table></figure>
+<p>“先行否定断言”中，括号里的部分是不会返回的。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 匹配不在 c 前面的 b</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="string">'abd'</span>.match(<span class="regexp">/b(?!c)/</span>);</span><br><span class="line">m <span class="comment">// ['b']</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -161,7 +190,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/42/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/41/">41</a><a class="page-number" href="/bjb/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/bjb/page/44/">44</a><a class="page-number" href="/bjb/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/44/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/42/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/41/">41</a><a class="page-number" href="/bjb/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/bjb/page/44/">44</a><a class="page-number" href="/bjb/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/44/">下一页&raquo;</a>
   </nav>
 
     </main>

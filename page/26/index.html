@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">键盘事件</h2>
+    <h2 class="title">进度事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-18 17:57:44</span>
+    <span class="post-time">2019-02-19 12:56:49</span>
     <span class="post-tags">
       
     </span>
@@ -51,44 +51,30 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>键盘事件是由用户击打键盘触发，主要有 keydown、keypress、keyup 三个事件，都继承了 keyboardEvent 接口</p>
-<p>keypress：按下有值的键时才触发，即按下 Ctrl、Alt、Shift、Meta 这种无值的键，这个事件不会触发。对于有值的键，按下时先触发 keydown 事件，再触发 keypress。</p>
-<p>如果一直按键不松开，就会连续触发 keydown、keypress、keydown、keypress ….. 直到松开键触发 keyup</p>
-<h3 id="KeyboardEvent-接口"><a href="#KeyboardEvent-接口" class="headerlink" title="KeyboardEvent 接口"></a>KeyboardEvent 接口</h3><p>也继承自 Event 接口，自己的实例属性和方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> KeyboardEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 可选，对应有：</p>
+<p>进度事件用来描述资源加载的进度，主要由 AJAX 请求、img、audio、video、style、link 等外部资源的加载触发，继承自 ProgressEvent 接口。</p>
 <ul>
-<li>key：表示按下的键，默认为空字符串</li>
-<li>code：表示按下键的字符串形式，默认为空</li>
-<li>location：整数，当前按下的键的位置，默认为 0</li>
-<li>ctrlKey / shiftKey / altKey / metaKey：是否按下 Ctrl / shift / alt / meta 键</li>
-<li>repeat：是否重复按键</li>
+<li>abort：外部资源中止加载时触发，如果发生错误导致中止，不会触发该事件</li>
+<li>error：由于错误导致外部资源无法加载时触发</li>
+<li>load：外部资源加载时触发</li>
+<li>loadstart：外部资源开始加载时触发</li>
+<li>loadend：外部资源停止加载时触发，发生顺序 error、abort、load 等事件的后面</li>
+<li>progress：外部资源加载过程中不断触发</li>
+<li>timeout：加载超时时触发</li>
 </ul>
-<h3 id="KeyboardEvent-metaKey"><a href="#KeyboardEvent-metaKey" class="headerlink" title="KeyboardEvent.metaKey"></a>KeyboardEvent.metaKey</h3><p>是否按下 meta 键（Mac 系统的 command 键，Windows 系统的 win 键）</p>
-<h3 id="KeyboardEvent-code"><a href="#KeyboardEvent-code" class="headerlink" title="KeyboardEvent.code"></a>KeyboardEvent.code</h3><p>表示当前按下的键的字符串形式，<a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values" target="_blank" rel="noopener">查看所有键对应的 code 的文档</a>，这里列常见：</p>
+<p>除了资源下载，文件上传也有这些事件。</p>
+<p>有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能 load 和 error 事件的监听函数根本不会执行。所以，比较可靠的方式，是用 complete 属性先判断一下是否加载完成。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loaded</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (image.complete) &#123;</span><br><span class="line">  loaded();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  image.addEventListener(<span class="string">'load'</span>, loaded)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于 DOM 的元素节点没有提供是否加载错误的属性，所以 error 事件的监听函数最好放在 <code>&lt;img&gt;</code> 元素的 HTML 代码中，这样才能保证发生加载错误时百分之百执行。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/wrong/url"</span> <span class="attr">onerror</span>=<span class="string">"this.style.display='none';"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>loaded 事件本身不提供关于进度结束的原因，但可以用它来做所有加载结束场景都需要做一些操作。</p>
+<p>error 事件有一个特殊的性质，就是不会冒泡。所以，子元素的 error 事件时不会触发父元素的 error 事件监听函数的。</p>
+<h3 id="ProgressEvent-接口"><a href="#ProgressEvent-接口" class="headerlink" title="ProgressEvent 接口"></a>ProgressEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> ProgressEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>ProgressEvent 的 options 配置项除了继承自 Event 接口的配置属性外，还有：</p>
 <ul>
-<li>数字键 0 - 9：digital0 - digital9</li>
-<li>字母键 A - z：KeyA - KeyZ</li>
-<li>功能键 F1 - F12：F1 - F12</li>
-<li>方向键： ArrowDown、ArrowUp、ArrowLeft、ArrowRight</li>
-<li>Alt 键：AltLeft、AltRight</li>
-<li>Shift 键：ShiftLeft、ShiftRight</li>
-<li>Ctrl 键：ControlLeft、ControlRight</li>
+<li>lengthComputable：表示加载的总量是否可以计算</li>
+<li>loaded：表示已经加载的量</li>
+<li>total：表示需要加载的总量</li>
 </ul>
-<h3 id="KeyboradEvent-key"><a href="#KeyboradEvent-key" class="headerlink" title="KeyboradEvent.key"></a>KeyboradEvent.key</h3><p>返回按下的键名</p>
-<ul>
-<li>可打印字符，返回这个字符</li>
-<li>不可打印字符，返回预定义的键值，Backspace、Tab、Enter 等</li>
-<li>同时按下控制键和符号键，返回符号键，ctrl + a 返回 a、shift + a 返回 A</li>
-<li>无法识别的键名 返回 Unidentified</li>
-</ul>
-<h3 id="KeyboradEvent-location"><a href="#KeyboradEvent-location" class="headerlink" title="KeyboradEvent.location"></a>KeyboradEvent.location</h3><ul>
-<li>0 键盘主区域</li>
-<li>1 键盘左侧</li>
-<li>2 键盘右侧</li>
-<li>3 数字小键盘</li>
-</ul>
-<h3 id="KeyboardEvent-getModifierState"><a href="#KeyboardEvent-getModifierState" class="headerlink" title="KeyboardEvent.getModifierState()"></a>KeyboardEvent.getModifierState()</h3><p>是否按下或激活指定的功能键</p>
 
   </div>
   
@@ -96,7 +82,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/25/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/bjb/page/27/">27</a><a class="page-number" href="/bjb/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/27/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/25/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/bjb/page/27/">27</a><a class="page-number" href="/bjb/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/27/">下一页&raquo;</a>
   </nav>
 
     </main>

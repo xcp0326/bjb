@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">触摸事件</h2>
+    <h2 class="title">拖拉事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-19 14:32:57</span>
+    <span class="post-time">2019-02-20 17:37:13</span>
     <span class="post-tags">
       
     </span>
@@ -51,63 +51,97 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>浏览器的触摸 API 由三部分组成：</p>
+<p>拖拉指的是，用户在某个对象上按下鼠标不放，拖动它到另一个位置，然后释放鼠标键，将该对象放在那里。</p>
+<p>拖拉的对象有好几种，包括元素节点、图片、链接、选中的文字等。在网页中，除了元素节点默认不可以拖拉，其他（图片、链接、选中的文字）都是可以直接拖拉的。为了让元素节点可拖拉，可以将该节点的 draggable 设置为 true</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">draggable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  可拖拉的 div</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一旦元素节点的 draggable 属性设为 true，就无法再用鼠标选中该节点内部的文字或子节点了。</p>
+<p>当元素节点或选中的文本被拖拉时，就会持续触发拖拉事件，包括以下一些事件。</p>
 <ul>
-<li>Touch：一个触摸点</li>
-<li>TouchList：多个触摸点的集合</li>
-<li>TouchEvent：触摸引发的事件实例</li>
+<li>drag：拖拉过程中，在被拖拉的节点上持续触发（相隔几百毫秒）</li>
+<li>dragstart：用户开始拖拉时，在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。通常应该在这个事件的监听函数中，指定拖拉的数据。</li>
+<li>dragend：拖拉结束时（释放鼠标键或按下 ESC 键）在被拖拉的节点上触发，该事件的 target 属性是被拖拉的节点。它与 dragstart 事件，在同一个节点上触发。不管拖拉是否跨窗口，或中途被取消，dragend 事件总是会触发的。</li>
+<li>dragenter：拖拉进入当前节点时，在当前节点上触发一次，该事件的 target 属性是当前节点。通常应该在这个事件的监听函数中，指定是否允许在当前节点放下（ drop ）拖拉的数据。如果当前节点没有该事件的监听函数，或者监听函数不执行任何操作，就意味着不允许在当前节点放下数据。在视觉上显示拖拉进入当前节点，也是在这个事件的监听函数中设置。</li>
+<li>dragover：拖拉到当前节点上方时，在当前节点上持续触发（相隔几百毫秒），该事件的 target 属性时当前节点。该事件与 dragenter 事件的区别是，dragenter 事件在进入该节点时触发，然后只要没有离开这个节点，dragover 事件会持续触发。</li>
+<li>dragleave：拖拉操作离开当前节点范围时，在当前节点上触发，该事件的 target 属性是当前节点。如果要在视觉上显示拖拉离开操作当前节点，就在这个事件的监听函数中设置。</li>
+<li>drop：被拖拉的节点或选中的文本，释放到目标节点时，在目标节点上触发。注意，如果当前节点不允许 drop，解释在该节点上放松开鼠标键，也不回触发该事件。如果用户按下 ESC，取消这个操作，也不回触发该事件。该事件的监听函数负责去除拖拉数据，并进行相关处理。</li>
 </ul>
-<p>Touch 接口的实例对象用来表示触摸点（一根手指或者一根触摸笔），包括位置、大小、形状、压力、目标元素等属性。有时，触摸动作由多一个触摸点（多根手指）组成，多个触摸点的集合由 TouchList 接口的实例对象表示。TouchEvent 接口的实例对象代表由触摸引发的事件，只有触摸屏才会引发这一类事件。</p>
-<p>很多时候，触摸事件和鼠标事件同时触发，即使这个时候并没有用到鼠标。这是为了让那些只定义鼠标事件、没有定义触摸事件的代码，在触摸屏的情况下仍然能用。如果想避免这种情况，可以用 event.preventDefault 方法阻止发出鼠标事件。</p>
-<h3 id="Touch-接口"><a href="#Touch-接口" class="headerlink" title="Touch 接口"></a>Touch 接口</h3><p>Touch 接口代表单个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> touch = <span class="keyword">new</span> Touch(touchOptions)</span><br></pre></td></tr></table></figure>
-<p>Touch 构造函数接受一个配置对象作为参数，它有以下属性：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* HTML 代码如下</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;</span></span><br><span class="line"><span class="comment">   &lt;div id="draggable" draggable="true"&gt;</span></span><br><span class="line"><span class="comment">     该节点可拖拉</span></span><br><span class="line"><span class="comment">   &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment"> &lt;div class="dropzone"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 被拖拉节点</span></span><br><span class="line"><span class="keyword">var</span> dragged;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 保存被拖拉节点</span></span><br><span class="line">  dragged = event.target;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色变透明</span></span><br><span class="line">  event.target.style.opacity = <span class="number">0.5</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragend'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 被拖拉节点的背景色恢复正常</span></span><br><span class="line">  event.target.style.opacity = <span class="string">''</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止拖拉效果被重置，允许被拖拉的节点放入目标节点</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragenter'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色变紫色</span></span><br><span class="line">  <span class="comment">// 由于该事件会冒泡，所以要过滤节点</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">'purple'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'dragleave'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 目标节点的背景色恢复原样</span></span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 防止事件默认行为（比如某些元素节点上可以打开链接），</span></span><br><span class="line">  event.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (event.target.className === <span class="string">'dropzone'</span>) &#123;</span><br><span class="line">    <span class="comment">// 恢复目标节点背景色</span></span><br><span class="line">    event.target.style.background = <span class="string">''</span>;</span><br><span class="line">    <span class="comment">// 将被拖拉节点插入目标节点</span></span><br><span class="line">    dragged.parentNode.removeChild(dragged);</span><br><span class="line">    event.target.appendChild( dragged );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
 <ul>
-<li>identifier：必需，类型为整数，表示触摸点的唯一 ID，整个触摸过程保持不变，直到触摸事件结束。</li>
-<li>target：必需，类型为元素节点，表示触摸发生时所在的元素节点。即使触摸点已经离开了这个节点，该属性依然不变。</li>
-<li>clientX / clientY / screenX / screenY / pageX / pageY：可选</li>
-<li>radiusX / radiusY：表示触摸点周围到影响的椭圆范围的 X 轴 / Y 轴半径，单位是像素。乘以 2 就可以得到触摸范围的宽度和高度。</li>
-<li>rotationAngle：表示触摸区域的椭圆的旋转角度，默认为 0，单位是度数，在 0 - 90 度之间。</li>
-<li>force：范围在 0 - 1 之间，表示触摸压力，0 代表没有压力，1 代表硬件所能识别的最大压力。默认为 0。</li>
+<li><p>文件从操作系统拖拉到浏览器，不会触发 dragstart 和 dragend 事件</p>
+</li>
+<li><p>dragenter 和 dragover 事件的监听函数，用来取出拖拉的数据（即允许放下被拖拉的元素）。由于网页的大部分区域不适合作为放下拖拉元素的目标节点，所以这两个事件的默认设置为当前节点不允许接受被拖拉的元素。如果想要在目标节点上放下的数据，首先必须阻止这两个事件的默认行为。</p>
+</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'touchstart'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchmove'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchend'</span>, rotate);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rotate</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> touch = e.changedTouches.item(<span class="number">0</span>);</span><br><span class="line">  e.preventDefault();</span><br><span class="line"></span><br><span class="line">  src.style.width = touch.radiusX * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.height = touch.radiusY * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.transform = <span class="string">'rotate('</span> + touch.rotationAngle + <span class="string">'deg)'</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="TouchList-接口"><a href="#TouchList-接口" class="headerlink" title="TouchList 接口"></a>TouchList 接口</h3><p>表示一组触摸点的集合。它的实例是一个类似数组的对象，成员是 Touch 的实例对象，表示所有触摸点。用户用三根手指触摸，产生的 TouchList 实例就会包含三个成员，每根手指的触摸点对应一个 Touch 实例对象</p>
-<p>它的实例主要通过事件的 TouchEvent.touches、TouchEvent.changedTouches、TouchEvent.targetTouches 这几个属性获取。</p>
-<p>它的实例属性和实例方法只有两个：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"return false"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ondragover</span>=<span class="string">"evnet.preventDefault()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果不取消拖拉事件或者阻止默认行为，就不能在 div 节点上放下被拖拉的节点。</p>
+<h3 id="DragEvent-接口"><a href="#DragEvent-接口" class="headerlink" title="DragEvent 接口"></a>DragEvent 接口</h3><p>拖拉事件都继承了 DragEvent 接口，这个接口又继承了 MouseEvent 接口和 Event 接口。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dragEvt = <span class="keyword">new</span> DragEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 除了可以设置 MouseEvent 接口和 Event 接口的配置属性外，还可以设置 dataTransfer 属性，dataTansfer 要么是一个 DataTransfer 接口的实例，要么是一个 null。</p>
+<p>DataTransfer 的实例对象用来读写拖拉事件中传输的数据</p>
+<h3 id="DataTransfer-接口"><a href="#DataTransfer-接口" class="headerlink" title="DataTransfer 接口"></a>DataTransfer 接口</h3><p>所有拖拉事件的实例都有一个 DragEvent.dataTransfer 属性，用来读写需要传递的数据。这个属性的值是一个 DataTransfer 接口的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dataTrans = <span class="keyword">new</span> DataTransfer();</span><br></pre></td></tr></table></figure>
+<p>DataTransfer() 构造函数不接受参数</p>
+<p>拖拉的数据分成两方面：数据的种类（又称格式）和数据的值。数据的种类是一个 MIME 字符串（比如 text/plain、image/jpeg），数据的值是一个字符串。一般来说，如果拖拉一段文本，则数据默认就是那段文本；如果拖拉一个链接，则数据默认就是链接的 URL。</p>
+<p>拖拉事件开始时，开发者可以提供数据类型和数据值。拖拉过程中，开发者通过 dragenter 和 dragover 事件的监听函数，检查数据类型，以确定是否允许放下（drop）被拖拉的对象。比如，在只允许放下链接的区域，检查拖拉的数据类型是否为 text/uri-list。</p>
+<p>发生 drop 事件时，监听函数取出拖拉的数据，对其进行处理。</p>
+<h4 id="DataTransfer-dropEffect"><a href="#DataTransfer-dropEffect" class="headerlink" title="DataTransfer.dropEffect"></a>DataTransfer.dropEffect</h4><p>用来设置放下（drop）被拖拉节点时的效果，会影响到拖拉经过相关区域时鼠标的形状。它可能取下面的值。</p>
 <ul>
-<li>TouchList.length</li>
-<li>TouchList.item()：返回指定位置的成员，它的参数是该成员的位置编号</li>
+<li>copy：复制被拖拉的节点</li>
+<li>move：移动被拖拉的节点</li>
+<li>link：创建指向被拖拉的节点的链接</li>
+<li>none：无法放下被拖拉的节点</li>
 </ul>
-<h3 id="TouchEvent-接口"><a href="#TouchEvent-接口" class="headerlink" title="TouchEvent 接口"></a>TouchEvent 接口</h3><p>继承了 Event 接口，表示由触摸引发的事件实例，通常来自触摸屏或轨迹板。除了被继承的属性以外，它还有一些自己的属性。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> TouchEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 除了 Event 接口的配置项：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  e.stopPropagation();</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'copy'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>被拖拉元素一旦被 drop，接受的区域就会复制该节点</p>
+<p>dropEffect 属性一般在 dragenter 和 dragover 事件的监听函数中设置，对于 dragstart、drag、dragleave 这三个事件不起作用。因为该属性只接受被拖拉的节点的区域有效，对被拖拉的节点本身无效。进入目标区域后，拖拉行为会初始化成设定的效果。</p>
+<h4 id="DataTransfer-effectAllowed"><a href="#DataTransfer-effectAllowed" class="headerlink" title="DataTransfer.effectAllowed"></a>DataTransfer.effectAllowed</h4><p>设置本次拖拉中允许的效果。</p>
 <ul>
-<li>touches：TouchList 实例，代表所有的当前处于活跃状态的触摸点，默认是一个空数组</li>
-<li>targetTouches：TouchList 实例，代表所有处在触摸的目标元素节点内部、且仍然处于活动状态的触摸点，默认值是一个空数组</li>
-<li>changedTouches：TouchList 实例，代表本次触摸事件的相关触摸点，默认值是一个空数组</li>
-<li>ctrlKey / shiftKey / altKey / metaKey： 表示是否同时按下 Ctrl / Shift / Alt / Meta 键</li>
+<li>copy：复制被拖拉的节点</li>
+<li>move：移动被拖拉的节点</li>
+<li>link：创建指向被拖拉节点的链接</li>
+<li>copyLink：允许 copy 或 link</li>
+<li>copyMove：允许 copy 或 move</li>
+<li>linkMove：允许 link 或 move</li>
+<li>all：允许所有效果</li>
+<li>none：无法放下被拖拉的节点</li>
+<li>uninitialized：默认值，等同于 all</li>
 </ul>
-<h4 id="TouchEvent-changedTouches"><a href="#TouchEvent-changedTouches" class="headerlink" title="TouchEvent.changedTouches"></a>TouchEvent.changedTouches</h4><p>返回一个 TouchList 实例，成员是一组 Touch 实例对象，表示本次触摸事件的相关触摸点。</p>
-<p>对于不同的时间，该属性的含义有所不同</p>
+<p>如果某种效果是不允许的，用户就无法在目标节点中达成这种效果。</p>
+<p>这个属性与 dropEffect 属性是同一件事的两个方面。前者设置被拖拉的节点允许的效果，后者设置接受拖拉的区域的效果，它们往往配合使用。</p>
+<p>dragstart 事件的监听函数，可以用来设置这个属性。其他事件的监听函数里面设置这个属性无效。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source.addEventListener(<span class="string">'dragstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.effectAllowed = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">target.addEventListener(<span class="string">'dragover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.dataTransfer.dropEffect = <span class="string">'move'</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>只要 dropEffect 属性和 effectAllowed 属性之中，有一个为 none，就无法在目标节点上完成 drop 操作。</p>
+<h4 id="DataTransfer-files"><a href="#DataTransfer-files" class="headerlink" title="DataTransfer.files"></a>DataTransfer.files</h4><p>是一个 FileList 对象，包含一组本地文件，可以用来在拖拉操作中传送。如果本次拖拉不涉及文件，则该属性为空的 FileList 对象。</p>
+<p>用 FileReader 对象读取文件内容</p>
+<h4 id="DataTransfer-types"><a href="#DataTransfer-types" class="headerlink" title="DataTransfer.types"></a>DataTransfer.types</h4><p>只读数组，每个成员是一个字符串，里面是拖拉的数据格式（通常是 MIME 值）。比如，如果拖拉的是文字，对应的成员就是 text/plain。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">contains</span>(<span class="params">list, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; list.length; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (list[i] === value) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doDragOver</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 只有当被拖拉的节点是一个链接时，才允许在当前节点放下</span></span><br><span class="line">  <span class="keyword">var</span> isLink = contains(event.dataTransfer.types, <span class="string">'text/uri-list'</span>);</span><br><span class="line">  <span class="keyword">if</span> (isLink) event.preentDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-items"><a href="#DataTransfer-items" class="headerlink" title="DataTransfer.items"></a>DataTransfer.items</h4><p>返回一个类似数组的只读对象 DataTransferItemList 实例，每个成员就是本次拖拉的一个对象 DataTransferItem 实例。如果本次拖拉不包含对象，则返回一个空对象。</p>
+<p>DataTransferItemList 实例具有以下的属性和方法</p>
 <ul>
-<li>touchstart 事件：被激活的触摸点</li>
-<li>touchmove 事件：发生变化的触摸点</li>
-<li>touchend 事件：消失的触摸点（即不再被触碰的点）</li>
+<li>length：返回成员的数量</li>
+<li>add(data, type)：增加一个指定内容和类型（比如 text/html 和 text/plain）的字符串作为成员</li>
+<li>add(file)：add 方法的另一种用法，增加一个文件作为成员</li>
+<li>remove(index)：移除指定位置的成员</li>
+<li>clear()：移除所有的成员</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.changeTouches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.changeTouches[i].identifier)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="TouchEvent-touches"><a href="#TouchEvent-touches" class="headerlink" title="TouchEvent.touches"></a>TouchEvent.touches</h4><p>返回一个 TouchList 实例，成员是所有仍然处于活动状态（即触摸中）的触摸点。一般来说，一个手指就是一个触摸点。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (e.touches.length) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>: handle_one_touch(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>: handle_two_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>: handle_three_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="built_in">console</span>.log(<span class="string">'not supported'</span>); <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="TouchEvent-targetTouches"><a href="#TouchEvent-targetTouches" class="headerlink" title="TouchEvent.targetTouches"></a>TouchEvent.targetTouches</h4><p>返回一个 TouchList 实例，成员是触摸事件的目标元素节点内部、所有仍然处于活动状态（即触摸中）的触摸点。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">touches_in_target</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (evt.touches.length === evt.targetTouches.length ? <span class="literal">true</span> : <span class="literal">false</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的代码用来判断是否所有的触摸点都在目标元素内。</p>
-<h2 id="触摸事件的种类"><a href="#触摸事件的种类" class="headerlink" title="触摸事件的种类"></a>触摸事件的种类</h2><p>触摸引发的事件，有以下几种。可以通过 TouchEvent.type 属性，查看到底发生的哪一种事件：</p>
+<p>DataTransferItem 实例具有以下的属性和方法</p>
 <ul>
-<li>touchstart：用户开始触摸时触发，它的 target 属性返回发生触摸的元素节点</li>
-<li>touchend：用户不再接触触摸屏时（或移出屏幕边缘时）触发，它的 target 属性与 touchstart 事件一致的，就是开始触摸时所在的元素节点。它的 changedTouches 属性返回一个 TouchList 实例，包含所有不再触摸的触摸点</li>
-<li>touchmove：用户移动触摸点时触发，它的 target 属性与 touchstart 事件一致。如果触摸的半径、角度、力度发生变化，也会触发该事件</li>
-<li>touchcancel：触摸点取消时触发，比如在触摸区域跳出一个模态窗口（modal window）、触摸点离开文档区域（进入浏览器菜单栏）、用户的触摸点太多，超过了支持的上限（自动取消早先的触摸点）。</li>
+<li>kind：返回成员的种类（string 还是 file）</li>
+<li>type：返回成员的类型（通常是 MIME 值）</li>
+<li>getAsFile()：如果被拖拉的文件，返回该文件，否则返回 null</li>
+<li>getAsString(callback)：如果被拖拉的是字符串，将该字符传入指定的回调函数处理。该方法是异步的，所以需要传入回调函数</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>];</span><br><span class="line">el.addEventListener(<span class="string">'touchstart'</span>, handleStart, <span class="literal">false</span>);</span><br><span class="line">el.addEventListener(<span class="string">'touchmove'</span>, handleMove, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleStart</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(touches[i].pageX, touches[i].pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleMove</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> touch = touches[i];</span><br><span class="line">    <span class="built_in">console</span>.log(touch.pageX, touch.pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'drop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault();</span><br><span class="line">  <span class="keyword">if</span> (e.dataTransfer.items != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.dataTransfer.items.length; i++) &#123;</span><br><span class="line">			<span class="keyword">var</span> item = e.dataTransfer.items[i];</span><br><span class="line">      <span class="built_in">console</span>.log(item.kind + <span class="string">':'</span> + item.type)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-setData"><a href="#DataTransfer-setData" class="headerlink" title="DataTransfer.setData()"></a>DataTransfer.setData()</h4><p>用来设置拖拉事件所带有的数据。该方法没有返回值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/plain'</span>, <span class="string">'Text to drag'</span>);</span><br></pre></td></tr></table></figure>
+<p>所以 QQ 邮箱 / 知乎里面的链接 拖拽到地址栏的时候，就是通过它来修改的 URL</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">event.dataTransfer.setData(<span class="string">'text/uri-list'</span>, <span class="string">'http://www.zhihu.com/ex'</span>)</span><br></pre></td></tr></table></figure>
+<p>只有某个部署了特定代码的节点，才可能 drop（读取到）这个数据</p>
+<h4 id="DataTransfer-getData"><a href="#DataTransfer-getData" class="headerlink" title="DataTransfer.getData()"></a>DataTransfer.getData()</h4><p>通常只有 drop 事件触发后，才能取出数据</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onDrop</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> data = e.dataTransfer.getData(<span class="string">'text/uri-list'</span>);</span><br><span class="line">  event.target.textContent = data;</span><br><span class="line">  event.preventDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DataTransfer-clearData"><a href="#DataTransfer-clearData" class="headerlink" title="DataTransfer.clearData()"></a>DataTransfer.clearData()</h4><p>在 dragstart 事件监听函数中清除除了 Files 类型的数据。（不能移除拖拉的文件）</p>
+<h4 id="DataTransfer-setDragImage"><a href="#DataTransfer-setDragImage" class="headerlink" title="DataTransfer.setDragImage()"></a>DataTransfer.setDragImage()</h4><p>拖动过程中 （在 dragstart 事件触发后），浏览器会显示一张图片跟随鼠标一起移动，表示被推动的节点。这种图片是自动创建的，通常显示为被拖动节点的外观。</p>
+<p>它接受三个参数。第一个是 img 节点或者 canvas 节点，如果省略或为 null，则使用被拖动的节点的外观；第二个和第三个参数为鼠标相对于该图片左上角的横坐标和右坐标。<a href="http://js.jirengu.com/jozav" target="_blank" rel="noopener">一个 demo</a></p>
 
   </div>
   
@@ -115,7 +149,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/22/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/21/">21</a><a class="page-number" href="/bjb/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/24/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/22/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/21/">21</a><a class="page-number" href="/bjb/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/24/">下一页&raquo;</a>
   </nav>
 
     </main>

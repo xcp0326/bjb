@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">进度事件</h2>
+    <h2 class="title">表单事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-19 12:56:49</span>
+    <span class="post-time">2019-02-19 13:24:08</span>
     <span class="post-tags">
       
     </span>
@@ -51,30 +51,40 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>进度事件用来描述资源加载的进度，主要由 AJAX 请求、img、audio、video、style、link 等外部资源的加载触发，继承自 ProgressEvent 接口。</p>
+<h3 id="input-事件"><a href="#input-事件" class="headerlink" title="input 事件"></a>input 事件</h3><p>input 事件是当 input 元素、select 元素、textarea 元素的值发生变化时触发。对于复选框<code>&lt;input type=&quot;checkbox&quot;&gt;</code>或者<code>&lt;input type=&quot;radio&quot;&gt;</code> 单选框，用户改变选项时，也会触发这个事件。</p>
+<p>另外对于打开了 contenteditable 属性的元素，只要值发生变化，也会触发 input 事件。</p>
+<p>input 事件的一个特点，就是会连续触发，比如用户没按下一次按键，就会触发一次 input 事件。</p>
+<p>input 事件继承自 InputEvent 接口</p>
+<p>input 事件跟 change 事件很像，不同之处在于 iput 事件在元素的值发生变化后立即发生，而 change 事件时在元素失去焦点的时候触发，此时内容可能已经发生了多次变化了。也就是说，如果有连续变化，input 事件会触发多次，而 change 事件只在失去焦点时触发一次。</p>
+<h3 id="select-事件"><a href="#select-事件" class="headerlink" title="select 事件"></a>select 事件</h3><p>当 input 元素、textarea 元素里面选中文本时触发。选中的文本可以通过 event.target 元素的 selectDirection、selectionEnd、selectionStart 和 value 属性拿到。</p>
+<h3 id="change-事件"><a href="#change-事件" class="headerlink" title="change 事件"></a>change 事件</h3><p>当 input 元素、textarea 元素、select 元素的值发生变化时触发。它与 input 事件的最大不同，就是不会连续触发，只有当全部修改完成时才会触发，另一个方面 input 事件必然伴随 change 事件：</p>
 <ul>
-<li>abort：外部资源中止加载时触发，如果发生错误导致中止，不会触发该事件</li>
-<li>error：由于错误导致外部资源无法加载时触发</li>
-<li>load：外部资源加载时触发</li>
-<li>loadstart：外部资源开始加载时触发</li>
-<li>loadend：外部资源停止加载时触发，发生顺序 error、abort、load 等事件的后面</li>
-<li>progress：外部资源加载过程中不断触发</li>
-<li>timeout：加载超时时触发</li>
+<li>激活单选框或者复选框时触发</li>
+<li>用户提交时触发。比如，从下拉列表 select 完成选择，在日期或文件输入框完成选择</li>
+<li>当文本框或者 textarea 元素的值发生改变，并且丧失焦点时触发</li>
 </ul>
-<p>除了资源下载，文件上传也有这些事件。</p>
-<p>有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能 load 和 error 事件的监听函数根本不会执行。所以，比较可靠的方式，是用 complete 属性先判断一下是否加载完成。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loaded</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (image.complete) &#123;</span><br><span class="line">  loaded();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  image.addEventListener(<span class="string">'load'</span>, loaded)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于 DOM 的元素节点没有提供是否加载错误的属性，所以 error 事件的监听函数最好放在 <code>&lt;img&gt;</code> 元素的 HTML 代码中，这样才能保证发生加载错误时百分之百执行。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/wrong/url"</span> <span class="attr">onerror</span>=<span class="string">"this.style.display='none';"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>loaded 事件本身不提供关于进度结束的原因，但可以用它来做所有加载结束场景都需要做一些操作。</p>
-<p>error 事件有一个特殊的性质，就是不会冒泡。所以，子元素的 error 事件时不会触发父元素的 error 事件监听函数的。</p>
-<h3 id="ProgressEvent-接口"><a href="#ProgressEvent-接口" class="headerlink" title="ProgressEvent 接口"></a>ProgressEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> ProgressEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>ProgressEvent 的 options 配置项除了继承自 Event 接口的配置属性外，还有：</p>
+<p>对 select 元素来说，input 和 change 事件基本是等价的。</p>
+<h3 id="invalid-事件"><a href="#invalid-事件" class="headerlink" title="invalid 事件"></a>invalid 事件</h3><p>用户提交表单时，如果表单元素的值不满足校验条件，就会触发 invalid 事件。</p>
+<h3 id="reset-事件、submit-事件"><a href="#reset-事件、submit-事件" class="headerlink" title="reset 事件、submit 事件"></a>reset 事件、submit 事件</h3><p>这两个事件发生在 form 表单元素上，而不是发生在表单成员上。</p>
+<p>reset 事件当表单重置（所有表单成员变回默认值）时触发</p>
+<p>submit 事件当表单数据向服务器提交时触发。注意，submit 事件的发生对象时 form 元素，而不是 button 元素。</p>
+<h3 id="InputEvent-接口"><a href="#InputEvent-接口" class="headerlink" title="InputEvent 接口"></a>InputEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> InputEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 配置项：</p>
 <ul>
-<li>lengthComputable：表示加载的总量是否可以计算</li>
-<li>loaded：表示已经加载的量</li>
-<li>total：表示需要加载的总量</li>
+<li>inputType：表示发生变更的类型</li>
+<li>data：表示插入的字符串。如果没有插入的字符串（比如删除操作），则返回 null 或空字符串</li>
+<li>dataTransfer：返回一个 DataTransfer 对象实例，该属性通常只在输入框接受富文本输入时有效。</li>
 </ul>
+<h4 id="InputEvent-data"><a href="#InputEvent-data" class="headerlink" title="InputEvent.data"></a>InputEvent.data</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="text" id="myInput"&gt;</span></span><br><span class="line"><span class="keyword">var</span> input = <span class="built_in">document</span>.getElementById(<span class="string">'myInput'</span>);</span><br><span class="line">input.addEventListener(<span class="string">'input'</span>, myFunction, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果在输入框内输入 abc，控制台会先输出 a，再在下一行输出 b，再在下一行输出 c，然后选中 abc，一次性将它们删除，控制台会输出 null 或一个空字符串。</p>
+<h4 id="InputEvent-inputType"><a href="#InputEvent-inputType" class="headerlink" title="InputEvent.inputType"></a>InputEvent.inputType</h4><p>常见字符串变更类型如下，完整查看<a href="https://w3c.github.io/input-events/index.html#dom-inputevent-inputtype" target="_blank" rel="noopener">文档</a></p>
+<ul>
+<li>手动插入文本：insertText</li>
+<li>粘贴插入文本：insertFromPaste</li>
+<li>向后删除：deleteContentBackward</li>
+<li>向前删除：deleteContentForward</li>
+</ul>
+<h4 id="InputEvent-dataTransfer"><a href="#InputEvent-dataTransfer" class="headerlink" title="InputEvent.dataTransfer"></a>InputEvent.dataTransfer</h4><p>返回一个 DataTransfer 实例，只在文本框接受粘贴内容 insertFromPaste 或拖拽内容 insertFromDrop 时才有效</p>
 
   </div>
   
@@ -82,7 +92,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/24/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/bjb/page/26/">26</a><a class="page-number" href="/bjb/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/26/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/24/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/23/">23</a><a class="page-number" href="/bjb/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/bjb/page/26/">26</a><a class="page-number" href="/bjb/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/26/">下一页&raquo;</a>
   </nav>
 
     </main>

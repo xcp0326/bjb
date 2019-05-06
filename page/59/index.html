@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">比较运算符</h2>
+    <h2 class="title">布尔运算符</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-22 10:32:58</span>
+    <span class="post-time">2018-11-22 11:01:08</span>
     <span class="post-tags">
       
     </span>
@@ -51,60 +51,50 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>比较运算符用于比较两个值的大小，然后返回一个布尔值，表示满足指定的条件。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> &gt; <span class="number">1</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>比较运算符可以比较各种类型的值，不仅仅是数值</p>
-<p>JavaScript 一共提供了 8 个比较运算符</p>
+<p>布尔运算符将表达式转为布尔值，一共包括四个运算符。</p>
 <ul>
-<li>大于运算符 <code>&gt;</code></li>
-<li>小于运算符 <code>&lt;</code></li>
-<li>小于或者等于运算符 <code>&lt;=</code></li>
-<li>大于或者等于运算符 <code>&gt;=</code></li>
-<li>相等运算符 <code>==</code></li>
-<li>严格相等运算符 <code>===</code></li>
-<li>不相等运算符 <code>!=</code></li>
-<li>严格不相等运算符 <code>!==</code></li>
+<li>取反运算符 <code>!</code></li>
+<li>与运算符 <code>&amp;&amp;</code></li>
+<li>或运算符 <code>||</code></li>
+<li>三元运算符 <code>?:</code></li>
 </ul>
-<p>这 8 个比较运算符分成两类：相等比较和非相等比较。两者的规则是不一样的。</p>
-<p>对于非相等比较：算法是先看两个运算子是否都是字符串，如果是的，就按照 Unicode 码点顺序比较；如果不是就将两个运算子都转成数值，再进行大小比较。</p>
-<h2 id="非相等运算符：字符串比较"><a href="#非相等运算符：字符串比较" class="headerlink" title="非相等运算符：字符串比较"></a>非相等运算符：字符串比较</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'cat'</span> &gt; <span class="string">'Cat'</span> <span class="comment">// true c 的码点 99 大于 C 的码点 67</span></span><br><span class="line"><span class="string">'cat'</span> &gt; <span class="string">'dog'</span> <span class="comment">// false c 的码点 99，d 的码点 100</span></span><br><span class="line"><span class="string">'大'</span> &gt; <span class="string">'小'</span> <span class="comment">// false 大的码点是 22823，小的码点是 23567</span></span><br></pre></td></tr></table></figure>
-<h2 id="非相等运算符：非字符串的比较"><a href="#非相等运算符：非字符串的比较" class="headerlink" title="非相等运算符：非字符串的比较"></a>非相等运算符：非字符串的比较</h2><p>如果运算子中，至少有一个不是字符串</p>
-<p>如果两个运算子都是原始类型值，则先转成数值再比较。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">5</span> &gt; <span class="string">'4'</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 5 &gt; Number('4')</span></span><br><span class="line"><span class="comment">// 即 5 &gt; 4</span></span><br><span class="line"></span><br><span class="line"><span class="literal">true</span> &gt; <span class="literal">false</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 Number(true) &gt; Number(false)</span></span><br><span class="line"><span class="comment">// 即 1 &gt; 0</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span> &gt; <span class="literal">true</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 2 &gt; Number(true)</span></span><br><span class="line"><span class="comment">// 即 2 &gt; 1</span></span><br></pre></td></tr></table></figure>
-<p>与 NaN 的比较，任何值包括 NaN 本身与 NaN 比较，返回的都是 false。NaN 任何数学运算结果都返回 NaN</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> &gt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">1</span> &lt;= <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="string">'1'</span> &gt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">NaN</span> &gt; <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">1</span> &gt; <span class="literal">undefined</span> <span class="comment">// undefined 会被转成数字 NaN</span></span><br></pre></td></tr></table></figure>
-<p>如果运算子都是对象，会转为原始类型的值，然后再进行比较</p>
-<p>对象转换成原始类型的值，算法是先调用 valueOf 方法；如果返回值还是对象，就再接着调用 toString 方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = [<span class="number">2</span>]</span><br><span class="line">x &gt; <span class="string">'11'</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 [2].valueOf().toString() &gt; '11'</span></span><br><span class="line"><span class="comment">// 即 '2' &gt; '11' '2'的码点比'1'要大</span></span><br><span class="line"></span><br><span class="line">x.valueOf = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="string">'1'</span>&#125;</span><br><span class="line">x &gt; <span class="string">'11'</span> <span class="comment">// false</span></span><br><span class="line"><span class="comment">// 等同于 [2].valueOf() &gt; '11'</span></span><br><span class="line"><span class="comment">// 即 '1' &gt; '11'</span></span><br></pre></td></tr></table></figure>
-<p>两个对象之间的比较也是如此</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span>] &gt; [<span class="number">1</span>] <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 [2].valueOf().toString() &gt; [1].valueOf().toString()</span></span><br><span class="line"><span class="comment">// 即 '2' &gt; '1'</span></span><br><span class="line"></span><br><span class="line">[<span class="number">2</span>] &gt; [<span class="number">11</span>] <span class="comment">//true</span></span><br><span class="line"><span class="comment">// 等同于 [2].valueOf().toString() &gt; [11].valueOf().toString()</span></span><br><span class="line"><span class="comment">// 即 '2' &gt; '11'</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="attr">x</span> : <span class="number">2</span>&#125; &gt;= &#123;<span class="attr">x</span> : <span class="number">1</span>&#125; <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 等同于 &#123;x : 2&#125;.valueOf().toString() &gt;= &#123;x:1&#125;.valueOf().toString()</span></span><br><span class="line"><span class="comment">// 即 '[object Object]' &gt;= '[object Object]'</span></span><br></pre></td></tr></table></figure>
-<h2 id="严格相等运算符"><a href="#严格相等运算符" class="headerlink" title="严格相等运算符"></a>严格相等运算符</h2><p>不同类型的值，返回 false</p>
-<p>同一类型的原始类型值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> === <span class="number">0x1</span> <span class="comment">// true 十六进制 0x1 就是十进制 1</span></span><br></pre></td></tr></table></figure>
-<p>NaN 与任何值都不相等包括它自身，正 0 等于 负 0</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">-0</span> === +<span class="number">0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>引用类型值比较时，是比较它们引用的是否是同一个地址。</p>
-<p>两个对象的比较，严格相等运算是比较的地址，但是大于或者小于运算符是比较的值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123;&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123;&#125;</span><br><span class="line">obj1 &gt; obj2 <span class="comment">// false</span></span><br><span class="line">obj1 &lt;= obj2 <span class="comment">// true</span></span><br><span class="line">obj1 === obj2 <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<p>undefined 和 null，自身比较是严格相等的</p>
-<h2 id="严格不相等运算符"><a href="#严格不相等运算符" class="headerlink" title="严格不相等运算符 !=="></a>严格不相等运算符 !==</h2><p>严格不相等的算法是先求严格相等运算符的结果，然后返回取反值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> ！== <span class="string">'1'</span> <span class="comment">// true 等同与 !(1==='1')</span></span><br></pre></td></tr></table></figure>
-<h2 id="相等运算符"><a href="#相等运算符" class="headerlink" title="相等运算符"></a>相等运算符</h2><ul>
-<li><p>原始类型的比较，会先转换成数值再进行比较</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> == <span class="literal">true</span></span><br><span class="line"><span class="comment">// 即 1 == Number(true) </span></span><br><span class="line"><span class="comment">// 1 == 1 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="string">'true'</span> == <span class="literal">true</span></span><br><span class="line"><span class="comment">// 即 Number('true') == Number(true) </span></span><br><span class="line"><span class="comment">// NaN == 1 结果为 false</span></span><br><span class="line"></span><br><span class="line"><span class="string">''</span> == <span class="number">0</span></span><br><span class="line"><span class="comment">// 即 Number('') == 0</span></span><br><span class="line"><span class="comment">// 0 == 0 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="string">''</span> == <span class="literal">false</span></span><br><span class="line"><span class="comment">// 即 Number('') == Number(false)</span></span><br><span class="line"><span class="comment">// 0 == 0 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="string">'1'</span> == <span class="literal">true</span></span><br><span class="line"><span class="comment">// 即 Number('1') == Number(true)</span></span><br><span class="line"><span class="comment">// 1 == 1 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="string">'\n  123 \t'</span> == <span class="number">123</span></span><br><span class="line"><span class="comment">// 因为字符串转换为数值，省略前置和后置的空格 Number('123') == 123</span></span><br><span class="line"><span class="comment">// 123 == 123 结果为 true</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对象与原始类型的比较，对象转成原始类型的值，再进行比较</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 对象与数值比较时，对象转为数值</span></span><br><span class="line">[<span class="number">1</span>] == <span class="number">1</span></span><br><span class="line"><span class="comment">// Number([1]) == 1</span></span><br><span class="line"><span class="comment">// 1 == 1 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象与字符串比较时，对象转为字符串</span></span><br><span class="line">[<span class="number">1</span>] == <span class="string">'1'</span></span><br><span class="line"><span class="comment">// String([1]) == '1'</span></span><br><span class="line"><span class="comment">// '1' == '1' 结果为 true</span></span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>] == <span class="string">'1, 2'</span></span><br><span class="line"><span class="comment">// String([1,2]) == '1,2'</span></span><br><span class="line"><span class="comment">// '1,2' == '1,2' 结果为 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象与布尔值进行比较时，两边都转为数值</span></span><br><span class="line">[<span class="number">1</span>] == <span class="literal">true</span></span><br><span class="line"><span class="comment">// Number([1]) == Number(true)</span></span><br><span class="line"><span class="comment">// 1 == 1 结果为 true</span></span><br><span class="line">[<span class="number">2</span>] == <span class="literal">true</span></span><br><span class="line"><span class="comment">// Number([2]) == Number(true)</span></span><br><span class="line"><span class="comment">// 2 == 1 结果为 false</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>undefined 和 null 与其他类型的值的比较都是为 false，它俩互相比较结果是 true。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span> == <span class="literal">undefined</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">0</span> == <span class="literal">null</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">false</span> == <span class="literal">undefined</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">false</span> == <span class="literal">null</span> <span class="comment">// false</span></span><br><span class="line"><span class="string">''</span> == <span class="literal">undefined</span> <span class="comment">// false</span></span><br><span class="line"><span class="string">''</span> == <span class="literal">null</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>相等运算符的缺点，违反直觉。建议用严格相等</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span> == <span class="string">''</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">0</span> == <span class="string">'0'</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">2</span> == <span class="literal">true</span> <span class="comment">// false</span></span><br><span class="line"><span class="number">2</span> == <span class="literal">false</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">false</span> == <span class="string">'false'</span> <span class="comment">// false  --&gt; Number(false) == Number('false') --&gt; 0 == NaN --&gt; false</span></span><br><span class="line"><span class="literal">false</span> == <span class="string">'0'</span> <span class="comment">// true</span></span><br><span class="line"><span class="literal">false</span> == <span class="literal">undefined</span> <span class="comment">// false</span></span><br><span class="line"><span class="literal">false</span> == <span class="literal">null</span> <span class="comment">// false</span></span><br><span class="line"><span class="string">' \t\r\n '</span> == <span class="number">0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-</li>
+<h2 id="取反运算符"><a href="#取反运算符" class="headerlink" title="取反运算符 !"></a>取反运算符 !</h2><p>以下 6 个值取反后为 true，其他都是 false</p>
+<ul>
+<li>undefined</li>
+<li>null</li>
+<li>‘’</li>
+<li>false</li>
+<li>NaN</li>
+<li>0</li>
 </ul>
-<h2 id="不相等运算符"><a href="#不相等运算符" class="headerlink" title="不相等运算符"></a>不相等运算符</h2><p>算法是先求相等运算符的结果，然后返回相反值。即</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> != <span class="string">'1'</span></span><br><span class="line"><span class="comment">// 即 !(1 == '1')</span></span><br><span class="line"><span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">!&#123;&#125; <span class="comment">// false</span></span><br><span class="line">![] <span class="comment">// false</span></span><br><span class="line">!<span class="string">'hhh'</span> <span class="comment">// false</span></span><br><span class="line">!<span class="literal">null</span> <span class="comment">// true</span></span><br><span class="line">!<span class="number">0</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>对一个值连续做两次取反运算，等于将其转为对应的布尔值，与 Boolean 函数的作用相同。两次取反就是将一个值转为布尔值的简便写法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">!!x <span class="comment">// 即 Boolean(x)</span></span><br></pre></td></tr></table></figure>
+<h2 id="与运算符-amp-amp"><a href="#与运算符-amp-amp" class="headerlink" title="与运算符 &amp;&amp;"></a>与运算符 &amp;&amp;</h2><p>与运算符往往用于多个表达式求值</p>
+<ul>
+<li>如果第一个运算子的布尔值为 true，则返回第二个运算子的值</li>
+<li>如果第一个运算子的布尔值为 false，则返回第一个运算子的值，且不再对第二个运算子求值</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> &amp;&amp; <span class="string">''</span> <span class="comment">// ''</span></span><br><span class="line"><span class="string">'t'</span> &amp;&amp; <span class="string">'a'</span> <span class="comment">// 'a'</span></span><br><span class="line"><span class="string">'t'</span> &amp;&amp; (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"><span class="string">''</span> &amp;&amp; <span class="string">'f'</span> <span class="comment">// ''</span></span><br><span class="line"><span class="string">''</span> &amp;&amp; (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// ''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">(<span class="number">1</span> - <span class="number">1</span>) &amp;&amp; (x += <span class="number">1</span>) <span class="comment">// 0</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>这种跳过第二个运算子的机制，叫做“短路” short-cut。也可以用 if 结构来实现</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (i) &#123;</span><br><span class="line">  doSomething()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以用与运算简写为</span></span><br><span class="line">i &amp;&amp; doSomething()</span><br></pre></td></tr></table></figure>
+<p>但是简写的代码看不出目的，也不容易除错，所以建议谨慎使用</p>
+<p>与运算符可以多个连用，这时候返回第一个布尔值为 false 的表达式的值。如果所有表达式的值都为 true，那么返回最后一个表达式的值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> &amp;&amp; <span class="string">'foo'</span> &amp;&amp; <span class="number">0</span> &amp;&amp; <span class="literal">true</span> <span class="comment">// 0</span></span><br><span class="line"><span class="number">1</span> &amp;&amp; <span class="literal">true</span> &amp;&amp; <span class="number">9</span> <span class="comment">// 9</span></span><br></pre></td></tr></table></figure>
+<h2 id="或运算符"><a href="#或运算符" class="headerlink" title="或运算符 ||"></a>或运算符 ||</h2><p>或运算符也是用于多个表达式求值</p>
+<ul>
+<li>如果第一个运算子的布尔值是 true，则返回第一个运算子的值，且不再对第二个运算子求值</li>
+<li>如果第一个运算子的布尔值是 false，则返回第二个运算子的值</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> || <span class="string">''</span> <span class="comment">// 't'</span></span><br><span class="line"><span class="string">''</span> || (<span class="number">1</span> + <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="literal">true</span> || (x = <span class="number">2</span>) <span class="comment">// true</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>也是“短路”机制</p>
+<p>也可以多个连用，返回第一个布尔值为 true 的表达式，如果所有表达式都是 false，则返回最后一个表达式的值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">false</span> || <span class="number">0</span> || <span class="string">''</span> || <span class="number">4</span> || <span class="string">'foo'</span> || <span class="literal">true</span> <span class="comment">// 4</span></span><br><span class="line"><span class="literal">false</span> || <span class="number">0</span> || <span class="string">''</span> <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
+<p>或运算符常用于给一个变量设置默认值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">saveText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  text = text || <span class="string">''</span></span><br><span class="line">  <span class="comment">// xxx</span></span><br><span class="line">&#125;</span><br><span class="line">saveText(<span class="keyword">this</span>.text || <span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="三元条件运算符"><a href="#三元条件运算符" class="headerlink" title="三元条件运算符 ?:"></a>三元条件运算符 ?:</h2><p>三元条件运算符是由问好和冒号组成，分隔三个表达式。它是 JavaScript 语言的唯一一个需要三个运算子的运算符。如果第一个表达式的布尔值为 true，则返回第二个表达式的值，否则返回第三个表达式的值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'t'</span> ? <span class="string">'hello'</span> : <span class="string">'world'</span> <span class="comment">// 'hello'</span></span><br><span class="line"><span class="string">''</span> ? <span class="string">'hello'</span> : <span class="string">'world'</span> <span class="comment">// 'world'</span></span><br></pre></td></tr></table></figure>
+<p>三元条件表达式与 if … else 语句具有相同的表达效果，前者可以表达的，后者也能表达。但是两者具有一个重大差别，if … else 是语句，没有返回值；三元条件表达式是表达式，具有返回值。所以在需要返回的值的场合，只能使用三元条件表达式，而不能用 if … else。</p>
 
   </div>
   
@@ -112,7 +102,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/58/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/57/">57</a><a class="page-number" href="/bjb/page/58/">58</a><span class="page-number current">59</span><a class="page-number" href="/bjb/page/60/">60</a><a class="page-number" href="/bjb/page/61/">61</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/60/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/58/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/57/">57</a><a class="page-number" href="/bjb/page/58/">58</a><span class="page-number current">59</span><a class="page-number" href="/bjb/page/60/">60</a><a class="page-number" href="/bjb/page/61/">61</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/60/">下一页&raquo;</a>
   </nav>
 
     </main>

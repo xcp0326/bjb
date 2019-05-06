@@ -38,13 +38,11 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">EventTarget 接口</h2>
+    <h2 class="title">事件模型</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-03 11:28:29</span>
+    <span class="post-time">2019-02-13 14:35:26</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/DOM/">DOM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/事件/">事件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/发布订阅/">发布订阅</a></li></ul>
       
     </span>
     
@@ -53,40 +51,39 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>事件本质是程序各个组成部分之间的一种通信方式，也是异步编程的一种实现。</p>
-<p>DOM 的事件操作（监听和触发）都定义在 EventTarget 接口。所有节点对象都部署了这个接口 比如一个 div 节点元素：</p>
-<p>HTMLDivElement 继承自 HTMLElement<br>  =&gt; HTMLElement 继承自 Element<br>    =&gt; Element 继承自 Node<br>      =&gt; Node 继承自 EventTarget<br>        =&gt; EventTarget 继承自 Object 原型链终点</p>
-<p>还有其他一些需要事件通信的浏览器内置对象 比如 XMLHttpRequest 也部署了这个接口：</p>
-<p>XMLHttpRequest 继承自 XMLHttpRequestEventTarget<br>  =&gt; XMLHttpRequest 继承自 EventTarget<br>    =&gt; EventTarget 继承自 Object 原型链终点</p>
-<p>EventTarget 接口的三个实例方法：</p>
+<p>浏览器的事件模型，就是通过监听函数 listener 对事件做出的反应。事件发生后，浏览器监听到了这个事件，就会执行对应的监听函数。这是事件驱动编程模式 event-driven 的主要编程方式。</p>
+<p>JavaScript 有三种方法，可以为事件绑定监听函数：</p>
+<ol>
+<li>HTML 的 on- 属性</li>
+<li>元素节点的事件属性</li>
+<li>EventTarget.addEventListener</li>
+</ol>
+<h3 id="事件的传播"><a href="#事件的传播" class="headerlink" title="事件的传播"></a>事件的传播</h3><p>一个事件发生后，会在子元素和父元素之间传播 propagation。这种传播分为三个阶段：</p>
 <ul>
-<li>addEventListener 添加事件侦听器</li>
-<li>removeEventListener 移除事件侦听器</li>
-<li>dispatchEvent （IE 的 fireEvent，jQuery 的 trigger() 方法）触发指定事件</li>
+<li>第一个阶段：从 window 对象传导到目标节点（上层到底层），称为“捕获阶段” capture phase</li>
+<li>第二个阶段：在目标节点上触发，称为“目标阶段” target phase</li>
+<li>第三个阶段：从目标节点传导回 window 对象（从底层传回上层），称为“冒泡阶段” bubbling phase</li>
 </ul>
-<h3 id="addEventListener-添加事件侦听器"><a href="#addEventListener-添加事件侦听器" class="headerlink" title="addEventListener 添加事件侦听器"></a>addEventListener 添加事件侦听器</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target.addEventListener(eventType, listener[, useCapture])</span><br><span class="line">target.addEventListener(eventType, listener[, options])</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>useCapture：true 表示捕获，false 表示冒泡，默认为 false 冒泡<br><img src="https://www.w3.org/TR/DOM-Level-3-Events/images/eventflow.svg" alt="Graphical representation of an event dispatched in a DOM tree using the DOM event flow"></p>
-</li>
-<li><p>listener：是指实现了 EventListener 接口的对象或者说一个函数</p>
-<ul>
-<li><p>一个 EventListener 接口对象的例子：EventListener 下须有且只有 handleEvent() 函数</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">buttonElement.addEventListener(<span class="string">'click'</span>, &#123;</span><br><span class="line">  handleEvent: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'Element clicked through handleEvent property!'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>options：是一个属性配置对象，<code>{capture: true, once: true, passive: true}</code>。capture 是否在捕获阶段触发事件；once 表示监听事件只会触发一次，然后自动移除；passive 表示 listener 不会调用事件的 preventDefault 方法，如果 listener 调用了这个函数，客户端将会忽略它并抛出一个控制台警告。</p>
-</li>
-</ul>
-<h3 id="removeEventListener-移除事件侦听器"><a href="#removeEventListener-移除事件侦听器" class="headerlink" title="removeEventListener 移除事件侦听器"></a>removeEventListener 移除事件侦听器</h3><p>移除 addEventListener 方法添加的事件侦听器，参数必须与 addEventListener 完全一致，节点也必须是同一个。</p>
-<h3 id="dispathEvent-触发事件"><a href="#dispathEvent-触发事件" class="headerlink" title="dispathEvent 触发事件"></a>dispathEvent 触发事件</h3><p>在节点上触发指定事件（事件必须是 Event 对象实例），从而触发 listener 的执行。返回一个布尔值，如果 listener 调用了 event.preventDefault()，返回 false，否则 true。</p>
-<p>可以根据返回值判断事件是否被取消了：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> canceled = !cb.dispatchEvent(event);</span><br><span class="line"><span class="keyword">if</span> (canceled) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'事件取消'</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'事件未取消'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="事件侦听器-vs-事件处理器"><a href="#事件侦听器-vs-事件处理器" class="headerlink" title="事件侦听器 vs 事件处理器"></a>事件侦听器 vs 事件处理器</h3><ul>
-<li>事件侦听器是通过 EventTarget.addEventListener 注册的函数，一个事件可以注册多个，在 eventloop 时候，会先后执行。</li>
-<li>事件处理器是通过 on… 属性注册的函数，一个事件只能注册一个，后注册的会覆盖先注册的函数。</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">1</span>)&#125;, <span class="literal">false</span>)</span><br><span class="line">div.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">2</span>)&#125;, <span class="literal">false</span>)</span><br><span class="line">div.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">3</span>)&#125;</span><br><span class="line">div.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;alert(<span class="number">4</span>)&#125;</span><br><span class="line"><span class="keyword">const</span> e = <span class="keyword">new</span> Event(<span class="string">'click'</span>)</span><br><span class="line">div.dispatchEvent(e) <span class="comment">// 依次 alert 1，2，4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">    click</span><br><span class="line">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对 div 和 p 都设置了 click 事件的监听函数，每个节点的捕获和冒泡阶段都设置监听函数，点击 p ，click 事件会被触发四次：</p>
+<ol>
+<li>捕获阶段：事件从 div 向 p 传播时，触发 div 的 click 事件</li>
+<li>目标阶段：事件从 div 到达 p 时，触发 p 的 click 事件</li>
+<li>冒泡阶段：事件从 p 传回 div 时，再次触发 div 的 click 事件</li>
+</ol>
+<p>其中 p 节点有两个监听函数 （addEventListener 方法第三个参数的不同，会导致绑定两个监听函数），因此它们都会因为 click 事件而各自被触发一次。</p>
+<p>注意，浏览器总是假定 click 事件的目标节点，就是点击位置嵌套最深的那个节点。所以 p 节点的捕获阶段和冒泡阶段都会显示为目标阶段。</p>
+<p>事件传播的最上层对象是 window，接着依次是 document，html（document.documentElement）和 body（document.body）。</p>
+<h3 id="事件的代理"><a href="#事件的代理" class="headerlink" title="事件的代理"></a>事件的代理</h3><p>事件会在冒泡阶段向上传播到父节点、在捕获阶段会从向下传播到目标节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做事件代理 delegation。</p>
+<p>如果希望事件到某个节点为止，不再传播，可以使用事件对象的 stopPropagation 方法</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 事件传播到 p 元素后，就不再向下传播了</span></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">&#125;, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件冒泡到 p 元素后，就不再向上冒泡了</span></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p>stopPropagation 只能阻止事件的传播，不会阻止该事件触发 p 节点的其他 click 事件的监听函数。也就是说不是彻底取消 click 事件。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 会触发</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果想要彻底取消该事件，不再出发后面所有的 click 的监听函数，可以使用 stopImmediatePropagation 方法</p>
+<blockquote>
+<p>阻止事件冒泡并且阻止相同事件的其他侦听器被调用。<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Event/stopImmediatePropagation" target="_blank" rel="noopener">event.stopImmediatePropagation</a></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopImmediatePropagation();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 不会被触发</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -94,7 +91,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/29/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/28/">28</a><a class="page-number" href="/bjb/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/31/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/29/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/28/">28</a><a class="page-number" href="/bjb/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/31/">下一页&raquo;</a>
   </nav>
 
     </main>

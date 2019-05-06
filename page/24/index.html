@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">表单事件</h2>
+    <h2 class="title">触摸事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-19 13:24:08</span>
+    <span class="post-time">2019-02-19 14:32:57</span>
     <span class="post-tags">
       
     </span>
@@ -51,40 +51,63 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h3 id="input-事件"><a href="#input-事件" class="headerlink" title="input 事件"></a>input 事件</h3><p>input 事件是当 input 元素、select 元素、textarea 元素的值发生变化时触发。对于复选框<code>&lt;input type=&quot;checkbox&quot;&gt;</code>或者<code>&lt;input type=&quot;radio&quot;&gt;</code> 单选框，用户改变选项时，也会触发这个事件。</p>
-<p>另外对于打开了 contenteditable 属性的元素，只要值发生变化，也会触发 input 事件。</p>
-<p>input 事件的一个特点，就是会连续触发，比如用户没按下一次按键，就会触发一次 input 事件。</p>
-<p>input 事件继承自 InputEvent 接口</p>
-<p>input 事件跟 change 事件很像，不同之处在于 iput 事件在元素的值发生变化后立即发生，而 change 事件时在元素失去焦点的时候触发，此时内容可能已经发生了多次变化了。也就是说，如果有连续变化，input 事件会触发多次，而 change 事件只在失去焦点时触发一次。</p>
-<h3 id="select-事件"><a href="#select-事件" class="headerlink" title="select 事件"></a>select 事件</h3><p>当 input 元素、textarea 元素里面选中文本时触发。选中的文本可以通过 event.target 元素的 selectDirection、selectionEnd、selectionStart 和 value 属性拿到。</p>
-<h3 id="change-事件"><a href="#change-事件" class="headerlink" title="change 事件"></a>change 事件</h3><p>当 input 元素、textarea 元素、select 元素的值发生变化时触发。它与 input 事件的最大不同，就是不会连续触发，只有当全部修改完成时才会触发，另一个方面 input 事件必然伴随 change 事件：</p>
+<p>浏览器的触摸 API 由三部分组成：</p>
 <ul>
-<li>激活单选框或者复选框时触发</li>
-<li>用户提交时触发。比如，从下拉列表 select 完成选择，在日期或文件输入框完成选择</li>
-<li>当文本框或者 textarea 元素的值发生改变，并且丧失焦点时触发</li>
+<li>Touch：一个触摸点</li>
+<li>TouchList：多个触摸点的集合</li>
+<li>TouchEvent：触摸引发的事件实例</li>
 </ul>
-<p>对 select 元素来说，input 和 change 事件基本是等价的。</p>
-<h3 id="invalid-事件"><a href="#invalid-事件" class="headerlink" title="invalid 事件"></a>invalid 事件</h3><p>用户提交表单时，如果表单元素的值不满足校验条件，就会触发 invalid 事件。</p>
-<h3 id="reset-事件、submit-事件"><a href="#reset-事件、submit-事件" class="headerlink" title="reset 事件、submit 事件"></a>reset 事件、submit 事件</h3><p>这两个事件发生在 form 表单元素上，而不是发生在表单成员上。</p>
-<p>reset 事件当表单重置（所有表单成员变回默认值）时触发</p>
-<p>submit 事件当表单数据向服务器提交时触发。注意，submit 事件的发生对象时 form 元素，而不是 button 元素。</p>
-<h3 id="InputEvent-接口"><a href="#InputEvent-接口" class="headerlink" title="InputEvent 接口"></a>InputEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> InputEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>options 配置项：</p>
+<p>Touch 接口的实例对象用来表示触摸点（一根手指或者一根触摸笔），包括位置、大小、形状、压力、目标元素等属性。有时，触摸动作由多一个触摸点（多根手指）组成，多个触摸点的集合由 TouchList 接口的实例对象表示。TouchEvent 接口的实例对象代表由触摸引发的事件，只有触摸屏才会引发这一类事件。</p>
+<p>很多时候，触摸事件和鼠标事件同时触发，即使这个时候并没有用到鼠标。这是为了让那些只定义鼠标事件、没有定义触摸事件的代码，在触摸屏的情况下仍然能用。如果想避免这种情况，可以用 event.preventDefault 方法阻止发出鼠标事件。</p>
+<h3 id="Touch-接口"><a href="#Touch-接口" class="headerlink" title="Touch 接口"></a>Touch 接口</h3><p>Touch 接口代表单个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> touch = <span class="keyword">new</span> Touch(touchOptions)</span><br></pre></td></tr></table></figure>
+<p>Touch 构造函数接受一个配置对象作为参数，它有以下属性：</p>
 <ul>
-<li>inputType：表示发生变更的类型</li>
-<li>data：表示插入的字符串。如果没有插入的字符串（比如删除操作），则返回 null 或空字符串</li>
-<li>dataTransfer：返回一个 DataTransfer 对象实例，该属性通常只在输入框接受富文本输入时有效。</li>
+<li>identifier：必需，类型为整数，表示触摸点的唯一 ID，整个触摸过程保持不变，直到触摸事件结束。</li>
+<li>target：必需，类型为元素节点，表示触摸发生时所在的元素节点。即使触摸点已经离开了这个节点，该属性依然不变。</li>
+<li>clientX / clientY / screenX / screenY / pageX / pageY：可选</li>
+<li>radiusX / radiusY：表示触摸点周围到影响的椭圆范围的 X 轴 / Y 轴半径，单位是像素。乘以 2 就可以得到触摸范围的宽度和高度。</li>
+<li>rotationAngle：表示触摸区域的椭圆的旋转角度，默认为 0，单位是度数，在 0 - 90 度之间。</li>
+<li>force：范围在 0 - 1 之间，表示触摸压力，0 代表没有压力，1 代表硬件所能识别的最大压力。默认为 0。</li>
 </ul>
-<h4 id="InputEvent-data"><a href="#InputEvent-data" class="headerlink" title="InputEvent.data"></a>InputEvent.data</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="text" id="myInput"&gt;</span></span><br><span class="line"><span class="keyword">var</span> input = <span class="built_in">document</span>.getElementById(<span class="string">'myInput'</span>);</span><br><span class="line">input.addEventListener(<span class="string">'input'</span>, myFunction, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果在输入框内输入 abc，控制台会先输出 a，再在下一行输出 b，再在下一行输出 c，然后选中 abc，一次性将它们删除，控制台会输出 null 或一个空字符串。</p>
-<h4 id="InputEvent-inputType"><a href="#InputEvent-inputType" class="headerlink" title="InputEvent.inputType"></a>InputEvent.inputType</h4><p>常见字符串变更类型如下，完整查看<a href="https://w3c.github.io/input-events/index.html#dom-inputevent-inputtype" target="_blank" rel="noopener">文档</a></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'touchstart'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchmove'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchend'</span>, rotate);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rotate</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> touch = e.changedTouches.item(<span class="number">0</span>);</span><br><span class="line">  e.preventDefault();</span><br><span class="line"></span><br><span class="line">  src.style.width = touch.radiusX * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.height = touch.radiusY * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.transform = <span class="string">'rotate('</span> + touch.rotationAngle + <span class="string">'deg)'</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="TouchList-接口"><a href="#TouchList-接口" class="headerlink" title="TouchList 接口"></a>TouchList 接口</h3><p>表示一组触摸点的集合。它的实例是一个类似数组的对象，成员是 Touch 的实例对象，表示所有触摸点。用户用三根手指触摸，产生的 TouchList 实例就会包含三个成员，每根手指的触摸点对应一个 Touch 实例对象</p>
+<p>它的实例主要通过事件的 TouchEvent.touches、TouchEvent.changedTouches、TouchEvent.targetTouches 这几个属性获取。</p>
+<p>它的实例属性和实例方法只有两个：</p>
 <ul>
-<li>手动插入文本：insertText</li>
-<li>粘贴插入文本：insertFromPaste</li>
-<li>向后删除：deleteContentBackward</li>
-<li>向前删除：deleteContentForward</li>
+<li>TouchList.length</li>
+<li>TouchList.item()：返回指定位置的成员，它的参数是该成员的位置编号</li>
 </ul>
-<h4 id="InputEvent-dataTransfer"><a href="#InputEvent-dataTransfer" class="headerlink" title="InputEvent.dataTransfer"></a>InputEvent.dataTransfer</h4><p>返回一个 DataTransfer 实例，只在文本框接受粘贴内容 insertFromPaste 或拖拽内容 insertFromDrop 时才有效</p>
+<h3 id="TouchEvent-接口"><a href="#TouchEvent-接口" class="headerlink" title="TouchEvent 接口"></a>TouchEvent 接口</h3><p>继承了 Event 接口，表示由触摸引发的事件实例，通常来自触摸屏或轨迹板。除了被继承的属性以外，它还有一些自己的属性。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> TouchEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 除了 Event 接口的配置项：</p>
+<ul>
+<li>touches：TouchList 实例，代表所有的当前处于活跃状态的触摸点，默认是一个空数组</li>
+<li>targetTouches：TouchList 实例，代表所有处在触摸的目标元素节点内部、且仍然处于活动状态的触摸点，默认值是一个空数组</li>
+<li>changedTouches：TouchList 实例，代表本次触摸事件的相关触摸点，默认值是一个空数组</li>
+<li>ctrlKey / shiftKey / altKey / metaKey： 表示是否同时按下 Ctrl / Shift / Alt / Meta 键</li>
+</ul>
+<h4 id="TouchEvent-changedTouches"><a href="#TouchEvent-changedTouches" class="headerlink" title="TouchEvent.changedTouches"></a>TouchEvent.changedTouches</h4><p>返回一个 TouchList 实例，成员是一组 Touch 实例对象，表示本次触摸事件的相关触摸点。</p>
+<p>对于不同的时间，该属性的含义有所不同</p>
+<ul>
+<li>touchstart 事件：被激活的触摸点</li>
+<li>touchmove 事件：发生变化的触摸点</li>
+<li>touchend 事件：消失的触摸点（即不再被触碰的点）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.changeTouches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.changeTouches[i].identifier)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="TouchEvent-touches"><a href="#TouchEvent-touches" class="headerlink" title="TouchEvent.touches"></a>TouchEvent.touches</h4><p>返回一个 TouchList 实例，成员是所有仍然处于活动状态（即触摸中）的触摸点。一般来说，一个手指就是一个触摸点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (e.touches.length) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>: handle_one_touch(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>: handle_two_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>: handle_three_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="built_in">console</span>.log(<span class="string">'not supported'</span>); <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="TouchEvent-targetTouches"><a href="#TouchEvent-targetTouches" class="headerlink" title="TouchEvent.targetTouches"></a>TouchEvent.targetTouches</h4><p>返回一个 TouchList 实例，成员是触摸事件的目标元素节点内部、所有仍然处于活动状态（即触摸中）的触摸点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">touches_in_target</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (evt.touches.length === evt.targetTouches.length ? <span class="literal">true</span> : <span class="literal">false</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码用来判断是否所有的触摸点都在目标元素内。</p>
+<h2 id="触摸事件的种类"><a href="#触摸事件的种类" class="headerlink" title="触摸事件的种类"></a>触摸事件的种类</h2><p>触摸引发的事件，有以下几种。可以通过 TouchEvent.type 属性，查看到底发生的哪一种事件：</p>
+<ul>
+<li>touchstart：用户开始触摸时触发，它的 target 属性返回发生触摸的元素节点</li>
+<li>touchend：用户不再接触触摸屏时（或移出屏幕边缘时）触发，它的 target 属性与 touchstart 事件一致的，就是开始触摸时所在的元素节点。它的 changedTouches 属性返回一个 TouchList 实例，包含所有不再触摸的触摸点</li>
+<li>touchmove：用户移动触摸点时触发，它的 target 属性与 touchstart 事件一致。如果触摸的半径、角度、力度发生变化，也会触发该事件</li>
+<li>touchcancel：触摸点取消时触发，比如在触摸区域跳出一个模态窗口（modal window）、触摸点离开文档区域（进入浏览器菜单栏）、用户的触摸点太多，超过了支持的上限（自动取消早先的触摸点）。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>];</span><br><span class="line">el.addEventListener(<span class="string">'touchstart'</span>, handleStart, <span class="literal">false</span>);</span><br><span class="line">el.addEventListener(<span class="string">'touchmove'</span>, handleMove, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleStart</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(touches[i].pageX, touches[i].pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleMove</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> touch = touches[i];</span><br><span class="line">    <span class="built_in">console</span>.log(touch.pageX, touch.pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -92,7 +115,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/23/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/22/">22</a><a class="page-number" href="/bjb/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/bjb/page/25/">25</a><a class="page-number" href="/bjb/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/25/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/23/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/22/">22</a><a class="page-number" href="/bjb/page/23/">23</a><span class="page-number current">24</span><a class="page-number" href="/bjb/page/25/">25</a><a class="page-number" href="/bjb/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/25/">下一页&raquo;</a>
   </nav>
 
     </main>

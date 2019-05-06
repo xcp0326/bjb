@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">NodeList 接口，HTMLCollection 接口</h2>
+    <h2 class="title">ParentNode 接口，ChildNode 接口</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-24 23:50:27</span>
+    <span class="post-time">2018-12-25 00:24:44</span>
     <span class="post-tags">
       
     </span>
@@ -51,16 +51,16 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>NodeList 是 Node 对象的伪数组</p>
-<p>HTMLCollection 是标签节点的伪数组</p>
-<p>Node.childNodes 属性返回 NodeList，也只有这个属性的返回的 NodeList 是动态集合</p>
-<p>document.querySelectorAll() 节点搜索方法返回 NodeList</p>
-<p>NodeList 有 forEach 方法和 length 属性，但是么有数组的 push 等方法</p>
-<p>NodeList 的 item 方法，参数为整数值，表示成员的位置，返回该位置的成员。这个方法等价于 <code>NodeList[&lt;int&gt;]</code></p>
-<p>keys、values、entries 三个方法分别返回一个键名遍历器、一个键值遍历器、一个包含键名和键值的遍历器。遍历器对象可以通过 for…of 循环遍历获取每一个成员的信息。</p>
-<p>HTMLCollection 没有 forEach 方法，只能使用 for 循环。它主要是一些 Document 对象的集合属性：document.links、document.forms、document.images 等。如果节点有 id 或 name 属性，可以用 id 或者 name 来引用节点元素。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;img id="pic" src="http://example.com/foo.jpg"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pic = <span class="built_in">document</span>.getElementById(<span class="string">'pic'</span>);</span><br><span class="line"><span class="built_in">document</span>.images.pic === pic <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>namedItem() 参数为 id 属性或 name 属性的值，返回对应的标签节点，如果么有返回 null。</p>
+<p>节点对象除了继承 Node 对象外，还会继承其他接口。 ParentNode 接口表示当前节点是一个父节点，它会有一些处理子节点的方法。ChildNode 接口表示当前节点是一个子节点，提供一些相关方法。</p>
+<p>标签节点、文档节点、文档片段节点才有父节点。</p>
+<p>ParentNode.children 属性，当前节点作为父节点，返回当前父节点的所有标签子节点，一个 HTMLCollection 实例，HTMLCollection 是动态集合。</p>
+<p>ParentNode.firstElementChild、ParentNode.lastElementChild、parentNode.childElementCount</p>
+<p>ParentNode.append() 当前节点下的最后一个节点后加一个或多个子节点，子节点可以是文本节点。</p>
+<p>ParentNode.prepend() 当前节点下的第一个元素节点前添加一个或多个子节点，子节点可以是文本节点。</p>
+<p>如果一个节点有父节点，那么该节点就继承了 ChildNode 接口。</p>
+<p>ChildNode.remove()</p>
+<p>ChildNode.before()、ChildNode.after()：在当前节点前面、后面插入一个或多个同级节点。节点可以是文本节点。</p>
+<p>ChildNode.replaceWith()：使用参数节点替换当前节点。参数节点可以是文本节点。</p>
 
   </div>
   
@@ -68,7 +68,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/38/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/bjb/page/40/">40</a><a class="page-number" href="/bjb/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/40/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/38/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/37/">37</a><a class="page-number" href="/bjb/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/bjb/page/40/">40</a><a class="page-number" href="/bjb/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/40/">下一页&raquo;</a>
   </nav>
 
     </main>

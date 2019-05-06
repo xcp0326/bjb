@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">同源限制</h2>
+    <h2 class="title">CORS 通信</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-04-01 13:32:05</span>
+    <span class="post-time">2019-04-12 00:00:55</span>
     <span class="post-tags">
       
     </span>
@@ -51,50 +51,23 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>浏览器安全的基石 同源策略。</p>
-<p>95 年由网景公司引入。最初的含义是指 A 网页设置的 Cookie B 网页不能访问，除非同源。所谓同源就是指：协议相同、域名相同、端口相同。</p>
-<p>非同源网页无法读取 DOM、Cookie、Web Storage 和 IndexDB，浏览器拒绝接受非同源地址发送的 AJAX 请求的响应。</p>
-<p>非同源的网页，目前允许一个窗口可以接触其他网页的 window 对象的 9 个属性和 4 个方法：<br>    window.closed、window.frames、window.length、window.location、window.opener、<br>    window.parent、window.self、window.top、window.window、<br>    window.blur()、 window.close()、window.focus()、window.postMessage()</p>
-<p><strong>如果规避同源限制</strong></p>
-<ol>
-<li><p>Cookie：只有两个网页是同一个一级域名下的不同二级域名，</p>
-<ul>
-<li>可以通过在两个网页都设置 document.domain 为一级域名来共享 Cookie。<br>因为浏览器是通过 document.domain 属性来检查是否同源的。因为 document.domain 会把端口号重置为 null，所以如果只设置一个网页的 document.domain，<br>会导致两个网址的端口不同。</li>
-<li>可以在服务器设置 Cookie 的时候，设置 domain 为一级域名。<br>显然服务器端修改更方便。</li>
-</ul>
-</li>
-<li><p>iframe 和多窗口通信</p>
-<ul>
-<li>可以在网页中的 iframe 元素嵌入其他网页。每个 iframe 有自己的网页，有自己的 window 对象。<br>同源情况下，iframe 窗口中的脚本可以获得父窗口和子窗口。同 Cookie 设置一样，如果同一个一级域名下的不同二级域名，就可以通过给两个 iframe<br>设置相同的 document.domain 来实现通信。</li>
-<li>完全不同源的话，可以使用<strong>片段标识符</strong>。片段标识符是指 fragment identifier，URL 的 <code>#</code> 号后面的部分。父窗口可以把信息<br>写入子窗口的片段标识符，子窗口则可以通过监听 hashchange 事件获取片段标识符。</li>
-<li>完全不同源的话，还可以通过 window.postMessage() 跨文档通信 API Cross-document messaging。<br>不同源网页都可以通过监听 message 事件，监听对方的消息。message 事件的参数事件对象 event，有三个属性<ol>
-<li>event.source 发送消息的窗口</li>
-<li>event.origin 消息发送的网址</li>
-<li>event.data 消息内容</li>
-</ol>
-</li>
-<li><p>window.postMessage 读写 localStorage    </p>
-<ul>
-<li><p>父窗口发送消息：        </p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> win = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'iframe'</span>)[<span class="number">0</span>].contentWindow;</span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">name</span>: <span class="string">'Jack'</span> &#125;;</span><br><span class="line"><span class="comment">// 存入对象</span></span><br><span class="line">win.postMessage(</span><br><span class="line">    <span class="built_in">JSON</span>.stringify(&#123;<span class="attr">key</span>: <span class="string">'storage'</span>, <span class="attr">method</span>: <span class="string">'set'</span>, <span class="attr">data</span>: obj&#125;),</span><br><span class="line">    <span class="string">'http://bbb.com'</span></span><br><span class="line">);</span><br><span class="line"><span class="comment">// 读取对象</span></span><br><span class="line">win.postMessage(</span><br><span class="line">    <span class="built_in">JSON</span>.stringify(&#123;<span class="attr">key</span>: <span class="string">'storage'</span>, <span class="attr">method</span>: <span class="string">"get"</span>&#125;),</span><br><span class="line">    <span class="string">"*"</span></span><br><span class="line">);</span><br><span class="line"><span class="built_in">window</span>.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.origin != <span class="string">'http://aaa.com'</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(e.data).name);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>子窗口将父窗口发来的消息写入自己的 localStorage：        </p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.origin !== <span class="string">'http://bbb.com'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> payload = <span class="built_in">JSON</span>.parse(e.data);</span><br><span class="line">    <span class="keyword">switch</span> (payload.method) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'set'</span>:</span><br><span class="line">            localStorage.setItem(payload.key, <span class="built_in">JSON</span>.stringify(payload.data));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'get'</span>:</span><br><span class="line">            <span class="keyword">var</span> parent = <span class="built_in">window</span>.parent;</span><br><span class="line">            <span class="keyword">var</span> data = localStorage.getItem(payload.key);</span><br><span class="line">            parent.postMesage(data, <span class="string">'http://aaa.com'</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'remove'</span>:</span><br><span class="line">            localStorage.removeItem(payload.key);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<ol start="3">
-<li>AJAX<ul>
-<li>服务器端设置代理，浏览器请求同源服务器，再由后者请求外部服务。</li>
-<li>JSONP<br>  网页动态插入一个 <code>&lt;script&gt;</code> 元素，向服务器发送请求。该请求的查询字符串有一个 callback 参数，<br>  用来指定回调函数的名字。服务器收到请求后，会将数据放在这个回调函数里传回来。网页定义了这个回调函数，该函数就会立即调用。</li>
-<li>WebSocket 是一种通信协议，使用 ws:// 和 wss:// 作为协议前缀。不实行同源协议，只要服务器支持，就可以通过它进行跨源通信。<br>浏览器发出的 WebSocket 通信协议请求的头信息里面包含字段 Origin，服务器就是根据这个字段胖达是否许可本次通信。</li>
-<li>CORS：Cross-Origin Resource Sharing 的缩写。它是 W3C 标准，属于跨源 AJAX 请求的根本解决方法。        </li>
-</ul>
-</li>
-</ol>
+<p>CORS 是一个 W3C 标准，全称是”跨域资源共享”<br>CORS 需要浏览器和服务器同时支持。整个 CORS 通信过程，都是浏览器自动完成。浏览器实现跨域请求，然后服务器实现 CORS 接口。</p>
+<p>CORS 的请求分为两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
+<p>只要同时满足两大条件，就属于简单请求：</p>
+<p>1）请求方法：GET、HEAD、POST</p>
+<p>2）HTTP 的头信息不超出几种字段：Accept、Accept-Language、Content-Language、Last-Event-ID、Content-Type 是 application/x-www-form-urlencoded、multipart/form-data、text/plain。</p>
+<p>简单请求就是表单请求，浏览器沿袭了传统的处理方式，不把行为复杂化，否则开发者可能转为使用表单，规避 CORS 的限制。</p>
+<p>对于简单请求，浏览器会直接发出 CORS 请求，在头信息之中，增加一个 Origin 字段。如果 Origin 指定的源，不在许可范围内，服务器会返回一个正常的 HTTP 回应。<br>如果回应头信息没有包含 Access-Control-Allow-Origin 字段，会抛出一个错误，在 XMLHttpRequest 的 onerror 回调函数里面可捕获到。注意<br>这种错误无法通过状态码识别，因为 HTTP 回应的状态码有可能是 200。</p>
+<p>如果 Origin 指定的域名在许可范围内，服务器返回的响应，会多几个头信息字段：Access-Control-Allow-Origin、Access-Control-Allow-Credentials、<br>Access-Control-Expose-Headers、Content-Type。</p>
+<p>1）Access-Control-Allow-Origin：必选字段，它的值要么与请求时的 Origin 字段的值一致，要么是一个 <code>*</code>。</p>
+<p>2）Access-Control-Allow-Credientials：可选字段，表示是否允许发送 Cookie。默认情况下，Cookie 不包括在 CORS 请求之中。设为 true，即<br>表示服务器明确许可，浏览器可以把 Cookie 包含在 CORS 请求中一起发给服务器。这个值也只能设为 true，如果服务器不要浏览器发送 Cookie，不发送该字段即可。然后 AJAX 请求的 withCredentials 设置为 true。如果服务器要求浏览器发送 Cookie，<br>Access-Control-Allow-Origin 就必须指定明确的、与请求网页一致的域名，为了降低 CSRF 攻击的风险。</p>
+<p>3）Access-Control-Expose-Headers：可选字段，CORS 请求时，XMLHttpRequest 对象的 getResponseHeader() 方法只能拿到<br> 6 个服务器返回的基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果<br> 想拿到其他字段，就必须在 Access-Control-Expose-Headers 里面指定。</p>
+<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><p>非简单请求是那种对服务器提出特殊要求的请求，比如请求方法是 PUT 或者 DELETE，或者 Content-Type 字段的类型是<br>application/json。</p>
+<p>预检请求 preflight：浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单中、以及可以使用哪些 HTTP 动词和头信息<br>字段，只有得到肯定答复，浏览器才会发出正式的 XMLHttpRequest 请求，否则就就报错。这是喂了防止这些新增的请求，对传统的没有 CORS 支持的服务器形成压力，给服务器一个提前拒绝的机会，这样可以防止服务器收到大量的 DELETE 和 PUT 请求，这些传统的表单不<br>可能跨域发出的请求。</p>
+<p>预检请求的头信息里面包含字段 Origin、Access-Control-Request-Method、Access-Control-Request-Headers。</p>
+<p>预检请求的回应没有任何 CORS 相关头信息或者明确表示请求不符合条件，XMLHttpRequest 对象的 onerror 回调函数可以捕获到错误。</p>
+<p>CORS 相关字段：Access-Control-Allow-Methods、Access-Control-Allow-Headers、Access-Control-Max-Age。</p>
+<p>一旦服务器通过了 预检请求，以后每次浏览器正常的 CORS 请求，就跟简单请求一样，会有一个 Origin 头信息字段。服务器的响应<br>也都会有一个 Access-Control-Allow-Origin 字段。</p>
 
   </div>
   
@@ -102,7 +75,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/4/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/3/">3</a><a class="page-number" href="/bjb/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/bjb/page/6/">6</a><a class="page-number" href="/bjb/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/6/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/4/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/3/">3</a><a class="page-number" href="/bjb/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/bjb/page/6/">6</a><a class="page-number" href="/bjb/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/6/">下一页&raquo;</a>
   </nav>
 
     </main>

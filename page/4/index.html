@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">CORS 通信</h2>
+    <h2 class="title">Storage 接口</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-04-12 00:00:55</span>
+    <span class="post-time">2019-04-28 15:35:58</span>
     <span class="post-tags">
       
     </span>
@@ -51,23 +51,23 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>CORS 是一个 W3C 标准，全称是”跨域资源共享”<br>CORS 需要浏览器和服务器同时支持。整个 CORS 通信过程，都是浏览器自动完成。浏览器实现跨域请求，然后服务器实现 CORS 接口。</p>
-<p>CORS 的请求分为两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
-<p>只要同时满足两大条件，就属于简单请求：</p>
-<p>1）请求方法：GET、HEAD、POST</p>
-<p>2）HTTP 的头信息不超出几种字段：Accept、Accept-Language、Content-Language、Last-Event-ID、Content-Type 是 application/x-www-form-urlencoded、multipart/form-data、text/plain。</p>
-<p>简单请求就是表单请求，浏览器沿袭了传统的处理方式，不把行为复杂化，否则开发者可能转为使用表单，规避 CORS 的限制。</p>
-<p>对于简单请求，浏览器会直接发出 CORS 请求，在头信息之中，增加一个 Origin 字段。如果 Origin 指定的源，不在许可范围内，服务器会返回一个正常的 HTTP 回应。<br>如果回应头信息没有包含 Access-Control-Allow-Origin 字段，会抛出一个错误，在 XMLHttpRequest 的 onerror 回调函数里面可捕获到。注意<br>这种错误无法通过状态码识别，因为 HTTP 回应的状态码有可能是 200。</p>
-<p>如果 Origin 指定的域名在许可范围内，服务器返回的响应，会多几个头信息字段：Access-Control-Allow-Origin、Access-Control-Allow-Credentials、<br>Access-Control-Expose-Headers、Content-Type。</p>
-<p>1）Access-Control-Allow-Origin：必选字段，它的值要么与请求时的 Origin 字段的值一致，要么是一个 <code>*</code>。</p>
-<p>2）Access-Control-Allow-Credientials：可选字段，表示是否允许发送 Cookie。默认情况下，Cookie 不包括在 CORS 请求之中。设为 true，即<br>表示服务器明确许可，浏览器可以把 Cookie 包含在 CORS 请求中一起发给服务器。这个值也只能设为 true，如果服务器不要浏览器发送 Cookie，不发送该字段即可。然后 AJAX 请求的 withCredentials 设置为 true。如果服务器要求浏览器发送 Cookie，<br>Access-Control-Allow-Origin 就必须指定明确的、与请求网页一致的域名，为了降低 CSRF 攻击的风险。</p>
-<p>3）Access-Control-Expose-Headers：可选字段，CORS 请求时，XMLHttpRequest 对象的 getResponseHeader() 方法只能拿到<br> 6 个服务器返回的基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果<br> 想拿到其他字段，就必须在 Access-Control-Expose-Headers 里面指定。</p>
-<h3 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h3><p>非简单请求是那种对服务器提出特殊要求的请求，比如请求方法是 PUT 或者 DELETE，或者 Content-Type 字段的类型是<br>application/json。</p>
-<p>预检请求 preflight：浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单中、以及可以使用哪些 HTTP 动词和头信息<br>字段，只有得到肯定答复，浏览器才会发出正式的 XMLHttpRequest 请求，否则就就报错。这是喂了防止这些新增的请求，对传统的没有 CORS 支持的服务器形成压力，给服务器一个提前拒绝的机会，这样可以防止服务器收到大量的 DELETE 和 PUT 请求，这些传统的表单不<br>可能跨域发出的请求。</p>
-<p>预检请求的头信息里面包含字段 Origin、Access-Control-Request-Method、Access-Control-Request-Headers。</p>
-<p>预检请求的回应没有任何 CORS 相关头信息或者明确表示请求不符合条件，XMLHttpRequest 对象的 onerror 回调函数可以捕获到错误。</p>
-<p>CORS 相关字段：Access-Control-Allow-Methods、Access-Control-Allow-Headers、Access-Control-Max-Age。</p>
-<p>一旦服务器通过了 预检请求，以后每次浏览器正常的 CORS 请求，就跟简单请求一样，会有一个 Origin 头信息字段。服务器的响应<br>也都会有一个 Access-Control-Allow-Origin 字段。</p>
+<ul>
+<li>Storage.setItem()</li>
+<li>Storage.getItem()</li>
+<li>Storage.removeItem()</li>
+<li>Storage.clear()</li>
+<li>Storage.key() 接受一个从 0 开始的整数作为参数，返回该位置对应的键值。</li>
+</ul>
+<h4 id="Storage-事件"><a href="#Storage-事件" class="headerlink" title="Storage 事件"></a>Storage 事件</h4><p>Storage 接口储存的数据发送变化时，会触发 storage 事件，可以指定这个事件的监听函数。<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'storage'</span>, onStorageChange);</span><br></pre></td></tr></table></figure></p>
+<p>onStorageChange 接受一个 event 实例对象作为参数。这个实例对象继承了 StorageEvent 接口，有几个特有的属性，都是只读属性。</p>
+<ul>
+<li>StorageEvent.key 表示发生变动的键名</li>
+<li>StorageEvent.newValue 表示新的键值</li>
+<li>StorageEvent.oldValue 表示旧的键值</li>
+<li>StorageEvent.storageArea 返回当前域名存储的所有键值对</li>
+<li>StorageEvent.url 原始触发 storage 事件的网页的网址</li>
+</ul>
+<p>不在导致数据变化的当前页面触发，而是在同一个域名的其他窗口触发。</p>
 
   </div>
   
@@ -75,7 +75,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/3/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><a class="page-number" href="/bjb/page/2/">2</a><a class="page-number" href="/bjb/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/bjb/page/5/">5</a><a class="page-number" href="/bjb/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/5/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/3/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><a class="page-number" href="/bjb/page/2/">2</a><a class="page-number" href="/bjb/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/bjb/page/5/">5</a><a class="page-number" href="/bjb/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/5/">下一页&raquo;</a>
   </nav>
 
     </main>

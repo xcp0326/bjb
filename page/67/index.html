@@ -38,13 +38,13 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">JavaScript 的数据类型概述</h2>
+    <h2 class="title">null、undefined 和布尔值</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-16 13:58:19</span>
+    <span class="post-time">2018-11-16 14:28:22</span>
     <span class="post-tags">
       
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/数据类型/">数据类型</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/boolean/">boolean</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/undefined/">undefined</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/布尔值/">布尔值</a></li></ul>
       
     </span>
     
@@ -53,51 +53,44 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h2 id="JavaScript-的数据类型"><a href="#JavaScript-的数据类型" class="headerlink" title="JavaScript 的数据类型"></a>JavaScript 的数据类型</h2><p>JavaScript 语言的每一个值，都属于某一种数据类型。JavaScript 的数据类型有 7 种：</p>
+<h2 id="null-与-undefined"><a href="#null-与-undefined" class="headerlink" title="null 与 undefined"></a>null 与 undefined</h2><p>null 和 undefined 都是没有得意思。if 语句中判断都是 false；而且相等运算 == 返回 true。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="literal">null</span>) <span class="built_in">console</span>.log(<span class="string">'null is false'</span>) <span class="comment">// null is false</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="literal">undefined</span>) <span class="built_in">console</span>.log(<span class="string">'undefined is false'</span>) <span class="comment">// undefined is false</span></span><br><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>95 年 JavaScript 诞生时，null 设计为和 Java 里面的一样，null 可以自动转为 0</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">null</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">null</span> <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<p>但是 JavaScript 的设计者 Brendan Eich 觉得这么做还不够。</p>
+<p>首先，第一版 JavaScript 里面，null 就像 Java 一样，被当成一个对象，Brendan Eich 觉得表示“无”的值最好不是对象</p>
+<p>其次，那时的 JavaScript 不包括错误处理机制，Brendan Eich 觉得，如果 null 自动转为 0，很不容易发现错误</p>
+<p>因此 Brendan Eich 又设计了一个 undefined。区别是这样的：null 表示一个空的对象，转为数值时为 0；undefined 表示没有定义的原始值，转为数值时为 NaN</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">undefined</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">undefined</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结一下就是：</strong></p>
+<p>null 表示空值。调用函数时，某个参数未设置任何值，这是就可以传入 null，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入 null，表示未发生错误。</p>
+<p>undefined 表示未定义</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> i;</span><br><span class="line">i <span class="comment">// 此时 i 为undefined，因为只声明了没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line">f() <span class="comment">// 此时函数返回 undefined，因为 x 没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = &#123;&#125;</span><br><span class="line">o.p <span class="comment">// 返回 undefined，因为 p 是 o 没有赋值的属性</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">f() <span class="comment">// 函数如果没有返回值，默认返回 undefined</span></span><br></pre></td></tr></table></figure>
+<h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>下列运算符会返回布尔值：</p>
 <ul>
-<li>数值 number</li>
-<li>字符串 string</li>
-<li>布尔值 boolean true / false</li>
-<li>undefined：声明后但是未定义，或者未赋值</li>
-<li></li>
-<li>null：表示空值</li>
-<li>对象 object</li>
-<li>Symbol：ES 6 新增的数据类型，表示唯一的值。</li>
+<li>逻辑非运算符：<code>!</code></li>
+<li>相等运算符：<code>==</code>、<code>===</code>、<code>!=</code>、<code>!==</code></li>
+<li>比较运算符：<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></li>
 </ul>
-<p>数值、字符串、布尔值是原始类型的值</p>
-<p>对象是合成类型，引用类型的值，对象往往是由多个原始类型的值合成，可以看作是一个存放各种值的容器</p>
-<p>undfined 和 null 被看成两个特殊值</p>
-<p>对象又可以分成三个子类型：</p>
+<p>如果 JavaScript 预期某个位置应该是布尔值，就会将该位置上的现有值转换为布尔值。转换规则是除了下面 6 个值被转为 false，其他都视为 true。</p>
 <ul>
-<li>狭义的对象 {}</li>
-<li>数组 []</li>
-<li>函数 function(){}</li>
+<li>undefined</li>
+<li>null</li>
+<li>false</li>
+<li>空字符串 ‘’ 或者 “”</li>
+<li>NaN</li>
+<li>0</li>
 </ul>
-<p>函数式一种数据类型，因为它能作为值赋值给变量</p>
-<h2 id="如何确定一个值的数据类型"><a href="#如何确定一个值的数据类型" class="headerlink" title="如何确定一个值的数据类型"></a>如何确定一个值的数据类型</h2><p>有三种方法可以用来确定 JavaScript 值的数据类型：</p>
-<ul>
-<li>typeof 运算符</li>
-<li>instanceof 运算符</li>
-<li>Object.prototype.toString 方法</li>
-</ul>
-<p>基本类型，undefined 和函数都可以通过 typeof 运算符来确定</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">123</span> <span class="comment">// 'number'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">'123'</span> <span class="comment">// 'string'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">false</span> <span class="comment">// 'boolean'</span></span><br><span class="line"><span class="keyword">typeof</span> a <span class="comment">// 'undefined' 没有声明过的变量没有值，所以返回 undefind</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> f <span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
-<p>而 狭义的对象和数组无法通过 typeof 运算符获知数据类型，这是因为 JavaScript 内部，它们本质上都是一种特殊的对象。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">// 'object'</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">// 'object'</span></span><br></pre></td></tr></table></figure>
-<p>可以用 instanceof 运算符来区分 {} 和 []</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;, b = []</span><br><span class="line">a <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">b <span class="keyword">instanceof</span> <span class="built_in">Array</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>null 的数据类型是 object</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// 'object'</span></span><br></pre></td></tr></table></figure>
-<p>null 的数据类型是 object，是最初 JavaScript 设计遗留的 bug。95 年 JavaScript 语言的第一版，只设计了 5 种数据类型：对象、整数、浮点数、字符串、布尔值，没考虑到 null，只把它当作 object 的一种特殊值。后来 null 独立出来，作为一种单独的数据类型，为了兼容一起的代码，typeof null 返回 object 就没法改变了… </p>
-<p>很简单确认值是不是 null 类型 <a href="https://underscorejs.org/docs/underscore.html#section-155" target="_blank" rel="noopener">underscore 实现 isNull</a></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNull</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj === <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>空数组和空对象都是 true</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ([]) <span class="built_in">console</span>.log(<span class="string">'ahahaha1'</span>) <span class="comment">// 这里打印出来 ahahaha1</span></span><br><span class="line"><span class="keyword">if</span> (&#123;&#125;) <span class="built_in">console</span>.log(<span class="string">'ahahaha2'</span>) <span class="comment">// 这里打印出来 ahahaha2</span></span><br></pre></td></tr></table></figure>
+
   </div>
   
 </article>
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/66/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/65/">65</a><a class="page-number" href="/bjb/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/bjb/page/68/">68</a><a class="page-number" href="/bjb/page/69/">69</a><a class="page-number" href="/bjb/page/70/">70</a><a class="extend next" rel="next" href="/bjb/page/68/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/66/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/65/">65</a><a class="page-number" href="/bjb/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/bjb/page/68/">68</a><a class="page-number" href="/bjb/page/69/">69</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/68/">下一页&raquo;</a>
   </nav>
 
     </main>
