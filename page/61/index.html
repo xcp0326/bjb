@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">算术运算符</h2>
+    <h2 class="title">错误机制处理</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-21 22:51:37</span>
+    <span class="post-time">2018-11-23 17:05:34</span>
     <span class="post-tags">
       
     </span>
@@ -51,89 +51,47 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>JavaScript 提供了 10 个算术运算符，用来完成基本的算术元素。</p>
-<ol>
-<li>加法运算符 <code>x + y</code></li>
-<li>减法运算符 <code>x - y</code></li>
-<li>乘法运算符 <code>x * y</code></li>
-<li>除法运算符 <code>x / y</code></li>
-<li>指数运算符 <code>x ** y</code></li>
-<li>余数运算符 <code>x % y</code></li>
-<li>自增运算符 <code>++x</code> 或者 <code>x++</code></li>
-<li>自减运算符 <code>--x</code> 或者 <code>x--</code></li>
-<li>数值运算符 <code>+x</code></li>
-<li>负数值运算符 <code>-x</code></li>
-</ol>
-<h2 id="加法运算符"><a href="#加法运算符" class="headerlink" title="加法运算符"></a>加法运算符</h2><p>JavaScript 允许非数值的相加。</p>
-<h3 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h3><p>加法运算符是在运算时决定到底是执行相加还是执行连接。也就是说运算子的不同，导致了不同的语法行为，这种现象称为“重载”（overload）。</p>
-<ul>
-<li><p>数值相加 ：直接相加</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">1</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>布尔值相加 ：转换为对应的布尔值数值然后相加</p>
-<ul>
-<li><p>两个布尔值相加</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> + <span class="literal">true</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一个布尔值加一个数值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> + <span class="number">1</span> <span class="comment">// 2</span></span><br><span class="line"><span class="number">1</span> + <span class="literal">false</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>字符串相加</p>
-<ul>
-<li><p>两个字符串相加 ：字符串相连</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="string">'1'</span> <span class="comment">// '11'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一个字符串和非字符串 ：非字符串转为字符串然后相连</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="literal">true</span> <span class="comment">// '1true'</span></span><br><span class="line"><span class="literal">true</span> + <span class="string">'1'</span> <span class="comment">// 'true1'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一个字符串加多个数字 ：数值会被转为字符串然后相连</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="number">1</span> + <span class="number">1</span> <span class="comment">// '111'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>多个数字加一个字符串 ：数值相加然后连接字符串</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">1</span> + <span class="string">'1'</span> <span class="comment">// '21'</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="对象相加"><a href="#对象相加" class="headerlink" title="对象相加"></a>对象相加</h3><p>如果运算子是对象，必须先转称原始类型的值，然后在相加。</p>
-<p>对象转成原始类型的步骤：</p>
-<ol>
-<li>调用 valueOf 方法</li>
-<li>如果第 1 步的值不是原始类型，就再调用 toString 方法</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">p</span>: <span class="number">1</span>&#125;</span><br><span class="line">obj.valueOf().toString() <span class="comment">// "[object Obect]"</span></span><br><span class="line"></span><br><span class="line">obj + <span class="number">1</span> <span class="comment">// "[object Object]1"</span></span><br></pre></td></tr></table></figure>
-<p>按照这个规则，我们可以自定义 valueOf 和 toString 方法来得到想要的结果。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  valueOf: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-<p>按照对象转原始类型的规则，上面 <code>obj.valueOf()</code> 返回原始类型 1，所以就是 <code>1 + 2</code> 的返回值就是 3</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  toString: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 'hello2'</span></span><br></pre></td></tr></table></figure>
-<p>按照对象转原始类型的规则，上面 <code>obj.valueOf()</code> 是 <code>{p: 1}</code>，所以就执行 toString 方法，调用了我们自定义的 toString 方法，返回 hello，最后的值为 hello2</p>
-<p>有一个特例，如果运算子是 Date 对象的实例，那么会优先执行 toString 方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">obj.valueOf = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="number">1</span>&#125;</span><br><span class="line">obj.toString = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="string">'hello'</span>&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 'hello2'</span></span><br></pre></td></tr></table></figure>
-<h2 id="余数运算符"><a href="#余数运算符" class="headerlink" title="余数运算符"></a>余数运算符</h2><p>余数运算符 <code>%</code> 返回前一个运算子被后一个运算子除，所得的余数。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">12</span> % <span class="number">5</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-<p>运算的结果的正负由第一个运算子的正负号决定。真是诡异 😨</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">-1</span> % <span class="number">2</span> <span class="comment">// -1</span></span><br><span class="line"><span class="number">1</span> % <span class="number">-2</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>所以为了的到负数的正确余数值，可以先使用绝对值函数。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isOdd</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.abs(n % <span class="number">2</span>) === <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">isOdd(<span class="number">-5</span>) <span class="comment">// true</span></span><br><span class="line">isOdd(<span class="number">-4</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<p>余数可以用于浮点数的运算，只是浮点数不是精确数值，不能得到准确的数值。可以先移动小数点的位置到最后，等计算完再将小数点的位置挪回来。</p>
-<h2 id="自增和自减运算符"><a href="#自增和自减运算符" class="headerlink" title="自增和自减运算符"></a>自增和自减运算符</h2><p>自增和自减运算符，是一元运算符，只需要一个运算子。他们的作用是将运算子首先转为数值，然后再加上 1 或者减去 1。会修改原始变量。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">++x <span class="comment">// 2</span></span><br><span class="line">x <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">--x <span class="comment">// 1</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
-<p>运算之后，变量的值发生变化，这种效应叫做副作用（side effect）。自增和自减运算符是仅有的两个具有副作用的运算符，其他运算符都不会改变变量的值。</p>
-<p>自增和自减运算符有一个需要注意的地方，就是放在变量之后，会先返回变量操作前的值，再进行自增/自减操作；放在变量之前，会先进行自增/自减操作，再返回变量操作后的值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> y = <span class="number">1</span></span><br><span class="line">x++ <span class="comment">// 1</span></span><br><span class="line">++y <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-<h2 id="数值运算符、负数值运算符"><a href="#数值运算符、负数值运算符" class="headerlink" title="数值运算符、负数值运算符"></a>数值运算符、负数值运算符</h2><p>数值运算符同样适用加号，但他是一元运算符（只需要一个操作数），而加法运算符是二元运算符（需要两个操作数）。</p>
-<p>数值运算符的作用是可以将任何值转为数值（与 Number 函数的作用相同）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">+<span class="literal">true</span> <span class="comment">// 1</span></span><br><span class="line">+[] <span class="comment">// 0</span></span><br><span class="line">+&#123;&#125; <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<p>负数值运算符是减号，也同样具有将一个值转为数值的功能，只不过得到的值正负相反。连用两个负数值运算符，等同于数值运算符。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">-<span class="string">'1'</span> <span class="comment">// -1</span></span><br><span class="line">-<span class="literal">true</span> <span class="comment">// -1</span></span><br><span class="line">-[] <span class="comment">// -0</span></span><br><span class="line">-&#123;&#125; <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<h2 id="指数运算符"><a href="#指数运算符" class="headerlink" title="指数运算符"></a>指数运算符</h2><p>指数运算符 <code>**</code> 完成指数运算，前一个运算子是底数，后一个运算子是指数</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">3</span> <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
-<p>指数运算符是右结合，而不是左结合。即多个指数运算符连用时，先进行最右边的计算。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">3</span> ** <span class="number">2</span> <span class="comment">// 相当于 2 ** (3 ** 2) 结果为 512</span></span><br></pre></td></tr></table></figure>
-<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><p>复合的赋值运算符，都是先进行指定的运算，然后再将得到的值赋给左边的变量。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">x += <span class="number">2</span> <span class="comment">// x = x + 2 所以结果是 3</span></span><br></pre></td></tr></table></figure>
+<h2 id="Error-实例对象"><a href="#Error-实例对象" class="headerlink" title="Error 实例对象"></a>Error 实例对象</h2><p>JavaScript 解析或运行时，一旦发生错误，引擎就会抛出一个错误对象。JavaScript 原生提供 Error 构造函数，所有抛出错误都是这个构造函数的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> error = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'出错啦'</span>)</span><br><span class="line">error.message <span class="comment">// "出错啦"</span></span><br></pre></td></tr></table></figure>
+<p>Error 构造函数接受一个参数，表示错误提示，可以从实例的 message 属性读到这个参数。抛出 Error 实例对象以后，整个程序就中断在发生错误的地方，不再往下执行。</p>
+<p>JavaScript 语言标准只提到，Error 实例对象必须有 message 属性，表示出错时的提示信息，没有提到其他属性。大多数 JavaScript 引擎，对 Error 实例还提供 name 和 stack 属性，分别表示错误的名称和错误的堆栈，但他们是非标准的，不是每种实现都有。</p>
+<p>使用 name 和 message 可以对发生什么错误有一个大概的了解</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (error.name) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(error.name + <span class="string">':'</span> + error.message)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>stack 属性用来查看错误发生时的堆栈</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throwit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">catchit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">    throwit()</span><br><span class="line">  &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.stack)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">catchit()</span><br><span class="line"><span class="comment">// Error</span></span><br><span class="line"><span class="comment">// at throwit (~/..../throwcatch.js:9:11)</span></span><br><span class="line"><span class="comment">// at catchit (~/..../throwcatch.js:3:9)</span></span><br><span class="line"><span class="comment">// at repl:1:5</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，错误堆栈的最内层是 throwit 函数，然后是 catchit 函数，最后是函数运行的环境。</p>
+<h2 id="原生错误类型"><a href="#原生错误类型" class="headerlink" title="原生错误类型"></a>原生错误类型</h2><p>Error 实例对象是最一般的错误类型，在它的基础上，JavaScript 还定义了其他 6 种错误对象。也就是说存在 6 个派生对象。</p>
+<h3 id="SyntaxError-对象"><a href="#SyntaxError-对象" class="headerlink" title="SyntaxError 对象"></a>SyntaxError 对象</h3><p>是解析代码时发生的语法错误</p>
+<h3 id="ReferenceError-对象"><a href="#ReferenceError-对象" class="headerlink" title="ReferenceError 对象"></a>ReferenceError 对象</h3><p>是在引用一个不存在的变量时发生的错误，还有将一个值分配给无法分配的对象，比如对函数的运行结果或者 this 赋值。</p>
+<h3 id="RangeError-对象"><a href="#RangeError-对象" class="headerlink" title="RangeError 对象"></a>RangeError 对象</h3><p>是一个值超出有效范围时发生的错误。主要有几种情况，一是数组长度为负数，二是 Number 对象的方法参数超出范围，以及函数堆栈超过最大值。</p>
+<h3 id="TypeError-对象"><a href="#TypeError-对象" class="headerlink" title="TypeError 对象"></a>TypeError 对象</h3><p>是变量或参数不是预期类型时发生的错误。比如，对字符串、布尔值、数值等原始类型的值使用 new 命令，就会抛出这种错误，因为 new 命令的参数应该是一个构造函数。</p>
+<h3 id="URIError-对象"><a href="#URIError-对象" class="headerlink" title="URIError 对象"></a>URIError 对象</h3><p>是对 URI 相关函数的参数不正确时抛出的错误，主要涉及 encodeURI、decodeURI、encodeURIComponent、decodeURIComponent、escape 和 unescape 函数</p>
+<h3 id="EvalError-对象"><a href="#EvalError-对象" class="headerlink" title="EvalError 对象"></a>EvalError 对象</h3><p>eval 函数没有被正确执行是，会抛出 EvalError 错误。该错误类型已经不再使用了，只是为了保证与一起代码兼容。</p>
+<h2 id="自定义错误"><a href="#自定义错误" class="headerlink" title="自定义错误"></a>自定义错误</h2><p>除了 JavaScript 原生提供的 7 种错误对象，还可以定义自己的错误对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UserError</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.message = message || <span class="string">'默认信息'</span></span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">'UserError'</span></span><br><span class="line">&#125;</span><br><span class="line">UserError.prototype = <span class="keyword">new</span> <span class="built_in">Error</span>()</span><br><span class="line">UserError.prototype.constructor = UserError;</span><br></pre></td></tr></table></figure>
+<h2 id="throw-语句"><a href="#throw-语句" class="headerlink" title="throw 语句"></a>throw 语句</h2><p>throw 语句的作用是手动中断程序执行，抛出一个错误。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (x &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'x 必须是正数'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>throw 可以抛出任何类型的值。也就是说，它的参数可以是任何值。</p>
+<p>遇到 throw 语句，程序就会中止。引擎会接收到 throw 抛出的信息，可能是一个错误实例，也可能是其他类型的值。</p>
+<h2 id="try…catch-结构"><a href="#try…catch-结构" class="headerlink" title="try…catch 结构"></a>try…catch 结构</h2><p>一旦发生错误，程序中止执行。JavaScript 提供了 try…catch 结构允许对错误进行处理，选择是否往下执行。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'出错啦'</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.name + <span class="string">':'</span> + e.message)</span><br><span class="line">  <span class="built_in">console</span>.log(e.stack)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>try 代码块抛出错误，JavaScript 引擎就立即把代码的执行转到 catch 代码块，或者说错误被 catch 代码块捕获到了。catch 接受一个参数，表示 try 代码块抛出的值。</p>
+<p>如果你不确定某些代码是否会报错，就可以把他们放在 try…catch 代码块之中，便于进一步对错误进行处理。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  f()</span><br><span class="line">&#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">  <span class="comment">// 处理错误</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果函数 f 函数执行报错，就会执行 catch 代码块，接着对错误进行处理</p>
+<p>catch 代码块捕获错误之后，程序不会中断，会按照正常流程继续执行下去。</p>
+<p>catch 代码块之中还可以再抛出错误，甚至使用嵌套的 try…catch 结构。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> n;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="keyword">if</span> (e &lt;= <span class="number">50</span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> e;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Uncaught 100</span></span><br></pre></td></tr></table></figure>
+<p>catch 代码块之中可以加入判断语句捕获不同类型的错误</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  foo.bar();</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="built_in">EvalError</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.name + <span class="string">": "</span> + e.message);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="built_in">RangeError</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.name + <span class="string">": "</span> + e.message);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="finally-代码块"><a href="#finally-代码块" class="headerlink" title="finally 代码块"></a>finally 代码块</h2><p>try…catch 结构允许在最后添加一个 finally 代码块，表示不管是否出错，都必需在最后运行的语句。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cleansUp</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'出错了....'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'此行不会执行'</span>)</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'完成清理工作'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">cleansUp()</span><br><span class="line"><span class="comment">// 完成清理工作</span></span><br><span class="line"><span class="comment">// Uncaught Error: 出错了....</span></span><br><span class="line"><span class="comment">//    at cleansUp (&lt;anonymous&gt;:3:11)</span></span><br><span class="line"><span class="comment">//    at &lt;anonymous&gt;:10:1</span></span><br></pre></td></tr></table></figure>
+<p>如果 try 代码块没有发生错误，而且 try 代码块没有发生错误，而且里面还包括 return 语句，但是 finially 代码块依然会执行。而且，这个函数的返回值还是 result。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">idle</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(x);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'result'</span>;</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'FINALLY'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">idle(<span class="string">'hello'</span>)</span><br><span class="line"><span class="comment">// hello</span></span><br><span class="line"><span class="comment">// FINALLY</span></span><br><span class="line"><span class="comment">// "result"</span></span><br></pre></td></tr></table></figure>
+<p>return 语句的执行是排在 finally 代码之前，只是等 finally 代码执行完毕之后才返回。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> count = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countUp</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> count</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    count++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">countUp()</span><br><span class="line"><span class="comment">// 0</span></span><br><span class="line">count</span><br><span class="line"><span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>下面的例子充分反映了 try…catch…finally 这三者之间的执行顺序。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">'bug'</span></span><br><span class="line">  &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span> <span class="comment">// 这句原本会延迟到 finally 代码块结束后再执行</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 有意思，会覆盖掉前面的 return</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">5</span>) <span class="comment">// 因为有了上面的 return，所以这句不会执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -141,7 +99,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/60/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/59/">59</a><a class="page-number" href="/bjb/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/bjb/page/62/">62</a><a class="page-number" href="/bjb/page/63/">63</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/62/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/60/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/59/">59</a><a class="page-number" href="/bjb/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/bjb/page/62/">62</a><a class="page-number" href="/bjb/page/63/">63</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/62/">下一页&raquo;</a>
   </nav>
 
     </main>

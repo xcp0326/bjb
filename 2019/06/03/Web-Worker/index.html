@@ -1,0 +1,70 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>Web Worker | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">Web Worker</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-06-03 16:33:00</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <p>Web Worker 可以在主线程创建 Worker 线程，在主线程运行的同时，Worker 线程在后台同时运行。Worker 线程完成任务后，可以把结果返回给主线程。场景是可以把一些计算密集型或高延迟的任务放在 Worker 线程。而主线程就负责 UI 交互啥的。</p>
+<p>Worker 线程一旦新建成功，就会始终运行。</p>
+<p>不过，Worker 是有同源限制的，不能访问 DOM，Worker 的全局对象是 WorkerGlobalScope，所有它无法访问到 window 下的大部分对象。Worker 下有定义了 Navigator 和 Location 对象，不能 alert、confirm，有 XMLHttpRequest 对象。Worker 线程是与主线程不在同一个上下文环境时，他们是不能直接通信的，必须通过消息完成（postMessage）。Worker 线程是无法读取本地文件的。</p>
+<p>postMessage 发送消息，onMessage 监听发送来的消息。</p>
+<p>Worker 内部加载其他脚本，importScripts()</p>
+<p>主线程把二进制数据直接转移给 Worker 子线程，一旦转移，主线程将无法再使用之前的二进制数据了，这是为了防止出现多个线程同时修改数据的问题。这种转移数据的方法脚 Transferable Objects。</p>
+<p>Worker 载入的是一个单独的 JavaScript脚本文件，但是也可以载入与主线程在同一个网页的代码。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"worker"</span> <span class="attr">type</span>=<span class="string">"app/worker"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">      addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        postMessage(<span class="string">'some message'</span>);</span></span><br><span class="line"><span class="javascript">      &#125;, <span class="literal">false</span>);</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([<span class="built_in">document</span>.querySelector(<span class="string">'#worker'</span>).textContent]);</span><br><span class="line"><span class="keyword">var</span> url = <span class="built_in">window</span>.URL.createObjectURL(blob);</span><br><span class="line"><span class="keyword">var</span> worker = <span class="keyword">new</span> Worker(url);</span><br><span class="line"></span><br><span class="line">worker.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// e.data === 'some message'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="Worker-线程完成轮询"><a href="#Worker-线程完成轮询" class="headerlink" title="Worker 线程完成轮询"></a>Worker 线程完成轮询</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createWorker</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([<span class="string">'('</span> + f.toString() + <span class="string">')()'</span>]);</span><br><span class="line">  <span class="keyword">var</span> url = <span class="built_in">window</span>.URL.createObjectURL(blob);</span><br><span class="line">  <span class="keyword">var</span> worker = <span class="keyword">new</span> Worker(url);</span><br><span class="line">  <span class="keyword">return</span> worker;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pollingWorker = createWorker(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> cache;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">compare</span>(<span class="params">new, old</span>) </span>&#123; ... &#125;;</span><br><span class="line"></span><br><span class="line">  setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    fetch(<span class="string">'/my-api-endpoint'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> data = res.json();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!compare(data, cache)) &#123;</span><br><span class="line">        cache = data;</span><br><span class="line">        self.postMessage(data);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">pollingWorker.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// render data</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pollingWorker.postMessage(<span class="string">'init'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="Worker-内部再新建-Worker"><a href="#Worker-内部再新建-Worker" class="headerlink" title="Worker 内部再新建 Worker"></a>Worker 内部再新建 Worker</h4><h4 id="Worker-API"><a href="#Worker-API" class="headerlink" title="Worker API"></a>Worker API</h4><p>Worker 线程的全局对象不是 window，是 WorkerGlobalScope，可以通过 self 直接访问。self.name、self.onmessage、self.onmessageerror、self.close、self.postMessage、self.importScripts</p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

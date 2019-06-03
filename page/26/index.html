@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">进度事件</h2>
+    <h2 class="title">JSON 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-19 12:56:49</span>
+    <span class="post-time">2019-02-27 17:51:24</span>
     <span class="post-tags">
       
     </span>
@@ -51,30 +51,53 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>进度事件用来描述资源加载的进度，主要由 AJAX 请求、img、audio、video、style、link 等外部资源的加载触发，继承自 ProgressEvent 接口。</p>
+<p>JSON JavaScript Object Notation 用于数据交换的文本格式。2001 Douglas Crockford 提出，取代繁锁笨重的 XML 格式。</p>
+<p>相比 XML 格式，JSON 格式优点：书写简单，一目了然；符合 JavaScript 原生语法，可以由解释引擎直接处理，不用另外添加解析代码（顺便：HTTP 请求头 application/json，前后端通过 JSON 来交互）。JSON 已经被写入标准，主流浏览器都已经支持 JSON 相关接口。</p>
+<p>每个 JSON 对象就是一个值，可能是一个数组或对象，也可能是一个原始类型的值。总之，只能是一个值，不能是两个或更多的值。</p>
 <ul>
-<li>abort：外部资源中止加载时触发，如果发生错误导致中止，不会触发该事件</li>
-<li>error：由于错误导致外部资源无法加载时触发</li>
-<li>load：外部资源加载时触发</li>
-<li>loadstart：外部资源开始加载时触发</li>
-<li>loadend：外部资源停止加载时触发，发生顺序 error、abort、load 等事件的后面</li>
-<li>progress：外部资源加载过程中不断触发</li>
-<li>timeout：加载超时时触发</li>
+<li>复合类型的值只能是数组或对象，不能是函数、正则表达式、日期对象。<a href="https://github.com/yahoo/serialize-javascript" target="_blank" rel="noopener">Yahoo 写了个支持函数、正则表达式、日期对象的序列化插件</a></li>
+<li>原始类型的值只有四种：字符串、数值（必须是十进制，不能使用 NaN，Infinity，-Infinity）、布尔值和 null。不支持 undefined。</li>
+<li>字符串必须是使用双引号表示，不能使用单引号。</li>
+<li>对象的键名也必须用双引号包起来</li>
+<li>数组或对象最后一个成员不能加逗号</li>
 </ul>
-<p>除了资源下载，文件上传也有这些事件。</p>
-<p>有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能 load 和 error 事件的监听函数根本不会执行。所以，比较可靠的方式，是用 complete 属性先判断一下是否加载完成。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loaded</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (image.complete) &#123;</span><br><span class="line">  loaded();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  image.addEventListener(<span class="string">'load'</span>, loaded)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于 DOM 的元素节点没有提供是否加载错误的属性，所以 error 事件的监听函数最好放在 <code>&lt;img&gt;</code> 元素的 HTML 代码中，这样才能保证发生加载错误时百分之百执行。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/wrong/url"</span> <span class="attr">onerror</span>=<span class="string">"this.style.display='none';"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>loaded 事件本身不提供关于进度结束的原因，但可以用它来做所有加载结束场景都需要做一些操作。</p>
-<p>error 事件有一个特殊的性质，就是不会冒泡。所以，子元素的 error 事件时不会触发父元素的 error 事件监听函数的。</p>
-<h3 id="ProgressEvent-接口"><a href="#ProgressEvent-接口" class="headerlink" title="ProgressEvent 接口"></a>ProgressEvent 接口</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> ProgressEvent(type, options)</span><br></pre></td></tr></table></figure>
-<p>ProgressEvent 的 options 配置项除了继承自 Event 接口的配置属性外，还有：</p>
-<ul>
-<li>lengthComputable：表示加载的总量是否可以计算</li>
-<li>loaded：表示已经加载的量</li>
-<li>total：表示需要加载的总量</li>
-</ul>
+<h3 id="JSON-对象"><a href="#JSON-对象" class="headerlink" title="JSON 对象"></a>JSON 对象</h3><p>JSON 对象是 JavaScript 的原生对象，用来处理 JSON 格式数据。它有两个静态方法：JSON.stringify() 和 JSON.parse()</p>
+<h3 id="JSON-stringify"><a href="#JSON-stringify" class="headerlink" title="JSON.stringify()"></a>JSON.stringify()</h3><p>JSON.stringify 方法用于将一个值转为 JSON 字符串。该字符串符合 JSON 格式，并且可以被 JSON.parse 方法还原。</p>
+<p>对于原始类型的字符串，转换结果会带双引号。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(<span class="string">'foo'</span>) === <span class="string">"foo"</span> <span class="comment">// false</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(<span class="string">'foo'</span>) === <span class="string">"\"foo\""</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>这是因为将来还原的时候，内层双引号可以让 JavaScript 引擎知道，这是一个字符串，而不是其他类型的值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(<span class="literal">false</span>) <span class="comment">// "false"</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(<span class="string">'false'</span>) <span class="comment">// "\"false\""</span></span><br></pre></td></tr></table></figure>
+<p>如果不是内层的双引号，将来还原的时候，引擎就无法知道原始值是布尔值还是字符串。</p>
+<p>如果对象的属性是 undefined、函数或者 XML 对象，该属性会被 JSON.stringify 过滤。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: <span class="literal">undefined</span>,</span><br><span class="line">  b: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">JSON</span>.stringify(obj) <span class="comment">// "&#123;&#125;"</span></span><br></pre></td></tr></table></figure>
+<p>而如果数组的成员是 undefined、函数或者 XML 对象，则这些值会被转成 null</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="literal">undefined</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;];</span><br><span class="line"><span class="built_in">JSON</span>.stringify(arr); <span class="comment">// "[null, null]"</span></span><br></pre></td></tr></table></figure>
+<p>正则对象会被转成空对象</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(<span class="regexp">/foo/</span>) <span class="comment">// "&#123;&#125;"</span></span><br></pre></td></tr></table></figure>
+<p>JSON.stringify 方法会忽略对象的不可遍历的属性</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'foo'</span>: &#123;</span><br><span class="line">    value: <span class="number">1</span>,</span><br><span class="line">    enumerable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'bar'</span>: &#123;</span><br><span class="line">    value: <span class="number">2</span>,</span><br><span class="line">    enumerable: <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">JSON</span>.stringify(obj) <span class="comment">// "&#123;"foo":1&#125;"</span></span><br></pre></td></tr></table></figure>
+<h4 id="JSON-stringify-的第二个参数"><a href="#JSON-stringify-的第二个参数" class="headerlink" title="JSON.stringify 的第二个参数"></a>JSON.stringify 的第二个参数</h4><p>JSON.stringify 方法还可以接受一个数组，作为第二个参数，指定对象的需要转成字符串的属性。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="string">'prop1'</span>: <span class="string">'value1'</span>,</span><br><span class="line">  <span class="string">'prop2'</span>: <span class="string">'value2'</span>,</span><br><span class="line">  <span class="string">'prop3'</span>: <span class="string">'value3'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> selectedProperties = [<span class="string">'prop1'</span>, <span class="string">'prop2'</span>];</span><br><span class="line"><span class="built_in">JSON</span>.stringify(obj, selectProperties); </span><br><span class="line"><span class="comment">// "&#123;"prop1":"value1","prop2":"value2"&#125;"</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数还可以是一个函数，用来更改 JSON.stringify 的返回值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(&#123;<span class="attr">a</span>:<span class="number">1</span>,<span class="attr">b</span>:<span class="number">2</span>&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">'number'</span>) &#123;</span><br><span class="line">    value = <span class="number">2</span> * value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这个处理函数是递归处理所有键。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;<span class="attr">a</span>: &#123;<span class="attr">b</span>: <span class="number">1</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"["</span>+ key +<span class="string">"]:"</span> + <span class="built_in">JSON</span>.stringify(value));</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">JSON</span>.stringify(o, f)</span><br><span class="line"><span class="comment">// []:[object Object]</span></span><br><span class="line"><span class="comment">// [a]:[object Object]</span></span><br><span class="line"><span class="comment">// [b]:1</span></span><br><span class="line"><span class="comment">// '&#123;"a":&#123;"b":1&#125;&#125;'</span></span><br></pre></td></tr></table></figure>
+<p>如果处理函数返回 undefined 或么有返回值，则该属性会被忽略。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(&#123;<span class="attr">a</span>: <span class="string">'abc'</span>, <span class="attr">b</span>: <span class="number">123</span>&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> (value) === <span class="string">'string'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// "&#123;"b":123&#125;"</span></span><br></pre></td></tr></table></figure>
+<h4 id="第三个参数"><a href="#第三个参数" class="headerlink" title="第三个参数"></a>第三个参数</h4><p>第三个参数用于增加返回的 JSON 字符串的可读性。如果是数字，表示每个属性前面添加的空格（最多不超过 10 个）；如果是字符串（不超过 10 个字符串），则该字符串会添加在每行前面。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(&#123; <span class="attr">p1</span>: <span class="number">1</span>, <span class="attr">p2</span>: <span class="number">2</span> &#125;, <span class="literal">null</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">"&#123;</span></span><br><span class="line"><span class="comment">  "p1": 1,</span></span><br><span class="line"><span class="comment">  "p2": 2</span></span><br><span class="line"><span class="comment">&#125;"</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="参数对象的-toJSON-方法"><a href="#参数对象的-toJSON-方法" class="headerlink" title="参数对象的 toJSON 方法"></a>参数对象的 toJSON 方法</h4><p>如果参数对象有自定义的 toJSON 方法，那么 JSON.stringify 会使用这个方法的返回值作为参数，而忽略原对象的其他属性。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> user = &#123;</span><br><span class="line">  firstName: <span class="string">'三'</span>,</span><br><span class="line">  lastName: <span class="string">'张'</span>,</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> fullName()&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.lastName + <span class="keyword">this</span>.firstName;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  toJSON: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      name: <span class="keyword">this</span>.lastName + <span class="keyword">this</span>.firstName</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">JSON</span>.stringify(user)</span><br><span class="line"><span class="comment">// "&#123;"name":"张三"&#125;"</span></span><br></pre></td></tr></table></figure>
+<p>Date 对象就有一个自己的 toJSON 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2015-01-01'</span>);</span><br><span class="line">date.toJSON() <span class="comment">// "2015-01-01T00:00:00.000Z"</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(date) <span class="comment">// ""2015-01-01T00:00:00.000Z""</span></span><br></pre></td></tr></table></figure>
+<p>toJSON 方法的一个应用是，将正则对象自动转为字符串。因为 JSON.stringify 默认不能转换正则对象，但是设置了 toJSON 方法以后，就可以转换正则对象了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  reg: <span class="regexp">/foo/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">JSON</span>.stringify(obj) <span class="comment">// "&#123;"reg":&#123;&#125;&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ！！！！ 但是 JSON.parse 不能返回正则，这个方法还是不行的</span></span><br><span class="line"><span class="built_in">RegExp</span>.prototype.toJSON = <span class="built_in">RegExp</span>.prototype.toString;</span><br><span class="line"></span><br><span class="line"><span class="built_in">JSON</span>.stringify(<span class="regexp">/foo/</span>) <span class="comment">// ""/foo/""</span></span><br></pre></td></tr></table></figure>
+<h3 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse()"></a>JSON.parse()</h3><p>如果传入的字符串不是有效的 JSON 格式的字符串，JSON.parse 方法会报错：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.parse(<span class="string">"'String'"</span>) <span class="comment">// Uncaught SyntaxError: Unexpected token ' in JSON at position 0</span></span><br><span class="line"><span class="comment">//    at JSON.parse (&lt;anonymous&gt;)</span></span><br><span class="line"><span class="comment">//    at &lt;anonymous&gt;:1:6</span></span><br></pre></td></tr></table></figure>
+<p>这里可以使用 try…catch 代码</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="built_in">JSON</span>.parse(<span class="string">"'String'"</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'parsing error'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>JSON.parse 方法可以接受一个处理函数，作为第二个参数，用法与 JSON.stringify 方法类似：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.parse(<span class="string">'&#123;"a":1,"b":2&#125;'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">key, value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (key === <span class="string">'a'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> value + <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// &#123;a: 11, b:2&#125;</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -82,7 +105,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/25/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/bjb/page/27/">27</a><a class="page-number" href="/bjb/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/27/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/25/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/24/">24</a><a class="page-number" href="/bjb/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/bjb/page/27/">27</a><a class="page-number" href="/bjb/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/27/">下一页&raquo;</a>
   </nav>
 
     </main>

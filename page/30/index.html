@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">事件模型</h2>
+    <h2 class="title">触摸事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-02-13 14:35:26</span>
+    <span class="post-time">2019-02-19 14:32:57</span>
     <span class="post-tags">
       
     </span>
@@ -51,39 +51,63 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>浏览器的事件模型，就是通过监听函数 listener 对事件做出的反应。事件发生后，浏览器监听到了这个事件，就会执行对应的监听函数。这是事件驱动编程模式 event-driven 的主要编程方式。</p>
-<p>JavaScript 有三种方法，可以为事件绑定监听函数：</p>
-<ol>
-<li>HTML 的 on- 属性</li>
-<li>元素节点的事件属性</li>
-<li>EventTarget.addEventListener</li>
-</ol>
-<h3 id="事件的传播"><a href="#事件的传播" class="headerlink" title="事件的传播"></a>事件的传播</h3><p>一个事件发生后，会在子元素和父元素之间传播 propagation。这种传播分为三个阶段：</p>
+<p>浏览器的触摸 API 由三部分组成：</p>
 <ul>
-<li>第一个阶段：从 window 对象传导到目标节点（上层到底层），称为“捕获阶段” capture phase</li>
-<li>第二个阶段：在目标节点上触发，称为“目标阶段” target phase</li>
-<li>第三个阶段：从目标节点传导回 window 对象（从底层传回上层），称为“冒泡阶段” bubbling phase</li>
+<li>Touch：一个触摸点</li>
+<li>TouchList：多个触摸点的集合</li>
+<li>TouchEvent：触摸引发的事件实例</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">    click</span><br><span class="line">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>对 div 和 p 都设置了 click 事件的监听函数，每个节点的捕获和冒泡阶段都设置监听函数，点击 p ，click 事件会被触发四次：</p>
-<ol>
-<li>捕获阶段：事件从 div 向 p 传播时，触发 div 的 click 事件</li>
-<li>目标阶段：事件从 div 到达 p 时，触发 p 的 click 事件</li>
-<li>冒泡阶段：事件从 p 传回 div 时，再次触发 div 的 click 事件</li>
-</ol>
-<p>其中 p 节点有两个监听函数 （addEventListener 方法第三个参数的不同，会导致绑定两个监听函数），因此它们都会因为 click 事件而各自被触发一次。</p>
-<p>注意，浏览器总是假定 click 事件的目标节点，就是点击位置嵌套最深的那个节点。所以 p 节点的捕获阶段和冒泡阶段都会显示为目标阶段。</p>
-<p>事件传播的最上层对象是 window，接着依次是 document，html（document.documentElement）和 body（document.body）。</p>
-<h3 id="事件的代理"><a href="#事件的代理" class="headerlink" title="事件的代理"></a>事件的代理</h3><p>事件会在冒泡阶段向上传播到父节点、在捕获阶段会从向下传播到目标节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做事件代理 delegation。</p>
-<p>如果希望事件到某个节点为止，不再传播，可以使用事件对象的 stopPropagation 方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 事件传播到 p 元素后，就不再向下传播了</span></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">&#125;, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件冒泡到 p 元素后，就不再向上冒泡了</span></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-<p>stopPropagation 只能阻止事件的传播，不会阻止该事件触发 p 节点的其他 click 事件的监听函数。也就是说不是彻底取消 click 事件。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopPropagation();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 会触发</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>如果想要彻底取消该事件，不再出发后面所有的 click 的监听函数，可以使用 stopImmediatePropagation 方法</p>
-<blockquote>
-<p>阻止事件冒泡并且阻止相同事件的其他侦听器被调用。<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Event/stopImmediatePropagation" target="_blank" rel="noopener">event.stopImmediatePropagation</a></p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.stopImmediatePropagation();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">p.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 不会被触发</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Touch 接口的实例对象用来表示触摸点（一根手指或者一根触摸笔），包括位置、大小、形状、压力、目标元素等属性。有时，触摸动作由多一个触摸点（多根手指）组成，多个触摸点的集合由 TouchList 接口的实例对象表示。TouchEvent 接口的实例对象代表由触摸引发的事件，只有触摸屏才会引发这一类事件。</p>
+<p>很多时候，触摸事件和鼠标事件同时触发，即使这个时候并没有用到鼠标。这是为了让那些只定义鼠标事件、没有定义触摸事件的代码，在触摸屏的情况下仍然能用。如果想避免这种情况，可以用 event.preventDefault 方法阻止发出鼠标事件。</p>
+<h3 id="Touch-接口"><a href="#Touch-接口" class="headerlink" title="Touch 接口"></a>Touch 接口</h3><p>Touch 接口代表单个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> touch = <span class="keyword">new</span> Touch(touchOptions)</span><br></pre></td></tr></table></figure>
+<p>Touch 构造函数接受一个配置对象作为参数，它有以下属性：</p>
+<ul>
+<li>identifier：必需，类型为整数，表示触摸点的唯一 ID，整个触摸过程保持不变，直到触摸事件结束。</li>
+<li>target：必需，类型为元素节点，表示触摸发生时所在的元素节点。即使触摸点已经离开了这个节点，该属性依然不变。</li>
+<li>clientX / clientY / screenX / screenY / pageX / pageY：可选</li>
+<li>radiusX / radiusY：表示触摸点周围到影响的椭圆范围的 X 轴 / Y 轴半径，单位是像素。乘以 2 就可以得到触摸范围的宽度和高度。</li>
+<li>rotationAngle：表示触摸区域的椭圆的旋转角度，默认为 0，单位是度数，在 0 - 90 度之间。</li>
+<li>force：范围在 0 - 1 之间，表示触摸压力，0 代表没有压力，1 代表硬件所能识别的最大压力。默认为 0。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">div.addEventListener(<span class="string">'touchstart'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchmove'</span>, rotate);</span><br><span class="line">div.addEventListener(<span class="string">'touchend'</span>, rotate);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rotate</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> touch = e.changedTouches.item(<span class="number">0</span>);</span><br><span class="line">  e.preventDefault();</span><br><span class="line"></span><br><span class="line">  src.style.width = touch.radiusX * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.height = touch.radiusY * <span class="number">2</span> + <span class="string">'px'</span>;</span><br><span class="line">  src.style.transform = <span class="string">'rotate('</span> + touch.rotationAngle + <span class="string">'deg)'</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="TouchList-接口"><a href="#TouchList-接口" class="headerlink" title="TouchList 接口"></a>TouchList 接口</h3><p>表示一组触摸点的集合。它的实例是一个类似数组的对象，成员是 Touch 的实例对象，表示所有触摸点。用户用三根手指触摸，产生的 TouchList 实例就会包含三个成员，每根手指的触摸点对应一个 Touch 实例对象</p>
+<p>它的实例主要通过事件的 TouchEvent.touches、TouchEvent.changedTouches、TouchEvent.targetTouches 这几个属性获取。</p>
+<p>它的实例属性和实例方法只有两个：</p>
+<ul>
+<li>TouchList.length</li>
+<li>TouchList.item()：返回指定位置的成员，它的参数是该成员的位置编号</li>
+</ul>
+<h3 id="TouchEvent-接口"><a href="#TouchEvent-接口" class="headerlink" title="TouchEvent 接口"></a>TouchEvent 接口</h3><p>继承了 Event 接口，表示由触摸引发的事件实例，通常来自触摸屏或轨迹板。除了被继承的属性以外，它还有一些自己的属性。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> TouchEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 除了 Event 接口的配置项：</p>
+<ul>
+<li>touches：TouchList 实例，代表所有的当前处于活跃状态的触摸点，默认是一个空数组</li>
+<li>targetTouches：TouchList 实例，代表所有处在触摸的目标元素节点内部、且仍然处于活动状态的触摸点，默认值是一个空数组</li>
+<li>changedTouches：TouchList 实例，代表本次触摸事件的相关触摸点，默认值是一个空数组</li>
+<li>ctrlKey / shiftKey / altKey / metaKey： 表示是否同时按下 Ctrl / Shift / Alt / Meta 键</li>
+</ul>
+<h4 id="TouchEvent-changedTouches"><a href="#TouchEvent-changedTouches" class="headerlink" title="TouchEvent.changedTouches"></a>TouchEvent.changedTouches</h4><p>返回一个 TouchList 实例，成员是一组 Touch 实例对象，表示本次触摸事件的相关触摸点。</p>
+<p>对于不同的时间，该属性的含义有所不同</p>
+<ul>
+<li>touchstart 事件：被激活的触摸点</li>
+<li>touchmove 事件：发生变化的触摸点</li>
+<li>touchend 事件：消失的触摸点（即不再被触碰的点）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; e.changeTouches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.changeTouches[i].identifier)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="TouchEvent-touches"><a href="#TouchEvent-touches" class="headerlink" title="TouchEvent.touches"></a>TouchEvent.touches</h4><p>返回一个 TouchList 实例，成员是所有仍然处于活动状态（即触摸中）的触摸点。一般来说，一个手指就是一个触摸点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">someElement.addEventListener(<span class="string">'touchstart'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (e.touches.length) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>: handle_one_touch(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>: handle_two_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>: handle_three_touches(e); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="built_in">console</span>.log(<span class="string">'not supported'</span>); <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="TouchEvent-targetTouches"><a href="#TouchEvent-targetTouches" class="headerlink" title="TouchEvent.targetTouches"></a>TouchEvent.targetTouches</h4><p>返回一个 TouchList 实例，成员是触摸事件的目标元素节点内部、所有仍然处于活动状态（即触摸中）的触摸点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">touches_in_target</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (evt.touches.length === evt.targetTouches.length ? <span class="literal">true</span> : <span class="literal">false</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码用来判断是否所有的触摸点都在目标元素内。</p>
+<h2 id="触摸事件的种类"><a href="#触摸事件的种类" class="headerlink" title="触摸事件的种类"></a>触摸事件的种类</h2><p>触摸引发的事件，有以下几种。可以通过 TouchEvent.type 属性，查看到底发生的哪一种事件：</p>
+<ul>
+<li>touchstart：用户开始触摸时触发，它的 target 属性返回发生触摸的元素节点</li>
+<li>touchend：用户不再接触触摸屏时（或移出屏幕边缘时）触发，它的 target 属性与 touchstart 事件一致的，就是开始触摸时所在的元素节点。它的 changedTouches 属性返回一个 TouchList 实例，包含所有不再触摸的触摸点</li>
+<li>touchmove：用户移动触摸点时触发，它的 target 属性与 touchstart 事件一致。如果触摸的半径、角度、力度发生变化，也会触发该事件</li>
+<li>touchcancel：触摸点取消时触发，比如在触摸区域跳出一个模态窗口（modal window）、触摸点离开文档区域（进入浏览器菜单栏）、用户的触摸点太多，超过了支持的上限（自动取消早先的触摸点）。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'canvas'</span>)[<span class="number">0</span>];</span><br><span class="line">el.addEventListener(<span class="string">'touchstart'</span>, handleStart, <span class="literal">false</span>);</span><br><span class="line">el.addEventListener(<span class="string">'touchmove'</span>, handleMove, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleStart</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(touches[i].pageX, touches[i].pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleMove</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  <span class="keyword">var</span> touches = evt.changedTouches;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; touches.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> touch = touches[i];</span><br><span class="line">    <span class="built_in">console</span>.log(touch.pageX, touch.pageY);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -91,7 +115,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/29/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/28/">28</a><a class="page-number" href="/bjb/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/31/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/29/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/28/">28</a><a class="page-number" href="/bjb/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/bjb/page/31/">31</a><a class="page-number" href="/bjb/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/31/">下一页&raquo;</a>
   </nav>
 
     </main>

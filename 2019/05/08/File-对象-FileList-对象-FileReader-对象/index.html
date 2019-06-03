@@ -1,0 +1,95 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>File 对象、FileList 对象、FileReader 对象 | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">File 对象、FileList 对象、FileReader 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-05-08 13:20:57</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<p>File 继承了 Blob 对象。是一种特殊的 Blob 对象，所有可以使用 Blob 对象的场合都可以使用它。比如表单的上传文件 input。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> File(array, name [, options])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>array：一个数组，成员可以是二进制对象或字符串，表示文件的内容</li>
+<li>name：字符串，表示文件名或文件路径</li>
+<li>options：可选，配置对象，设置实例的属性。<ul>
+<li>type：表示实例对象的 MIME 类型 字符串，默认为空</li>
+<li>lastModified：时间戳，表示上次修改的事件，默认为 <code>Date.now()</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> f = <span class="keyword">new</span> File(</span><br><span class="line">	[<span class="string">'foo'</span>],</span><br><span class="line">  <span class="string">'foo.txt'</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    type: <span class="string">'text/plain'</span></span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>FileList 对象是一个类似数组的对象，代表一组选中的文件，每个文件就是一个 File 实例。主要场景：input[type=”file”]，拖拉一组文件时，目标区的 DataTransfer.files 属性，返回一个 FileList 实例。</p>
+<p>FileReader 对象用于读取 File 对象或者 Blob 对象所包含的文件内容。</p>
+<ul>
+<li>FileReader.prototype.error</li>
+<li>FileReader.prototype.readyState：读取文件时的当前状态：0，未加载认为数据；1，表示正在加载数据；2，表示加载完成。与 XMLHttpRequeset.readyState 状态不一样，XMLHttpRequest.readyState：0，代理被创建，还没有调用 <code>open()</code> 方法；1，<code>open()</code> 方法已经被调用；2，<code>send()</code> 方法已经被调用，并且头部和状态已经可获得；3，下载中，responseText 属性已经包含部分数据；4，下载操作已经完成。</li>
+<li>FileReader.prototype.result：读取到的文件内容，返回的是字符串或者 ArrayBuffer 实例</li>
+<li>FileReader.prototype.onabort</li>
+<li>FileReader.prototype.onerror</li>
+<li>FileReader.prototype.onload：通常在这个函数里面使用 result 属性，拿到文件内容</li>
+<li>FileReader.prototype.onloadstate</li>
+<li>FileReader.prototype.onloadend</li>
+<li>FileReader.prototype.onprogress</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="file" onchange="onChange(event)"&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> onchange = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> file = e.target.files[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">const</span> reader = <span class="keyword">new</span> FileReader()</span><br><span class="line">  reader.onload = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.target.result)</span><br><span class="line">  &#125;</span><br><span class="line">  reader.readerAsText(file)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>FileReader.prototype.abort()：终止读取操作，readyState 属性将变成 2</li>
+<li>FileReader.prototype.readAsArrayBuffer()：以 ArrayBuffer 的格式读取文件，读取完成后 result 属性将返回一个 ArrayBuffer 实例</li>
+<li>FileReader.prototype.readAsBinaryString()：读取完成后，result 属性将返回一个二进制字符串</li>
+<li>FileReader.prototype.readAsDataURL()：读取完成后，result 属性返回一个 Data URL 格式（Base64 编码）的字符串，代表文件内容。对于图片文件，这个自发可以用于 <code>&lt;img&gt;</code> 元素的 src 属性。注意这个字符串不能直接进行 Base64 解码，必须把前缀 <code>data:*/*;base64,</code> 从字符串删除后，再进行解码</li>
+<li>FileReader.readAsText()：读取完成后，result 属性返回一个文件内容的文本字符串。该方法的第一个参数是代表文件的 Blob 实例，第二个参数可选，表示文本编码，默认是 UTF-8.</li>
+</ul>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

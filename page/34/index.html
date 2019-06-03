@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">JavaScript 操作 CSS</h2>
+    <h2 class="title">鼠标事件</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-28 11:37:54</span>
+    <span class="post-time">2019-02-15 15:42:31</span>
     <span class="post-tags">
       
     </span>
@@ -51,69 +51,95 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>HTML 元素的 style 属性：JavaScript 可以用标签元素的 getAttribute、setAttriubte 和 remoteAttriubte 三个方法来操作。style 不仅可以使用字符串读写，它本身还是一个对象，部署了 CSSStyleDeclaration 接口。</p>
-<h2 id="CSSStyleDeclaration-接口"><a href="#CSSStyleDeclaration-接口" class="headerlink" title="CSSStyleDeclaration 接口"></a>CSSStyleDeclaration 接口</h2><p>有三个地方部署了这个接口：</p>
-<ol>
-<li>元素节点的 style 属性 Element.style</li>
-<li>CSSStyle 实例的 style 属性 <strong><em>❓没找到 CSSStyle 相关的文章 ❓</em></strong></li>
-<li>window.getComputedStyle() 方法的返回值</li>
-</ol>
-<p>CSSStyleDeclaration 接口可以直接读写 CSS 的样式属性，不过，连词号需要变成骆驼拼写法。</p>
-<p>CSSStyleDeclaration.cssText 属性用来读写当前规则的所有样式文本。删除一个元素的所有行内样式，最简便的方法就是设置 cssText 为空字符串。</p>
-<p>CSSStyleDeclaration.length 属性返回一个整数值，表示当前规则包含了多少条样式声明</p>
-<p>CSSStyleDeclaration.parentRule 属性返回当前规则所属的那个样式块 （CSSRule 实例）。如果不存在所属的样式块，该属性返回 null。该属性为只读，且只在使用 CSSRule 接口时才有意义。</p>
-<p>CSSStyleDeclaration.getPropertyPriority() 接受 CSS 样式的属性名作为参数，返回一个字符串，表示有没有设置 important 优先级。有返回 important，没有则返回空。</p>
-<p>CSSStyleDeclaration.getPropertyValue() 返回参数的 CSS 属性值</p>
-<p>CSSStyleDeclaration.item() 接受一个整数值作为参数，返回该位置的 CSS 属性名</p>
-<p>CSSStyleDeclaration.removeProperty() 删除 CSS 规则里面的属性名参数的属性值返回这个属性原来的值</p>
-<p>CSSStyleDeclaration.setProperty() 设置新的 CSS 属性。第一个参数表示属性名，第二个参数表示属性值，第三个参数唯一合法值是 important</p>
-<h2 id="CSS-对象"><a href="#CSS-对象" class="headerlink" title="CSS 对象"></a>CSS 对象</h2><p>CSS.escape() 转义 CSS 选择器里面的特殊字符</p>
-<p>CSS.supports() 返回一个布尔值，表示当前环境是否支持某个 CSS 规则</p>
-<h2 id="window-getComputedStyle"><a href="#window-getComputedStyle" class="headerlink" title="window.getComputedStyle()"></a>window.getComputedStyle()</h2><p>返回浏览器计算后得到的最终规则。返回一个 CSSStyleDeclaration 实例，包含了指定节点的最终样式信息。</p>
-<p>CSSStyleDeclaration 实例是一个活的对象，任何对于样式的修改，会实时反映到这个实例上面。另外这个实例是只读的。</p>
-<p>getComputedStyle() 的第二个参数是表示当前元素的伪元素（比如：<code>:before</code>、<code>:after</code> 等）</p>
-<p>CSS 规则的简写形式无效。比如读取 margin 的值不能直接读，只能读 marginLeft、marginTop 等。</p>
-<p>getComputedStyle 方法返回的 CSSStyleDeclaration 实例的 cssText 属性无效，返回 undefined。</p>
-<h2 id="CSS-伪元素"><a href="#CSS-伪元素" class="headerlink" title="CSS 伪元素"></a>CSS 伪元素</h2><p>节点元素的 style 属性无法读写伪元素的样式，这时候要用的 window.getComputedStyle() 。JavaScript 获取伪元素，可以使用下面的方法：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> test = <span class="built_in">document</span>.querySelector(<span class="string">'#test'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>).content;</span><br><span class="line"><span class="keyword">var</span> color = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>).color;</span><br></pre></td></tr></table></figure>
-<p>此外，也可以使用 CSSStyleDeclaration 实例的 getPropertyValue 方法，获取伪元素的属性</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>)</span><br><span class="line">  .getPropertyValue(<span class="string">'content'</span>);</span><br><span class="line"><span class="keyword">var</span> color = <span class="built_in">window</span>.getComputedStyle(test, <span class="string">':before'</span>)</span><br><span class="line">  .getPropertyValue(<span class="string">'color'</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="StyleSheet-接口"><a href="#StyleSheet-接口" class="headerlink" title="StyleSheet 接口"></a>StyleSheet 接口</h2><p>代表网页的一张样式表，包括 link 元素加载的样式表和 style 元素内勤的样式表。document 对象的 styleSheets 属性返回当前页面的所有 StyleSheet 实例，是一个伪数组。</p>
-<p>如果 style 元素嵌入的样式表，还可以通过节点元素的 sheet 属性获取 StyleSheet 实例。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码为 &lt;style id="myStyle"&gt;&lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> myStyleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line">myStyleSheet <span class="keyword">instanceof</span> StyleSheet <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>StyleSheet.disabled 是否禁用该样式表。可以通过 JavaScript 里面设置 disabled 为 true，等同于 link 里面将这张表设为 alternate stylesheet，即该样式不会生效。</p>
-<p>StyleSheet.href 返回样式表的网址</p>
-<p>StyleSheet.media  返回一个伪数组对象 MediaList 实例，成员是表示适用媒介的字符串：screen、print、handheld、all</p>
-<p>StyleSheet.title</p>
-<p>StyleSheet.type</p>
-<p>StyleSheet.parentStyleSheet CSS 的 @import 加载其他样式表</p>
-<p>StyleSheet.ownerNode 返回 StyleSheet 对象所在 DOM 节点，通常是 link 或者 style 节点</p>
-<p>CSSStyleSheet.cssRules 属性指向一个类似数组的对象（CSSRuleList 实例），里面每一个成员就是当前样式表的一条 CSS 规则。使用该规则的 cssText 属性，可以得到 CSS 规则对应的字符串。每条 CSS 规则有个 style 属性指向一个对象，可以i 用来读写具体的 CSS 命令。</p>
-<p>CSSStyleSheet.ownerRule 通过 @import 规则引入的 CSS 文件，它的 ownerRule 属性会返回一个 CSSRule 实例，代表那行 @import 规则。</p>
-<p>CSSStyleSheet.insertRule() 方法用于在当前样式表插入一个新的 CSS 规则</p>
-<p>CSSStyleSheet.deleteRule() 传入要删除的规则在 cssRules 对象中位置删除这条规则</p>
-<h2 id="添加样式表"><a href="#添加样式表" class="headerlink" title="添加样式表"></a>添加样式表</h2><p>JavaScript 添加 link 或者 style 标签，再加入对应的 href 或者 innerHTML 值</p>
-<h2 id="CSSRuleList-接口"><a href="#CSSRuleList-接口" class="headerlink" title="CSSRuleList 接口"></a>CSSRuleList 接口</h2><p>CSSRuleList 是一个伪数组，表示一组 CSS 规则，成员都是 CSSRule 实例。获取 CSSRuleList 实例，一般都是通过 StyleSheet.cssRules 属性。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;style id="myStyle"&gt;</span></span><br><span class="line"><span class="comment">//   h1 &#123; color: red; &#125;</span></span><br><span class="line"><span class="comment">//   p &#123; color: blue; &#125;</span></span><br><span class="line"><span class="comment">// &lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> myStyleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line"><span class="keyword">var</span> crl = sheet.cssRules</span><br><span class="line">crl instanceOf CSSRuleList <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<h2 id="CSSRule"><a href="#CSSRule" class="headerlink" title="CSSRule"></a>CSSRule</h2><p>一条 CSS 规则包括两个部分：CSS 选择器和样式声明。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.myClass</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">  <span class="attribute">background-color</span>: yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>JavaScript 通过 CSSRule 接口操作 CSS 规则，一般通过 CSSRuleList 接口。CSSStyleSheet.cssRules 获取 CSSRuleList 实例。</p>
-<p>CSSRule.cssText 返回当前规则的文本</p>
-<p>CSSRule.parentStyleSheet 返回当前规则所在 StyleSheet 实例</p>
-<p>CSSRule.parentRule 返回包含当前规则的父规则，如果不存在父规则（即当前规则是顶层规则），则返回 null。父规则最常见的情况是，当前规则包含在 @media 规则代码块中。</p>
-<p>CSSRule.type 返回一个当前规则的类型的整数：普通样式规则 1 CSSStyleRule 实例，@import 规则 3，@media 规则 4 CSSMediaRule 实例，@font-size 规则 5。</p>
-<h3 id="CSSStyleRule-接口"><a href="#CSSStyleRule-接口" class="headerlink" title="CSSStyleRule 接口"></a>CSSStyleRule 接口</h3><p>如果一条普通 CSS 规则的样式（不含特殊的 CSS 命令），那么除了 CSSRule 接口，它还部署了 CSSStyleRule 接口。</p>
-<p>CSSStyleRule.selectorText 返回当前规则的选择器，可读写</p>
-<p>CSSStyleRule.style 返回一个 CSSStyleDeclaration 实例，选择器后面的大括号里的部分。而 CSSStyleDeclaration 实例的 cssText 属性可以返回样式声明的字符串格式。</p>
-<h3 id="CSSMediaRule接口"><a href="#CSSMediaRule接口" class="headerlink" title="CSSMediaRule接口"></a>CSSMediaRule接口</h3><p>如果一条 CSS 规则是 @media 代码块，那么它除了 CSSRule 接口，还部署了 CSSMediaRule 接口。</p>
-<p>该接口主要提供了 media 属性和 conditionText 属性。前者返回代表 @media 规则的一个对象 MediaList 实例，后者返回 @media 规则的生效条件。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;style id="myStyle"&gt;</span></span><br><span class="line"><span class="comment">//   @media screen and (min-width: 900px) &#123;</span></span><br><span class="line"><span class="comment">//     article &#123; display: flex; &#125;</span></span><br><span class="line"><span class="comment">//   &#125;</span></span><br><span class="line"><span class="comment">// &lt;/style&gt;</span></span><br><span class="line"><span class="keyword">var</span> styleSheet = <span class="built_in">document</span>.getElementById(<span class="string">'myStyle'</span>).sheet;</span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>] <span class="keyword">instanceof</span> CSSMediaRule</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>].media</span><br><span class="line"><span class="comment">//  &#123;</span></span><br><span class="line"><span class="comment">//    0: "screen and (min-width: 900px)",</span></span><br><span class="line"><span class="comment">//    appendMedium: function,</span></span><br><span class="line"><span class="comment">//    deleteMedium: function,</span></span><br><span class="line"><span class="comment">//    item: function,</span></span><br><span class="line"><span class="comment">//    length: 1,</span></span><br><span class="line"><span class="comment">//    mediaText: "screen and (min-width: 900px)"</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">styleSheet.cssRules[<span class="number">0</span>].conditionText</span><br><span class="line"><span class="comment">// "screen and (min-width: 900px)"</span></span><br></pre></td></tr></table></figure>
-<h2 id="window-macthMedia"><a href="#window-macthMedia" class="headerlink" title="window.macthMedia()"></a>window.macthMedia()</h2><p>用来将 CSS 的 MediaQuery 条件语句，转换成一个 MediaQueryList 实例。就算参数是非法 MediaQuery 条件语句，不报错。</p>
-<h3 id="MediaQueryList-接口"><a href="#MediaQueryList-接口" class="headerlink" title="MediaQueryList 接口"></a>MediaQueryList 接口</h3><p>MediaQueryList.media 返回一个字符串，表示对应的 MediaQuery 条件语句</p>
-<p>MediaQueryList.matches 表示当前页面是否符合指定的 MediaQuery 条件语句</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">window</span>.matchMedia(<span class="string">"(max-width: 700px)"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (result.matches)&#123;</span><br><span class="line">  <span class="keyword">var</span> linkElm = <span class="built_in">document</span>.createElement(<span class="string">'link'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'rel'</span>, <span class="string">'stylesheet'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'type'</span>, <span class="string">'text/css'</span>);</span><br><span class="line">  linkElm.setAttribute(<span class="string">'href'</span>, <span class="string">'small.css'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">document</span>.head.appendChild(linkElm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>MediaQueryList.onChange 如果条件适配环境发生变化，会触发 change 事件。该函数的参数是 change 事件对象（MediaQueryListEvent 实例），该对象与 MediaQueryList 实例类似，也有 media 和 matches 属性。</p>
-<p>MediaQueryList.addListener() 和 MediaQueryList.removeListener() 用来为 change 事件添加或者撤销监听函数。</p>
+<p>鼠标事件都继承自 MouseEvent 接口，有以下事件：</p>
+<p>click、dblclick、mousedown、mouseup、</p>
+<p>mousemove：当鼠标在一个节点内部移动时触发。当鼠标持续移动时，该事件会连续触发。为了避免性能问题，建议对该事件的监听函数做一些限定，比如限定一段时间内只能运行一次</p>
+<p>mouseenter：鼠标进入一个节点时触发，进入子节点不会触发这个事件</p>
+<p>mouseleave：鼠标离开一个节点时触发，离开父节点不会触发这个事件</p>
+<p>mouseover：鼠标进入一个节点时触发，进入子节点会再一次触发这个事件</p>
+<p>mouseout：鼠标离开一个节点时触发，离开父节点也会触发这个事件</p>
+<p>contextmenu：按下鼠标右键时（上下文菜单出现前）触发，或者按下“上下文菜单键”时触发</p>
+<p>wheel：滚动鼠标的滚轮时触发，该事件继承的是 WheelEvent 接口</p>
+<p>拖拉事件和滚动事件</p>
+<p>click 事件指的是，用户在同一个位置先完成 mousedown 动作，再完成 mouseup 动作。因此，触发顺序是，mousedown、mouseup、然后是 click</p>
+<p>dblclick 则是在 mousedown、mouseup、click 之后触发</p>
+<p>mouseover 与 mouseenter 事件，都是鼠标进入一个节点时触发。两者的区别是，mouseenter 事件只触发一次，而只要鼠标在节点内部移动，mouseover 事件会在子节点上触发多次。🤔 那大家是不是应该用 mouseenter 和 mouseleave 而不是 mouseover 和 mouseout。或者说 mouseover、mouseout 用于事件代理或者事件委托。</p>
+<h2 id="MouseEvent-接口"><a href="#MouseEvent-接口" class="headerlink" title="MouseEvent 接口"></a>MouseEvent 接口</h2><p>浏览器原生提供一个 MouseEvent 构造函数，用于新建一个 MouseEvent 实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> MouseEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 配置项除了 Event 接口的实例配置属性，还有以下属性：</p>
+<p>screenX / screenY：鼠标相对于屏幕左上角的水平位置 / 垂直位置，默认值为 0</p>
+<p>clientX / clientY：鼠标相对于浏览器窗口左上角的水平位置 / 垂直位置，默认值为 0</p>
+<p>offsetX / offsetY：鼠标位置与目标节点左侧的 padding 边缘的水平距离 / 上方的 padding 边缘的垂直距离</p>
+<p>pageX / pageY：鼠标位置与稳定左侧边缘 / 上侧边缘的距离</p>
+<p>ctrlKey / shiftKey / altKey / metaKey：是否同时按下 ctrl / shift / alt / meta 键，默认为 false</p>
+<p>button：表示按下了哪一个鼠标按键，默认为 0，表示按下主键（通常是鼠标左键）或者当前事件没有定义这个属性；1 表示按下辅助键（通常是鼠标中键），2 表示按下次要键（通常是鼠标的右键）</p>
+<p>buttons：表示按下了鼠标的哪些键，是一个三个比特为的二进制，默认 0 没有按下任何键，1 二进制 001 表示按下主键，2 010 表示按下次要键，4 二进制 100 表示啊你啊辅助键。3 011 表示同时按下左右键。</p>
+<p>relatedTarget：节点对象，表示事件的相关节点，默认为 null。mouseenter 和 mouseover 表示鼠标刚刚离开的那个元素节点；mouseout 和 mouseleave 事件时，表示鼠标正在进入的那个元素节点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">simulateClick</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> evt = <span class="keyword">new</span> MouseEvent(<span class="string">'click'</span>, &#123;</span><br><span class="line">    <span class="string">'bubbles'</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">'cancelable'</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">var</span> cb = <span class="built_in">document</span>.getElementById(<span class="string">'checkbox'</span>)</span><br><span class="line">  cb.dispatchEvent(evt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MouseEvent-movementX、MouseEvent-movementY"><a href="#MouseEvent-movementX、MouseEvent-movementY" class="headerlink" title="MouseEvent.movementX、MouseEvent.movementY"></a>MouseEvent.movementX、MouseEvent.movementY</h3><p>MouseEvent.movementX 返回当前位置与上一个 mousemove 事件之间的水平距离。数值上，等于下面的公式：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">currentEvent.movementX = currentEvent.screenX - previousEvent.screenX</span><br></pre></td></tr></table></figure>
+<h3 id="MouseEvent-offsetX、MouseEvent-offsetY"><a href="#MouseEvent-offsetX、MouseEvent-offsetY" class="headerlink" title="MouseEvent.offsetX、MouseEvent.offsetY"></a>MouseEvent.offsetX、MouseEvent.offsetY</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* HTML 代码如下</span></span><br><span class="line"><span class="comment">  &lt;style&gt;</span></span><br><span class="line"><span class="comment">    p &#123;</span></span><br><span class="line"><span class="comment">      width: 100px;</span></span><br><span class="line"><span class="comment">      height: 100px;</span></span><br><span class="line"><span class="comment">      padding: 100px;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &lt;/style&gt;</span></span><br><span class="line"><span class="comment">  &lt;p&gt;Hello&lt;/p&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> p = <span class="built_in">document</span>.querySelector(<span class="string">'p'</span>);</span><br><span class="line">p.addEventListener(</span><br><span class="line">  <span class="string">'click'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.offsetX); </span><br><span class="line">    <span class="built_in">console</span>.log(e.offsetY);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="literal">false</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>在 p 的中心点击，返回 150 150。因此中心位置距离左侧和上方的 padding 边缘，等于 padding 的宽度 100 加上元素内容的一半 50。</p>
+<h3 id="MouseEvent-relatedTarget"><a href="#MouseEvent-relatedTarget" class="headerlink" title="MouseEvent.relatedTarget"></a>MouseEvent.relatedTarget</h3><p>返回鼠标事件的相关节点，对于那些没有相关节点的事件，返回 null</p>
+<p>target vs relatedTarget</p>
+<table>
+<thead>
+<tr>
+<th>事件名称</th>
+<th>target 属性</th>
+<th>relatedTarget 属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>focusin</td>
+<td>接受焦点的节点</td>
+<td>丧失焦点的节点</td>
+</tr>
+<tr>
+<td>focusout</td>
+<td>丧失焦点的节点</td>
+<td>接受焦点的节点</td>
+</tr>
+<tr>
+<td>mouseenter</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>mouseleave</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+<tr>
+<td>mouseout</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+<tr>
+<td>mouseover</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>dragenter</td>
+<td>将要进入的节点</td>
+<td>将要离开的节点</td>
+</tr>
+<tr>
+<td>dragexit</td>
+<td>将要离开的节点</td>
+<td>将要进入的节点</td>
+</tr>
+</tbody>
+</table>
+<p>额，target 显然更符合大家的思路….</p>
+<h3 id="MouseEvent-getModifierState"><a href="#MouseEvent-getModifierState" class="headerlink" title="MouseEvent.getModifierState()"></a>MouseEvent.getModifierState()</h3><p>返回是否按下特定的功能键，参数是表示功能键的字符串</p>
+<h2 id="WheelEvent-接口"><a href="#WheelEvent-接口" class="headerlink" title="WheelEvent 接口"></a>WheelEvent 接口</h2><p>WheelEvent 接口继承了 MouseEvent 实例，代表鼠标滚轮事件的实例对象。目前，鼠标滚轮相关的事件只有一个 wheel 事件，用户滚动鼠标的滚轮，就生成这个事件的实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evt = <span class="keyword">new</span> WheelEvent(type, options)</span><br></pre></td></tr></table></figure>
+<p>options 配置项：</p>
+<p>deltaX / deltaY / deltaZ：表示滚轮的水平 / 垂直 / z 轴滚动量</p>
+<p>deltaMode：表示相关滚动事件的单位，适用于上面三个属性。0 表示滚动单位为像素，1 表示单位为行，2 表示单位为页，默认为 0</p>
 
   </div>
   
@@ -121,7 +147,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/33/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/32/">32</a><a class="page-number" href="/bjb/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/bjb/page/35/">35</a><a class="page-number" href="/bjb/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/35/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/33/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/32/">32</a><a class="page-number" href="/bjb/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/bjb/page/35/">35</a><a class="page-number" href="/bjb/page/36/">36</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/35/">下一页&raquo;</a>
   </nav>
 
     </main>

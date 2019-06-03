@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">严格模式</h2>
+    <h2 class="title">Navigator 对象、Screen 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-03-07 11:03:16</span>
+    <span class="post-time">2019-03-14 13:45:39</span>
     <span class="post-tags">
       
     </span>
@@ -51,36 +51,23 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>严格模式是 ES5 出的标准，她的目的是使 JavaScript 更合理、安全、严谨。</p>
-<p>在作用域的最顶层加 ‘use strict’ 启用严格模式。单个文件严格模式，最好用 IIFE 把整个脚本文件包起来。</p>
-<p>显式报错</p>
-<ul>
-<li>修改只读属性</li>
-<li>修改只设置了 getter，而没有 setter 的对象属性</li>
-<li>扩展禁止扩展的对象</li>
-<li>把 eval、arguments 用作标识名</li>
-<li>函数有重名的参数（ps：函数的参数不可以用 arguments[i] 获取）</li>
-<li>禁止八进制的前缀 0 表示法，正确的是使用前缀 0O 或者 0o</li>
-</ul>
-<p>增强的安全措施</p>
-<ul>
-<li>全局变量必须用 var 命令显式声明</li>
-<li>禁止 this 关键字指向全局对象，this 返回的是 undefined</li>
-<li>禁止使用 fn.callee、fn.caller、fn.arguments，会报错。即在函数内部是无法获取当前函数的调用栈</li>
-<li>禁止使用 arguments.callee、arguments.caller</li>
-<li>禁止 delete 没有配置可删除的变量，只能删除对象的属性已经在属性描述对象里面配置了 configurable 为 true</li>
-</ul>
-<p>静态绑定，提高编译速度</p>
-<ul>
-<li>禁止使用 with 语句，因为它无法在编译的时候确认对象的归属，只能运行时确定</li>
-<li>新加了一个作用域：eval 作用域，eval 所生成的变量只能用于 eval 内部，在 eval 语句使用严格模式可以给 eval 内部的语句加入 use strict 字符串，或者在 eval 语句所在的函数作用域内使用严格模式。</li>
-<li>通过 arguments 无法修改函数参数</li>
-</ul>
-<p>为新版本铺垫</p>
-<ul>
-<li>非函数代码块不得声明函数、ES6 引入了块级作用域</li>
-<li>新增了保留字 let、package、private、public、protected、yield、interface 等</li>
-</ul>
+<p>Navigator.userAgent 返回浏览器的 User Agent 字符串，表示浏览器的厂商和版本信息。这个属性值没有统一规范，上网设备层出不穷；而且用户可以修改它，所以不要这个属性来来识别浏览器。如果要识别浏览器可以使用“功能识别”方法。不过可以用来识别手机浏览器。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> ua = navigator.userAgent.toLowerCase();</span><br><span class="line"><span class="keyword">if</span> (<span class="regexp">/mobi|android|touch|mini/i</span>.test(ua)) &#123;</span><br><span class="line">  <span class="comment">// 手机浏览器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Navigator.plugins 返回一个类似数组的对象，成员是 Plugin 实例对象，表示浏览器安装的插件，比如 Flash、ActiveX 等</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> pluginsLength = navigator.plugins.length</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; pluginsLength; i++) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123;name, filename, description, version&#125; = navigator.plugins[i]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Navigator.platform 返回用户的操作系统信息</p>
+<p>Navigator.onLine 返回浏览器是否断线。如果是 false 可以断定用户离线，但是是 true 可能是能连内网却不能连外网。用户变成在线时会触发 online 事件，变成离线时会触发 offline 事件。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'offline'</span>, (e) =&gt; <span class="built_in">console</span>.log(<span class="string">'用户离线了'</span>))</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'online'</span>, (e) =&gt; <span class="built_in">console</span>.log(<span class="string">'用户现在在线了'</span>))</span><br></pre></td></tr></table></figure>
+<p>Navigator.language 返回浏览器首选语言。Navigator.languages 返回用户可以接受的语言的数组，Navigator.language 是这个数组的第一个成员。HTTP 请求头信息的 Accept-Languge 字段就来自这个数组。如果这个属性发生变化，就会触发 window 对象上的 languagechange 事件。</p>
+<p>Navigator.geolocation 在 HTTPS 协议下时，返回一个 Geolocation 对象，包含用户地理位置信息。Geolocation 对象提供了三个方法：Geolocation.getCurrentPosition() 返回用户的当前位置；Geolocation.watchPosition() 监听用户位置的变化；Geolocaiton.clearWatch() 取消 watchPosition() 方法指定的监听函数。这三个方法要求用户授权。</p>
+<p>Navigator.cookieEnabled 返回浏览器的 Cookie 功能是否打开。</p>
+<p>Navigator.javaEnabled() 浏览器是否能运行 Java Applet 小程序</p>
+<p>Navigator.sendBeacon() 用于向浏览器异步发送数据</p>
+<p>Screen.height、Screen.width：浏览器窗口所在的屏幕的高度、宽度</p>
+<p>Screen.availHeight、Screen.availWidth：屏幕可用高度、屏幕可用宽度</p>
+<p>Screen.pixelDepth：屏幕的色彩位数，24 表示屏幕提供 24 位色彩</p>
+<p>Screen.colorDepth：是 Screen.pixelDepth 的别名。colorDepth 表示应用程序的颜色深度，pixelDepth 表示屏幕的颜色深度</p>
+<p>Screen.orientation：返回一个表示屏幕放心的对象。该对象 type 属性表示屏幕具体方向，landscape-primary 表示横放，landscape-secondary 表示颠倒的横放，portrait-primary 表示竖放，portrait-secondary 表示颠倒的竖放。</p>
 
   </div>
   
@@ -88,7 +75,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/14/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/13/">13</a><a class="page-number" href="/bjb/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/bjb/page/16/">16</a><a class="page-number" href="/bjb/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/16/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/14/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/13/">13</a><a class="page-number" href="/bjb/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/bjb/page/16/">16</a><a class="page-number" href="/bjb/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/16/">下一页&raquo;</a>
   </nav>
 
     </main>

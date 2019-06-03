@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Date 对象</h2>
+    <h2 class="title">Document 节点</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-04 15:24:10</span>
+    <span class="post-time">2018-12-25 11:40:06</span>
     <span class="post-tags">
       
     </span>
@@ -51,109 +51,156 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>Date 对象是 JavaScript 原生的时间库。它以国际标准时间（UTC） 1970 年 1 月 1 日 00:00:00 作为时间的零点，可以表示的时间范围是前后各 1 亿天（单位为毫秒）</p>
-<h2 id="普通函数的用法"><a href="#普通函数的用法" class="headerlink" title="普通函数的用法"></a>普通函数的用法</h2><p>Date 对象可以作为普通函数直接调用，返回一个代表当前时间的字符串。即使带有参数，Date 作为普通函数返回的依然是当前时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:36 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="built_in">Date</span>(<span class="number">2010</span>, <span class="number">10</span>,<span class="number">10</span>)</span><br><span class="line"><span class="comment">// 'Tue Dec 04 2018 13:33:43 GMT+0800 (China Standard Time)'</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"><span class="comment">// 2018-12-04T05:38:16.321Z</span></span><br></pre></td></tr></table></figure>
-<h2 id="构造函数的用法"><a href="#构造函数的用法" class="headerlink" title="构造函数的用法"></a>构造函数的用法</h2><p>Date 还可以当作构造函数使用。对它使用 new 命令，会返回一个 Date 对象的实例。如果不参数，实例代表的就是当前时间。</p>
-<p>Date 实例有一个独特的地方。其他对象求值的时候，都默认调用 .valueOf 方法，但是 Date 实例求值的时候，默认调用的是 toString 方法。这导致对 Date 实例求值，返回的是一个字符串，代表该实例对应的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 然而并不是</span></span><br><span class="line"><span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// Node 下返回的格式并不是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// 2018-12-04T05:40:27.815Z</span></span><br><span class="line"></span><br><span class="line">today</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)</span></span><br><span class="line"></span><br><span class="line">today.toString()</span><br><span class="line"><span class="comment">// 浏览器下是 toString 后的字符串</span></span><br><span class="line"><span class="comment">// "Tue Dec 04 2018 13:43:23 GMT+0800 (中国标准时间)"</span></span><br><span class="line"></span><br><span class="line">today == today.toString() <span class="comment">// true</span></span><br><span class="line">today === today.toString() <span class="comment">// false 🤔</span></span><br><span class="line"></span><br><span class="line">today.valueOf()</span><br><span class="line"><span class="comment">// 1543902027815</span></span><br></pre></td></tr></table></figure>
-<p>作为构造函数时，Date 对象可以接受多种格式的参数，返回一个该参数对应的实例。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数为时间零点开始计算的毫秒数</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">1378218728000</span>)</span><br><span class="line"><span class="comment">// Tue Sep 03 2013 22:32:08 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为日期字符串</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"><span class="comment">// Sun Jan 06 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数为多个整数，</span></span><br><span class="line"><span class="comment">// 代表年、月、日、小时、分钟、秒、毫秒</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第一：参数可以是负数，代表 1970 年元旦之前的时间</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">-1378218728000</span>)</span><br><span class="line"><span class="comment">// Fri Apr 30 1926 17:27:52 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第二：只要能被 Date.parse 方法解析的字符串，都可以被当作参数</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-2-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013/2/15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'02/15/2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'2013-FEB-15'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'FEB 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary, 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'Feberuary 15, 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15 Feb 2013'</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'15, Feberuary, 2013'</span>)</span><br><span class="line"><span class="comment">// Fri Feb 15 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>第三：参数为年、月、日等多个整数时，年和月不能省略，其他参数可以省略。如果只传入了年参数，Date 会将其解释为毫秒数。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>)</span><br><span class="line"><span class="comment">// Thu Jan 01 1970 08:00:02 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Tue Jan 01 2013 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>最后 各个参数的取值范围</p>
+<p>document 节点对象代表整个文档，window.document 属性指向这个对象。只要浏览器开始载入 HTML 文档，该对象就存在了，可以直接使用。</p>
+<p>iframe 框架里面的网页，使用 iframe 节点的 contentDocument 属性获取 document 节点</p>
+<p>AJAX 操作返回的文档，使用 XMLHttpRequest 对象的 responseXML 属性获取 document 节点</p>
+<p>document 对象继承了 EventTarget 接口、Node 接口、ParentNode 接口。以及一些自己的属性和方法。</p>
+<p>快捷属性</p>
 <ul>
-<li>年：使用四位数年份，比如 2000。如果写成两位数或个位数，则加上 1900，比如 1 代表 1901 年。如果是负数，则表示公元前</li>
-<li>月：0 表示 一月，依次类推，11 表示 12 月</li>
-<li>日：1 到 31</li>
-<li>小时：0 到 23</li>
-<li>分钟：0 到 59</li>
-<li>秒：0 到 59</li>
-<li>毫秒：0 到 999</li>
+<li>document.defaultView 返回 document 所属的 window 对象，如果当前文档不属性 window 对象，就返回 null。</li>
+<li>document.doctype document 对象的第一个子节点是 document.doctype，第二个是 html 标签节点</li>
+<li>document.documentElement 返回当前文档的根节点 root。通常是 document 节点的第二个节点，紧跟在 document.doctype 节点后面。HTML 网页的该属性，一般就是 html 标签节点</li>
+<li>document.head 指向 head 标签节点、document.body 指向 body 标签节点。如果改写它们的值，相当于移除所有子节点</li>
+<li>document.scrollingElement 当前文档整体滚动时，到底是哪个元素在滚动。标准模式下，这个属性返回文档的根元素 document.documentElement 即 html 标签元素。兼容模式下，返回的是 body 标签元素，如果该元素不存在返回 null。</li>
+<li>Document.activeElement 返回当前焦点的 DOM 元素。通常这个属性返回的是 input、textarea、select 等表单元素，如果当前没有焦点元素，则返回 body 标签元素或者 null。</li>
+<li>document.fullscreenElement 返回当前以全屏状态展示的 DOM 元素。如果不是全屏，返回 null。确定视频是否打开全屏：<code>document.fullscreenElement.nodeName === &#39;video&#39;</code> 返回 true 则是全屏。</li>
 </ul>
-<p>注意，月份从 0 开始计算，但是，天数从 1 开始计算。另外，除了日期的默认值为 1，小时、分、秒和毫秒都是 0。</p>
-<p>这些参数如果超出正常范围，会被自动折算。比如月为 15，就折算为下一年的 4 月</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">15</span>)</span><br><span class="line"><span class="comment">// Tue Apr 01 2014 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// Mon Dec 31 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<p>参数可以是负数，表示扣去的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sat Dec 01 2012 00:00:00 GMT+0800 (CST)</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">// Sun Dec 30 2012 00:00:00 GMT+0800 (CST)</span></span><br></pre></td></tr></table></figure>
-<h2 id="日期的运算"><a href="#日期的运算" class="headerlink" title="日期的运算"></a>日期的运算</h2><p>类型自动转换，Date 实例如果转为数值，则等于对应的毫秒数；如果转为字符串，则等于对应的日期字符串。所以，两个日期实例对象进行减法运算时，返回的是他们间隔的毫秒数；进行加法运算时，返回的是两个字符串连接而成的字符串。</p>
-<h2 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h2><p>Date.now 返回当前时间距离时间零点 （1970 年 1 月 1 日 00:00:00 UTC）的毫秒数，相当于 Unix 时间戳乘以 1000。</p>
-<p>Date.parse 方法用来解析日期字符串，返回该时间距离零点的毫秒数。日期字符串应该符合 RFC 2822 和 ISO 8061 这两个标准，即 YYYY-MM-DDTHH:mm:ss.sssZ 格式，其中最后的 Z 表示时区。但是，其他格式也可以被解析。如果解析失败返回 NaN</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Aug 9, 1995'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'January 26, 2011 13:51:50'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 GMT'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'Mon, 25 Dec 1995 13:30:00 +0430'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'2011-10-10T14:48:00'</span>)</span><br><span class="line"><span class="built_in">Date</span>.parse(<span class="string">'xxx'</span>) <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<p>Date.UTC 方法接受年、月、日等变量作为参数，返回该时间距离时间零点的毫秒数。Date.UTC 方法的参数，会被解析成为 UTC 时间（世界标准时间），Date 构造函数的参数会被解释为当前时区的时间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>,<span class="number">12</span>,<span class="number">12</span>)</span><br><span class="line"><span class="comment">// 2014-01-11T16:00:00.000Z</span></span><br><span class="line"><span class="keyword">var</span> dateUTC = <span class="built_in">Date</span>.UTC(<span class="number">2013</span>, <span class="number">12</span>, <span class="number">12</span>)</span><br><span class="line"><span class="comment">// 1389484800000</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>(dateUTC)</span><br><span class="line"><span class="comment">// 2014-01-12T00:00:00.000Z</span></span><br></pre></td></tr></table></figure>
-<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>Date 的实例方法，有几十个自己的方法，除了 valueOf 和 toString，可以分为以下三类：</p>
+<p>节点集合属性</p>
+<p>document.links、document.forms、document.images、document.embeds、document.plugins、document.scripts、document.styleSheets 返回的都是 HTMLCollection 实例，所以都可以通过 id 或者 name 索引到对应的成员。</p>
+<p>文档静态信息属性</p>
 <ul>
-<li>to 类：从 Date 对象返回一个字符串，表示指定的时间</li>
-<li>get 类：获取 Date 对象的日期和时间</li>
-<li>set 类：设置 Date 对象的日期和时间</li>
+<li>document.documentURI 继承自 Document 接口 可用于所有文档、 document.URL 继承自 HTMLDocument 接口，只能用于 HTML 文档。那对前端来说其实是一样的。</li>
+<li>document.domain 当前文档域名，不包含协议和端口。只有在次级域名菜可以修改这个值，设置完后会导致端口被改为 null。</li>
+<li>document.location</li>
+<li>document.lastModified</li>
+<li>document.title、document.characterSet</li>
+<li>document.referrer 与 HTTP 头信息的 Referer 字段一致</li>
+<li>document.dir 表示文字方向 rtl、ltr</li>
+<li>document.compatMode 浏览器处理文档的模式，可能的值为 BackCompat 向后兼容模式和 CSS1Compat 严格模式。一般网页设置了明确的 DTD，document.compatMode 的值都为 CSS1Compat。</li>
 </ul>
-<h3 id="Date-prototype-valueOf"><a href="#Date-prototype-valueOf" class="headerlink" title="Date.prototype.valueOf"></a>Date.prototype.valueOf</h3><p>valueOf 返回实例对象距离时间零点对应的毫秒数，该方法等同于 getTime 方法</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">d.valueOf() <span class="comment">// 1543905441996 </span></span><br><span class="line">d.getTime() <span class="comment">// 1543905441996</span></span><br></pre></td></tr></table></figure>
-<h3 id="to-类方法"><a href="#to-类方法" class="headerlink" title="to 类方法"></a>to 类方法</h3><p>Date.prototype.toString 返回一个完整的日期字符串。toString 是默认的调用方法，所以如果直接读取 Date 实例，就相当于调用这个方法。</p>
-<p>Date.prototype.toUTCString 返回对应的 UTC 时间，也就是比北京时间晚 8 个小时</p>
-<p>Date.prototype.toISOString 返回对应时间的 ISO8601 格式 YYYY-MM-DDTHH:mm:ss.sssZ，而且时间都是 UTC 时区的时间。</p>
-<p>Date.prototype.toJSON 返回一个符合 JSON 格式的 ISO 日期字符串，与 toISOString 方法的返回结果完全相同。</p>
-<p>Date.prototype.toDateString 返回日期字符串，不含日期、分、秒</p>
-<p>Date.prototype.toTimeString 返回时间字符串，不含年、月、日</p>
-<p><strong>本地时间</strong></p>
-<p>有三种方法可以将 Date 实例转为表示本地时间的字符串</p>
+<p>文档状态属性</p>
 <ul>
-<li>Date.prototype.toLocalString 完整的本地时间</li>
-<li>Date.prototype.toLocalDateString 本地日期</li>
-<li>Date.prototype.toLocalTimeString 本地时间</li>
-</ul>
-<p>三种方法都可以传入两个参数，第一个参数指定所用的语言的字符串，第二个参数指定返回字符串的格式</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2013</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间格式</span></span><br><span class="line"><span class="comment">// 下面的设置是，星期和月份为完整文字，年份和日期为数字</span></span><br><span class="line">d.toLocaleDateString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  weekday: <span class="string">'long'</span>,</span><br><span class="line">  year: <span class="string">'numeric'</span>,</span><br><span class="line">  month: <span class="string">'long'</span>,</span><br><span class="line">  day: <span class="string">'numeric'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "Tuesday, January 1, 2013"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定时区</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'UTC'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'short'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "4:00:00 PM UTC"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  timeZone: <span class="string">'Asia/Shanghai'</span>,</span><br><span class="line">  timeZoneName: <span class="string">'long'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM China Standard Time"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小时周期为12还是24</span></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "00:00:00"</span></span><br><span class="line"></span><br><span class="line">d.toLocaleTimeString(<span class="string">'en-US'</span>, &#123;</span><br><span class="line">  hour12: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "12:00:00 AM"</span></span><br></pre></td></tr></table></figure>
-<h2 id="get-方法"><a href="#get-方法" class="headerlink" title="get 方法"></a>get 方法</h2><p>Date 对象提供了一系列的 get 方法，用来获取实例对象的某个方面的值</p>
+<li><p>document.hidden 窗口最小化、浏览器切换 tab 时返回 true，是 Page Visibility API 引入的，一般配合这个 API 使用</p>
+</li>
+<li><p>document.visibilityState 返回文档的可见状态，可以在页面加载时，防止加载某些资源；或者页面不可见时，停掉一些页面功能。</p>
 <ul>
-<li>getTime 返回实例距离零点的毫秒数，等同于 valueOf</li>
-<li>getDate 返回实例对象对应月的几号 从 1 开始。</li>
-<li>getDay 返回星期几，星期日为 0，星期一为 1</li>
-<li><del>getYear 返回距离 1900 的年数，比如 2018 年距离 1900 是 118</del> 标准已经废弃，替换为 getFullYear</li>
-<li>getFullYear 返回四位的年份</li>
-<li>getMonth 返回月份，0 表示 1 月，11 表示 12 月</li>
-<li>getHours 返回小时 0 - 23</li>
-<li>getMilliseconds 返回毫秒数 0 - 999</li>
-<li>getMinutes 返回分钟 0 - 59</li>
-<li>getSeconds 返回秒 0 - 59</li>
-<li>getTimezoneOffset 返回当前时间与 UTC 的时间的差异，以分钟表示，返回结果考虑到了夏令时因素</li>
+<li>visible 页面可见或者部分可见</li>
+<li>hidden 页面不可见</li>
+<li>prerender 页面正在渲染，对用户来说不可见</li>
+<li>unloaed 页面从内存卸载</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getMonth() <span class="comment">// 0</span></span><br><span class="line">d.getFullYear() <span class="comment">// 2013</span></span><br><span class="line">d.getTimezoneOffset() <span class="comment">// -480</span></span><br></pre></td></tr></table></figure>
-<p>最后一行返回 -480，即 UTC 时间减去当前时间，单位为分钟。-480 表示 UTC 比当前时间少了 480 分钟，即当前时区比 UTC 早 8 小时。</p>
-<p>计算本年度还剩下多少天</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leftDays</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">  <span class="keyword">var</span> endYear = <span class="keyword">new</span> <span class="built_in">Date</span>(today.getFullYear(), <span class="number">11</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">999</span>)</span><br><span class="line">  <span class="keyword">var</span> msPerDay = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.round((endYear.getTime() - today.getTime()) / msPerDay)</span><br><span class="line">&#125;</span><br><span class="line">leftDays() <span class="comment">// 27 😱</span></span><br></pre></td></tr></table></figure>
-<p>Date 对象还提供了这些方法对应的 UTC 版本，用来返回 UTC 时间。</p>
+</li>
+<li><p>document.readyState 返回文档当前的加载状态，loading 加载 HTML 代码阶段（尚未完成解析）、interactive 加载外部资源阶段、complete 加载完成。</p>
+<p>这个属性变化的过程如下：</p>
+<ol>
+<li>浏览器开始解析 HTML 文档，document.readyState 属性等于 loading</li>
+<li>浏览器遇到 HTML 文档中的 script 标签元素，并且没有 async 或者 defer 属性，就暂停解析，开始执行脚本，这时 document.readyState 属性还是等于 loading</li>
+<li>HTML 文档解析完成，document.readyState 属性变成 interactive</li>
+<li>浏览器等待图片、样式表、字体文件等外部资源加载完成，一旦全部加载完成，document.readyState 属性变成 complete。</li>
+</ol>
+</li>
+<li><p>document.cookie</p>
+</li>
+<li><p>document.designMode 控制当前文档是否可编辑，默认为 off，如果设置为 on，用户可以编辑整个文档的内容。</p>
+<blockquote>
+<p> 有意思，什么场景 🤔 </p>
+<p>on 的时候，可以调用 document.execCommaned() 方法来控制文本。</p>
+</blockquote>
+</li>
+<li><p>document.implementation 返回一个 DOMImplementation 对象，有三个方法，主要用于创建独立于当前文档的新的 Document 对象。</p>
 <ul>
-<li>getUTCDate</li>
-<li>getUTCFullYear</li>
-<li>getUTCMonth</li>
-<li>getUTCDay</li>
-<li>getUTCHours</li>
-<li>getUTCMinuts</li>
-<li>getUTCSeconds</li>
-<li>getUTCMilliseconds</li>
+<li>DOMImplementation.createDocument()：创建一个 XML 文档</li>
+<li>DOMImplementation.createHTMLDocument()：创建一个 HTML 文档</li>
+<li>DOMImplementation.createDocumentType()：创建一个 DocumentType 对象</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">'January 6, 2013'</span>);</span><br><span class="line"></span><br><span class="line">d.getDate() <span class="comment">// 6</span></span><br><span class="line">d.getUTCDate() <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
-<h2 id="set-类方法"><a href="#set-类方法" class="headerlink" title="set 类方法"></a>set 类方法</h2><p>Date 对象提供了一系列 set 方法，用来设置实例对象的各个方面</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> doc = <span class="built_in">document</span>.implementation.createHTMLDocument(<span class="string">'Title'</span>);</span><br><span class="line"><span class="keyword">var</span> p = doc.createElement(<span class="string">'p'</span>);</span><br><span class="line">p.innerHTML = <span class="string">'hello world'</span>;</span><br><span class="line">doc.body.appendChild(p);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换当前文档为新建的 doc 文档。有意思啊。</span></span><br><span class="line"><span class="built_in">document</span>.replaceChild(</span><br><span class="line">  doc.documentElement,</span><br><span class="line">  <span class="built_in">document</span>.documentElement</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>方法</p>
 <ul>
-<li>setDate(date) 返回改变后的毫秒时间戳</li>
-<li><del>setYear</del> 标准已经废弃，替换为 setFullYear</li>
-<li>setFullYear(year[, mon, date]) 设置四位年份</li>
-<li>setHours(hour[, min, sec, ms])</li>
-<li>setMilliseconds(ms)：0 - 999 之间的值，如果超出会直接自动折算到年、月、日、分、秒上</li>
-<li>setMinutes(min[, sec, ms])</li>
-<li>setMonth(month[, date])</li>
-<li>setSeconds(sec[, ms])</li>
-<li>setTime(milliseconds)</li>
+<li><p>document.open()、document.close() </p>
+</li>
+<li><p>document.write()、document.writeLn()</p>
+</li>
+<li><p>document.querySelector()、document.querySelectorAll() 参数为 CSS 选择器</p>
+</li>
+<li><p>document.getElementsByTagName() 返回符合条件的标签节点，返回一个 HTMLCollection 实例，如果参数是<code>*</code>则返回所有 HTML 元素</p>
+</li>
+<li><p>document.getElementsByClassName() 参数如果是多个 class，用空格隔开，则返回同时具有多个 className 的标签节点</p>
+</li>
+<li><p>document.getElementsByName() 返回具有某个 name 属性的标签节点的 NodeList 实例</p>
+</li>
+<li><p>document.getElementById() 返回 id 为参数的标签元素，效率比 document.querySelector() 高得多</p>
+</li>
+<li><p>document.elementFromPoint()、document.elementsFromPoint() 返回页面指定 x、y 值的最上层的元素节点、元素节点的数组</p>
+</li>
+<li><p>document.caretPositionFromPoint() 返回一个 CaretPosition 对象，包含了指定坐标点在节点对像内部的位置信息。CaretPosition 对象就是光标插入点的概念，用于确定光标点在文本对象内部的具体位置。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> range = <span class="built_in">document</span>.caretPositionFromPoint(clientX, clientY);</span><br></pre></td></tr></table></figure>
+<p>range 是指定坐标点的 CaretPosition 对象。该对象有两个属性：</p>
+<ul>
+<li>CaretPosition.offsetNode：该位置的节点对象</li>
+<li>CaretPosition.offset：该位置在 offsetNode 对象内部，与起始位置相距的字符数</li>
 </ul>
-<p>没有 setDay 方法，因为星期几时计算出来的，而不是设置的。</p>
-<p>set 方法的参数都是会自动折算的，如果超出应该的数，会向下一个年/月/日/时/分/秒顺延，如果参数是负数，表示上个年/月/日/时/分/秒减去对应数。</p>
-<p>set 方法除了 setTime 和 setYear，都有对应的 UTC 版本，设置对应 UTC 时区的时间。</p>
+</li>
+<li><p>document.createElement()</p>
+</li>
+<li><p>document.createTextNode() 传入的参数如果有标签节点会被转义，不对引号转义，不能用来对 HTML 属性赋值</p>
+</li>
+<li><p>document.createAttribute()</p>
+</li>
+<li><p>document.createComment()</p>
+</li>
+<li><p>document.createDocumentFragment() DocumentFragment 是存在于内存的 DOM 片段，不属于当前文档，常常用来生成一段较复杂的 DOM 结构，然后再插入当前文档。这样做的好处在于，因为 DocumentFragment 不属于当前文档，对它的任何改动，都不回引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现。</p>
+</li>
+<li><p>document.createEvent() 创建一个事件对象 Event 实例，可以被 element.dispatchEvent 方法使用，触发指定事件。参数为事件类型：UIEvents、MouseEvents、MutationEvents、HTMLEvents 等</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> event = <span class="built_in">document</span>.createEvent(<span class="string">'Event'</span>);</span><br><span class="line">event.initEvent(<span class="string">'build'</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'build'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.type); <span class="comment">// "build"</span></span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">document</span>.dispatchEvent(event);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>document.addEventListener()、document.removeEventListener()、document.dispatchEvent() 用于处理 document 节点事件。都继承自 EventTarget 接口</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 触发事件</span></span><br><span class="line"><span class="keyword">var</span> event = <span class="keyword">new</span> Event(<span class="string">'click'</span>);</span><br><span class="line"><span class="built_in">document</span>.dispatchEvent(event);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>document.hasFocus() 当前文档之中是否有元素被激活或获得焦点。有焦点的文档必定被激活，但是被激活的文档未必有焦点。比如，用户点击按钮，从当前窗口跳出一个新窗口，该新窗口就是激活的，但是不拥有焦点。</p>
+</li>
+<li><p>document.adoptNode() 将参数节点及其子节点从原来所在文档或者 DocumentFragment 移除，让它归属当前 document 对象，返回插入后的新节点。插入的节点对象的 ownerDocument 属性会变成当前的 document 对象，而 parentNode 属性为 null（因为只有插入到文档树后才有 parentNode）。document.adoptNode 方法只是改变节点的归属，并没有将这个节点插入到文档树，所以如果要插入文档树，还要用 appendChild 或者 insertBefore 方法将新节点插入到当前文档树。</p>
+</li>
+<li><p>document.importNode() 方法则是从原来所在文档或者 DocumentFragment 里面，拷贝某个节点及其子节点，让它归属当前 document 对象。拷贝的节点对象的 ownerDocument 属性会变成当前的 document 对象，而 parentNode 属性为 null（因为只有插入到文档树后才有 parentNode）。第一个参数为节点，第二个参数为是否是深拷贝。</p>
+</li>
+<li><p>document.createNodeIterator() 返回一个子节点遍历器。第一个参数为要遍历的根节点，第二个参数为所要遍历的节点类型。几种主要的节点类型写法如下：</p>
+<ul>
+<li>所有节点：NodeFilter.SHOW_ALL</li>
+<li>元素节点：NodeFilter.SHOW_ELEMENT</li>
+<li>文本节点：NodeFilter.SHOW_TEXT</li>
+<li>评论节点：NodeFilter.SHOW_COMMENT</li>
+</ul>
+<p>document.createNodeIterator 方法返回一个遍历器对象（NodeFilter 实例）。该实例的 nextNode() 方法和 previousNode() 方法，可以用来遍历所有子节点。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nodeIterator = <span class="built_in">document</span>.createNodeIterator(<span class="built_in">document</span>.body);</span><br><span class="line"><span class="keyword">var</span> pars = [];</span><br><span class="line"><span class="keyword">var</span> currentNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (currentNode = nodeIterator.nextNode()) &#123;</span><br><span class="line">  pars.push(currentNode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>nextNode 方法先返回遍历器内部指针所在的节点，然后会将指针移向下一个节点<br>previousNode 方法先将指针移向上一个节点，然后返回该节点</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nodeIterator = <span class="built_in">document</span>.createNodeIterator(</span><br><span class="line">	<span class="built_in">document</span>.body,</span><br><span class="line">  NodeFilter.SHOW_ELEMENT</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> currentNode = nodeIterator.nextNode()</span><br><span class="line"><span class="keyword">var</span> previousNode = nodeIterator.previousNode()</span><br><span class="line"></span><br><span class="line"><span class="comment">// nextNode 方法先返回遍历器内部指针所在的节点，然后会将指针移向下一个节点</span></span><br><span class="line"><span class="comment">// previousNode 方法先将指针移向上一个节点，然后返回该节点</span></span><br><span class="line"><span class="comment">// 此时 currentNode === previousNode</span></span><br><span class="line">currentNode === previousNode <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>遍历器返回的第一个节点是传入的参数节点。</p>
+</li>
+<li><p>document.createTreeWalker() 返回一个 DOM 的子树遍历器。与 document.createNodeIterator 方法基本类似，区别在于它返回的是 TreeWalker 实例，而后者是返回的 NodeIterator 实例。另外返回的遍历器不包含参数节点。</p>
+</li>
+<li><p>document.execCommand()、document.queryCommandSupported()、document.queryCommandEnabled() 如果 document.designMode 为 on，即整个文档用户都可编辑，如果标签节点的 contenteditable 为 true，即这个标签可编辑。这两种情况下，可以使用 document.execCommand() 方法，改变内容的样式，比如 document.execCommand(‘bold’) 会使得字体加粗。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.execCommand(command, showDefaultUI, input)</span><br></pre></td></tr></table></figure>
+<p>该方法接受三个参数：</p>
+<ul>
+<li><p>command：字符串，表示要实施的样式</p>
+</li>
+<li><p>showDefaultUI：布尔值，表示是否使用用户默认的界面，建议设置为 false</p>
+</li>
+<li><p>input：字符串，表示该样式的辅助内容，比如生成超级连接时，这个参数就是所要链接的网址。如果第二个参数为 true，那么浏览器会弹出提示框，要求用户在提示框内输入该参数。但是不是所有浏览器都支持这么做，为了兼容性，还是需要自己部署获取这个参数比较好。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="built_in">window</span>.prompt(<span class="string">'请输入网址'</span>)</span><br><span class="line"><span class="keyword">if</span> (url) &#123;</span><br><span class="line">  <span class="built_in">document</span>.execCommand(<span class="string">'createLink'</span>, <span class="literal">false</span>, url)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>document.execCommand() 的返回值是一个布尔值。如果为 false，表示这个方法无法生效。</p>
+<p>这个方法大部分情况下，只对选中的内容生效。如果有多个内容可编辑区域，那么只对当前焦点所在的元素生效。</p>
+<p>document.execCommand() 方法可以执行的样式改变有很多种，下面是其中的一些：bold、insertLineBreak、selectAll、createLink、insertOrderedList、subscript、delete、insertUnorderedList、superscript、formatBlock、insertParagraph、undo、forwardDelete、insertText、unlink、insertImage、italic、unselect、insertHTML、redo。</p>
+</li>
+</ul>
+<p>  document.queryCommandEnabled() 方法返回一个布尔值，表示浏览器是否允许使用这个方法。</p>
+<p>  document.queryCommandSupported() 方法返回一个布尔值，表示当前是否可用某种样式改变。比如，加粗只有存在文本选中时才可用，如果没有选中文本，就不可用。</p>
+<ul>
+<li>document.getSelection() 这个方法指向 window.getSelection() 方法。</li>
+</ul>
 
   </div>
   
@@ -161,7 +208,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/43/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/42/">42</a><a class="page-number" href="/bjb/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/bjb/page/45/">45</a><a class="page-number" href="/bjb/page/46/">46</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/45/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/43/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/42/">42</a><a class="page-number" href="/bjb/page/43/">43</a><span class="page-number current">44</span><a class="page-number" href="/bjb/page/45/">45</a><a class="page-number" href="/bjb/page/46/">46</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/45/">下一页&raquo;</a>
   </nav>
 
     </main>

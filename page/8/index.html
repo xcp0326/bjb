@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">Cookie</h2>
+    <h2 class="title">Location 对象 URL 对象 URLSearchParams 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-03-14 22:30:48</span>
+    <span class="post-time">2019-05-05 16:02:54</span>
     <span class="post-tags">
       
     </span>
@@ -51,54 +51,81 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>Cookie 是服务器保存在浏览器的一小段文本信息，每个 Cookie 的大小一般不超过 4KB。浏览器每次向服务器发出请求，就会自动附上这段信息。</p>
-<p>Cooke 主要用来分辨两关请求是否来自同一个浏览器，以及用来保存一些状态信息。它的常用场合有以下一些：</p>
+<p>window.location 和 document.location 都可以拿到 Location 对象。</p>
 <ul>
-<li>会话（session）管理：保存登录、购物车等需要记录的信息</li>
-<li>个性化：保存用户的偏好，比如网页的字体大小、背景色等</li>
-<li>追踪：记录和分析用户行为</li>
+<li>location.href：<code>http://user:passwd@www.example.com:4097/path/a.html?x=111#part1</code></li>
+<li>location.protocol</li>
+<li>location.host：主机，包括冒号和端口号。例如：<code>www.example.com:4097</code></li>
+<li>location.hostname：主机名，不包括冒号和端口号。例如：<code>www.example.com</code></li>
+<li>location.search</li>
+<li>location.hash</li>
+<li>location.username</li>
+<li>location.password</li>
+<li><p>location.origin 只读。URL 的协议、主机名和端口号。例如：<code>http://user:passwd@www.example.com:4097</code></p>
+</li>
+<li><p>location.assign() vs location.href：跳转到参数所在的 URL</p>
+</li>
+<li>location.replace(<code>&lt;URL&gt;</code>) vs history.replaceState(state, title, url)</li>
+<li>location.reload()</li>
 </ul>
-<p>有些开发者使用 Cookie 作为客户端存储。这样做虽然可行，但是不推荐，因为 Cookie 的设计目的并不是这个，它的容量太小了，只有 4KB，而且也缺乏数据操作接口，还会影响到性能。客户端存储应该使用 Web storage API 和 IndexDB。</p>
-<p>Cookie 包含以下几方面的信息：</p>
+<h3 id="URL-的编码和解码"><a href="#URL-的编码和解码" class="headerlink" title="URL 的编码和解码"></a>URL 的编码和解码</h3><blockquote>
+<p>URL vs URI：<br>URL 是 URI 的一个实现。<br>URI 是统一资源标识符，URL 是统一资源定位符，URN 统一资源名称。<br>URI 包含 URN 和 URL。</p>
+</blockquote>
 <ul>
-<li>Cookie 的名字</li>
-<li>Cookie 的值（真正的数据写在这里面）</li>
-<li>到期时间</li>
-<li>所属域名（默认是当前域名）</li>
-<li>生效的路径（默认是当前网址）</li>
+<li>URL 元字符：分号，逗号，斜杆，问号，冒号，at，<code>&amp;</code>，等号，加号，美元符号，井号</li>
+<li>语义字符：a-z、A-Z、0-9、连词字、下划线、点、感叹号、波浪线、星号、单引号、圆括号</li>
 </ul>
-<p>举例来说，用户访问网址 <code>www.example.com</code>，服务器在浏览器写入一个 Cookie。这个 Cookie 就会包含 <code>www.example.com</code> 这个域名，以及根路径 <code>/</code>。这意味着，这个 Cookie 对该域名的根路径和它所有子路径都有效。如果路径设置为 <code>/forums</code>，那么这个 Cookie 就只有在访问 <code>www.example.com/forums</code> 及其子路径有效。以后，浏览器一旦访问这个路径，浏览器就会附上这段 Cookie 发送给服务器。</p>
-<p>浏览器可以设置为不接受 Cookie。开发者可以通过 <code>window.navigator.cookieEnable</code> 确定用户是否开启 Cookie。</p>
-<p><code>document.cookie</code> 返回当前网页的 Cookie。</p>
-<p>不同浏览器对 Cookie 数量和大小的限制不一样的，一般说来，单个域名设置的 cookie 不应超过 30 个，每个 Cookie 的大小不超过 4KB。超过限制以后，Cookie 将被忽略，不会被设置。</p>
-<p>浏览器的同源策略规定，两个网址只要域名和端口相同，就可以共享 Cookie。不需要协议相同。</p>
-<h3 id="Cookie-与-HTTP-协议"><a href="#Cookie-与-HTTP-协议" class="headerlink" title="Cookie 与 HTTP 协议"></a>Cookie 与 HTTP 协议</h3><p>Cookie 由 HTTP 协议生成，也主要是供给 HTTP 协议使用</p>
-<h4 id="HTTP-响应：Cookie-的生成"><a href="#HTTP-响应：Cookie-的生成" class="headerlink" title="HTTP 响应：Cookie 的生成"></a>HTTP 响应：Cookie 的生成</h4><p>服务器如果希望在浏览器保存 Cookie，就要在 HTTP 响应的头信息里面，放置一个 Set-Cookie 字段。</p>
-<p>HTTP 响应可以包含多个 Set-Cookie 字段，即在浏览器生成多个 Cookie，除了 Cookie 的值，Set-Cookie 字段还可以附加 Cookie 的属性。</p>
-<p>如果服务器想修改已经设置的 Cookie，必须同时满足 4 个条件：Cookie 的 key、domain、path 和 secure 都匹配，才能修改。如果有一个不一样，就会生成一个全新的 Cookie。两个同名的 Cookie，匹配越精确的 Cookie 排名越靠前。</p>
-<h4 id="HTTP-请求：Cookie-的发送"><a href="#HTTP-请求：Cookie-的发送" class="headerlink" title="HTTP 请求：Cookie 的发送"></a>HTTP 请求：Cookie 的发送</h4><p>浏览器向服务器发送 HTTP 请求时，每个请求都会带上相应的 Cookie。也就是说，把服务器保存在浏览器的那段 Cookie 再发送回服务器。这时要使用 HTTP 头信息的 Cookie 字段。</p>
-<p>如果 Cookie 字段包含多个 Cookie，它们会用 分号 分隔。</p>
-<p>服务器收到浏览器发来的 Cookie 时，有两点时无法知道的：</p>
+<p>其他都必须转移，规则是根据操作系统的默认编码，将每个字节转为百分号加上对应的十六进制，如果十六进制包含字母，字母大写。</p>
+<blockquote>
+<p>查看操作系统的编码的命令是 locale</p>
+<p><img src="/images/system-locale.png" alt></p>
+</blockquote>
 <ul>
-<li>Cookie 的各种属性，比如何时过期</li>
-<li>哪个域名设置的 Cookie，到底是一级域名还是某个二级域名</li>
+<li>encodeURI(<code>URL</code>)  / decodeURL(<code>URL</code>) ：转义 / 解码元字符和语义字符之外的字符</li>
+<li>encodeURLComponent(<code>URL|URL 的组成部分</code>) / decodeURLComponent(<code>URL|URL 的组成部分</code>)：转义 / 解码语义字符之外的字符</li>
 </ul>
-<h3 id="Cookie-的属性"><a href="#Cookie-的属性" class="headerlink" title="Cookie 的属性"></a>Cookie 的属性</h3><p>Expires 是指具体的到期 UTC 格式时间，到了指定时间后，浏览器就不再保存这个 Cookie。浏览器根据本地时间，决定 Cookie 是否过期，由于本地时间是不精确的，所以没有办法保证 Cookie 一定会在服务器指定的时间过期。所以就有了 Max-Age。</p>
-<p>Max-Age 指定的是从现在开始 Cookie 存在的秒数，比如 <code>60*60*24*365</code>，过了这个时间以后，浏览器就不再保留这个 Cookie。Max-Age 的优先级更高。如果 Set-Cookie 没有指定 Expires 或者 Max-Age 属性，那么这个 Cookie 就是 Session Cookie，只在当前会话有效，一旦用户关闭浏览器，浏览器就不会再保存这个 Cookie。</p>
-<p>Domain 属性指定浏览器发出 HTTP 请求时，哪些域名要附带这个 Cookie。没指定的话，就是当前域名，这时子域名将不会附带这个 Cookie。比如 example.com 不设置 Cookie 的 domain 属性，那么 sub.example.com 就不回附带这个 Cookie。如果指定了 domain 属性，那么子域名就会附带这个 Cookie。如果服务器指定的域名不属于当前域名，浏览器就会拒绝这个 Cookie。</p>
-<p>Path 指定浏览器发出 HTTP 请求时，哪些路径要附带这个 Cookie。只要浏览器发现 Path 属性时 HTTP 请求路径的开头的一部分，就会在头信息里面带上这个 Cookie。比如 PATH 属性时 <code>/</code>，那么请求<code>/docs</code> 路径也会包含该 Cookie，当前前提是域名必须一致。</p>
-<p>Secure 属性指定浏览器只有在加密协议 HTTPS 下，才能将这个 Cookie 发送到服务器。另一方面，如果当前协议是 HTTP，浏览器就会自动忽略服务器发送来的 Secure 属性。该属性只是一个开关，不需要指定值。如果通信协议是 HTTPS 协议，该开关自动打开。</p>
-<p>HttpOnly 属性指定该 Cooke 无法通过 JavaScript 脚本拿到，主要是 document.cookie 属性、XMLHttpRequest 对象和 Request API 都拿不到这个属性。这样就防止了该 Cookie 被脚本读到，只有浏览器发出 HTTP 请求时才会带上该 Cookie。</p>
-<h3 id="document-cookie"><a href="#document-cookie" class="headerlink" title="document.cookie"></a>document.cookie</h3><p>读写当前网页的 Cookie。读取的时候，返回当前网页所有的非 HttpOnly 属性的 Cookie。多个 Cookie，返回的时候用分号隔开。写入的时候，Cookie 的值必须是 <code>key=value</code> 的形式。等号两边没有空格。这个值的分号、空格和逗号必须进行转义。document.cookie 一次可以读出全部 Cookie，但是只能写入一个 Cookie。这与 HTTP 协议的 Cookie 通信格式有关。浏览器向服务器发送 Cookie 的时候， Cookie 字段是使用一行将所有 Cookie 全部发送；服务器向浏览器设置 Cookie 的时候，Set-Cookie 字段是一行设置一个 Cookie。</p>
-<p>写入 Cookie 时：</p>
+<h3 id="URL-对象"><a href="#URL-对象" class="headerlink" title="URL 对象"></a>URL 对象</h3><p>URL 对象是浏览器的原生对象，可以用来构造、解析和编码 URL。通过 window.URL 可以拿到这个对象。</p>
+<p><code>&lt;a&gt;</code> 和 <code>&lt;area&gt;</code> 上有这个接口。它们的 DOM 节点对象可以使用 URL 的实例属性和方法。</p>
+<blockquote>
+<p>DOM 节点 vs Element：Element 只是节点中的一种类型，DOM 节点除了 Element（元素节点），还有文本节点，注释节点，文档节点等等。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span><br><span class="line">a.href = <span class="string">'http://example.com/?foo=1'</span>;</span><br><span class="line"></span><br><span class="line">a.hostname <span class="comment">// "example.com"</span></span><br><span class="line">a.search <span class="comment">// "?foo=1"</span></span><br></pre></td></tr></table></figure>
+<h3 id="URL-对象是一个构造函数"><a href="#URL-对象是一个构造函数" class="headerlink" title="URL 对象是一个构造函数"></a>URL 对象是一个构造函数</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> url = <span class="keyword">new</span> URL(urlString, [baseURLString])</span><br><span class="line"><span class="keyword">const</span> url = <span class="keyword">new</span> URL(urlString, baseURLobject)</span><br></pre></td></tr></table></figure>
+<p>urlString 为 <code>..</code>，则表示上层路径：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> url3 = <span class="keyword">new</span> URL(<span class="string">'..'</span>, <span class="string">'http://example.com/a/b.html'</span>)</span><br><span class="line">url3.href</span><br><span class="line"><span class="comment">// "http://example.com/"</span></span><br></pre></td></tr></table></figure>
+<h3 id="URL-的静态方法"><a href="#URL-的静态方法" class="headerlink" title="URL 的静态方法"></a>URL 的静态方法</h3><ul>
+<li><strong>URL.createObjectURL()</strong> 用来为上传/下载的文件、流媒体文件生成一个 URL 字符串。这个字符串代表了 File 对象或 Blob 对象的 URL。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;div id="display"/&gt;</span></span><br><span class="line"><span class="comment">// &lt;input</span></span><br><span class="line"><span class="comment">//   type="file"</span></span><br><span class="line"><span class="comment">//   id="fileElem"</span></span><br><span class="line"><span class="comment">//   multiple</span></span><br><span class="line"><span class="comment">//   accept="image/*"</span></span><br><span class="line"><span class="comment">//   onchange="handleFiles(this.files)"</span></span><br><span class="line"><span class="comment">//  &gt;</span></span><br><span class="line"><span class="keyword">const</span> div = <span class="built_in">document</span>.getElementById(<span class="string">'display'</span>)</span><br><span class="line"><span class="keyword">const</span> handleFiles = <span class="function"><span class="params">files</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>)</span><br><span class="line">    img.src = <span class="built_in">window</span>.URL.createObjectURL(files[i])</span><br><span class="line">    div.appendChild(img)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法生成的 URL 就像下面这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">blob:http:<span class="comment">//localhost/c745ef73-ece9-46da-8f66-ebes574789b1</span></span><br></pre></td></tr></table></figure>
+<p>由于每次使用 URL.createObjectURL 都会在内存中生存一个 URL 实例。如果不再需要改方法生成的 URL 字符串，可以使用 URL.revokeObjectURL 方法释放掉所占的内存。</p>
 <ul>
-<li>path 属性必须为绝对路径，默认为当前路径</li>
-<li>domain 属性必须是当前发送 Cookie 的域名的一部分。比如当前域名是 example.com，就不能将其设置为 foo.com。该属性默认为当前的一级域名（不含二级域名）。</li>
-<li>max-age 秒数值后过期</li>
-<li>expires UTC 格式的时间点过期</li>
+<li><strong>URL.revokeObjectURL</strong> </li>
 </ul>
-<p>Cookie 的这些属性值不可读，只可写。设置完了没有办法读取到。</p>
-<p>删除一个现存的 Cookie 的唯一方法是设置它的 expires 属性为一个过去的日期。</p>
+<p>所以上面 handleFiles 可以优化为：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> handleFiles = <span class="function"><span class="params">files</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>)</span><br><span class="line">    img.src = <span class="built_in">window</span>.URL.createObjectURL(files[i])</span><br><span class="line">    div.appendChild(img)</span><br><span class="line">    img.onload = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">window</span>.URL.revokeObjectURL(<span class="keyword">this</span>.src)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="URLSearchParam-对象"><a href="#URLSearchParam-对象" class="headerlink" title="URLSearchParam 对象"></a>URLSearchParam 对象</h3><p>浏览器原生对象，用来构造、解析、处理 URL 的查询字符串。</p>
+<p>它是一个构造函数，参数可以是参训字符串，也可以是查询字符串的数组或对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 方法一：传入字符串</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(<span class="string">'?foo=1&amp;bar=2'</span>);</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(<span class="built_in">document</span>.location.search);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法二：传入数组</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams([[<span class="string">'foo'</span>, <span class="number">1</span>], [<span class="string">'bar'</span>, <span class="number">2</span>]]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法三：传入对象</span></span><br><span class="line"><span class="keyword">var</span> params = <span class="keyword">new</span> URLSearchParams(&#123;<span class="string">'foo'</span> : <span class="number">1</span> , <span class="string">'bar'</span> : <span class="number">2</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>浏览器向服务器发送表单数据时，可以直接使用<code>URLSearchParams</code>实例作为表单数据。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> params = <span class="keyword">new</span> URLSearchParams(&#123;<span class="attr">foo</span>: <span class="number">1</span>, <span class="attr">bar</span>: <span class="number">2</span>&#125;);</span><br><span class="line">fetch(<span class="string">'https://example.com/api'</span>, &#123;</span><br><span class="line">  method: <span class="string">'POST'</span>,</span><br><span class="line">  body: params</span><br><span class="line">&#125;).then(...)</span><br></pre></td></tr></table></figure>
+<p>URL 实例的<code>searchParams</code>属性就是一个<code>URLSearchParams</code>实例，所以可以使用<code>URLSearchParams</code>接口的<code>get</code>方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="keyword">new</span> URL(<span class="built_in">window</span>.location);</span><br><span class="line"><span class="keyword">var</span> foo = url.searchParams.get(<span class="string">'foo'</span>) || <span class="string">'somedefault'</span>;</span><br></pre></td></tr></table></figure>
+<p>DOM 的<code>a</code>元素节点的<code>searchParams</code>属性，就是一个<code>URLSearchParams</code>实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span><br><span class="line">a.href = <span class="string">'https://example.com?filter=api'</span>;</span><br><span class="line">a.searchParams.get(<span class="string">'filter'</span>) <span class="comment">// "api"</span></span><br></pre></td></tr></table></figure>
+<p><code>URLSearchParams</code>实例有遍历器接口，可以用<code>for...of</code>循环遍历</p>
+<ul>
+<li>URLSearchParams.toString()：返回实例的字符串形式</li>
+<li>URLSearchParams.append(key, value)：追加查询参数。不过不会识别是否有同名查询参数</li>
+<li>URLSearchParams.delete(key)：删除键名为 key 的查询参数</li>
+<li>URLSearchParams.has(key)</li>
+<li>URLSearchParams.set(key, value)：设置 key 的查询参数的值为 value</li>
+<li>URLSearchParams.get(‘key’)</li>
+<li>URLSearchParams.getAll(‘key’)</li>
+<li>URLSearchParams.sort()：对查询字符串的键按照 Unicode 码点进行排序</li>
+<li>URLSearchParams.keys()、URLSearchParams.values()、URLSearchParams.entries() 返回遍历器</li>
+</ul>
 
   </div>
   
@@ -106,7 +133,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/7/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/6/">6</a><a class="page-number" href="/bjb/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/bjb/page/9/">9</a><a class="page-number" href="/bjb/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/9/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/7/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/6/">6</a><a class="page-number" href="/bjb/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/bjb/page/9/">9</a><a class="page-number" href="/bjb/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/9/">下一页&raquo;</a>
   </nav>
 
     </main>

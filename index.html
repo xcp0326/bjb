@@ -38,41 +38,24 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">ArrayBuffer 对象与Blob 对象</h2>
+    <h2 class="title">img 标签</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2019-05-06 14:11:59</span>
+    <span class="post-time">2019-06-03 23:29:34</span>
     <span class="post-tags">
       
     </span>
     
   </div>
   <div class="post-content">
-    <blockquote>
-<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
-</blockquote>
-<p>ArrayBuffer 表示一段二进制数据，用来模拟内存里面的数据。JavaScript 通过它来读写二进制数据。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> buffer = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">8</span>) <span class="comment">// 8 表示 buffer 占用 8 个字节</span></span><br><span class="line">buffer.byteLength <span class="comment">// 可以通过 byteLength 获取占用的内存字节长</span></span><br><span class="line">buffer.slice(<span class="number">0</span>) <span class="comment">// 相当于复制一份 buffer 内存</span></span><br></pre></td></tr></table></figure>
-<p>Blob （Binary Large Object）表示二进制文件的数据内容。与 ArrayBuffer 的区别是，Blob 操作二进制文件的数据内容，而 ArrayBuffer 用于操作内存。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> b = <span class="keyword">new</span> Blob(array[, options])</span><br></pre></td></tr></table></figure>
-<ul>
-<li>array：成员是字符串或者二进制对象表示新生成的 Blob 实例对象的内容</li>
-<li>options：可选配置对象，有一个 type 属性表示数据的 MIME 类型</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> o = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="keyword">const</span> b = <span class="keyword">new</span> Blob([<span class="built_in">JSON</span>.stringify(o)], &#123;<span class="attr">type</span>: <span class="string">'applicaiton/json'</span>&#125;)</span><br><span class="line">b.size <span class="comment">// 7 等价于 JSON.stringify(o).length</span></span><br><span class="line">b.type <span class="comment">// "application/json"</span></span><br><span class="line">b.slice(start, end, contentType) <span class="comment">// 切片 b 返回一个新的 Blob 实例</span></span><br></pre></td></tr></table></figure>
-<p>input file 返回 FileList 对象里的 File 实例对象是一个特殊的 Blob 实例，它除了有 size，type 属性，还有 name 和 lastModifiedDate 属性。拖放 API 的 dataTransfer.files 返回的也是 FileList 对象，它的 File 也是 Blob 实例。</p>
-<p>AJAX 请求时，responseType 指定为 blob，那么 get 数据时，response 返回的数据类型就时 blob。</p>
-<p>URL.createObjectURL() 针对 Blob 对象生成一个临时 URL，这个 URL 以 blob:// 协议开头，后跟一个识别符，用来唯一对应内存里面的 Blob 对象。与 data:// URL  ( URL 包含实际数据 ) 和 file:// URL ( 本地文件系统里面的文件 ) 都不一样。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> droptarget = <span class="built_in">document</span>.getElementById(<span class="string">'droptarget'</span>);</span><br><span class="line"></span><br><span class="line">droptarget.ondrop = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> files = e.dataTransfer.files;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> type = files[i].type;</span><br><span class="line">    <span class="keyword">if</span> (type.substring(<span class="number">0</span>,<span class="number">6</span>) !== <span class="string">'image/'</span>)</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>);</span><br><span class="line">    img.src = URL.createObjectURL(files[i]);</span><br><span class="line">    img.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.width = <span class="number">100</span>;</span><br><span class="line">      <span class="built_in">document</span>.body.appendChild(<span class="keyword">this</span>);</span><br><span class="line">      URL.revokeObjectURL(<span class="keyword">this</span>.src);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>浏览器处理 Blob URL 跟普通 URL 一样，如果 Blob 对象不存在，返回 404；如果跨域请求，返回 403。Blob URL 只对 GET 请求有效，如果请求成功，返回 200。由于 Blob URL 就是普通 URL，因此可以下载。</p>
-<p>获取到 Blob 对象，可以通过 FileReader 对象读取 Blob 的内容。</p>
-<ul>
-<li>FileReader.readAsText()</li>
-<li>FileReader.readAsArrayBuffer()</li>
-<li>FileReader.readAsDataURL()</li>
-<li>FileReader.readAsBinaryString()</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HTML 代码如下</span></span><br><span class="line"><span class="comment">// &lt;input type="file" onchange="typefile(this.files[0])"&gt;&lt;/input&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">typefile</span>(<span class="params">file</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 文件开头的四个字节，生成一个 Blob 对象</span></span><br><span class="line">  <span class="keyword">var</span> slice = file.slice(<span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line">  <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</span><br><span class="line">  <span class="comment">// 读取这四个字节</span></span><br><span class="line">  reader.readAsArrayBuffer(slice);</span><br><span class="line">  reader.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> buffer = reader.result;</span><br><span class="line">    <span class="comment">// 将这四个字节的内容，视作一个32位整数</span></span><br><span class="line">    <span class="keyword">var</span> view = <span class="keyword">new</span> <span class="built_in">DataView</span>(buffer);</span><br><span class="line">    <span class="keyword">var</span> magic = view.getUint32(<span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="comment">// 根据文件的前四个字节，判断它的类型</span></span><br><span class="line">    <span class="keyword">switch</span>(magic) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0x89504E47</span>: file.verified_type = <span class="string">'image/png'</span>; <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0x47494638</span>: file.verified_type = <span class="string">'image/gif'</span>; <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0x25504446</span>: file.verified_type = <span class="string">'application/pdf'</span>; <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">0x504b0304</span>: file.verified_type = <span class="string">'application/zip'</span>; <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(file.name, file.verified_type);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <p>img 元素用于插入图片，主要继承了 HTMLImageElement 接口。浏览器的元素构造函数 Image 用于生成 HTMLImageElement 实例。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> img = <span class="keyword">new</span> Image(width, height)</span><br><span class="line">img <span class="keyword">instanceof</span> Image; <span class="comment">// true</span></span><br><span class="line">img <span class="keyword">instanceof</span> HTMLImageElement; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>HTMLImageElement.isMap 返回图像是否为服务器端的图像映射的一部分。</p>
+<p>HTMLImageElement.useMap 表示当前图像对应的 map 元素</p>
+<p>HTMLImageElement.complete</p>
+<p>HTMLImageElement.crossOrigin</p>
+<p>HTMLImageElement.natureWidth</p>
+<p>HTMLImageElement.referrerPolicy 表示请求图像资源时，如果处理 HTTP 请求的 referrer 字段。对应有 5 个可能的值：no-referrer、no-referrer-when-downgrade、origin、origin-when-cross-origin、unsafe-url。</p>
 
   </div>
   
@@ -80,7 +63,7 @@
 
 
   <nav class="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/bjb/page/2/">2</a><a class="page-number" href="/bjb/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/2/">下一页&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/bjb/page/2/">2</a><a class="page-number" href="/bjb/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/2/">下一页&raquo;</a>
   </nav>
 
     </main>

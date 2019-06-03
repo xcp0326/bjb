@@ -1,0 +1,108 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      
+  <article class="post">
+  <div class="post-title">
+    <h2 class="title">JavaScript 的数据类型概述</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2018-11-16 13:58:19</span>
+    <span class="post-tags">
+      
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/数据类型/">数据类型</a></li></ul>
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <blockquote>
+<p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
+</blockquote>
+<h2 id="JavaScript-的数据类型"><a href="#JavaScript-的数据类型" class="headerlink" title="JavaScript 的数据类型"></a>JavaScript 的数据类型</h2><p>JavaScript 语言的每一个值，都属于某一种数据类型。JavaScript 的数据类型有 7 种：</p>
+<ul>
+<li>数值 number</li>
+<li>字符串 string</li>
+<li>布尔值 boolean true / false</li>
+<li>undefined：声明后但是未定义，或者未赋值</li>
+<li></li>
+<li>null：表示空值</li>
+<li>对象 object</li>
+<li>Symbol：ES 6 新增的数据类型，表示唯一的值。</li>
+</ul>
+<p>数值、字符串、布尔值是原始类型的值</p>
+<p>对象是合成类型，引用类型的值，对象往往是由多个原始类型的值合成，可以看作是一个存放各种值的容器</p>
+<p>undfined 和 null 被看成两个特殊值</p>
+<p>对象又可以分成三个子类型：</p>
+<ul>
+<li>狭义的对象 {}</li>
+<li>数组 []</li>
+<li>函数 function(){}</li>
+</ul>
+<p>函数式一种数据类型，因为它能作为值赋值给变量</p>
+<h2 id="如何确定一个值的数据类型"><a href="#如何确定一个值的数据类型" class="headerlink" title="如何确定一个值的数据类型"></a>如何确定一个值的数据类型</h2><p>有三种方法可以用来确定 JavaScript 值的数据类型：</p>
+<ul>
+<li>typeof 运算符</li>
+<li>instanceof 运算符</li>
+<li>Object.prototype.toString 方法</li>
+</ul>
+<p>基本类型，undefined 和函数都可以通过 typeof 运算符来确定</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">123</span> <span class="comment">// 'number'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">'123'</span> <span class="comment">// 'string'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">false</span> <span class="comment">// 'boolean'</span></span><br><span class="line"><span class="keyword">typeof</span> a <span class="comment">// 'undefined' 没有声明过的变量没有值，所以返回 undefind</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> f <span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
+<p>而 狭义的对象和数组无法通过 typeof 运算符获知数据类型，这是因为 JavaScript 内部，它们本质上都是一种特殊的对象。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">// 'object'</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">// 'object'</span></span><br></pre></td></tr></table></figure>
+<p>可以用 instanceof 运算符来区分 {} 和 []</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;, b = []</span><br><span class="line">a <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">b <span class="keyword">instanceof</span> <span class="built_in">Array</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>null 的数据类型是 object</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// 'object'</span></span><br></pre></td></tr></table></figure>
+<p>null 的数据类型是 object，是最初 JavaScript 设计遗留的 bug。95 年 JavaScript 语言的第一版，只设计了 5 种数据类型：对象、整数、浮点数、字符串、布尔值，没考虑到 null，只把它当作 object 的一种特殊值。后来 null 独立出来，作为一种单独的数据类型，为了兼容一起的代码，typeof null 返回 object 就没法改变了… </p>
+<p>很简单确认值是不是 null 类型 <a href="https://underscorejs.org/docs/underscore.html#section-155" target="_blank" rel="noopener">underscore 实现 isNull</a></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNull</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj === <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+  
+</article>
+
+
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/bjb/page/73/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/72/">72</a><a class="page-number" href="/bjb/page/73/">73</a><span class="page-number current">74</span><a class="page-number" href="/bjb/page/75/">75</a><a class="page-number" href="/bjb/page/76/">76</a><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/75/">下一页&raquo;</a>
+  </nav>
+
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

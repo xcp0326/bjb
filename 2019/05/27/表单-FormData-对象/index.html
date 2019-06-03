@@ -1,0 +1,100 @@
+<!Doctype html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <title>表单、FormData 对象 | FE 笔记本 🚀</title>
+  
+    <link rel="icon" href="/images/favico.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/bjb/style/gitalk.css">
+  <link rel="stylesheet" href="/bjb/style/style.css">
+  <script src="/bjb/js/gitalk.min.js"></script>
+</head>
+  <body>
+    <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/bjb/" class="menu-item-link">首页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/bjb/archives" class="menu-item-link">归档</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <h1 class="pc">FE 笔记本 🚀</h1>
+  <h1 class="mobile"><a href="/">FE 笔记本 🚀</a></h1>
+  <em>「 学海无涯，没空撩妹！」</em>
+</header>
+    <main class="main">
+      <article class="post">
+  <div class="post-title">
+    <h2 class="title">表单、FormData 对象</h2>
+  </div>
+  <div class="post-meta">
+    <span class="post-time">2019-05-27 17:38:07</span>
+    <span class="post-tags">
+      
+    </span>
+    
+  </div>
+  <div class="post-content">
+    <p>注意：表单里面的 <code>&lt;button&gt;</code> 元素的默认 <code>type</code> 是 <code>submit</code>。表单元素的 <code>submit()</code> 方法和 <code>reset()</code> 方法。</p>
+<p>表单通过浏览器自动实现键值对的数据然后发送给服务器。如果我们想自定义发送给服务器的键值对数据，然后通过 <code>XMLHttpRequeset.send()</code> 方法发送，我们就可以用 <code>FormData</code> 对象来完成这项工作了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> formdata = <span class="keyword">new</span> FormData(form); <span class="comment">// form 可选，如果为空，表示空表单。</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>formdata.get(key)</li>
+<li>formdata.getAll(key)</li>
+<li>formdata.set(key, value)</li>
+<li>formdata.delete(key)</li>
+<li>formdata.append(key, value)</li>
+<li>formdata.has(key)</li>
+<li>formdaata.keys()</li>
+<li>formdata.values()</li>
+<li>formdata.entries()</li>
+</ul>
+<h3 id="表单的内置验证"><a href="#表单的内置验证" class="headerlink" title="表单的内置验证"></a>表单的内置验证</h3><p>表单的自动校验，如果控件通过验证，CSS 的 <code>:valide</code> 伪类会被触发，否则 <code>:invalide</code> 会被触发，浏览器也会终止表单提交，并显示一个对应的错误。</p>
+<p>表单和表单控件都有一个 <code>checkValidity()</code> 方法，触发校验。</p>
+<p>表单控件元素的 willValidate 属性表示该控件是否会在提交是进行校验。出于某些原因，控件禁止约束验证，比如 控件设有 disabled 属性。<a href="https://www.html5rocks.com/en/tutorials/forms/constraintvalidation/#toc-willValidate" target="_blank" rel="noopener">Constraint Validation: Native Client Side Validation for Web Forms</a></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"two"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"three"</span> <span class="attr">disabled</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'one'</span>).willValidate; <span class="comment">//undefined</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'two'</span>).willValidate; <span class="comment">//true</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'three'</span>).willValidate; <span class="comment">//false</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>控件元素的 <code>validationMessage</code> 属性返回控件在提交时自动校验并且不满足校验条件的提示文本。</p>
+<p>控件元素的 <code>setCustomValidity()</code> 方法定制校验错误提示文本。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">fieldset.setCustomValidity(errormessge); <span class="comment">// errormessage 为空时，消除校验失败的状态</span></span><br></pre></td></tr></table></figure>
+<p>控件元素的 <code>validatity</code>  属性返回的是 ValidityState 对象，包含当前校验的信息：</p>
+<ul>
+<li>ValidityState.badInput：浏览器是否不能将用户输入转换成正确的类型，比如用户在数值框输入字符串</li>
+<li>ValidityState.customError：是否已经调用 setCustomValidity() 方法，将校验信息设置为一个非空字符串</li>
+<li>ValidityState.patternMismatch：用户输入是否不满足模式</li>
+<li>ValidityState.rangeOverflow / ValidityState.rangeUnderflow</li>
+<li>ValidityState.stepMismatch：用户输入的值不符合步长的设置（即不能被步长值整除）</li>
+<li>ValidityState.tooLong / ValidityState.tooShort</li>
+<li>ValidityState.typeMismatch：输入的值不符合类型要求</li>
+<li>ValidityState.valid：用户是否满足所有校验条件</li>
+<li>ValidityState.valueMissing：用户没有输入必填的值</li>
+</ul>
+<p>表单元素的 HTML 属性 novalidate 关闭浏览器的自动校验</p>
+<p>表单的编码格式 enctype 属性：</p>
+<ul>
+<li>默认 enctype 是 application/x-www-form-urlencoded 格式</li>
+<li>text/plain 表示以纯文本格式发送</li>
+<li>multipart/form-data 数据以混合的格式发送</li>
+</ul>
+<p><code>&lt;input type=&quot;file&quot; multipule&gt;</code> multipule 是指一次选择多个文件。</p>
+
+  </div>
+  
+</article>
+    </main>
+    <footer>
+  <p>&copy; 2019 xcp0326</p>
+</footer>
+  </body>
+</html>

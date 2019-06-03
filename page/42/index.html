@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">DOM 概述</h2>
+    <h2 class="title">属性的操作</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-12-24 22:43:37</span>
+    <span class="post-time">2018-12-27 12:54:11</span>
     <span class="post-tags">
       
     </span>
@@ -51,21 +51,17 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<p>DOM 是 JavaScript 操作网页的接口，它将网页转成一个 JavaScript 对象，从而可以用脚本进行各种操作。</p>
-<p>浏览器根据 DOM 模型，将 HTML 解析成一系列节点，再由这些节点组成一个树状结构 DOM tree。所有节点和最终的树状结构，都有规范的对外接口。</p>
-<p>DOM 只是一个接口规范，可以用各种语言实现。所以严格地说，DOM 不是 JavaScript 语法的一部分，但是 DOM 操作是 JavaScript 最常见的任务，离开 DOM，JavaScript 就无法控制网页。另一方面，JavaScript 也是最常用于 DOM 操作的语言。</p>
-<p>DOM 的最小组成单位是节点 node，DOM 树就是由各种不同类型的节点组成。每个节点可以看作是文档树的一片叶子。</p>
-<p>节点的类型有七种，他们都继承自浏览器提供的节点对象 Node，都有 共有属性 Node.prototype</p>
+<p>HTML 标签包括标签名和若干个键值对，这个键值对就称为属性 attribute。属性本身是一个对象 Attr 对象。一般通过元素节点对象 HTMLElement 对象来操作它。</p>
+<p>属性可读可写 不可删除，delete 运算符在这里不会生效</p>
+<p>HTML 标签的属性名对大小不敏感。</p>
+<p>有些 HTML 属性名是 JavaScript 的保留字，转为 JavaScript 属性时，必须要改名，比如这两个：</p>
 <ul>
-<li>Document：整个文档树的顶层节点</li>
-<li>DocumentType：doctype 标签</li>
-<li>Element：标签节点</li>
-<li>Attribute：标签节点的属性</li>
-<li>Text：标签之间（比如空格）或标签包含的文本</li>
-<li>Comment：注释</li>
-<li>DocumentFragment：文档片段</li>
+<li>for 属性改名为 htmlFor</li>
+<li>class 属性名改为 className</li>
 </ul>
-<p>document 节点继承自 Document，代表整个文档树，它有一个子节点标签节点 html，也是 DOM 树的根节点 root node。</p>
+<p>原来 React 也是因为这里的啦。</p>
+<p>HTML 属性一般都是字符串，但是 JavaScript 属性会自动转换类型。比如将字符串 true 转换为布尔值，将 onClick 的值转换为一个函数，将 style 属性转为一个 CSSStyleDeclaration 对象。因此可以对这些属性赋予各种类型的值。</p>
+<p>getAttribute() 只返回字符串</p>
 
   </div>
   
@@ -73,7 +69,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/41/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/40/">40</a><a class="page-number" href="/bjb/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/bjb/page/43/">43</a><a class="page-number" href="/bjb/page/44/">44</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/43/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/41/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/40/">40</a><a class="page-number" href="/bjb/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/bjb/page/43/">43</a><a class="page-number" href="/bjb/page/44/">44</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/43/">下一页&raquo;</a>
   </nav>
 
     </main>

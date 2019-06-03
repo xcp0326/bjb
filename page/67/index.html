@@ -38,13 +38,11 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">null、undefined 和布尔值</h2>
+    <h2 class="title">算术运算符</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-16 14:28:22</span>
+    <span class="post-time">2018-11-21 22:51:37</span>
     <span class="post-tags">
-      
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/boolean/">boolean</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/undefined/">undefined</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/bjb/tags/布尔值/">布尔值</a></li></ul>
       
     </span>
     
@@ -53,36 +51,89 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h2 id="null-与-undefined"><a href="#null-与-undefined" class="headerlink" title="null 与 undefined"></a>null 与 undefined</h2><p>null 和 undefined 都是没有得意思。if 语句中判断都是 false；而且相等运算 == 返回 true。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="literal">null</span>) <span class="built_in">console</span>.log(<span class="string">'null is false'</span>) <span class="comment">// null is false</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="literal">undefined</span>) <span class="built_in">console</span>.log(<span class="string">'undefined is false'</span>) <span class="comment">// undefined is false</span></span><br><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>95 年 JavaScript 诞生时，null 设计为和 Java 里面的一样，null 可以自动转为 0</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">null</span>) <span class="comment">// 0</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">null</span> <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
-<p>但是 JavaScript 的设计者 Brendan Eich 觉得这么做还不够。</p>
-<p>首先，第一版 JavaScript 里面，null 就像 Java 一样，被当成一个对象，Brendan Eich 觉得表示“无”的值最好不是对象</p>
-<p>其次，那时的 JavaScript 不包括错误处理机制，Brendan Eich 觉得，如果 null 自动转为 0，很不容易发现错误</p>
-<p>因此 Brendan Eich 又设计了一个 undefined。区别是这样的：null 表示一个空的对象，转为数值时为 0；undefined 表示没有定义的原始值，转为数值时为 NaN</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="literal">undefined</span>) <span class="comment">// NaN</span></span><br><span class="line"><span class="number">5</span> + <span class="literal">undefined</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<p><strong>总结一下就是：</strong></p>
-<p>null 表示空值。调用函数时，某个参数未设置任何值，这是就可以传入 null，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入 null，表示未发生错误。</p>
-<p>undefined 表示未定义</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> i;</span><br><span class="line">i <span class="comment">// 此时 i 为undefined，因为只声明了没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line">f() <span class="comment">// 此时函数返回 undefined，因为 x 没有赋值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = &#123;&#125;</span><br><span class="line">o.p <span class="comment">// 返回 undefined，因为 p 是 o 没有赋值的属性</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">f() <span class="comment">// 函数如果没有返回值，默认返回 undefined</span></span><br></pre></td></tr></table></figure>
-<h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>下列运算符会返回布尔值：</p>
+<p>JavaScript 提供了 10 个算术运算符，用来完成基本的算术元素。</p>
+<ol>
+<li>加法运算符 <code>x + y</code></li>
+<li>减法运算符 <code>x - y</code></li>
+<li>乘法运算符 <code>x * y</code></li>
+<li>除法运算符 <code>x / y</code></li>
+<li>指数运算符 <code>x ** y</code></li>
+<li>余数运算符 <code>x % y</code></li>
+<li>自增运算符 <code>++x</code> 或者 <code>x++</code></li>
+<li>自减运算符 <code>--x</code> 或者 <code>x--</code></li>
+<li>数值运算符 <code>+x</code></li>
+<li>负数值运算符 <code>-x</code></li>
+</ol>
+<h2 id="加法运算符"><a href="#加法运算符" class="headerlink" title="加法运算符"></a>加法运算符</h2><p>JavaScript 允许非数值的相加。</p>
+<h3 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h3><p>加法运算符是在运算时决定到底是执行相加还是执行连接。也就是说运算子的不同，导致了不同的语法行为，这种现象称为“重载”（overload）。</p>
 <ul>
-<li>逻辑非运算符：<code>!</code></li>
-<li>相等运算符：<code>==</code>、<code>===</code>、<code>!=</code>、<code>!==</code></li>
-<li>比较运算符：<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></li>
-</ul>
-<p>如果 JavaScript 预期某个位置应该是布尔值，就会将该位置上的现有值转换为布尔值。转换规则是除了下面 6 个值被转为 false，其他都视为 true。</p>
+<li><p>数值相加 ：直接相加</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">1</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>布尔值相加 ：转换为对应的布尔值数值然后相加</p>
 <ul>
-<li>undefined</li>
-<li>null</li>
-<li>false</li>
-<li>空字符串 ‘’ 或者 “”</li>
-<li>NaN</li>
-<li>0</li>
+<li><p>两个布尔值相加</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> + <span class="literal">true</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个布尔值加一个数值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="literal">true</span> + <span class="number">1</span> <span class="comment">// 2</span></span><br><span class="line"><span class="number">1</span> + <span class="literal">false</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<p>空数组和空对象都是 true</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ([]) <span class="built_in">console</span>.log(<span class="string">'ahahaha1'</span>) <span class="comment">// 这里打印出来 ahahaha1</span></span><br><span class="line"><span class="keyword">if</span> (&#123;&#125;) <span class="built_in">console</span>.log(<span class="string">'ahahaha2'</span>) <span class="comment">// 这里打印出来 ahahaha2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串相加</p>
+<ul>
+<li><p>两个字符串相加 ：字符串相连</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="string">'1'</span> <span class="comment">// '11'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个字符串和非字符串 ：非字符串转为字符串然后相连</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="literal">true</span> <span class="comment">// '1true'</span></span><br><span class="line"><span class="literal">true</span> + <span class="string">'1'</span> <span class="comment">// 'true1'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个字符串加多个数字 ：数值会被转为字符串然后相连</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'1'</span> + <span class="number">1</span> + <span class="number">1</span> <span class="comment">// '111'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多个数字加一个字符串 ：数值相加然后连接字符串</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">1</span> + <span class="string">'1'</span> <span class="comment">// '21'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="对象相加"><a href="#对象相加" class="headerlink" title="对象相加"></a>对象相加</h3><p>如果运算子是对象，必须先转称原始类型的值，然后在相加。</p>
+<p>对象转成原始类型的步骤：</p>
+<ol>
+<li>调用 valueOf 方法</li>
+<li>如果第 1 步的值不是原始类型，就再调用 toString 方法</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">p</span>: <span class="number">1</span>&#125;</span><br><span class="line">obj.valueOf().toString() <span class="comment">// "[object Obect]"</span></span><br><span class="line"></span><br><span class="line">obj + <span class="number">1</span> <span class="comment">// "[object Object]1"</span></span><br></pre></td></tr></table></figure>
+<p>按照这个规则，我们可以自定义 valueOf 和 toString 方法来得到想要的结果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  valueOf: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<p>按照对象转原始类型的规则，上面 <code>obj.valueOf()</code> 返回原始类型 1，所以就是 <code>1 + 2</code> 的返回值就是 3</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  toString: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 'hello2'</span></span><br></pre></td></tr></table></figure>
+<p>按照对象转原始类型的规则，上面 <code>obj.valueOf()</code> 是 <code>{p: 1}</code>，所以就执行 toString 方法，调用了我们自定义的 toString 方法，返回 hello，最后的值为 hello2</p>
+<p>有一个特例，如果运算子是 Date 对象的实例，那么会优先执行 toString 方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">obj.valueOf = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="number">1</span>&#125;</span><br><span class="line">obj.toString = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="string">'hello'</span>&#125;</span><br><span class="line">obj + <span class="number">2</span> <span class="comment">// 'hello2'</span></span><br></pre></td></tr></table></figure>
+<h2 id="余数运算符"><a href="#余数运算符" class="headerlink" title="余数运算符"></a>余数运算符</h2><p>余数运算符 <code>%</code> 返回前一个运算子被后一个运算子除，所得的余数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">12</span> % <span class="number">5</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>运算的结果的正负由第一个运算子的正负号决定。真是诡异 😨</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">-1</span> % <span class="number">2</span> <span class="comment">// -1</span></span><br><span class="line"><span class="number">1</span> % <span class="number">-2</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>所以为了的到负数的正确余数值，可以先使用绝对值函数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isOdd</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.abs(n % <span class="number">2</span>) === <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">isOdd(<span class="number">-5</span>) <span class="comment">// true</span></span><br><span class="line">isOdd(<span class="number">-4</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>余数可以用于浮点数的运算，只是浮点数不是精确数值，不能得到准确的数值。可以先移动小数点的位置到最后，等计算完再将小数点的位置挪回来。</p>
+<h2 id="自增和自减运算符"><a href="#自增和自减运算符" class="headerlink" title="自增和自减运算符"></a>自增和自减运算符</h2><p>自增和自减运算符，是一元运算符，只需要一个运算子。他们的作用是将运算子首先转为数值，然后再加上 1 或者减去 1。会修改原始变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">++x <span class="comment">// 2</span></span><br><span class="line">x <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">--x <span class="comment">// 1</span></span><br><span class="line">x <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>运算之后，变量的值发生变化，这种效应叫做副作用（side effect）。自增和自减运算符是仅有的两个具有副作用的运算符，其他运算符都不会改变变量的值。</p>
+<p>自增和自减运算符有一个需要注意的地方，就是放在变量之后，会先返回变量操作前的值，再进行自增/自减操作；放在变量之前，会先进行自增/自减操作，再返回变量操作后的值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> y = <span class="number">1</span></span><br><span class="line">x++ <span class="comment">// 1</span></span><br><span class="line">++y <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<h2 id="数值运算符、负数值运算符"><a href="#数值运算符、负数值运算符" class="headerlink" title="数值运算符、负数值运算符"></a>数值运算符、负数值运算符</h2><p>数值运算符同样适用加号，但他是一元运算符（只需要一个操作数），而加法运算符是二元运算符（需要两个操作数）。</p>
+<p>数值运算符的作用是可以将任何值转为数值（与 Number 函数的作用相同）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">+<span class="literal">true</span> <span class="comment">// 1</span></span><br><span class="line">+[] <span class="comment">// 0</span></span><br><span class="line">+&#123;&#125; <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<p>负数值运算符是减号，也同样具有将一个值转为数值的功能，只不过得到的值正负相反。连用两个负数值运算符，等同于数值运算符。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">-<span class="string">'1'</span> <span class="comment">// -1</span></span><br><span class="line">-<span class="literal">true</span> <span class="comment">// -1</span></span><br><span class="line">-[] <span class="comment">// -0</span></span><br><span class="line">-&#123;&#125; <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
+<h2 id="指数运算符"><a href="#指数运算符" class="headerlink" title="指数运算符"></a>指数运算符</h2><p>指数运算符 <code>**</code> 完成指数运算，前一个运算子是底数，后一个运算子是指数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">3</span> <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+<p>指数运算符是右结合，而不是左结合。即多个指数运算符连用时，先进行最右边的计算。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">3</span> ** <span class="number">2</span> <span class="comment">// 相当于 2 ** (3 ** 2) 结果为 512</span></span><br></pre></td></tr></table></figure>
+<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><p>复合的赋值运算符，都是先进行指定的运算，然后再将得到的值赋给左边的变量。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">x += <span class="number">2</span> <span class="comment">// x = x + 2 所以结果是 3</span></span><br></pre></td></tr></table></figure>
 
   </div>
   
@@ -90,7 +141,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/66/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/65/">65</a><a class="page-number" href="/bjb/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/bjb/page/68/">68</a><a class="page-number" href="/bjb/page/69/">69</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/68/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/66/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/65/">65</a><a class="page-number" href="/bjb/page/66/">66</a><span class="page-number current">67</span><a class="page-number" href="/bjb/page/68/">68</a><a class="page-number" href="/bjb/page/69/">69</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/68/">下一页&raquo;</a>
   </nav>
 
     </main>

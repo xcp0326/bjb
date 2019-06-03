@@ -38,10 +38,10 @@
       
   <article class="post">
   <div class="post-title">
-    <h2 class="title">数据类型的转换</h2>
+    <h2 class="title">Array 对象</h2>
   </div>
   <div class="post-meta">
-    <span class="post-time">2018-11-23 11:41:05</span>
+    <span class="post-time">2018-11-28 14:23:08</span>
     <span class="post-tags">
       
     </span>
@@ -51,55 +51,25 @@
     <blockquote>
 <p><sup>这里是我读<a href="https://wangdoc.com/javascript/" target="_blank" rel="noopener">《阮一峰 JavaScript 教程》</a>做的笔记。</sup></p>
 </blockquote>
-<h2 id="强制转换"><a href="#强制转换" class="headerlink" title="强制转换"></a>强制转换</h2><p>强制转换主要指使用 Number()、String() 和 Boolean() 三个函数，手动将各种类型的值，分别转换成数字、字符串或者布尔值。</p>
-<h2 id="Number"><a href="#Number" class="headerlink" title="Number()"></a>Number()</h2><p>使用 Number 函数，可以将任意类型的值转化成数值</p>
-<h3 id="参数是原始类型的值"><a href="#参数是原始类型的值" class="headerlink" title="参数是原始类型的值"></a>参数是原始类型的值</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数值：转换后还是原来的值</span></span><br><span class="line"><span class="comment">// 字符串：如果可以被解析成数值，则转换成相应的数值</span></span><br><span class="line"><span class="comment">// 字符串：如果不可以被解析成数值，返回 NaN</span></span><br><span class="line"><span class="comment">// 空字符串返回 0</span></span><br><span class="line"><span class="comment">// 布尔值：true 转为 1，false 转为 0</span></span><br><span class="line"><span class="comment">// undefined 返回 NaN</span></span><br><span class="line"><span class="comment">// null 返回 0</span></span><br></pre></td></tr></table></figure>
-<p>转换成数值的方法还有 parseInt，parseInt 是把字符串转换成整数，如果参数不是字符串会先把参数转换成字符串再把字符串转换成整数。parseInt 是逐个解析字符，返回可以解析的字符的数值。Number 函数整体转换为数值。</p>
-<p>parseInt 和 Number 函数都会自动过滤一个字符串前导和后缀的空格</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'\t\v\r12.34\n'</span>) <span class="comment">// 12</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">'\t\v\r12.34\n'</span>) <span class="comment">// 12.34</span></span><br></pre></td></tr></table></figure>
-<h3 id="参数是对象"><a href="#参数是对象" class="headerlink" title="参数是对象"></a>参数是对象</h3><p>简单的规则是，Number 方法的参数是对象时，将返回 NaN，除非是包含单个数值的数组。</p>
-<p>Number 的转换规则比较复杂</p>
-<ul>
-<li>第一步，调用对象自身的 valueOf 方法，如果返回原始类型的值，则直接对该值使用 Number 函数，不再进行后续操作。</li>
-<li>第二步，如果 valueOf 方法返回的还是对象，则改为调用该对象的 toString 方法。如果 toString 方法返回的是原始类型的值，则对该值进行 Number 函数操作，不再进行后续操作。</li>
-<li>第三部，如果 toString 方法返回的是对象，就报错。</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">x</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="built_in">Number</span>(obj) <span class="comment">// NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 转换过程</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> obj.valueOf() === <span class="string">'object'</span>) &#123;</span><br><span class="line">  <span class="built_in">Number</span>(obj.toString())</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">Number</span>(obj.valueOf())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> customObj = &#123;</span><br><span class="line">  valueOf: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  toString: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Number</span>(customObj) <span class="comment">// toString 方法返回的是对象导致报错啦</span></span><br><span class="line"><span class="comment">// TypeError: Cannot convert object to primitive value</span></span><br></pre></td></tr></table></figure>
-<h2 id="String"><a href="#String" class="headerlink" title="String()"></a>String()</h2><p>String 函数可以将任意类型的值转为字符串，转换规则：</p>
-<h3 id="参数是原始类型的值-1"><a href="#参数是原始类型的值-1" class="headerlink" title="参数是原始类型的值"></a>参数是原始类型的值</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数值：转换为相应的字符串</span></span><br><span class="line"><span class="comment">// 字符串：转换后还是原来的字符串</span></span><br><span class="line"><span class="comment">// 布尔值：true 转换为字符串 "true"，false 转换为字符串 "false"</span></span><br><span class="line"><span class="comment">// undefined：转换为字符串 "undefined"</span></span><br><span class="line"><span class="comment">// null：转换为字符串 "null"</span></span><br></pre></td></tr></table></figure>
-<h3 id="如果参数是对象"><a href="#如果参数是对象" class="headerlink" title="如果参数是对象"></a>如果参数是对象</h3><p>String 方法的参数如果是对象，则返回一个类型字符串；如果是数组，返回该数组的字符串形式。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">String</span>(&#123;<span class="attr">a</span>: <span class="number">1</span>&#125;) <span class="comment">// "[object Object]"</span></span><br><span class="line"><span class="built_in">String</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">// "1,2,3"</span></span><br></pre></td></tr></table></figure>
-<p>转换规则与 Number 相同，只是 valueOf 和 toString 方法的执行顺序不同</p>
-<ul>
-<li>先调用对象自身的 toString 方法，如果返回原始类型的值，则对该值使用 String 函数，不再进行后续操作</li>
-<li>如果 toString 方法返回的是对象，再调用原对象的 valueOf 方法。如果 valueOf 方法返回的是原始类型的值，则对该值使用 Number 函数，不再进行后续操作</li>
-<li>如果 valueOf 方法返回的是对象，就报错。</li>
-</ul>
-<h2 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean()"></a>Boolean()</h2><p>Boolean 函数可以将任意类型的值转为布尔值</p>
-<p>它的转换规则相对简单：除了以下 6 个值的转换为 false，其他的值都为 true</p>
-<ul>
-<li>undefined</li>
-<li>null</li>
-<li>-0 或 +0</li>
-<li>NaN</li>
-<li>‘’</li>
-<li>false</li>
-</ul>
-<p>其他所有对象的布尔值都是 true，这是因为 JavaScript 语言设计的时候，出于性能问题的考虑，如果对象需要计算才能得到布尔值，对于 obj1 &amp;&amp; obj2 这样的场景，可能会需要较多的计算。为了保证性能，就统一规定，对象的布尔值为 true。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Boolean</span>(&#123;&#125;) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>([]) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="string">'abc'</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Boolean</span>(<span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>)) <span class="comment">// typeof new Boolean(false) ==&gt; 'object' 所以这里的值也是 true</span></span><br></pre></td></tr></table></figure>
-<h2 id="自动转换"><a href="#自动转换" class="headerlink" title="自动转换"></a>自动转换</h2><p>第一种情况：不同类型的数据互相运算</p>
-<p>第二种情况：对非布尔值类型的数据求布尔值</p>
-<p>第三种情况：对非数值类型的值使用一元运算符</p>
-<p>转换规则是，预期是什么类型的值，就调用该类型的转换函数。比如，某个位置预期是字符串，就调用 String 函数进行转换。如果该位置即可以是字符串，也可能是数值，那么默认转换为数值。</p>
-<p>由于自动转换具有不确定型，而且不容易除错，建议在预期为布尔值、数值、字符串的地方，全部使用 Boolean、Number 和 String 函数进行显式转换</p>
-<h3 id="自动转换为布尔值"><a href="#自动转换为布尔值" class="headerlink" title="自动转换为布尔值"></a>自动转换为布尔值</h3><p>JavaScript 遇到预期为布尔值的地方 比如 if 语句的条件不符，就会将非布尔值的参数自动转换为布尔值。系统会自动调用 Boolean 函数。三元条件表达式也是自动转换为布尔值，还有双否运算 <code>!!x</code> </p>
-<h3 id="自动转换为字符串"><a href="#自动转换为字符串" class="headerlink" title="自动转换为字符串"></a>自动转换为字符串</h3><p>JavaScript 预期为字符串的地方，就会自动将非字符串的值转换为字符串。具体规则是，先将复合类型的值转换为原始类型，再将原始类型的值转换为字符串。</p>
-<p>字符串的自动转换，主要发生在字符串的加法运算时。当一个值为字符串，另一个值为非字符串，则后者转为字符串。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'5'</span> + <span class="number">1</span> <span class="comment">// '51'</span></span><br><span class="line"><span class="string">'5'</span> + <span class="literal">true</span> <span class="comment">// "5true"</span></span><br><span class="line"><span class="string">'5'</span> + <span class="literal">false</span> <span class="comment">// "5false"</span></span><br><span class="line"><span class="string">'5'</span> + &#123;&#125; <span class="comment">// "5[object Object]"</span></span><br><span class="line"><span class="string">'5'</span> + [] <span class="comment">// "5"</span></span><br><span class="line"><span class="string">'5'</span> + <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125; <span class="comment">// "5function ()&#123;&#125;"</span></span><br><span class="line"><span class="string">'5'</span> + <span class="literal">undefined</span> <span class="comment">// "5undefined"</span></span><br><span class="line"><span class="string">'5'</span> + <span class="literal">null</span> <span class="comment">// "5null"</span></span><br></pre></td></tr></table></figure>
-<h3 id="自定转换为数值"><a href="#自定转换为数值" class="headerlink" title="自定转换为数值"></a>自定转换为数值</h3><p>JavaScript 遇到预期为数值的地方，就会将参数值自动转换为数值。系统内部会自动调用 Number 函数。</p>
-<p>除了加法运算符有可能把运算子转为字符串，其他运算符都会把运算子自动转换为数值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="string">'5'</span> - <span class="string">'2'</span> <span class="comment">// 3</span></span><br><span class="line"><span class="string">'5'</span> * <span class="string">'2'</span> <span class="comment">// 10</span></span><br><span class="line"><span class="literal">true</span> - <span class="number">1</span>  <span class="comment">// 0</span></span><br><span class="line"><span class="literal">false</span> - <span class="number">1</span> <span class="comment">// -1</span></span><br><span class="line"><span class="string">'1'</span> - <span class="number">1</span>   <span class="comment">// 0</span></span><br><span class="line"><span class="string">'5'</span> * []    <span class="comment">// 0</span></span><br><span class="line"><span class="literal">false</span> / <span class="string">'5'</span> <span class="comment">// 0</span></span><br><span class="line"><span class="string">'abc'</span> - <span class="number">1</span>   <span class="comment">// NaN</span></span><br><span class="line"><span class="literal">null</span> + <span class="number">1</span> <span class="comment">// 1</span></span><br><span class="line"><span class="literal">undefined</span> + <span class="number">1</span> <span class="comment">// NaN</span></span><br></pre></td></tr></table></figure>
-<p>null 转换为数值是 0，undefined 转换为数值是 NaN</p>
+<p>Array 是 JavaScript 的原生对象，同时也是一个构造函数，可以用它生成新的数组。可以省略前面的 new 命令。</p>
+<p>如果参数是一个正整数，返回数组的成员都是空位。虽然读取的时候返回都是 undefined，其实该位置上并没有任何值。虽然可以取到 length 属性，但取不到键值。</p>
+<p>Array.prototype.valueOf 方法返回数组本身，而 Array.prototype.toString 方法返回的是数组的字符串形式。</p>
+<p>Array.prototype.push 方法在数组末端添加一个或多个元素，并返回数组的长度，它会改变原数组</p>
+<p>Array.prototype.pop 方法删除数组最后一个元素，并返回该元素，它会改变原数组，对空数组使用 pop 方法，不报错会返回 undefined。pop 方法可以遍历并清空数组。</p>
+<p>Array.prototype.shift 方法删除数组第一个元素，并返回这个元素，它会改变原数组。shift 方法可以遍历并清空一个数组。</p>
+<p>Array.prototype.unshift 方法在数组起始位置添加一个或者多个元素，并返回添加新元素后的数组长度，它会改变原数组。</p>
+<p>Array.prototype.join 方法以指定参数作为分隔符，将所有数组成员连接成一个字符串返回。如果不提供参数，默认用逗号分隔。数组成员是 undefined、null 或者空位，会转成空字符串。通过 call 方法，join 方法也可以用字符串或类似数组的对象。</p>
+<p>Array.prototype.concat 方法合并多个数组，将新数组成员添加到原数组成员的后面，返回返回一个新的数组，原数组不变。<br>concat 也接受其他类型的值作为参数，添加到目标数组的尾部，比如字符串，对象，二维数组等。<br>如果数组成员包括对象，concat 方法返回当前数组的一个浅拷贝，也就是新数组拷贝的是对象的引用。</p>
+<p>Array.prototype.reverse 反转数组，返回反转后的数组，它会改变原数组。</p>
+<p>Array.prototype.slice 提取目标数组的一部分，返回一个新数组，原数组不变。<br>第一个参数是起始位置，默认为 0。第二个参数是终止位置（不包括该位置的元素本身），默认为数组长度。如果省略第二个参数，则一直返回到原数组的最后一项。<br>参数可以负数，表示倒数计时的位置。<br>如果第一个参数大于等于数组长度，或者第二个参数小于第一个参数，则返回空数组。<br>slice 的一个重要应用，是将类数组转为数组。</p>
+<p>Array.prototype.splice 用于删除原数组的一部分成员，可以同时在删除的位置添加新的数组成员，返回值是被删除的元素组成的数组，它会改变原数组。<br>splice 的第一个参数是删除的起始位置（从 0 开始），第二个参数是被删除的元素的个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。<br>如果第二个参数设为 0，则不删除元素。<br>如果提供了一个参数，则等同于将原数组拆分成两个数组。如果这个参数为 0，则会清空这个数组。</p>
+<p>Array.prototype.sort 默认按照各个字符（数字会被转换为字符串）的 Unicode 码点顺序原地排序数组，它会改变原数组。<br>sort 方法传入一个函数作为参数，调用这个函数，按照函数的返回值进行排序。如果返回值小于 0，第一个元素排在前面，如果大于 0，第一个元素排在后面。如果比较的是数字，函数返回升序是 a - b，降序为 b - a。String.prototype.localCompare<br>使用映射改善排序</p>
+<p>Array.prototype.map 方法执行指定的函数（map 第一个参数），函数按照指定的上下文（map 的第二个参数）调用，返回一个执行完后了的新数组。</p>
+<p>Array.prototype.filter 方法过滤出来符合参数函数的数组成员组成一个新的数组。</p>
+<p>Array.prototype.some，Array.prototype.every 类似断言，返回布尔值，表示判断数组成员是否符号条件。some 只要有一些事符合条件就是 true，every 是所有都要符合条件才能返回 true。</p>
+<p>Array.prototype.reduce，Array.prototype.reduceRight 方法依次处理数组的每个成员，最终累计为一个值。<br>四个参数分别为：<br>1、累计的变量，默认为数组的第一个成员<br>2、当前变量，默认为数组的第二个成员，如果累计的变量设置了初始值，当前变量就从数组的第一个成员开始<br>3、可选参数 - 前位置，从 0 开始<br>4、可选参数 - 原数组<br>如果是空数组，累计的变量初始值必须传，否则报错。<br>这两个方法是遍历数组的方法，所以实际上也还可以做一些遍历相关的操作。比如 找出字符长度最长的数组成员。</p>
+<p>Array.prototype.indexOf, Array.prototype.lastIndexOf 找出数组中从指定位置（可选第二个参数，默认为 0）找到给定元素（第一个参数）的位置，如果没有返回 -1。内部是用的严格相等来索引的，NaN 不等于自身，不能用来搜索 NaN。</p>
+<p>这些方法中，有 map 返回执行完 callback 后的一个新的数组，filter 返回符合某个条件的成员组成的新数组，sort 返回原地排序好了的数组，slice 切出来的新数组，splice 是执行了删除元素后的元素组成的数组（没有删除只有插入就返回空数组），reverse 反转后的数组，concat 合并后的新数组。因为它们返回的都是数组，可以对它们的返回值再接着进行其他方法操作，可以链式使用。</p>
 
   </div>
   
@@ -107,7 +77,7 @@
 
 
   <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/bjb/page/55/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/54/">54</a><a class="page-number" href="/bjb/page/55/">55</a><span class="page-number current">56</span><a class="page-number" href="/bjb/page/57/">57</a><a class="page-number" href="/bjb/page/58/">58</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/71/">71</a><a class="extend next" rel="next" href="/bjb/page/57/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/bjb/page/55/">&laquo;上一页</a><a class="page-number" href="/bjb/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/54/">54</a><a class="page-number" href="/bjb/page/55/">55</a><span class="page-number current">56</span><a class="page-number" href="/bjb/page/57/">57</a><a class="page-number" href="/bjb/page/58/">58</a><span class="space">&hellip;</span><a class="page-number" href="/bjb/page/77/">77</a><a class="extend next" rel="next" href="/bjb/page/57/">下一页&raquo;</a>
   </nav>
 
     </main>
